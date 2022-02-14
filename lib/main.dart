@@ -1,51 +1,64 @@
 import 'package:flutter/material.dart';
 
-// void main() {
-//   runApp(MyApp());
-// }
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  var questionIndex = 0;
+class MyApp extends StatefulWidget{
+     @override 
+     State<StatefulWidget> createState(){
+       return MyAppState();
+     }
+}
 
-  void answerQuestion() {
-    questionIndex = questionIndex + 1;
-    print(questionIndex);
-  }
+class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?',
-    ];
+
     return MaterialApp(
+      title: "BKDMS Mobile App",
+      
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('My First App'),
-        ),
-        body: Column(
-          children: [
-            Text(
-              questions[questionIndex],
-            ),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: () {
-                
-                print('Answer 3 chosen');
-              },
-            ),
-          ],
+        backgroundColor: Color(0xffF4F4F4),
+        body: Container(
+          width: double.infinity,
+          margin: EdgeInsets.only(top: 40),
+          child: Column(
+            children: [
+              Image.asset("assets/DMSLogo.png"),
+              Text(
+                "GIẢI PHÁP QUẢN LÝ PHÂN PHỐI \n CHUYÊN NGHIỆP",
+                style: TextStyle(
+                   fontSize: 20,
+                   fontWeight: FontWeight.bold,
+                   color: Color(0xff565151),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 60,),
+              SizedBox(
+                child: CircularProgressIndicator(
+                  strokeWidth: 8,
+                  color: Colors.white,
+                ),
+                height: 180.0,
+                width: 180.0,
+              ),
+              SizedBox(height: 120,),
+              SizedBox(
+                child: Text(
+                  "Copyright © BK.DMS",
+                   style: TextStyle(
+                     fontSize: 15,
+                   ),
+                ),
+              ),
+              
+            ],
+          ),
+             
+          
+
         ),
       ),
     );
