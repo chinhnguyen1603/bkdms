@@ -1,4 +1,4 @@
-# bkdms
+# BKDMS
 
 A new Flutter project for graduation essay by Nguyen Ngoc Chinh, student at HCMUT.
 
