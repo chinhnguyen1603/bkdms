@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
+import 'package:bkdms/HomePage.dart';
 
 class Login extends StatelessWidget {
 
@@ -58,7 +58,9 @@ class Login extends StatelessWidget {
                     borderSide: BorderSide(color: Color(0xffE2DDDD)),
                   ),
                   hintText: "Mật khẩu",
-                  hintStyle: TextStyle(fontSize: 20.0, color: darkGrey),
+                  hintStyle: TextStyle(fontSize: 20.0, color: darkGrey
+            
+                  ),
                 ), 
                 
               ),
@@ -71,7 +73,9 @@ class Login extends StatelessWidget {
              height: 45,
              width: 240,
              child: ElevatedButton(    
-               onPressed: null,
+               onPressed: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+               },
                style: ButtonStyle(
                  backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -106,6 +110,8 @@ class Login extends StatelessWidget {
             ),
             
             SizedBox(height: 180,),
+
+            // Text Button đăng kí đại lý mới
             TextButton(
               onPressed: (){}, 
               child: Text(

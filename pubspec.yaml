@@ -60,12 +60,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: SegoeUI
+    - family: SegoeScript
       fonts:
-          - asset: assets/Segoe-UI.ttf
-          - asset: assets/Segoe-UI-Bold-Italic.ttf
-          - asset: assets/Segoe-UI-Bold.ttf
-          - asset: assets/Segoe-UI-Italic.ttf
+          - asset: assets/segoesc.ttf
+          - asset: assets/segoescb.ttf
+            weight: 700
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
