@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
           children: [
             // chứa gradient
             Container(
-               height: 240,
+               height: 235,
                decoration: BoxDecoration(
                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(50),bottomLeft: Radius.circular(50),),
                  gradient: LinearGradient(
@@ -51,17 +51,27 @@ class HomePage extends StatelessWidget {
                           )
                          )
                        ),
-                       SizedBox(width: 45,),
+                       SizedBox(width: 47,),
                        // 2 dòng text
                        SizedBox(
                          child: Column(
                             children:[
                               Text(
-                               "Xin chào khách hàng \n",
+                               "Xin chào khách hàng ",
                                textAlign: TextAlign.center,
                                style: TextStyle(
                                fontSize: 20,
                                fontWeight: FontWeight.w600,
+                               color: Colors.white,
+                               ),
+                              ),
+                              SizedBox(height: 3,),
+                              Text(
+                               "Nguyễn Văn Việt",
+                               textAlign: TextAlign.center,
+                               style: TextStyle(
+                               fontSize: 18,
+                               fontWeight: FontWeight.w300,
                                color: Colors.white,
                                ),
                               )
@@ -70,16 +80,36 @@ class HomePage extends StatelessWidget {
                        )
                      ],
                     ),
-                   SizedBox(height: 25,),
-                   Container(
-                     width: 250,
-                     height: 50,
+                  // chứa 3 Icon Button Tồn Kho, Thành Viên, Liên hệ
+                  SizedBox(height: 25,),
+                  Container(
+                     width: 300,
+                     height: 54,
                      decoration: BoxDecoration(
                        shape: BoxShape.rectangle,
+                       borderRadius: BorderRadius.all(Radius.circular(40)),
+                       boxShadow: [
+                         BoxShadow(                      
+                           blurRadius: 2,
+                         ),
+                       ],
                        color: Colors.white,
                      ),
-          
-                   ),
+                     child: Row(
+                       children: [
+                         SizedBox(width: 40,),
+                         Text(
+                           "|",
+                           style: TextStyle(
+                             fontSize: 38,
+                             fontWeight: FontWeight.normal,
+                           ),
+                          ),
+                         SizedBox(),
+                         SizedBox(),
+                       ]
+                     ),         
+                  ),
                  ]
                )
             ),
