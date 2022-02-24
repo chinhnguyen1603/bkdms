@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './splashScreen.dart';
+import 'package:bkdms/splashScreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import './Login.dart';
+import 'package:bkdms/Login.dart';
 import 'dart:async';
-class SplashScreen extends StatelessWidget{
 
+
+
+class SplashScreen extends StatelessWidget{
+  
   @override
   Widget build(BuildContext context) {
     Timer(Duration(seconds: 5), () {

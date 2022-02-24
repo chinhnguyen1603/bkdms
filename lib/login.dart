@@ -179,11 +179,11 @@ class LoginState extends State<Login> {
                onPressed: (){
                 //postAPI();
                 //print(_workSpace);
-                makePostRequest();
-                print(checkLogin);
-                if (checkLogin == true) {
+               // makePostRequest();
+                //print(checkLogin);
+                //if (checkLogin == true) {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                }
+                //}
                },
                style: ButtonStyle(
                  backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),

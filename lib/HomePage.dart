@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:bkdms/InfoUser.dart';
+import 'package:bkdms/InfoUser.dart';
+
 
 class HomePage extends StatelessWidget {
   @override
@@ -42,7 +45,9 @@ class HomePage extends StatelessWidget {
                          width: 30,
                          height: 75,
                          child: IconButton(
-                          onPressed: null, 
+                          onPressed: () { 
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUser()));
+                          }, 
                           alignment: Alignment.topLeft,
                           icon: Icon(
                            Icons.account_circle_outlined,
