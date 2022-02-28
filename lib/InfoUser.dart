@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bkdms/Api/ToLogin.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'Components/AppBarGrey.dart';
+//import 'package:bkdms/Api/ToLogin.dart';
+//import 'package:http/http.dart';
+//import 'dart:convert';
 import 'dart:ui';
 
 class InfoUser  extends StatefulWidget {
@@ -45,8 +46,6 @@ class InfoUserState extends State<InfoUser> {
      print(nameOwn);
   }*/
 
-
-
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;
@@ -54,22 +53,7 @@ class InfoUserState extends State<InfoUser> {
     return Scaffold(
       backgroundColor: Colors.white,
       // appbar
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: const Icon(
-            Icons.arrow_back_ios,
-            color: darkGrey,
-        ),
-        centerTitle: true,
-        title: const Text(
-            "Hồ sơ",
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: darkGrey,
-            ),
-          ),
-      ),
+      appBar: AppBarGrey("Hồ sơ"),
       body: SingleChildScrollView( 
         child: Column(
           children: [
