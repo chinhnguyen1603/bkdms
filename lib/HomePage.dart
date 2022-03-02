@@ -1,10 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/InfoUser.dart';
 
 
 
 class HomePage extends StatelessWidget {
-  
+  static const heavyBlue = Color(0xff242266);
+  static const textGrey = Color(0xff282323);
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
@@ -17,7 +19,7 @@ class HomePage extends StatelessWidget {
             Container(
                margin: EdgeInsets.only(top: 30),
                width: double.infinity,
-               height: 235,
+               height: 230,
                decoration: BoxDecoration(
                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(50),bottomLeft: Radius.circular(50),),
                  gradient: LinearGradient(
@@ -44,16 +46,18 @@ class HomePage extends StatelessWidget {
                    ),
                   
                   //Row chứa Icon và dòng Xin chào khách hàng
-                  Row(
-                     children:[
-                       SizedBox(width: 25,),
+                  Container(
+                     height: 70,
+                     width: widthDevice,
+                     child: Row(
+                       children: [
                        // Icon User
                        SizedBox(
-                         width: 30,
-                         height: 75,
+                         width: widthDevice*0.25,
+                         height: 70,
                          child: IconButton(
                           hoverColor: Colors.white,
-                          alignment: Alignment.topLeft,
+                          alignment: Alignment.topRight,
                           icon: Icon(
                            Icons.account_circle_outlined,
                            size: 64,
@@ -64,14 +68,17 @@ class HomePage extends StatelessWidget {
                           }, 
                           )
                        ),
-                       SizedBox(width: 47,),
                        // 2 dòng text
-                       SizedBox(
+                       Center(
+                       child: 
+                       Container(
+                         margin: EdgeInsets.only(top: 15),
+                         height: 70,
+                         width: widthDevice*0.5,
                          child: Column(
                             children:[
                               Text(
                                "Xin chào khách hàng ",
-                               textAlign: TextAlign.center,
                                style: TextStyle(
                                fontSize: 20,
                                fontWeight: FontWeight.w600,
@@ -81,7 +88,6 @@ class HomePage extends StatelessWidget {
                               SizedBox(height: 3,),
                               Text(
                                "Nguyễn Văn Việt",
-                               textAlign: TextAlign.center,
                                style: TextStyle(
                                fontSize: 18,
                                fontWeight: FontWeight.w300,
@@ -90,9 +96,9 @@ class HomePage extends StatelessWidget {
                               )
                             ]
                          )
-                       )
+                       ))
                      ],
-                    ),
+                    ),),
                   
                   // chứa 3 Icon Button Tồn Kho, Thành Viên, Liên hệ
                   SizedBox(height: 25,),
@@ -111,7 +117,43 @@ class HomePage extends StatelessWidget {
                      ),
                      child: Row(
                        children: [
-                         SizedBox(width: widthDevice*0.25,),
+                         //Icon button tồn kho
+                         SizedBox(
+                           width: widthDevice*0.26,
+                           height: 54,
+                           child: Column(
+                             children: [
+                             SizedBox(
+                               height: 26,       
+                               child:
+                                 IconButton(
+                                 alignment: Alignment.center,
+                                 onPressed: (){}, 
+                                 color: heavyBlue,
+                                 padding: EdgeInsets.only(bottom: 1.0, top: 3.0),
+                                 icon: Icon(
+                                   Icons.outbox_sharp,
+                                   size: 32,
+                                 )
+                               )
+                             ),
+                              SizedBox(
+                                height: 28,
+                                child: TextButton(
+                                  onPressed: (){
+                                     
+                                  }, 
+                                  child: Text(
+                                    "Tồn kho",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: textGrey,
+                                    ),
+                                  )
+                                )
+                              )],
+                           ),
+                          ),
                          VerticalDivider(
                            width: 1,
                            thickness: 1,
@@ -119,15 +161,90 @@ class HomePage extends StatelessWidget {
                            endIndent: 7,
                            color: Colors.grey,
                          ), 
-                         SizedBox(width: widthDevice*0.295,),
+                         
+                         //Icon button thành viên
+                         SizedBox(
+                           width: widthDevice*0.28,
+                           child: Column(
+                             children: [
+                             SizedBox(
+                               height: 26,       
+                               child:
+                                 IconButton(
+                                 onPressed: (){}, 
+                                 color: heavyBlue,
+                                 padding: EdgeInsets.only(bottom: 1.0, top: 3.0),
+                                 icon: Icon(
+                                   Icons.star_half_sharp,
+                                   size: 34,
+                                 )
+                               )
+                             ),
+                              SizedBox(
+                                height: 28,
+                                child: TextButton(
+                                  onPressed: (){
+                                     
+                                  }, 
+                                  child: Text(
+                                    "Thành viên",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: textGrey,
+                                    ),
+                                  )
+                                )
+                              )],
+                           ),                         
+                         ),
                          VerticalDivider(
                            width: 1,
                            thickness: 1,
                            indent: 7,
                            endIndent: 7,
                            color: Colors.grey,
-                         ),                          
-                         SizedBox(width: widthDevice*0.2,),
+                         ),   
+
+                         //Icon button Liên hệ                       
+                         SizedBox(
+                           width: widthDevice*0.25,
+                           child: Column(
+                             children: [
+                             SizedBox(
+                               height: 26,       
+                               child:
+                                 IconButton(
+                                 alignment: Alignment.center,
+                                 onPressed: (){
+
+                                 }, 
+                                 color: heavyBlue,
+                                 padding: EdgeInsets.only(bottom: 1.0, top: 3.0),
+                                 icon: Icon(
+                                   Icons.local_phone_sharp,
+                                   size: 32,
+                                 )
+                               )
+                             ),
+                              SizedBox(
+                                height: 28,
+                                child: TextButton(
+                                  onPressed: (){
+                                     
+                                  }, 
+                                  child: SizedBox(
+                                    child: Text(
+                                    "Liên hệ",      
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: textGrey,
+                                    )
+                                  ),
+                                  )
+                                )
+                              )],
+                           ),                                
+                         ),
                        ]
                      ),         
                   ),
@@ -177,9 +294,16 @@ class HomePage extends StatelessWidget {
                 itemCount: 4,
                 itemBuilder:  (context, index) => Padding(
                   padding: EdgeInsets.all(4.0),
-                  child: Container(
+                  child: GestureDetector(
+                   onTap: (){
+                     print("Click khuyến mãi");
+                   },
+                   child:Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
                     width: 160,
-                    color: Colors.white,
                     child: Text(
                       "Voucher $index",
                       textAlign: TextAlign.center,
@@ -187,11 +311,12 @@ class HomePage extends StatelessWidget {
 
                       ),
                       )
-                    ),
+                   )
+                  ),
                   ),
               )
             ),
-           
+            SizedBox(height: 10,),
             //Text sản phẩm và xem thêm
             SizedBox(
               height: 30,
@@ -239,11 +364,15 @@ class HomePage extends StatelessWidget {
                 itemCount: 10,
                 itemBuilder: (BuildContext context, int index) {
                   
-                  return Container(
-                    width: 160,
-                    height: 160,
-                    color: Colors.white,    
-                  );
+                  return GestureDetector(
+                    onTap: (){
+                      print("click sản phẩm");
+                    },
+                    child:Container(
+                      width: 160,
+                      height: 160,
+                      color: Colors.white,    
+                    ));
                 },
               ),
             )

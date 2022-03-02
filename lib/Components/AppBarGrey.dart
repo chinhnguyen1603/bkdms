@@ -12,9 +12,13 @@ class AppBarGrey extends PreferredSize {
   Widget build(BuildContext context) {
     return AppBar(
         backgroundColor: Colors.white,
-        leading: const Icon(
+        leading: IconButton(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: darkGrey,
+            color: darkGrey,),
+          onPressed: (){
+            Navigator.pop(context);
+          },
         ),
         centerTitle: true,
         title: Text(

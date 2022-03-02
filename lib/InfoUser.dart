@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'Components/AppBarGrey.dart';
+import './InfoApp.dart';
 //import 'package:bkdms/Api/ToLogin.dart';
 //import 'package:http/http.dart';
 //import 'dart:convert';
@@ -21,11 +21,9 @@ class InfoUserState extends State<InfoUser> {
   static const mintGrey = Color(0xffFAFAFA); //màu xám background
   static const beautyBlue = Color(0xff2960A0); // màu xanh dương
   static const line = Color(0xffC4C4C4); // màu xám kẻ line
-  // set responsive
 
-
-  String nameOwn = " ";
-  Map<String, dynamic> body;
+  //String nameOwn = " ";
+  //Map<String, dynamic> body;
   
   /*void makePostRequest() async {
   // cài đặt tham số POST request
@@ -291,32 +289,39 @@ class InfoUserState extends State<InfoUser> {
             ),
             
             //Container chứa thông tin ứng dụng
+            GestureDetector(
+            onTap:(){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => InfoApp()));
+            } ,
+            child:
             Container(
               height: 40,
-              width: myWidth,
-              child: Row(
+              width: widthDevice,
+              child: Center(
+                child: Row(
                 children: [
-                  IconButton(
-                    onPressed: null, 
-                    icon: Icon(
-                     Icons.info_outline,
-                     color: beautyBlue,
-                    )),
-                  SizedBox(width: myWidth*0.11),
-                  TextButton(
-                    onPressed: null, 
+                  SizedBox(
+                    width: widthDevice*0.25,
+                    child: Icon(
+                      Icons.info_outline,
+                      color: beautyBlue,
+                    ),
+                  ),
+                  SizedBox(
+                    width: widthDevice*0.5,
                     child: Text(
                       "Thông tin ứng dụng",
                        textAlign: TextAlign.center,
                        style: TextStyle(
-                       fontSize: 20,
-                       fontWeight: FontWeight.w600,
-                       color: beautyBlue,
+                         fontSize: 20,
+                         fontWeight: FontWeight.w600,
+                         color: beautyBlue,
                        ) 
                     ), 
                   ),
                 ],
-              ),
+              ),),
+            ),
             ),
 
             //Divider
@@ -326,34 +331,41 @@ class InfoUserState extends State<InfoUser> {
             ),
             
             //Container chứa đăng xuất
+            GestureDetector(
+            onTap:(){
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoApp()));
+            } ,
+            child:
             Container(
               height: 40,
-              width: myWidth,
-              child: Row(
+              width: widthDevice,
+              child: Center(
+                child: Row(
                 children: [
-                  IconButton(
-                    onPressed: null, 
-                    icon: Icon(
-                     Icons.input,
-                     color: beautyBlue,
-                    )),
-                  SizedBox(width: myWidth*0.21),
-                  TextButton(
-                    onPressed: null, 
+                  SizedBox(
+                    width: widthDevice*0.25,
+                    child: Icon(
+                      Icons.input,
+                      color: beautyBlue,
+                    ),
+                  ),
+                  SizedBox(
+                    width: widthDevice*0.5,
                     child: Text(
                       "Đăng xuất",
-                       textAlign: TextAlign.right,
+                       textAlign: TextAlign.center,
                        style: TextStyle(
-                       fontSize: 20,
-                       fontWeight: FontWeight.w600,
-                       color: beautyBlue,
+                         fontSize: 20,
+                         fontWeight: FontWeight.w600,
+                         color: beautyBlue,
                        ) 
                     ), 
                   ),
                 ],
-              ),
+              ),),
             ),
-            
+            ),
+
             // divider cuối cùng
             Divider(
               color: line,
