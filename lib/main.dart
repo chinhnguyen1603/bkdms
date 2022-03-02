@@ -1,6 +1,9 @@
+import 'package:bkdms/HomePage/Login.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/SplashScreen.dart';
-import 'package:bkdms/HomePage.dart';
+
+
+//import 'package:bkdms/SplashScreen.dart';
+
 
 
 
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
         //body: SplashScreen(),
-        body: HomePage(),
+        body: Login(),
       ),
 
     );
