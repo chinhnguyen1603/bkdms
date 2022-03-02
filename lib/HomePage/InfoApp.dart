@@ -9,34 +9,13 @@ class InfoApp extends StatelessWidget {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9;
     return Scaffold(
-      appBar: /*AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: darkGrey,),
-          onPressed: (){
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home,color: darkGrey,),
-            onPressed: (){
-            },
-          ),
-        ],
-        centerTitle: true,
-        title: Text(
-          "Thông tin ứng dụng", 
-          style: TextStyle(
-            color: darkGrey,
-          ),
-        ),*/
-      AppBarGrey("Thông tin ứng dụng"),
-    backgroundColor: Color(0xffF0ECEC), // background color của màn hình
-    body: SingleChildScrollView(
+      appBar: AppBarGrey("Thông tin ứng dụng"),
+      backgroundColor: Color(0xffF0ECEC), // background color của màn hình
+      body: SingleChildScrollView(
         child: Column(
           children: [
-              //container chứa gradient
-              Container(
+            //container chứa gradient
+            Container(
                width: double.infinity,
                height: 140,
                decoration: BoxDecoration(
@@ -80,6 +59,8 @@ class InfoApp extends StatelessWidget {
                ),
               ),
             SizedBox(height: 450,),
+            
+            // Text giấy chứng nhận đăng kí kinh doanh v.v
             SizedBox(
               width: myWidth,
               child: Text(
@@ -91,8 +72,7 @@ class InfoApp extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8,),
-            Text("Copyright © BK.DMS"),
-              
+            Text("Copyright © BK.DMS"),       
           ],
         ),
       ),
