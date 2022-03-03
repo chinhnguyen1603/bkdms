@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:bkdms/HomePage/HomePage.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
-import 'package:bkdms/Models/user.dart';
 import 'package:bkdms/HomePage/Register.dart';
 
 
@@ -75,38 +74,28 @@ class LoginState extends State<Login> {
         margin: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            Image.asset("assets/LogoLogin.png", scale: 1.1,),
-              Text(
+            Image.asset("assets/LogoLogin.png", scale: 1.15,),
+              
+            //Form workspace
+            Text(
                 "Workspace",
                 style: TextStyle(
                   fontSize: 20,
                   color: Color(0xff1581C8),
                 ),
-              ),
+            ),
             Container(// chứa form nhập workspace
               height: 50,
               width: 220,
               // form workspace
-              child: TextFormField(
+              child: TextField(
                 keyboardType: TextInputType.text,
-                cursorHeight: 21,
+                cursorHeight: 24,
                 cursorColor: Colors.black,
                 style: TextStyle(fontSize: 20),
                 decoration:  InputDecoration(
                   prefixIcon: const Icon(Icons.apartment,size: 30,),
-                  fillColor: Color(0xffE2DDDD),
-                  filled: true,
-                  enabledBorder:  OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      color: Color(0xff1581C8),
-                      width: 1.5,
-                    ),
-                  ),
                 ), 
-                onSaved: (String inputWorkSpace){ // lưu biến workspace
-                    //this._workSpace = inputWorkSpace;
-                },
               ),
             ),
             SizedBox(height:10),

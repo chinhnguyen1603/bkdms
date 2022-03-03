@@ -1,5 +1,7 @@
 import 'package:bkdms/HomePage/Login.dart';
+import 'package:bkdms/HomePage/Register.dart';
 import 'package:flutter/material.dart';
+import 'package:bkdms/Features/Contact.dart';
 
 
 //import 'package:bkdms/SplashScreen.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/HomePage/InfoUser.dart';
+import 'package:bkdms/Features/Contact.dart';
 
 
 
@@ -121,38 +122,40 @@ class HomePage extends StatelessWidget {
                          SizedBox(
                            width: widthDevice*0.26,
                            height: 54,
-                           child: Column(
+                           child: GestureDetector(
+                           onTap: (){
+                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
+                           },
+                           child: Container( 
+                           margin: EdgeInsets.only(top:5) ,
+                           child:                             
+                            Column(
                              children: [
                              SizedBox(
-                               height: 26,       
+                               height: 25,       
                                child:
-                                 IconButton(
-                                 alignment: Alignment.center,
-                                 onPressed: (){}, 
-                                 color: heavyBlue,
-                                 padding: EdgeInsets.only(bottom: 1.0, top: 3.0),
-                                 icon: Icon(
+                                 Icon(
                                    Icons.outbox_sharp,
                                    size: 32,
+                                   color: heavyBlue,
                                  )
-                               )
-                             ),
+                               ),
+                              SizedBox(height: 5,),                    
                               SizedBox(
-                                height: 28,
-                                child: TextButton(
-                                  onPressed: (){
-                                     
-                                  }, 
-                                  child: Text(
-                                    "Tồn kho",
-                                    style: TextStyle(
+                                height: 15,
+                                child: Text(
+                                  "Tồn kho",      
+                                  style: TextStyle(
                                       fontSize: 12,
                                       color: textGrey,
-                                    ),
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ),
                                   )
-                                )
-                              )],
+                              ],
+                           ),                                
                            ),
+                           )
                           ),
                          VerticalDivider(
                            width: 1,
@@ -165,38 +168,42 @@ class HomePage extends StatelessWidget {
                          //Icon button thành viên
                          SizedBox(
                            width: widthDevice*0.28,
-                           child: Column(
+                           height: 54,
+                           child: GestureDetector(
+                           onTap: (){
+                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
+                           },
+                           child: Container( 
+                           margin: EdgeInsets.only(top:5) ,
+                           child:                             
+                            Column(
                              children: [
                              SizedBox(
-                               height: 26,       
+                               height: 25,       
                                child:
-                                 IconButton(
-                                 onPressed: (){}, 
-                                 color: heavyBlue,
-                                 padding: EdgeInsets.only(bottom: 1.0, top: 3.0),
-                                 icon: Icon(
+                                 Icon(
                                    Icons.star_half_sharp,
-                                   size: 34,
+                                   size: 32,
+                                   color: heavyBlue,
                                  )
-                               )
-                             ),
+                               ),
+                              SizedBox(height: 5,),                    
                               SizedBox(
-                                height: 28,
-                                child: TextButton(
-                                  onPressed: (){
-                                     
-                                  }, 
-                                  child: Text(
-                                    "Thành viên",
-                                    style: TextStyle(
+                                height: 15,
+                                child: Text(
+                                  "Thành viên",      
+                                  style: TextStyle(
                                       fontSize: 12,
                                       color: textGrey,
-                                    ),
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ),
                                   )
-                                )
-                              )],
-                           ),                         
-                         ),
+                              ],
+                           ),                                
+                           ),
+                           )
+                       ),
                          VerticalDivider(
                            width: 1,
                            thickness: 1,
@@ -205,47 +212,47 @@ class HomePage extends StatelessWidget {
                            color: Colors.grey,
                          ),   
 
-                         //Icon button Liên hệ                       
+                         //Icon button and text Liên hệ                                                
                          SizedBox(
                            width: widthDevice*0.25,
-                           child: Column(
+                           height: 54,
+                           child: 
+                           GestureDetector(
+                           onTap: (){
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
+                           },
+                           child: Container( 
+                           margin: EdgeInsets.only(top:5) ,
+                           child:                             
+                            Column(
                              children: [
                              SizedBox(
-                               height: 26,       
+                               height: 25,       
                                child:
-                                 IconButton(
-                                 alignment: Alignment.center,
-                                 onPressed: (){
-
-                                 }, 
-                                 color: heavyBlue,
-                                 padding: EdgeInsets.only(bottom: 1.0, top: 3.0),
-                                 icon: Icon(
+                                 Icon(
                                    Icons.local_phone_sharp,
                                    size: 32,
+                                   color: heavyBlue,
                                  )
-                               )
-                             ),
+                               ),
+                              SizedBox(height: 5,),                    
                               SizedBox(
-                                height: 28,
-                                child: TextButton(
-                                  onPressed: (){
-                                     
-                                  }, 
-                                  child: SizedBox(
-                                    child: Text(
-                                    "Liên hệ",      
-                                    style: TextStyle(
+                                height: 15,
+                                child: Text(
+                                  "Liên hệ",      
+                                  style: TextStyle(
                                       fontSize: 12,
                                       color: textGrey,
+                                      fontWeight: FontWeight.w500,
                                     )
                                   ),
                                   )
-                                )
-                              )],
+                              ],
                            ),                                
-                         ),
-                       ]
+                           ),
+                           )
+                         )
+                      ]
                      ),         
                   ),
                  ]

@@ -1,3 +1,5 @@
+import 'dart:ui';
+import 'package:bkdms/HomePage/Login.dart';
 import 'package:bkdms/Components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
 class Register extends StatelessWidget {
@@ -201,6 +203,45 @@ class Register extends StatelessWidget {
               ),
             ),
      
+            //Button gửi
+            SizedBox(height: 20,),
+            SizedBox(
+              width: widthDevice*0.3,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      content: const Text(
+                        'YÊU CẦU ĐĂNG KÍ CỦA BẠN ĐÃ ĐƯỢC TIẾP NHẬN. CHÚNG TÔI SẼ PHẢN HỒI TRONG THỜI GIAN SỚM NHẤT',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                           fontSize: 14,
+                           fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      actions: [TextButton(
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Login())),
+                        child: const Text(
+                            'OK',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),                      
+                      ],                  
+                    ),
+                  ),
+          //showDialog
+                child:Text(
+                  "Gửi",
+                  style: TextStyle(
+                    fontSize:22,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            )
           ],  
         ),
       ),
