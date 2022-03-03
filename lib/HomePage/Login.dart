@@ -92,14 +92,17 @@ class LoginState extends State<Login> {
                 keyboardType: TextInputType.text,
                 cursorHeight: 24,
                 cursorColor: Colors.black,
+                textAlignVertical: TextAlignVertical.center,
                 style: TextStyle(fontSize: 20),
                 decoration:  InputDecoration(
                   prefixIcon: const Icon(Icons.apartment,size: 30,),
                 ), 
               ),
             ),
+ 
             SizedBox(height:10),
-            SizedBox(// chứa form số điện thoại
+            // chứa form số điện thoại
+            SizedBox(
               height: 50,
               width: 360,
               // form số điện thoại
@@ -107,6 +110,7 @@ class LoginState extends State<Login> {
                 keyboardType: TextInputType.number,
                 cursorHeight: 23,
                 cursorColor: darkGrey,
+                textAlignVertical: TextAlignVertical.center,
                 style: TextStyle(fontSize: 21),
                 decoration:  InputDecoration(
                   fillColor: Color(0xffE2DDDD),
@@ -134,6 +138,7 @@ class LoginState extends State<Login> {
                 cursorColor: darkGrey,
                 obscureText: _obscureText,
                 style: TextStyle(fontSize: 21),
+                textAlignVertical: TextAlignVertical.center,
                 decoration:  InputDecoration(
                   suffixIcon: GestureDetector(
                     onTap: (){
@@ -160,7 +165,6 @@ class LoginState extends State<Login> {
             ),
 
             SizedBox(height: 40,),
-
             // button đăng nhập
             SizedBox(
              height: 45,

@@ -66,6 +66,7 @@ class Register extends StatelessWidget {
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 cursorHeight: 24,
+                textAlignVertical: TextAlignVertical.center,
                 style: TextStyle(fontSize: 16),
                 decoration:  InputDecoration(
                   //fillColor: Color(0xffE2DDDD),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import '../Components/AppBarGrey.dart';
+import 'package:bkdms/HomePage/Login.dart';
 import 'InfoApp.dart';
 //import 'package:bkdms/Api/ToLogin.dart';
 //import 'package:http/http.dart';
@@ -333,7 +334,7 @@ class InfoUserState extends State<InfoUser> {
             //Container chứa đăng xuất
             GestureDetector(
             onTap:(){
-              //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoApp()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
             } ,
             child:
             Container(
