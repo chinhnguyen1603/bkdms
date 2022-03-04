@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:bkdms/HomePage/HomePage.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+//import 'package:http/http.dart';
+//import 'dart:convert';
 import 'package:bkdms/HomePage/Register.dart';
 
 
@@ -33,7 +33,7 @@ class LoginState extends State<Login> {
     });
   }*/
 
-  void makePostRequest() async {
+  /*void makePostRequest() async {
   // cài đặt tham số POST request
   print("post mới");
   String url = 'https://bkdms.herokuapp.com/api/v1/auth/login-agency';
@@ -58,11 +58,11 @@ class LoginState extends State<Login> {
 
   String _workSpace = "1234";
   String _phone;
-  String _passWord;
+  String _passWord;*/
 
   bool _obscureText = true; // con mắt để hiện mật khẩu
   var darkGrey = Color(0xff544C4C); // màu xám
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +72,9 @@ class LoginState extends State<Login> {
       Container(
         width: double.infinity,
         margin: EdgeInsets.only(top: 20),
-        child: Column(
+        child: Form(
+          key: _formKey,
+          child: Column(
           children: [
             Image.asset("assets/LogoLogin.png", scale: 1.15,),
               
@@ -88,22 +90,29 @@ class LoginState extends State<Login> {
               height: 50,
               width: 220,
               // form workspace
-              child: TextField(
+              child: TextFormField(
                 keyboardType: TextInputType.text,
                 cursorHeight: 24,
                 cursorColor: Colors.black,
                 textAlignVertical: TextAlignVertical.center,
                 style: TextStyle(fontSize: 20),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Workspace không được để trống';
+                  }
+                  return null;
+                },                
                 decoration:  InputDecoration(
                   prefixIcon: const Icon(Icons.apartment,size: 30,),
-                ), 
+                ),
+                 
               ),
             ),
  
             SizedBox(height:10),
             // chứa form số điện thoại
             SizedBox(
-              height: 50,
+              height: 60,
               width: 360,
               // form số điện thoại
               child: TextFormField(
@@ -112,6 +121,12 @@ class LoginState extends State<Login> {
                 cursorColor: darkGrey,
                 textAlignVertical: TextAlignVertical.center,
                 style: TextStyle(fontSize: 21),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Số điện thoại không được để trống';
+                  }
+                  return null;
+                },
                 decoration:  InputDecoration(
                   fillColor: Color(0xffE2DDDD),
                   filled: true,
@@ -129,7 +144,7 @@ class LoginState extends State<Login> {
             SizedBox(height: 10),
             // chứa form mật khẩu
             SizedBox(
-              height: 50,
+              height: 60,
               width: 360,
               // form mật khẩu
               child: TextFormField(
@@ -139,6 +154,12 @@ class LoginState extends State<Login> {
                 obscureText: _obscureText,
                 style: TextStyle(fontSize: 21),
                 textAlignVertical: TextAlignVertical.center,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Mật khẩu không được để trống';
+                  }
+                  return null;
+                },                
                 decoration:  InputDecoration(
                   suffixIcon: GestureDetector(
                     onTap: (){
@@ -171,13 +192,11 @@ class LoginState extends State<Login> {
              width: 240,
              child: ElevatedButton(    
                onPressed: (){
-                //postAPI();
-                //print(_workSpace);
-               // makePostRequest();
-                //print(checkLogin);
-                //if (checkLogin == true) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                //}
+                 //validate non null form
+                 if (_formKey.currentState!.validate()){
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                 }
+ 
                },
                style: ButtonStyle(
                  backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
@@ -232,7 +251,7 @@ class LoginState extends State<Login> {
         ),
       )
       )
-      
+      )
       );  
   }
 }

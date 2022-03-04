@@ -210,6 +210,7 @@ class Register extends StatelessWidget {
               width: widthDevice*0.3,
               height: 40,
               child: ElevatedButton(
+                // Alert Dialog
                 onPressed: () => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
@@ -233,7 +234,6 @@ class Register extends StatelessWidget {
                       ],                  
                     ),
                   ),
-          //showDialog
                 child:Text(
                   "Gửi",
                   style: TextStyle(

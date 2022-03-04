@@ -1,12 +1,12 @@
-import 'package:http/http.dart' ;
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ToLogin{
+/*class ToLogin{
   // variable
   String phone;
   String password;
   String workspace;
-  Map<String, dynamic> bodyResponse;
+  late Map<String, dynamic> bodyResponse;
   //constructor
   ToLogin(this.phone, this.password, this.workspace);
   
@@ -34,4 +34,4 @@ class ToLogin{
      print(bodyResponse);
   }
 
-}
+}*/

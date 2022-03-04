@@ -14,7 +14,7 @@ class FeedBack extends StatefulWidget {
 
 class  FeedBackState extends State<FeedBack> {
   static const blueText = Color(0xff105480);
-  String _timeString;
+  late String _timeString;
 
   @override
   // hàm khởi tạo state
@@ -157,8 +157,31 @@ class  FeedBackState extends State<FeedBack> {
                      ],
                    ),
                    child: Center(
-                     child: IconButton(
-                       onPressed:(){}, 
+                    child: IconButton(
+                    onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      content: const Text(
+                        'CẢM ƠN ĐÃ GỬI PHẢN HỒI. CHÚNG TÔI ĐÃ TIẾP NHẬN VÀ SẼ XỬ LÝ SỚM NHẤT CÓ THỂ',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                           fontSize: 14,
+                           fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      actions: [TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text(
+                            'OK',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),                      
+                      ],                  
+                    ),
+                  ),
+ 
                        icon: Icon(
                          Icons.send,
                          color: Colors.white,
