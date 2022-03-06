@@ -10,19 +10,18 @@ class SplashScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     Timer(Duration(seconds: 5), () {
       Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
-    });
-    return MaterialApp(
-      
-      title: "BKDMS Mobile App",
-      
+    });    return MaterialApp(      
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: Container(
+        body: SingleChildScrollView( 
+         child: Container(
           width: double.infinity,
           margin: EdgeInsets.only(top: 40),
           child: Column(
             children: [
-              Image.asset("assets/DMSLogo.png"),
+              Image.asset("assets/DMSLogo.png"),//logo image
+              
+              // text giải pháp quản lý phân phối chuyên nghiệp
               Text(
                 "GIẢI PHÁP QUẢN LÝ PHÂN PHỐI \n CHUYÊN NGHIỆP",
                 style: TextStyle(
@@ -33,6 +32,8 @@ class SplashScreen extends StatelessWidget{
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 60,),
+             
+              // vòng tròn loading
               SizedBox(
                 child: CircularProgressIndicator(
                   strokeWidth: 8,
@@ -42,6 +43,8 @@ class SplashScreen extends StatelessWidget{
                 width: 180.0,
               ),
               SizedBox(height: 120,),
+   
+              //text copyright
               SizedBox(
                 child: Text(
                   "Copyright © BK.DMS",
@@ -52,12 +55,9 @@ class SplashScreen extends StatelessWidget{
               )
             ],
           ),
-
-          
-
         ),
       ),
-      
+      )
     );
     
   }

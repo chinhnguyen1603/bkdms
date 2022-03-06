@@ -1,6 +1,11 @@
+
+
+import 'package:bkdms/Models/PostModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:bkdms/HomePage/HomePage.dart';
+import 'package:bkdms/Models/User.dart';
+import 'package:bkdms/Api/ToLogin.dart';
 //import 'package:http/http.dart';
 //import 'dart:convert';
 import 'package:bkdms/HomePage/Register.dart';
@@ -18,51 +23,23 @@ class Login extends StatefulWidget {
 
 
 class LoginState extends State<Login> {
-
-  bool checkLogin = false;
-  /*void postAPI(){
-    print("bắt đầu post API");
-    const url= "https://jsonplaceholder.typicode.com/todos/1";
-    String json = '{}'; 
-    http.post(
-      url,
-      body: json,
-    ).then((response) {
-      var getResponse = response.statusCode;
-      print(getResponse);
-    });
-  }*/
-
-  /*void makePostRequest() async {
-  // cài đặt tham số POST request
-  print("post mới");
-  String url = 'https://bkdms.herokuapp.com/api/v1/auth/login-agency';
-  Map<String, String> headers = {"Content-type": "application/json"};
-  String json = '{"phone": "0987456789", "password": "chinhnguyen123", "workspace": "bkdms"}';
-  // tạo POST request
-  Response response = await post(url, headers: headers, body: json);
-  // kiểm tra status code của kết quả response
-  int statusCode = response.statusCode;
-  // API này trả về id của item mới được add trong body
-  String body = response.body;
-  // {
-  //   "title": "Hello",
-  //   "body": "body text",
-  //   "userId": 1,
-  //   "id": 101
-  // }
-  if (statusCode == 200) checkLogin = true;
-  print(statusCode);
-  }
-  
-
-  String _workSpace = "1234";
-  String _phone;
-  String _passWord;*/
-
+  Future<Agency>? _user;
   bool _obscureText = true; // con mắt để hiện mật khẩu
   var darkGrey = Color(0xff544C4C); // màu xám
+  
   final _formKey = GlobalKey<FormState>();
+  final workspaceController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  
+  @override
+  void dispose(){
+     workspaceController.dispose();
+     phoneController.dispose();
+     passwordController.dispose();
+     super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +68,7 @@ class LoginState extends State<Login> {
               width: 220,
               // form workspace
               child: TextFormField(
+                controller: workspaceController,
                 keyboardType: TextInputType.text,
                 cursorHeight: 24,
                 cursorColor: Colors.black,
@@ -116,6 +94,7 @@ class LoginState extends State<Login> {
               width: 360,
               // form số điện thoại
               child: TextFormField(
+                controller: phoneController,
                 keyboardType: TextInputType.number,
                 cursorHeight: 23,
                 cursorColor: darkGrey,
@@ -148,6 +127,7 @@ class LoginState extends State<Login> {
               width: 360,
               // form mật khẩu
               child: TextFormField(
+                controller: passwordController,
                 keyboardType: TextInputType.text,
                 cursorHeight: 23,
                 cursorColor: darkGrey,
@@ -191,12 +171,16 @@ class LoginState extends State<Login> {
              height: 45,
              width: 240,
              child: ElevatedButton(    
-               onPressed: (){
+               onPressed: () async{
                  //validate non null form
-                 if (_formKey.currentState!.validate()){
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                 }
- 
+                 /*if (_formKey.currentState!.validate()){
+                   //Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                   print(workspaceController.text);
+                 }*/
+                _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
+                _user?.then((val) {
+                  print(val.province);
+                });
                },
                style: ButtonStyle(
                  backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
