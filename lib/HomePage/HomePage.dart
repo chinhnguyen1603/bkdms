@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(height: 3,),
                               Text(
-                               "Nguyễn Văn Việt",
+                               "chinh nguyen",
                                style: TextStyle(
                                fontSize: 18,
                                fontWeight: FontWeight.w300,

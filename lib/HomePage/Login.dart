@@ -1,6 +1,5 @@
 
 
-import 'package:bkdms/Models/PostModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:bkdms/HomePage/HomePage.dart';
@@ -24,9 +23,11 @@ class Login extends StatefulWidget {
 
 class LoginState extends State<Login> {
   Future<Agency>? _user;
+
   bool _obscureText = true; // con mắt để hiện mật khẩu
   var darkGrey = Color(0xff544C4C); // màu xám
-  
+  bool _isLoading = false;
+
   final _formKey = GlobalKey<FormState>();
   final workspaceController = TextEditingController();
   final phoneController = TextEditingController();
@@ -44,7 +45,7 @@ class LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: _isLoading? Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
       child:  
       Container(
         width: double.infinity,
@@ -172,15 +173,23 @@ class LoginState extends State<Login> {
              width: 240,
              child: ElevatedButton(    
                onPressed: () async{
-                 //validate non null form
-                 /*if (_formKey.currentState!.validate()){
-                   //Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                   print(workspaceController.text);
-                 }*/
-                _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
-                _user?.then((val) {
-                  print(val.province);
-                });
+                 //validate form user gõ xem có null không
+                 if (_formKey.currentState!.validate()){
+                   //form không null, bắt đầu loading
+                   setState(() {
+                     _isLoading = true;
+                   });
+                   // Post thông tin đăng nhập
+                   _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
+                   _user?.then((val) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      print(val.province);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                   });
+                 }
+                // Post thông tin đăng nhập
                },
                style: ButtonStyle(
                  backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
