@@ -1,7 +1,7 @@
-import 'package:bkdms/HomePage/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-import 'package:bkdms/Features/FeedBack.dart';
+import 'package:bkdms/Features_Screen/FeedBack.dart';
+import 'package:bkdms/Components/AppBarTransparent';
 
 
 class TextGrey extends StatelessWidget {
@@ -43,7 +43,7 @@ class ContactState extends State<Contact> {
     
     return Scaffold(
       backgroundColor: greyBackground,
-      appBar: AppBar(
+     /* appBar: AppBar(
         elevation: 0,
         backgroundColor: greyBackground,       
         leading: IconButton(
@@ -59,12 +59,13 @@ class ContactState extends State<Contact> {
         title: Text(
           "Liên hệ",
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 22,
             color: blueText,
             fontWeight: FontWeight.bold,
           ),
         ),
-      ),
+      ),*/
+      appBar: AppBarTransparent(greyBackground,"Liên hệ"),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

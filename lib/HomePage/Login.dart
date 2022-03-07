@@ -181,14 +181,35 @@ class LoginState extends State<Login> {
                    });
                    // Post thông tin đăng nhập
                    _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
-                   _user?.then((val) {
+                   _user?.catchError((onError){
+                      showDialog(
+                        context: context, 
+                        builder: (ctx) => AlertDialog(
+                          title: Text("Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                          content: Text(onError.toString()),
+                          actions: [TextButton(
+                             onPressed: () => Navigator.pop(ctx),
+                             child: Center (child: const Text(
+                               'OK',
+                               style: TextStyle(
+                               decoration: TextDecoration.underline,
+                               ),
+                             ),)
+                           ),                      
+                          ],                                      
+                        ));
+                      setState(() {
+                        _isLoading = false;
+                      });
+                   })
+                   .then((val) {
                       setState(() {
                         _isLoading = false;
                       });
                       print(val.province);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                    });
-                 }
+                }
                 // Post thông tin đăng nhập
                },
                style: ButtonStyle(

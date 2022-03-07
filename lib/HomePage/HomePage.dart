@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/HomePage/InfoUser.dart';
-import 'package:bkdms/Features/Contact.dart';
+import 'package:bkdms/Features_Screen/Contact.dart';
 
 
 

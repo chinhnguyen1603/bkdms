@@ -214,22 +214,13 @@ class Register extends StatelessWidget {
                 onPressed: () => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
+                      title: Center(child: const Text("Cảm ơn", style: TextStyle(fontSize: 26),),),
                       content: const Text(
-                        'YÊU CẦU ĐĂNG KÍ CỦA BẠN ĐÃ ĐƯỢC TIẾP NHẬN. CHÚNG TÔI SẼ PHẢN HỒI TRONG THỜI GIAN SỚM NHẤT',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                           fontSize: 14,
-                           fontWeight: FontWeight.w300,
-                        ),
+                        'Yêu cầu đăng kí của bạn đã được tiếp nhận. Chúng tôi sẽ phản hồi trong thời gian sớm nhất',
                       ),
                       actions: [TextButton(
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Login())),
-                        child: const Text(
-                            'OK',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
+                        child: Center(child: const Text('OK'),),
                         ),                      
                       ],                  
                     ),

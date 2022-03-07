@@ -95,12 +95,11 @@ class  FeedBackState extends State<FeedBack> {
             ),
             child: Center( child: SizedBox(
               width: myWidth*0.9,
-              child: TextFormField(
+              child: TextFormField(      
+                style: TextStyle(color: Color(0xff7b2626),),
                 decoration: InputDecoration(
                   hintText: "Tiêu đề",
-                  hintStyle: TextStyle(
-                    color: Color(0xff7b2626),
-                  ),
+                  hintStyle: TextStyle(color: Color(0xff7b2626),),
                   border: InputBorder.none,
               ),
             ),
@@ -171,12 +170,12 @@ class  FeedBackState extends State<FeedBack> {
                       ),
                       actions: [TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text(
+                        child: Center( child: const Text(
                             'OK',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                             ),
-                          ),
+                          ),)
                         ),                      
                       ],                  
                     ),
