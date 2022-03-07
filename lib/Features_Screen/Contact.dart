@@ -43,28 +43,6 @@ class ContactState extends State<Contact> {
     
     return Scaffold(
       backgroundColor: greyBackground,
-     /* appBar: AppBar(
-        elevation: 0,
-        backgroundColor: greyBackground,       
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: blueText,
-          ),
-          onPressed: (){
-            Navigator.pop(context);
-          },
-        ),     
-        centerTitle: true,
-        title: Text(
-          "Liên hệ",
-          style: TextStyle(
-            fontSize: 22,
-            color: blueText,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),*/
       appBar: AppBarTransparent(greyBackground,"Liên hệ"),
       body: SingleChildScrollView(
         child: Center(

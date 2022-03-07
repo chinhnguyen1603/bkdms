@@ -23,28 +23,6 @@ class InfoUserState extends State<InfoUser> {
   static const beautyBlue = Color(0xff2960A0); // màu xanh dương
   static const line = Color(0xffC4C4C4); // màu xám kẻ line
 
-  //String nameOwn = " ";
-  //Map<String, dynamic> body;
-  
-  /*void makePostRequest() async {
-  // cài đặt tham số POST request
-     print("bắt đầu post API");
-     String url = 'https://bkdms.herokuapp.com/api/v1/auth/login-agency';
-     Map<String, String> headers = {"Content-type": "application/json"};
-     String json = '{"phone": "0987456789", "password": "chinhnguyen123", "workspace": "bkdms"}';
-     // tạo POST request
-     Response response = await post(url, headers: headers, body: json);
-     // kiểm tra status code của kết quả response
-     int statusCode = response.statusCode;
-     // API này trả về id của item mới được add trong body
-     Map<String, dynamic> bodyRes = jsonDecode(response.body);
-     print(bodyRes['data']['user']['name']+ bodyRes['status']);
-     setState(() {
-        nameOwn = bodyRes['data']['user']['nameOwn'];
-     });
-     print(nameOwn);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;

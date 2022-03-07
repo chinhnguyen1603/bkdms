@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:bkdms/HomePage/HomePage.dart';
 import 'package:bkdms/Models/User.dart';
 import 'package:bkdms/Api/ToLogin.dart';
+import 'package:bkdms/HomePage/ResetPassword.dart';
 //import 'package:http/http.dart';
 //import 'dart:convert';
 import 'package:bkdms/HomePage/Register.dart';
@@ -28,7 +29,7 @@ class LoginState extends State<Login> {
   var darkGrey = Color(0xff544C4C); // màu xám
   bool _isLoading = false;
 
-  final _formKey = GlobalKey<FormState>();
+  final _formLoginKey = GlobalKey<FormState>();
   final workspaceController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
@@ -51,7 +52,7 @@ class LoginState extends State<Login> {
         width: double.infinity,
         margin: EdgeInsets.only(top: 20),
         child: Form(
-          key: _formKey,
+          key: _formLoginKey,
           child: Column(
           children: [
             Image.asset("assets/LogoLogin.png", scale: 1.15,),
@@ -148,7 +149,7 @@ class LoginState extends State<Login> {
                         _obscureText = !_obscureText;
                       });
                     },
-                      child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                    child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
                   ), // Icon con mắt
                   fillColor: Color(0xffE2DDDD),
                   filled: true,
@@ -166,7 +167,7 @@ class LoginState extends State<Login> {
               ),
             ),
 
-            SizedBox(height: 40,),
+            SizedBox(height: 30,),
             // button đăng nhập
             SizedBox(
              height: 45,
@@ -174,7 +175,7 @@ class LoginState extends State<Login> {
              child: ElevatedButton(    
                onPressed: () async{
                  //validate form user gõ xem có null không
-                 if (_formKey.currentState!.validate()){
+                 if (_formLoginKey.currentState!.validate()){
                    //form không null, bắt đầu loading
                    setState(() {
                      _isLoading = true;
@@ -213,10 +214,11 @@ class LoginState extends State<Login> {
                 // Post thông tin đăng nhập
                },
                style: ButtonStyle(
+                 elevation: MaterialStateProperty.all(0),
                  backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(5.0),
                     )
                  )
                ),
@@ -235,7 +237,9 @@ class LoginState extends State<Login> {
             SizedBox(
               height: 32,
               child: TextButton(
-                onPressed: (){}, 
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
+                }, 
                 child: Text(
                 "Quên mật khẩu",
                  style: TextStyle(
@@ -245,7 +249,7 @@ class LoginState extends State<Login> {
               )
             ),
             
-            SizedBox(height: 130,),
+            SizedBox(height: 140,),
 
             // Text Button đăng kí đại lý mới
             TextButton(
