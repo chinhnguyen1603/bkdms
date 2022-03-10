@@ -23,7 +23,7 @@ Future<Agency> postAPI(String phone, String password, String workspace) async {
      return Agency.fromJson(jsonDecode(response.body));
    } 
    else {
-     throw jsonDecode(response.body);
+     throw jsonDecode(response.body.toString());
    }
   }//try
 

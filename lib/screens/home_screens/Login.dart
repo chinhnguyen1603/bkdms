@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:bkdms/HomePage/HomePage.dart';
-import 'package:bkdms/Models/User.dart';
-import 'package:bkdms/Api/ToLogin.dart';
-import 'package:bkdms/HomePage/ResetPassword.dart';
+import './HomePage.dart';
+import 'package:bkdms/models/User.dart';
+import 'package:bkdms/services/ToLogin.dart';
+import './ResetPassword.dart';
 //import 'package:http/http.dart';
 //import 'dart:convert';
-import 'package:bkdms/HomePage/Register.dart';
+import './Register.dart';
 
 
 
@@ -183,11 +183,14 @@ class LoginState extends State<Login> {
                    // Post thông tin đăng nhập
                    _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
                    _user?.catchError((onError){
+                      String fault = onError.toString().replaceAll("{", ""); // remove {
+                      String outputError = fault.replaceAll("}", ""); //remove }  
+                      // Alert Dialog khi lỗi xảy ra
                       showDialog(
                         context: context, 
                         builder: (ctx) => AlertDialog(
-                          title: Text("Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                          content: Text(onError.toString()),
+                          title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                          content: Text(outputError),
                           actions: [TextButton(
                              onPressed: () => Navigator.pop(ctx),
                              child: Center (child: const Text(
@@ -211,7 +214,6 @@ class LoginState extends State<Login> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                    });
                 }
-                // Post thông tin đăng nhập
                },
                style: ButtonStyle(
                  elevation: MaterialStateProperty.all(0),

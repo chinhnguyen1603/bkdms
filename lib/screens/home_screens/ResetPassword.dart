@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:bkdms/Components/AppBarTransparent';
-import 'package:bkdms/HomePage/Login.dart';
+import 'package:bkdms/Components/AppBarTransparent.dart';
+import './Login.dart';
 class ResetPassword extends StatelessWidget {
   final _formResetPassKey = GlobalKey<FormState>();
   final userInput = TextEditingController();
-  var darkGrey = Color(0xff544C4C); // màu xám
+  final darkGrey = Color(0xff544C4C); // màu xám
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;
@@ -31,7 +31,7 @@ class ResetPassword extends StatelessWidget {
               color: Color(0xff565151),
             ),
           ),
-          SizedBox(height:40),
+          SizedBox(height:50),
           SizedBox(
             width: widthDevice*0.95,
             child: Text(

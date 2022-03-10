@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import '../Components/AppBarGrey.dart';
-import 'package:bkdms/HomePage/Login.dart';
+import 'package:bkdms/components/AppBarGrey.dart';
+import 'package:bkdms/screens/home_screens/Login.dart';
 import 'InfoApp.dart';
 //import 'package:bkdms/Api/ToLogin.dart';
 //import 'package:http/http.dart';

@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:bkdms/HomePage/Login.dart';
+import './Login.dart';
 import 'package:bkdms/Components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
 class Register extends StatelessWidget {

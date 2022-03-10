@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/HomePage/InfoUser.dart';
-import 'package:bkdms/Features_Screen/Contact.dart';
-
+import './InfoUser.dart';
+import 'package:bkdms/screens/features_screens/Contact.dart';
+import 'package:bkdms/screens/features_screens/Member.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -171,7 +171,7 @@ class HomePage extends StatelessWidget {
                            height: 54,
                            child: GestureDetector(
                            onTap: (){
-                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
                            },
                            child: Container( 
                            margin: EdgeInsets.only(top:5) ,
@@ -294,7 +294,7 @@ class HomePage extends StatelessWidget {
             ),
             // chứa ô khuyến mãi
             SizedBox(
-              height: 160,
+              height: 140,
               width: widthDevice,
               child: ListView.builder( 
                 scrollDirection: Axis.horizontal,
@@ -359,7 +359,7 @@ class HomePage extends StatelessWidget {
             //Gridview sản phẩm
             SizedBox(
               height: 800,
-              width: widthDevice*0.98,
+              width: widthDevice*0.95,
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

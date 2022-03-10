@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-import 'package:bkdms/Features_Screen/FeedBack.dart';
-import 'package:bkdms/Components/AppBarTransparent';
+import './FeedBack.dart';
+import 'package:bkdms/components/AppBarTransparent.dart';
 
 
 class TextGrey extends StatelessWidget {
@@ -288,7 +288,7 @@ class ContactState extends State<Contact> {
                     margin: EdgeInsets.only(top: 5,bottom: 5),
                     width: myWidth*0.9,
                     child: Text(
-                    "BKDMS rất coi trọng quyền riêng tư. Dưới đây là các nguyên tắc của chúng tôi.\n 1. Luôn sử dụng thông tin cá nhân của quý khách một cách chân thực và xứng đáng \n 2. Luôn thông báo rõ ràng về những thông tin chúng tôi thu thập \n 3. Thực hiện tất cả các bước hợp lý để bảo vệ thông tin của quý khách \n 4. Tuân thủ theo tất cả các luật và quy định bảo vệ dữ liệu áp dụng đồng thời sẽ hợp tác với các cơ quan bảo vệ dữ liệu. ",
+                    "BKDMS rất coi trọng quyền riêng tư. Dưới đây là các nguyên tắc của chúng tôi.\n 1. Luôn sử dụng thông tin cá nhân của quý khách một cách chân thực và xứng đáng \n 2. Luôn thông báo rõ ràng về những thông tin chúng tôi thu thập \n 3. Thực hiện tất cả các bước hợp lý để bảo vệ thông tin của quý khách \n 4. Tuân thủ theo tất cả các luật và quy định bảo vệ dữ liệu áp dụng đồng thời sẽ hợp tác với các cơ quan bảo vệ dữ liệu. \n 5.Nếu quý khách có bất kỳ mối quan ngại nào về cách thức chúng tôi sử dụng thông tin cá nhân của quý khách, chúng tôi sẵn sàng hợp tác để nhanh chóng giải quyết những mối quan ngại đó.",
                     style: TextStyle(
                       color: Color(0xff4f5665),
                     ),
