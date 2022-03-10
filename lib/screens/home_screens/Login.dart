@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './HomePage.dart';
-import 'package:bkdms/models/User.dart';
 import 'package:bkdms/services/ToLogin.dart';
 import './ResetPassword.dart';
 //import 'package:http/http.dart';
 //import 'dart:convert';
 import './Register.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 
 
@@ -55,7 +55,7 @@ class LoginState extends State<Login> {
           key: _formLoginKey,
           child: Column(
           children: [
-            Image.asset("assets/LogoLogin.png", scale: 1.15,),
+            Image.asset("assets/LogoLogin.png", scale: 1.2,),
               
             //Form workspace
             Text(
@@ -180,11 +180,27 @@ class LoginState extends State<Login> {
                    setState(() {
                      _isLoading = true;
                    });
-                   // Post thông tin đăng nhập
-                   _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
-                   _user?.catchError((onError){
-                      String fault = onError.toString().replaceAll("{", ""); // remove {
-                      String outputError = fault.replaceAll("}", ""); //remove }  
+                   Connectivity _connectivity = Connectivity();
+                   ConnectivityResult connectivityResult = await _connectivity.checkConnectivity();
+                    // nếu không có mạng thì show snackbar lỗi
+                    if (connectivityResult == ConnectivityResult.none) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      final snackBar = SnackBar(
+                        backgroundColor: Colors.red,
+                        content: const Text('Kiểm tra kết nối mạng'),
+                        action: SnackBarAction(label: 'Undo', onPressed: () {},),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                    // có mạng thì post api
+                    else{
+                      _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
+                      _user?.catchError((onError){
+                         // phụ trợ xử lí String
+                         String fault = onError.toString().replaceAll("{", ""); // remove {
+                         String outputError = fault.replaceAll("}", ""); //remove }  
                       // Alert Dialog khi lỗi xảy ra
                       showDialog(
                         context: context, 
@@ -206,22 +222,21 @@ class LoginState extends State<Login> {
                         _isLoading = false;
                       });
                    })
-                   .then((val) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      print(val.province);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                   });
+                      .then((val) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        print(val.province);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                      });                      
+                  }  
                 }
-               },
+               },// onPressed
                style: ButtonStyle(
                  elevation: MaterialStateProperty.all(0),
                  backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    )
+                    RoundedRectangleBorder( borderRadius: BorderRadius.circular(5.0),)
                  )
                ),
                child: Text(
@@ -237,7 +252,7 @@ class LoginState extends State<Login> {
           
             //TextButton quên mật khẩu
             SizedBox(
-              height: 32,
+              height: 30,
               child: TextButton(
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
@@ -245,7 +260,7 @@ class LoginState extends State<Login> {
                 child: Text(
                 "Quên mật khẩu",
                  style: TextStyle(
-                   fontSize: 14,
+                   fontSize: 12,
                  ),
                 ),
               )

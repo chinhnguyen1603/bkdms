@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/screens/HomePage/HomePage.dart';
+import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'dart:async';
 
 class FeedBack extends StatefulWidget {
@@ -201,6 +201,6 @@ class  FeedBackState extends State<FeedBack> {
     });
   }
   String _formatDateTime(DateTime dateTime) {
-    return DateFormat('dd/MM/yyyy\n hh:mm:ss').format(dateTime);
+    return DateFormat('dd/MM/yyyy\n hh:mm a').format(dateTime);
   }
 }

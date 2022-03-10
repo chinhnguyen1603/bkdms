@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
+
 Future<Agency> postAPI(String phone, String password, String workspace) async {
   print("bắt đầu post API");
   try{
@@ -26,9 +27,8 @@ Future<Agency> postAPI(String phone, String password, String workspace) async {
      throw jsonDecode(response.body.toString());
    }
   }//try
-
   catch(e){
-    throw e ;
+    throw e;
   }
 }
 
