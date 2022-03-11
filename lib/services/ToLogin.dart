@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-
+import 'package:bkdms/models/Agency.dart';
 
 Future<Agency> postAPI(String phone, String password, String workspace) async {
   print("bắt đầu post API");
@@ -32,20 +32,3 @@ Future<Agency> postAPI(String phone, String password, String workspace) async {
   }
 }
 
-class Agency {
-  final String phone;
-  final String password;
-  final String workspace;
-  final String province;
-
-  const Agency({required this.phone, required this.password, required this.workspace, required this.province});
-
-  factory Agency.fromJson(Map<String, dynamic> json) {
-    return Agency(
-      phone: json['data']['user']['phone'] as String,
-      password: json['data']['user']['password'] as String,
-      workspace: json['data']['user']['workspace'] as String,
-      province:  json['data']['user']['province'] as String
-    );
-  }
-}

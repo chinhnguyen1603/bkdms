@@ -9,6 +9,7 @@ import './ResetPassword.dart';
 //import 'dart:convert';
 import './Register.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:bkdms/models/Agency.dart';
 
 
 
@@ -180,8 +181,8 @@ class LoginState extends State<Login> {
                    setState(() {
                      _isLoading = true;
                    });
-                   Connectivity _connectivity = Connectivity();
-                   ConnectivityResult connectivityResult = await _connectivity.checkConnectivity();
+                   Connectivity _connect = Connectivity();
+                   ConnectivityResult connectivityResult = await _connect.checkConnectivity();
                     // nếu không có mạng thì show snackbar lỗi
                     if (connectivityResult == ConnectivityResult.none) {
                       setState(() {
@@ -226,7 +227,7 @@ class LoginState extends State<Login> {
                         setState(() {
                           _isLoading = false;
                         });
-                        print(val.province);
+                        print(val.dateJoin);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                       });                      
                   }  

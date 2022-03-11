@@ -122,7 +122,8 @@ class HomePage extends StatelessWidget {
                          SizedBox(
                            width: widthDevice*0.26,
                            height: 54,
-                           child: GestureDetector(
+                           child: InkWell(
+                           splashColor: Colors.deepOrange,
                            onTap: (){
                              //Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
                            },
@@ -169,9 +170,10 @@ class HomePage extends StatelessWidget {
                          SizedBox(
                            width: widthDevice*0.28,
                            height: 54,
-                           child: GestureDetector(
+                           child: InkWell(
+                           splashColor: Colors.deepOrange,
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
                            },
                            child: Container( 
                            margin: EdgeInsets.only(top:5) ,
@@ -212,12 +214,13 @@ class HomePage extends StatelessWidget {
                            color: Colors.grey,
                          ),   
 
-                         //Icon button and text Liên hệ                                                
+                         //Icon button  Liên hệ                                                
                          SizedBox(
                            width: widthDevice*0.25,
                            height: 54,
                            child: 
-                           GestureDetector(
+                           InkWell(
+                           splashColor: Colors.deepOrange,
                            onTap: (){
                              Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
                            },
