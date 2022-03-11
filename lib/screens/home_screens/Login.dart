@@ -10,6 +10,7 @@ import './ResetPassword.dart';
 import './Register.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -24,7 +25,7 @@ class Login extends StatefulWidget {
 
 
 class LoginState extends State<Login> {
-  Future<Agency>? _user;
+  Future<Agency>? _login;
 
   bool _obscureText = true; // con mắt để hiện mật khẩu
   var darkGrey = Color(0xff544C4C); // màu xám
@@ -42,13 +43,16 @@ class LoginState extends State<Login> {
      passwordController.dispose();
      super.dispose();
   }
+  
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: Colors.white,
-      body: _isLoading? Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
-      child:  
+      body: _isLoading
+      ? Center(child: CircularProgressIndicator(),) 
+      : SingleChildScrollView(
+      child: Consumer<Agency?>( builder: (ctx, user, child) { return
       Container(
         width: double.infinity,
         margin: EdgeInsets.only(top: 20),
@@ -173,6 +177,8 @@ class LoginState extends State<Login> {
             SizedBox(
              height: 45,
              width: 240,
+             
+
              child: ElevatedButton(    
                onPressed: () async{
                  //validate form user gõ xem có null không
@@ -197,19 +203,19 @@ class LoginState extends State<Login> {
                     }
                     // có mạng thì post api
                     else{
-                      _user = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
-                      _user?.catchError((onError){
+                      _login = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
+                      _login?.catchError((onError){
                          // phụ trợ xử lí String
                          String fault = onError.toString().replaceAll("{", ""); // remove {
                          String outputError = fault.replaceAll("}", ""); //remove }  
                       // Alert Dialog khi lỗi xảy ra
                       showDialog(
                         context: context, 
-                        builder: (ctx) => AlertDialog(
+                        builder: (ctx1) => AlertDialog(
                           title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
                           content: Text(outputError),
                           actions: [TextButton(
-                             onPressed: () => Navigator.pop(ctx),
+                             onPressed: () => Navigator.pop(ctx1),
                              child: Center (child: const Text(
                                'OK',
                                style: TextStyle(
@@ -228,8 +234,12 @@ class LoginState extends State<Login> {
                           _isLoading = false;
                         });
                         print(val.dateJoin);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                      });                      
+                        user?.updateValue(val);
+                          
+                        
+                        print(user?.name);
+                      })
+                      .then((_) => {Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))});                      
                   }  
                 }
                },// onPressed
@@ -286,8 +296,9 @@ class LoginState extends State<Login> {
           ]
         ),
       )
-      )
-      )
-      );  
+      );
+      })
+    ));
+      
   }
 }

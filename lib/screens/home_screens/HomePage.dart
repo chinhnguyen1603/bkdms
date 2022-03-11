@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './InfoUser.dart';
 import 'package:bkdms/screens/features_screens/Contact.dart';
 import 'package:bkdms/screens/features_screens/Member.dart';
+import 'package:bkdms/models/Agency.dart';
 
 
 class HomePage extends StatelessWidget {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
+  
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
@@ -71,8 +74,11 @@ class HomePage extends StatelessWidget {
                        ),
                        // 2 dòng text
                        Center(
-                       child: 
-                       Container(
+                         // Gọi object từ Provider Agency
+                        child: Consumer<Agency?>( builder: (ctx, user, child) { 
+                         String? userName = user?.nameOwn; 
+                         return
+                         Container(
                          margin: EdgeInsets.only(top: 15),
                          height: 70,
                          width: widthDevice*0.5,
@@ -80,25 +86,20 @@ class HomePage extends StatelessWidget {
                             children:[
                               Text(
                                "Xin chào khách hàng ",
-                               style: TextStyle(
-                               fontSize: 20,
-                               fontWeight: FontWeight.w600,
-                               color: Colors.white,
-                               ),
+                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white,),
                               ),
                               SizedBox(height: 3,),
                               Text(
-                               "chinh nguyen",
-                               style: TextStyle(
-                               fontSize: 18,
-                               fontWeight: FontWeight.w300,
-                               color: Colors.white,
-                               ),
+                               "$userName",
+                               style: TextStyle( fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white,),
                               )
                             ]
                          )
-                       ))
-                     ],
+                        );
+                       // builder
+                        })
+                     
+                       )],
                     ),),
                   
                   // chứa 3 Icon Button Tồn Kho, Thành Viên, Liên hệ
@@ -173,7 +174,7 @@ class HomePage extends StatelessWidget {
                            child: InkWell(
                            splashColor: Colors.deepOrange,
                            onTap: (){
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
                            },
                            child: Container( 
                            margin: EdgeInsets.only(top:5) ,
@@ -194,11 +195,7 @@ class HomePage extends StatelessWidget {
                                 height: 15,
                                 child: Text(
                                   "Thành viên",      
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: textGrey,
-                                      fontWeight: FontWeight.w500,
-                                    )
+                                  style: TextStyle(fontSize: 12, color: textGrey, fontWeight: FontWeight.w500, )
                                   ),
                                   )
                               ],

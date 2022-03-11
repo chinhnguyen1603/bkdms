@@ -2,38 +2,56 @@
 import 'package:flutter/cupertino.dart';
 
 class Agency with ChangeNotifier {
-  final int id;
-  final String name;
-  final String nameOwn;
-  final String phone;
-  final String dateJoin;
-  final String province;
-  final String district;
-  final String ward;
-  final String extraInfoOfAddress;
-  final String password; 
-  final String workspace;
-  final String paymentType;
-  final String maxDebt;
-  final String maxDebtPeriod;
+  late int? id;
+  late String? name;
+  late String? nameOwn;
+  late String? phone;
+  late String? dateJoin;
+  late String? province;
+  late String? district;
+  late String? ward;
+  late String? extraInfoOfAddress;
+  late String? password; 
+  late String? workspace;
+  late String? paymentType;
+  late String? maxDebt;
+  late String? maxDebtPeriod;
 
   Agency({
-    required this.id,
-    required this.name,
-    required this.nameOwn,
-    required this.phone, 
-    required this.dateJoin,
-    required this.province,
-    required this.district,
-    required this.ward,
-    required this.extraInfoOfAddress,
-    required this.password,
-    required this.workspace,
-    required this.paymentType,
-    required this.maxDebt,
-    required this.maxDebtPeriod,
+     this.id,
+     this.name,
+     this.nameOwn,
+     this.phone, 
+     this.dateJoin,
+     this.province,
+     this.district,
+     this.ward,
+     this.extraInfoOfAddress,
+     this.password,
+     this.workspace,
+     this.paymentType,
+     this.maxDebt,
+     this.maxDebtPeriod,
   });
-  notifyListeners();
+  
+  void updateValue (Agency newAgency){
+     this.id = newAgency.id;
+     this.name = newAgency.name;
+     this.nameOwn = newAgency.nameOwn;
+     this.phone = newAgency.phone;
+     this.dateJoin = newAgency.dateJoin;
+     this.province = newAgency.province;
+     this.district = newAgency.district;
+     this.ward = newAgency.ward;
+     this.extraInfoOfAddress = newAgency.extraInfoOfAddress;
+     this.password = newAgency.password;
+     this.workspace = newAgency.workspace;
+     this.paymentType = newAgency.paymentType;
+     this.maxDebt = newAgency.maxDebt;
+     this.maxDebtPeriod = newAgency.maxDebtPeriod;
+    notifyListeners();
+
+  }
 
   factory Agency.fromJson(Map<String, dynamic> json) {
     return Agency(

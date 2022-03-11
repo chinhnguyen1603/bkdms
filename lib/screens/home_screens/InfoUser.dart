@@ -4,20 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'InfoApp.dart';
-//import 'package:bkdms/Api/ToLogin.dart';
-//import 'package:http/http.dart';
-//import 'dart:convert';
 import 'dart:ui';
-
-class InfoUser  extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState(){
-    return InfoUserState();
-  }
-}
+import 'package:bkdms/models/Agency.dart';
+import 'package:provider/provider.dart';
 
 
-class InfoUserState extends State<InfoUser> {
+
+
+class InfoUser extends StatelessWidget {
   static const darkGrey = Color(0xff544C4C); // màu xám icon button
   static const mintGrey = Color(0xffFAFAFA); //màu xám background
   static const beautyBlue = Color(0xff2960A0); // màu xanh dương
@@ -31,8 +25,26 @@ class InfoUserState extends State<InfoUser> {
       backgroundColor: Colors.white,
       // appbar
       appBar: AppBarGrey("Hồ sơ"),
-      body: SingleChildScrollView( 
-        child: Column(
+      body: SingleChildScrollView(
+        child: Consumer<Agency?>( builder: (ctx, user, child) { 
+        
+        //biến provider
+        String? phone =user?.phone;
+        String? storeName = user?.name;
+        String? userName = user?.nameOwn;
+        String? street = user?.extraInfoOfAddress;
+        String? ward = user?.ward;
+        String? district = user?.district;
+        String? province = user?.province;
+
+        //xử lý datejoin
+        String? dateJoin = user?.dateJoin;
+        String dateJoin1 = "$dateJoin";
+        List<String> splitDate = dateJoin1.split('-');
+        String dateOutput = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+
+
+        return Column(
           children: [
             // Container chứa tài khoản
             Container(
@@ -44,12 +56,8 @@ class InfoUserState extends State<InfoUser> {
                     child: Text(
                        "Tài khoản",
                        textAlign: TextAlign.left,
-                       style: TextStyle(
-                       fontSize: 20,
-                       fontWeight: FontWeight.w600,
-                       color: beautyBlue,
-                       ) 
-                   ),
+                       style: TextStyle( fontSize: 20, fontWeight: FontWeight.w600, color: beautyBlue,) 
+                    ),
                    ),
                    SizedBox(height: 5,),
                    //Container chứa điện thoại
@@ -61,13 +69,12 @@ class InfoUserState extends State<InfoUser> {
                       children: [
                         SizedBox(width:5,),
                         SizedBox(
-                          width:myWidth*0.3,
-                          child:              
-                          Text("Số điện thoại"),
+                          width: myWidth*0.3,
+                          child: Text("Số điện thoại"),
                         ),
                         SizedBox(width:myWidth*0.15),
                         Text(                       
-                          "0987456789",
+                          "$phone",
                         ),
                      ],),
                    ),
@@ -78,9 +85,8 @@ class InfoUserState extends State<InfoUser> {
                      child: Row(children: [
                         SizedBox(width:5,),
                         SizedBox(
-                          width:myWidth*0.3,
-                          child:              
-                          Text("Mật khẩu"),
+                          width: myWidth*0.3,
+                          child: Text("Mật khẩu"),
                         ),
                         SizedBox(
                           width:myWidth*0.15,
@@ -108,10 +114,7 @@ class InfoUserState extends State<InfoUser> {
              ),          
             
             //Divider 
-            Divider(
-              color: line,
-              thickness: 1,
-            ),
+            Divider( color: line, thickness: 1,),
             
             // Container chứa cá nhân
             Container(
@@ -123,11 +126,7 @@ class InfoUserState extends State<InfoUser> {
                   child:Text(
                     "Cá nhân",
                     textAlign: TextAlign.left,
-                    style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: beautyBlue,
-                    ) 
+                    style: TextStyle( fontSize: 20, fontWeight: FontWeight.w600, color: beautyBlue,) 
                   ),
                  ),
                  SizedBox(height: 5,),
@@ -140,26 +139,21 @@ class InfoUserState extends State<InfoUser> {
                     children: [
                       SizedBox(width:5,),
                       SizedBox(
-                      width:myWidth*0.3,
-                       child:              
-                        Text("Tên cửa hàng"),
+                       width: myWidth*0.3,
+                       child: Text("Tên cửa hàng"),
                       ),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
                        width: myWidth*0.5,
-                       height: 50,
-                       child: Column(children: [
-                        SizedBox(height: 10,),
+                       child: 
                         Text(                       
-                          "Cửa hàng linh kiện điện tử Trung Việt",
-                          textAlign: TextAlign.left
+                           "Cửa hàng $storeName",
                         ),
-                       ],)
-                      )
-                     ],
+                       )
+                      ]
                     ),
-                  ),   
-                  // COntainer đại diện
+                  ), 
+                  // Container đại diện
                  Container(
                   height: 50,
                   width: myWidth,
@@ -176,7 +170,7 @@ class InfoUserState extends State<InfoUser> {
                        width: myWidth*0.5,
                        child: 
                         Text(                       
-                           "Nguyễn Văn Việt"
+                           "$userName"
                         ),
                        )
                       ]
@@ -202,8 +196,9 @@ class InfoUserState extends State<InfoUser> {
                        child: Column(children: [
                         SizedBox(height: 10,),
                         Text(                       
-                          "Cửa hàng linh kiện điện tử Trung Việt",
-                          textAlign: TextAlign.left
+                          "$street," + " $ward," +" $district," + " $province",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: 12),
                         ),
                        ],)
                       )
@@ -233,7 +228,7 @@ class InfoUserState extends State<InfoUser> {
                     ]
                    )
                   ),
-                  // COntainer đại diện
+                  // COntainer điểm thưởng
                  Container(
                   height: 50,
                   width: myWidth,
@@ -257,15 +252,35 @@ class InfoUserState extends State<InfoUser> {
                       ]
                     ),
                   ), 
+                 //Container Ngày gia nhập
+                 Container(
+                  height: 50,
+                  width: myWidth,
+                  child: Row(  
+                    children: [
+                      SizedBox(width:5,),
+                      SizedBox(
+                       width: myWidth*0.3,
+                       child: Text("Ngày gia nhập"),
+                      ),
+                      SizedBox(width:myWidth*0.15),
+                      SizedBox(
+                       width: myWidth*0.5,
+                       child: 
+                        Text(                       
+                           "$dateOutput",
+                        ),
+                       )
+                    ]
+                   )
+                  ),
+  
                       ]
                     ),
                   ),                            
             
             //Divider  
-            Divider(
-              color: line,
-              thickness: 1,
-            ),
+            Divider( color: line, thickness: 1,),
             
             //Container chứa thông tin ứng dụng
             GestureDetector(
@@ -291,12 +306,8 @@ class InfoUserState extends State<InfoUser> {
                     child: Text(
                       "Thông tin ứng dụng",
                        textAlign: TextAlign.center,
-                       style: TextStyle(
-                         fontSize: 20,
-                         fontWeight: FontWeight.w600,
-                         color: beautyBlue,
-                       ) 
-                    ), 
+                       style: TextStyle( fontSize: 20, fontWeight: FontWeight.w600, color: beautyBlue,) 
+                       ), 
                   ),
                 ],
               ),),
@@ -351,8 +362,8 @@ class InfoUserState extends State<InfoUser> {
               thickness: 1,
             ),
           ],
-        ),
-      )
-    );
+        );
+      })
+    ));
   }
 }
