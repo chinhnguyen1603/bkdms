@@ -5,12 +5,27 @@ import './InfoUser.dart';
 import 'package:bkdms/screens/features_screens/Contact.dart';
 import 'package:bkdms/screens/features_screens/Member.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/Album.dart';
+import 'package:bkdms/services/GetAlbum.dart';
+
+class HomePage extends StatefulWidget {
+
+  @override
+  State<HomePage> createState() => HomePageState();
+}
 
 
-class HomePage extends StatelessWidget {
+class HomePageState extends State<HomePage> {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
-  
+  late Future<Album> futureAlbum;
+
+  @override
+  void initState() {
+    super.initState();
+    futureAlbum = fetchAlbum();
+  }
+
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
@@ -360,7 +375,11 @@ class HomePage extends StatelessWidget {
             SizedBox(
               height: 800,
               width: widthDevice*0.95,
-              child: GridView.builder(
+              child: FutureBuilder<Album>(
+               future: futureAlbum,
+               builder: (ctxAlbum, snapshot){
+              if (snapshot.hasData) {
+                return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8, 
@@ -369,8 +388,7 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 primary: false,
                 itemCount: 10,
-                itemBuilder: (BuildContext context, int index) {
-                  
+                itemBuilder: (BuildContext context, int index) {                
                   return GestureDetector(
                     onTap: (){
                       print("click sản phẩm");
@@ -381,9 +399,14 @@ class HomePage extends StatelessWidget {
                       color: Colors.white,    
                     ));
                 },
-              ),
-            )
-          ],
+               );
+               }
+               else if (snapshot.hasError) {
+                throw "${snapshot.error}";
+              }
+              return const CircularProgressIndicator();
+               })
+            )],
         ),
       )
     );

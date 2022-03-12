@@ -1,17 +1,14 @@
-import 'package:bkdms/screens/home_screens/Login.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
+import 'package:bkdms/screens/home_screens/Login.dart';
 import 'splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/Album.dart';
 
 
 
-void main() => runApp(
-     
-    MyApp()
-  
-  );
+void main() => runApp( MyApp());
 
 
 class MyApp extends StatelessWidget {
@@ -22,13 +19,14 @@ class MyApp extends StatelessWidget {
    return MultiProvider(
     providers: [
         ChangeNotifierProvider(create: (context) => Agency()),
+        ChangeNotifierProvider(create: (context) => Album()),
     ],
     child: MaterialApp(
       title: "BKDMS Mobile App",
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: Login(),
+        body: HomePage(),
        
       ),
 

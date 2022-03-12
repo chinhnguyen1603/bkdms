@@ -5,12 +5,11 @@ import 'package:flutter/rendering.dart';
 import './HomePage.dart';
 import 'package:bkdms/services/ToLogin.dart';
 import './ResetPassword.dart';
-//import 'package:http/http.dart';
-//import 'dart:convert';
 import './Register.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:bkdms/models/Agency.dart';
 import 'package:provider/provider.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/Album.dart';
 
 
 
@@ -52,7 +51,7 @@ class LoginState extends State<Login> {
       body: _isLoading
       ? Center(child: CircularProgressIndicator(),) 
       : SingleChildScrollView(
-      child: Consumer<Agency?>( builder: (ctx, user, child) { return
+      child: Consumer<Agency?>( builder: (ctxAgency, user, child) { return
       Container(
         width: double.infinity,
         margin: EdgeInsets.only(top: 20),
@@ -218,9 +217,7 @@ class LoginState extends State<Login> {
                              onPressed: () => Navigator.pop(ctx1),
                              child: Center (child: const Text(
                                'OK',
-                               style: TextStyle(
-                               decoration: TextDecoration.underline,
-                               ),
+                               style: TextStyle(decoration: TextDecoration.underline,),
                              ),)
                            ),                      
                           ],                                      
@@ -228,18 +225,18 @@ class LoginState extends State<Login> {
                       setState(() {
                         _isLoading = false;
                       });
-                   })
+                      })
                       .then((val) {
                         setState(() {
                           _isLoading = false;
                         });
-                        print(val.dateJoin);
                         user?.updateValue(val);
-                          
-                        
                         print(user?.name);
                       })
-                      .then((_) => {Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))});                      
+                      .then((_) => {
+                        
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())),
+                      });                      
                   }  
                 }
                },// onPressed
@@ -252,11 +249,7 @@ class LoginState extends State<Login> {
                ),
                child: Text(
                  "Đăng nhập",
-                 style: TextStyle(
-                   color: Colors.white,
-                   fontSize: 23,
-                   fontWeight: FontWeight.bold,
-                 ),
+                 style: TextStyle(color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold,),
                ),
              ),
             ),
