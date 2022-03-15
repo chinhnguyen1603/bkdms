@@ -3,7 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
-import 'InfoApp.dart';
+import 'package:bkdms/screens/home_screens/ChangePassword.dart';
+import 'package:bkdms/screens/home_screens/InfoApp.dart';
 import 'dart:ui';
 import 'package:bkdms/models/Agency.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +43,7 @@ class InfoUser extends StatelessWidget {
         String dateJoin1 = "$dateJoin";
         List<String> splitDate = dateJoin1.split('-');
         String dateOutput = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
-
-
+        
         return Column(
           children: [
             // Container chứa tài khoản
@@ -68,10 +68,7 @@ class InfoUser extends StatelessWidget {
                      child: Row(  
                       children: [
                         SizedBox(width:5,),
-                        SizedBox(
-                          width: myWidth*0.3,
-                          child: Text("Số điện thoại"),
-                        ),
+                        SizedBox(width: myWidth*0.3, child: Text("Số điện thoại"),),
                         SizedBox(width:myWidth*0.15),
                         Text(                       
                           "$phone",
@@ -84,10 +81,7 @@ class InfoUser extends StatelessWidget {
                      width: myWidth,
                      child: Row(children: [
                         SizedBox(width:5,),
-                        SizedBox(
-                          width: myWidth*0.3,
-                          child: Text("Mật khẩu"),
-                        ),
+                        SizedBox(width: myWidth*0.3, child: Text("Mật khẩu"),),
                         SizedBox(
                           width:myWidth*0.15,
                         ),
@@ -99,7 +93,7 @@ class InfoUser extends StatelessWidget {
                         SizedBox( 
                          width: myWidth*0.2,          
                          child: IconButton(
-                          onPressed: null, 
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword())), 
                           alignment: Alignment.topRight,
                           icon: Icon(
                             Icons.arrow_forward_ios,
@@ -138,16 +132,13 @@ class InfoUser extends StatelessWidget {
                   child: Row(  
                     children: [
                       SizedBox(width:5,),
-                      SizedBox(
-                       width: myWidth*0.3,
-                       child: Text("Tên cửa hàng"),
-                      ),
+                      SizedBox(width: myWidth*0.3, child: Text("Tên cửa hàng"),),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
                        width: myWidth*0.5,
                        child: 
                         Text(                       
-                           "Cửa hàng $storeName",
+                          "Cửa hàng $storeName",
                         ),
                        )
                       ]
@@ -160,17 +151,13 @@ class InfoUser extends StatelessWidget {
                   child: Row(  
                     children: [
                       SizedBox(width:5,),
-                      SizedBox(
-                      width:myWidth*0.3,
-                       child:              
-                        Text("Đại diện"),
-                      ),
+                      SizedBox(width:myWidth*0.3, child: Text("Đại diện"),),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
                        width: myWidth*0.5,
                        child: 
                         Text(                       
-                           "$userName"
+                          "$userName"
                         ),
                        )
                       ]
@@ -178,45 +165,36 @@ class InfoUser extends StatelessWidget {
                   ), 
                   // Container địa chỉ
                  Container(
-                  height: 50,
                   width: myWidth,
                   color: mintGrey,
-                  child: Row(  
-                    children: [
-                      SizedBox(width:5,),
-                      SizedBox(
-                      width:myWidth*0.3,
-                       child:              
-                        Text("Địa chỉ"),
-                      ),
+                  child: Column( children:[
+                    SizedBox(height: 10,),
+                    Row( children:[
+                      SizedBox( width:5,),
+                      SizedBox( width:myWidth*0.3, child: Text("Địa chỉ"),),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
-                       width: myWidth*0.5,
-                       height: 50,
+                       width: myWidth*0.52,
                        child: Column(children: [
-                        SizedBox(height: 10,),
                         Text(                       
                           "$street," + " $ward," +" $district," + " $province",
                           textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 12),
                         ),
                        ],)
                       )
-                     ],
+                      ],),
+                    SizedBox(height: 10,),
+                    ],             
                     ),
                   ),     
-                  // COntainer Hạng mức
+                 // Container Hạng mức
                  Container(
                   height: 50,
                   width: myWidth,
                   child: Row(  
                     children: [
                       SizedBox(width:5,),
-                      SizedBox(
-                      width:myWidth*0.3,
-                       child:              
-                        Text("Hạng mức"),
-                      ),
+                      SizedBox(width:myWidth*0.3, child: Text("Hạng mức"),),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
                        width: myWidth*0.5,
@@ -236,11 +214,7 @@ class InfoUser extends StatelessWidget {
                   child: Row(  
                     children: [
                       SizedBox(width:5,),
-                      SizedBox(
-                      width:myWidth*0.3,
-                       child:              
-                        Text("Điểm thưởng"),
-                      ),
+                      SizedBox(width:myWidth*0.3, child: Text("Điểm thưởng"),),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
                        width: myWidth*0.5,
@@ -259,25 +233,21 @@ class InfoUser extends StatelessWidget {
                   child: Row(  
                     children: [
                       SizedBox(width:5,),
-                      SizedBox(
-                       width: myWidth*0.3,
-                       child: Text("Ngày gia nhập"),
-                      ),
+                      SizedBox(width: myWidth*0.3, child: Text("Ngày gia nhập"),),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
                        width: myWidth*0.5,
                        child: 
                         Text(                       
-                           "$dateOutput",
+                          "$dateOutput",
                         ),
                        )
                     ]
                    )
                   ),
-  
-                      ]
-                    ),
-                  ),                            
+                ]
+              ),
+            ),                            
             
             //Divider  
             Divider( color: line, thickness: 1,),
@@ -315,10 +285,7 @@ class InfoUser extends StatelessWidget {
             ),
 
             //Divider
-            Divider(
-              color: line,
-              thickness: 1,
-            ),
+            Divider(color: line, thickness: 1,),
             
             //Container chứa đăng xuất
             GestureDetector(
@@ -357,10 +324,7 @@ class InfoUser extends StatelessWidget {
             ),
 
             // divider cuối cùng
-            Divider(
-              color: line,
-              thickness: 1,
-            ),
+            Divider(color: line, thickness: 1,),
           ],
         );
       })

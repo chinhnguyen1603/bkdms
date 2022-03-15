@@ -4,15 +4,24 @@ import 'dart:async';
 import 'package:bkdms/models/Album.dart';
 
 
-Future<Album> fetchAlbum() async {
+
+
+Future<Album> fetchAlbum(String? token, String? workspace) async {
   print("bắt đầu get album");
-  final response = await http
-      .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+  var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/product');
+  final response = await http.get(url, headers: ({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+      'Workspace' : "$workspace",
+  }));
+
+  
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    print(response.headers);
+    print(response.body);
     return Album.fromJson(jsonDecode(response.body));
   } else {
     // If the server did not return a 200 OK response,

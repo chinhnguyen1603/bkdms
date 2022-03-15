@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'dart:async';
+import 'package:bkdms/components/AppBarTransWithHome.dart';
 
 class FeedBack extends StatefulWidget {
 
@@ -30,39 +30,7 @@ class  FeedBackState extends State<FeedBack> {
     double myWidth = widthDevice*0.9;  
     return Scaffold(
       backgroundColor: Colors.white,    
-      appBar: AppBar(
-        backgroundColor: Colors.white,  
-        elevation: 0,   
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: blueText,
-          ),
-          onPressed: (){
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-            }, 
-            icon: Icon(
-              Icons.home_filled,
-              color: blueText,
-            )
-          )
-        ],      
-        centerTitle: true,
-        title: Text(
-          "Gửi phản hồi",
-          style: TextStyle(
-            fontSize: 20,
-            color: blueText,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      appBar: AppBarTransparentWithHome(Colors.white,"Gửi phản hồi"),
       body: Center(
         child: Column(
          children:[

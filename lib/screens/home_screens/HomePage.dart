@@ -18,12 +18,14 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
-  late Future<Album> futureAlbum;
 
+  late Future<Album> futureAlbum;
+  
   @override
-  void initState() {
-    super.initState();
-    futureAlbum = fetchAlbum();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Agency? user = Provider.of<Agency>(context);
+    futureAlbum =  fetchAlbum(user.token, user.workspace);
   }
 
   @override
@@ -397,6 +399,7 @@ class HomePageState extends State<HomePage> {
                       width: 160,
                       height: 160,
                       color: Colors.white,    
+                      child: Text("${snapshot.data!.id}"),
                     ));
                 },
                );
@@ -404,7 +407,7 @@ class HomePageState extends State<HomePage> {
                else if (snapshot.hasError) {
                 throw "${snapshot.error}";
               }
-              return const CircularProgressIndicator();
+              return Container(child: CircularProgressIndicator());
                })
             )],
         ),

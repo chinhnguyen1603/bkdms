@@ -1,10 +1,14 @@
+import 'package:bkdms/screens/home_screens/ChangePassword.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
+import 'package:bkdms/screens/home_screens/InfoUser.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Album.dart';
+import 'package:bkdms/screens/home_screens/ShowItem.dart';
+
 
 
 
@@ -26,7 +30,7 @@ class MyApp extends StatelessWidget {
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: HomePage(),
+        body: ChangePassword(),
        
       ),
 

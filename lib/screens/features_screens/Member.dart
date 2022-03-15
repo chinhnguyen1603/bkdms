@@ -5,6 +5,7 @@ class Member extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
+    double heigtDevice = MediaQuery.of(context).size.height;
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9;
     return Scaffold(
@@ -133,20 +134,37 @@ class Member extends StatelessWidget {
                 child: TextButton(
                   onPressed: (){
                    showModalBottomSheet<void>(
+                     backgroundColor: Colors.white,
+                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
                      context: context,
                      builder: (BuildContext context) {
                        return Container(
-                         height: 400,
-                         color: Colors.white,
+                           height: heigtDevice*0.6,
                            child: Column(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             mainAxisSize: MainAxisSize.min,
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             mainAxisAlignment: MainAxisAlignment.start,
+                             mainAxisSize: MainAxisSize.max,
                              children: <Widget>[
-                               Text('Thể lệ thành viên'),
-                               ElevatedButton(
-                                 child: const Text('Close BottomSheet'),
-                                 onPressed: () => Navigator.pop(context),
-                               )
+                               SizedBox(width: widthDevice,child: IconButton(
+                                 icon: Icon(Icons.cancel_presentation, size: 20,),
+                                 alignment: Alignment.centerRight,
+                                 onPressed: (){Navigator.pop(context);},
+                               ),),
+                               SizedBox(width: widthDevice,child:Text('Thể lệ thành viên dành cho đại lý', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),),),
+                               SizedBox(height: 5,),
+                               SizedBox(width: widthDevice, child: Text("   Có 4 cấp thành viên tương ứng là Cơ bản, Đồng, Bạc và Vàng."),),
+                               //thành viên cơ bản, hạng mức 1
+                               SizedBox(width: widthDevice, child: Text("  • Thành viên cơ bản", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),),),
+                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 1. Thành viên cơ bản bắt buộc phải thanh toán trước khi nhận hàng."),),
+                               //thành viên đồng, hạng mức 2
+                               SizedBox(width: widthDevice, child: Text("  • Thành viên đồng", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xffde7325)),),),
+                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 2")),
+                               //thành viên bạc, hạng mức 3
+                               SizedBox(width: widthDevice, child: Text("  • Thành viên bạc", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xffd8d2cf)),),),
+                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 3")),
+                               //thành viên vàng, hạng mức 4
+                               SizedBox(width: widthDevice, child: Text("  • Thành viên vàng", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent),),),  
+                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 4")),
                              ],
                            ),
                        );
@@ -155,11 +173,7 @@ class Member extends StatelessWidget {
                   }, 
                   child: Text(
                     "THỂ LỆ THÀNH VIÊN",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 21,
-                      color: blueText,
-                    ),
+                    style: TextStyle(decoration: TextDecoration.underline, fontSize: 21, color: blueText,),
                   )
                 ),
               ),
@@ -171,11 +185,7 @@ class Member extends StatelessWidget {
                   }, 
                   child: Text(
                     "TẠO ĐƠN BÁN HÀNG",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 21,
-                      color: blueText,
-                    ),
+                    style: TextStyle(decoration: TextDecoration.underline, fontSize: 21, color: blueText,),
                   )
                 ),
               ),
@@ -187,11 +197,7 @@ class Member extends StatelessWidget {
                   }, 
                   child: Text(
                     "LỊCH SỬ TÍCH ĐIỂM",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 21,
-                      color: blueText,
-                    ),
+                    style: TextStyle(decoration: TextDecoration.underline, fontSize: 21, color: blueText,),
                   )
                 ),
               )

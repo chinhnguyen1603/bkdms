@@ -16,6 +16,7 @@ class Agency with ChangeNotifier {
   late String? paymentType;
   late String? maxDebt;
   late String? maxDebtPeriod;
+  late String? token;
 
   Agency({
      this.id,
@@ -32,6 +33,7 @@ class Agency with ChangeNotifier {
      this.paymentType,
      this.maxDebt,
      this.maxDebtPeriod,
+     this.token,
   });
   
   void updateValue (Agency newAgency){
@@ -49,6 +51,7 @@ class Agency with ChangeNotifier {
      this.paymentType = newAgency.paymentType;
      this.maxDebt = newAgency.maxDebt;
      this.maxDebtPeriod = newAgency.maxDebtPeriod;
+     this.token = newAgency.token;
     notifyListeners();
 
   }
@@ -69,6 +72,7 @@ class Agency with ChangeNotifier {
       paymentType:  json['data']['user']['paymentType'] as String,
       maxDebt:  json['data']['user']['maxDebt'] as String,
       maxDebtPeriod:  json['data']['user']['maxDebtPeriod'] as String,
+      token: json['data']['jwtToken'] as String,
       
     );
     

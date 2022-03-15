@@ -202,7 +202,7 @@ class LoginState extends State<Login> {
                     }
                     // có mạng thì post api
                     else{
-                      _login = postAPI(phoneController.text,"\$2b\$10\$1RfFJ1yk8a4yeQAdqFff8.RDcT9557n3/SUw8b4ZZxp3tu/oOJKaG",workspaceController.text);
+                      _login = postAPI(phoneController.text,passwordController.text,workspaceController.text);
                       _login?.catchError((onError){
                          // phụ trợ xử lí String
                          String fault = onError.toString().replaceAll("{", ""); // remove {
@@ -231,10 +231,9 @@ class LoginState extends State<Login> {
                           _isLoading = false;
                         });
                         user?.updateValue(val);
-                        print(user?.name);
+                        print(user?.token);
                       })
-                      .then((_) => {
-                        
+                      .then((_) => {      
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())),
                       });                      
                   }  
