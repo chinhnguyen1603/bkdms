@@ -10,7 +10,8 @@ class SplashScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     Timer(Duration(seconds: 5), () {
       Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
-    });    return MaterialApp(      
+    });    
+    return MaterialApp(      
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
         body: SingleChildScrollView( 

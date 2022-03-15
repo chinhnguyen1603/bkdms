@@ -4,7 +4,7 @@ class Item with ChangeNotifier{
   late int? id;
   late String? name;
   late String? productPrice;
-  late String? aencyPrice;
+  late String? agencyPrice;
   late String? retailPrice;
   late String? countryProduce;
   late String? dateManufacture;
@@ -20,7 +20,7 @@ class Item with ChangeNotifier{
     this.id,
     this.name,
     this.productPrice,
-    this.aencyPrice,
+    this.agencyPrice,
     this.retailPrice,
     this.countryProduce,
     this.dateManufacture,
@@ -36,6 +36,19 @@ class Item with ChangeNotifier{
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
       id: json['id'],
+      name: json['name'],
+      productPrice: json['productPrice'],
+      agencyPrice: json['agencyPrice'],
+      retailPrice: json['retailPrice'],
+      countryProduce: json['countryProduce'],
+      dateManufacture: json['dateManufacture'],
+      expirationDate: json['expirationDate'],
+      quantity: json['quantity:'],
+      productLine: json['productLine'],
+      barcode: json['barcode'],
+      sku: json['sku'],
+      linkImg: json['linkImg'],
+      description: json['description']     
     );
   }
 }

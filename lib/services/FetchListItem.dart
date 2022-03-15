@@ -6,7 +6,7 @@ import 'package:bkdms/models/Item.dart';
 
 
 
-Future<Item> fetchListItem(String? token, String? workspace) async {
+Future<List<dynamic>> fetchListItem(String? token, String? workspace) async {
   print("bắt đầu get album");
   var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/product');
   final response = await http.get(url, headers: ({
@@ -15,14 +15,18 @@ Future<Item> fetchListItem(String? token, String? workspace) async {
       'Authorization': 'Bearer $token',
       'Workspace' : "$workspace",
   }));
-
+  List<dynamic> listItem;
   
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    print(response.body);
-    return Item.fromJson(jsonDecode(response.body));
+    
+   listItem = jsonDecode(response.body)['data']['listProduct']
+      .map((data) => Item.fromJson(data))
+      .toList();
+    print(listItem[0].productPrice);
+    return listItem; 
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.

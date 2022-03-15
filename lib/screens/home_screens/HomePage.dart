@@ -19,13 +19,13 @@ class HomePageState extends State<HomePage> {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
 
-  late Future<Item> futureAlbum;
+  late Future<List<dynamic>> futureItem;
   
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     Agency? user = Provider.of<Agency>(context);
-    futureAlbum =  fetchListItem(user.token, user.workspace);
+    futureItem =  fetchListItem(user.token, user.workspace);
   }
 
   @override
@@ -312,7 +312,7 @@ class HomePageState extends State<HomePage> {
             // chứa ô khuyến mãi
             SizedBox(
               height: 140,
-              width: widthDevice,
+              width: widthDevice*0.98,
               child: ListView.builder( 
                 scrollDirection: Axis.horizontal,
                 itemCount: 4,
@@ -375,12 +375,13 @@ class HomePageState extends State<HomePage> {
             ),
             //Gridview sản phẩm
             SizedBox(
-              height: 800,
+              height: 600,
               width: widthDevice*0.95,
-              child: FutureBuilder<Item>(
-               future: futureAlbum,
-               builder: (ctxAlbum, snapshot){
+              child: FutureBuilder<List<dynamic>>(
+               future: futureItem,
+               builder: (ctxItem, snapshot){
               if (snapshot.hasData) {
+                List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
                 return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -389,7 +390,7 @@ class HomePageState extends State<HomePage> {
                 ),
                 padding: EdgeInsets.all(8),
                 primary: false,
-                itemCount: 10,
+                itemCount: listItem.length,
                 itemBuilder: (BuildContext context, int index) {                
                   return GestureDetector(
                     onTap: (){
@@ -399,7 +400,7 @@ class HomePageState extends State<HomePage> {
                       width: 160,
                       height: 160,
                       color: Colors.white,    
-                      child: Text("${snapshot.data!.id}"),
+                      child: Text("${listItem[index].name}"),
                     ));
                 },
                );
