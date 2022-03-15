@@ -5,8 +5,8 @@ import './InfoUser.dart';
 import 'package:bkdms/screens/features_screens/Contact.dart';
 import 'package:bkdms/screens/features_screens/Member.dart';
 import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/models/Album.dart';
-import 'package:bkdms/services/GetAlbum.dart';
+import 'package:bkdms/models/Item.dart';
+import 'package:bkdms/services/FetchListItem.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -19,13 +19,13 @@ class HomePageState extends State<HomePage> {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
 
-  late Future<Album> futureAlbum;
+  late Future<Item> futureAlbum;
   
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     Agency? user = Provider.of<Agency>(context);
-    futureAlbum =  fetchAlbum(user.token, user.workspace);
+    futureAlbum =  fetchListItem(user.token, user.workspace);
   }
 
   @override
@@ -377,7 +377,7 @@ class HomePageState extends State<HomePage> {
             SizedBox(
               height: 800,
               width: widthDevice*0.95,
-              child: FutureBuilder<Album>(
+              child: FutureBuilder<Item>(
                future: futureAlbum,
                builder: (ctxAlbum, snapshot){
               if (snapshot.hasData) {

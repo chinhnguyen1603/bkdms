@@ -1,5 +1,5 @@
-import 'package:bkdms/Components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
+import 'package:bkdms/components/AppBarGreyWithHome.dart';
 
 class InfoApp extends StatelessWidget {
   static const darkGrey = Color(0xff544C4C);
@@ -9,7 +9,7 @@ class InfoApp extends StatelessWidget {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9;
     return Scaffold(
-      appBar: AppBarGrey("Thông tin ứng dụng"),
+      appBar: AppBarGreyWithHome("Thông tin ứng dụng"),
       backgroundColor: Color(0xffF0ECEC), // background color của màn hình
       body: SingleChildScrollView(
         child: Column(

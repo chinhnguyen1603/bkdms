@@ -6,7 +6,7 @@ import 'splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/models/Album.dart';
+import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/screens/home_screens/ShowItem.dart';
 
 
@@ -23,14 +23,14 @@ class MyApp extends StatelessWidget {
    return MultiProvider(
     providers: [
         ChangeNotifierProvider(create: (context) => Agency()),
-        ChangeNotifierProvider(create: (context) => Album()),
+        ChangeNotifierProvider(create: (context) => Item()),
     ],
     child: MaterialApp(
       title: "BKDMS Mobile App",
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: ChangePassword(),
+        body: Login(),
        
       ),
 

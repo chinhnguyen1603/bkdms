@@ -9,7 +9,7 @@ import './Register.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/models/Album.dart';
+import 'package:bkdms/models/Item.dart';
 
 
 

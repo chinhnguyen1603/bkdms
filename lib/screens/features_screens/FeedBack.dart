@@ -18,11 +18,11 @@ class  FeedBackState extends State<FeedBack> {
 
   @override
   // hàm khởi tạo state
-  void initState() {
+ /* void didChangeDependencies() {
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
-    super.initState();
-  }
+    super.didChangeDependencies();
+  }*/
   
   // Build widget
   Widget build(BuildContext context) {
@@ -34,8 +34,8 @@ class  FeedBackState extends State<FeedBack> {
       body: Center(
         child: Column(
          children:[
-          SizedBox(height: 20,),
-          SizedBox(
+          SizedBox(height: 30,),
+        /* SizedBox(
             child: Text(
               _timeString,
               textAlign: TextAlign.center,
@@ -44,7 +44,7 @@ class  FeedBackState extends State<FeedBack> {
                 color: Colors.grey,
               ),
             ),
-          ),
+          ),*/
           SizedBox(height: 10,),
           // Tiêu đề
           Container(
@@ -79,7 +79,7 @@ class  FeedBackState extends State<FeedBack> {
           // Nội dung
           Container(
             width: myWidth,
-            height: 200,
+            height: 250,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -159,9 +159,9 @@ class  FeedBackState extends State<FeedBack> {
       ),
     );
   }
-
+}
   //2 hàm phụ trợ
-  void _getTime() {
+/*  void _getTime() {
     final DateTime now = DateTime.now();
     final String formattedDateTime = _formatDateTime(now);
     setState(() {
@@ -169,6 +169,6 @@ class  FeedBackState extends State<FeedBack> {
     });
   }
   String _formatDateTime(DateTime dateTime) {
-    return DateFormat('dd/MM/yyyy\n hh:mm a').format(dateTime);
+    return DateFormat('hh:mm a').format(dateTime);
   }
-}
+}*/
