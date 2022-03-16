@@ -2,11 +2,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-Future<void> postNewPassword(String? token, String? workspace, String oldPassword, String newPassword) async {
+Future<List<dynamic>> postNewPassword(String? token, String? workspace, int? id, String oldPassword, String newPassword) async {
   print("bắt đầu Đổi mật khẩu");
   //try catch
   try{
-   var url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/auth/login-agency');
+   var url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/changeInfo/changePass/agency');
    final response = await http.post(
      url,
      headers: <String, String>{
@@ -15,15 +15,16 @@ Future<void> postNewPassword(String? token, String? workspace, String oldPasswor
        'Authorization': 'Bearer $token',
        'Workspace' : "$workspace",
      },
-     body: jsonEncode(<String, String>{
+     body: jsonEncode(<String, dynamic>{
+       'id': id,
        'oldPassword': oldPassword,
        'newPassword': newPassword,
      }),
    );
    print(response.statusCode);
-
    if (response.statusCode == 200) {
-     return jsonDecode(response.body);
+     print(response.body);
+     return jsonDecode("[" + response.body + "]");
    } 
    else {
      throw jsonDecode(response.body.toString());

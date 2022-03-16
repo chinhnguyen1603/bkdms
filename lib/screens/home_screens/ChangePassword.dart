@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:provider/provider.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
-
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/services/ToChangePassword.dart';
 
 class ChangePassword extends StatefulWidget {
-
 
   @override
   State<StatefulWidget> createState() => ChangePasswordState();
@@ -21,7 +22,8 @@ class ChangePasswordState extends State<ChangePassword>{
   final oldPassword = TextEditingController();
   final newPassword = TextEditingController();
   final rePassword = TextEditingController();
-  
+  var rePasswordToCheck;
+
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
@@ -29,7 +31,9 @@ class ChangePasswordState extends State<ChangePassword>{
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBarTransparent(Colors.white,"Đổi mật khẩu"),
-      body: SingleChildScrollView(child: Center( child: Form( 
+      body: _isLoading
+      ? Center(child: CircularProgressIndicator(),) 
+      : SingleChildScrollView(child: Center( child: Form( 
         key: _formChangePasswordKey, 
         child: Column(
           children: [
@@ -146,6 +150,7 @@ class ChangePasswordState extends State<ChangePassword>{
                   ),
                 ), 
                 validator: (value) {
+                  rePasswordToCheck = value;
                   if (value == null || value.isEmpty) {
                     return 'Bạn chưa điền vào ô này';
                   }
@@ -170,9 +175,67 @@ class ChangePasswordState extends State<ChangePassword>{
               height: 40,
               child: ElevatedButton(
                 onPressed: () {
+                  Agency? user = Provider.of<Agency>(context,listen: false);
                   // check các form có null không
                   if (_formChangePasswordKey.currentState!.validate()){
-
+                    // check nhập lại mật khẩu có khớp không
+                    if (rePasswordToCheck != newPassword.text ){ 
+                      final snackBar = SnackBar(
+                        backgroundColor: Colors.red,
+                        content: const Text('Nhập lại mật khẩu mới chưa khớp'),
+                        action: SnackBarAction(label: 'Undo', onPressed: () {},),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                    else{
+                      setState(() {
+                        _isLoading = true;
+                      });  
+                      //bắt đầu POST đổi mật khẩu
+                      postNewPassword(user.token, user.workspace, user.id, oldPassword.text, newPassword.text)
+                      .catchError((onError){
+                         // phụ trợ xử lí String
+                         String fault = onError.toString().replaceAll("{", ""); // remove {
+                         String outputError = fault.replaceAll("}", ""); //remove }  
+                         // Alert Dialog khi lỗi xảy ra
+                         showDialog(
+                           context: context, 
+                           builder: (ctx1) => AlertDialog(
+                           title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                           content: Text(outputError),
+                           actions: [TextButton(
+                              onPressed: () => Navigator.pop(ctx1),
+                              child: Center (child: const Text(
+                                'OK',
+                                 style: TextStyle(decoration: TextDecoration.underline,),
+                              ),)
+                              ),                      
+                             ],                                      
+                         ));
+                         setState(() {
+                           _isLoading = false;
+                         });                           
+                      })
+                      .then((value) {
+                         setState(() {
+                           _isLoading = false;
+                         });
+                         showDialog(
+                           context: context, 
+                           builder: (ctx1) => AlertDialog(
+                           content: Text("Cập nhật mật khẩu thành công", style: TextStyle(fontSize: 24),),
+                           actions: [TextButton(
+                              onPressed: () => Navigator.pop(ctx1),
+                              child: Center (child: const Text(
+                                'OK',
+                                 style: TextStyle(decoration: TextDecoration.underline,),
+                              ),)
+                              ),                      
+                             ],)
+                         );
+                       });           
+                  
+                    }
                   }
                 },
                 style: ButtonStyle(

@@ -16,7 +16,8 @@ Future<List<dynamic>> fetchListItem(String? token, String? workspace) async {
       'Workspace' : "$workspace",
   }));
   List<dynamic> listItem;
-  
+  print(response.statusCode);
+  print(response.body);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
