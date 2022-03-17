@@ -7,7 +7,7 @@ import 'package:bkdms/screens/features_screens/Member.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/FetchListItem.dart';
-import 'package:bkdms/components/WarpBoxItem.dart';
+import 'package:bkdms/components/BoxItem.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -369,7 +369,7 @@ class HomePageState extends State<HomePage> {
               )
             ),
             //Gridview sản phẩm
-            TestContainerItem("bkdms/q9ldvcf3az15b8jmmvyy",10,"25000","Bột giặt omo thương hiệu vip pro siêu cấp liên minh huyền")
+            BoxItem("bkdms/q9ldvcf3az15b8jmmvyy",10,"25000","Bột giặt omo thương hiệu vip pro siêu cấp liên minh huyền")
             
             
             /* //Gridview sản phẩm khi get API
