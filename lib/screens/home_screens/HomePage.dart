@@ -7,6 +7,7 @@ import 'package:bkdms/screens/features_screens/Member.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/FetchListItem.dart';
+import 'package:bkdms/components/WarpBoxItem.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -368,8 +369,12 @@ class HomePageState extends State<HomePage> {
               )
             ),
             //Gridview sản phẩm
+            TestContainerItem("bkdms/q9ldvcf3az15b8jmmvyy",10,"25000","Bột giặt omo thương hiệu vip pro siêu cấp liên minh huyền")
+            
+            
+            /* //Gridview sản phẩm khi get API
             SizedBox(
-              height: 600,
+              height: 700,
               width: widthDevice*0.95,
               child: FutureBuilder<List<dynamic>>(
                 future: futureItem,
@@ -377,35 +382,14 @@ class HomePageState extends State<HomePage> {
                    if (snapshot.hasData) {
                      List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
                      // build gridview
-                     return GridView.builder(
-                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 8, 
-                          mainAxisSpacing: 8,
-                       ),
-                       padding: EdgeInsets.all(8),
-                       primary: false,
-                       itemCount: listItem.length,
-                       itemBuilder: (BuildContext context, int index) {                
-                         return GestureDetector(
-                           onTap: (){
-                             print("click sản phẩm");
-                           },
-                           child:Container(
-                             width: 160,
-                             height: 160,
-                             color: Colors.white,    
-                             child: Text("${listItem[index].name}"),
-                           ));
-                       },
-                     );
                    }
                    else if (snapshot.hasError) {
                       throw "${snapshot.error}";
                    }
                    return Container(child: CircularProgressIndicator());
                 })
-            )],
+            ) */
+          ],
         ),
       )
     );
