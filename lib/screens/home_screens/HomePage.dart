@@ -36,7 +36,7 @@ class HomePageState extends State<HomePage> {
       body: SingleChildScrollView( 
         child: Column(
           children: [
-            // chứa gradient
+            // Container chứa gradient
             Container(
                margin: EdgeInsets.only(top: 30),
                width: double.infinity,
@@ -93,13 +93,12 @@ class HomePageState extends State<HomePage> {
                        Center(
                          // Gọi object từ Provider Agency
                         child: Consumer<Agency?>( builder: (ctx, user, child) { 
-                         String? userName = user?.nameOwn; 
-                         return
-                         Container(
-                         margin: EdgeInsets.only(top: 15),
-                         height: 70,
-                         width: widthDevice*0.5,
-                         child: Column(
+                          String? userName = user?.nameOwn; 
+                          return Container(
+                            margin: EdgeInsets.only(top: 15),
+                            height: 70,
+                            width: widthDevice*0.5,
+                            child: Column(
                             children:[
                               Text(
                                "Xin chào khách hàng ",
@@ -113,25 +112,21 @@ class HomePageState extends State<HomePage> {
                             ]
                          )
                         );
-                       // builder
-                        })
-                     
+                        // builder
+                        })                    
                        )],
                     ),),
                   
                   // chứa 3 Icon Button Tồn Kho, Thành Viên, Liên hệ
                   SizedBox(height: 25,),
+                  //Container màu trắng bọc ngoài
                   Container(
                      width: widthDevice*0.8,
                      height: 54,
                      decoration: BoxDecoration(
                        shape: BoxShape.rectangle,
                        borderRadius: BorderRadius.all(Radius.circular(40)),
-                       boxShadow: [
-                         BoxShadow(                      
-                           blurRadius: 2,
-                         ),
-                       ],
+                       boxShadow: [BoxShadow(blurRadius: 2,),],
                        color: Colors.white,
                      ),
                      child: Row(
@@ -143,7 +138,7 @@ class HomePageState extends State<HomePage> {
                            child: InkWell(
                            splashColor: Colors.deepOrange,
                            onTap: (){
-                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
+                             //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUser()));
                            },
                            child: Container( 
                            margin: EdgeInsets.only(top:5) ,
@@ -287,10 +282,7 @@ class HomePageState extends State<HomePage> {
                     width: widthDevice*0.25,
                     child: Text(  
                       "Khuyến mãi",
-                      style: TextStyle(
-                       fontSize: 18,
-                       fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
                     )
                   ),
                   SizedBox(
@@ -302,8 +294,9 @@ class HomePageState extends State<HomePage> {
                          width: widthDevice*0.65,
                          child: Text(
                           "Xem thêm",
-                          textAlign: TextAlign.right,)
-                         ),
+                          textAlign: TextAlign.right,
+                          )
+                       ),
                       ),
                   )
                 ]
@@ -341,6 +334,7 @@ class HomePageState extends State<HomePage> {
               )
             ),
             SizedBox(height: 10,),
+ 
             //Text sản phẩm và xem thêm
             SizedBox(
               height: 30,
@@ -378,25 +372,26 @@ class HomePageState extends State<HomePage> {
               height: 600,
               width: widthDevice*0.95,
               child: FutureBuilder<List<dynamic>>(
-               future: futureItem,
-               builder: (ctxItem, snapshot){
-              if (snapshot.hasData) {
-                List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
-                return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8, 
-                  mainAxisSpacing: 8,
-                ),
-                padding: EdgeInsets.all(8),
-                primary: false,
-                itemCount: listItem.length,
-                itemBuilder: (BuildContext context, int index) {                
-                  return GestureDetector(
-                    onTap: (){
-                      print("click sản phẩm");
-                    },
-                    child:Container(
+                future: futureItem,
+                builder: (ctxItem, snapshot){
+                   if (snapshot.hasData) {
+                     List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
+                     // build gridview
+                     return GridView.builder(
+                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                         crossAxisCount: 2,
+                         crossAxisSpacing: 8, 
+                         mainAxisSpacing: 8,
+                       ),
+                       padding: EdgeInsets.all(8),
+                       primary: false,
+                       itemCount: listItem.length,
+                       itemBuilder: (BuildContext context, int index) {                
+                         return GestureDetector(
+                           onTap: (){
+                             print("click sản phẩm");
+                           },
+                           child:Container(
                       width: 160,
                       height: 160,
                       color: Colors.white,    

@@ -18,11 +18,13 @@ class ResetPassword extends StatelessWidget {
         child: Column(
         children: [
           SizedBox(height: 15,),
+          // Icon ổ khóa
           Icon(
             Icons.lock_open_sharp,
             size: 110,
             color: Color(0xff254FB0),            
           ),
+          // text cấp lại mật khẩu
           Text(
             "CẤP LẠI MẬT KHẨU",
             style: TextStyle(

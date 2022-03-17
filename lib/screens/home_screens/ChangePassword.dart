@@ -1,6 +1,8 @@
+import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
+import 'package:dialogs/dialogs.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ToChangePassword.dart';
@@ -188,6 +190,7 @@ class ChangePasswordState extends State<ChangePassword>{
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                     else{
+                      // chuyển trạng thái thành vòng xoay
                       setState(() {
                         _isLoading = true;
                       });  
@@ -197,7 +200,7 @@ class ChangePasswordState extends State<ChangePassword>{
                          // phụ trợ xử lí String
                          String fault = onError.toString().replaceAll("{", ""); // remove {
                          String outputError = fault.replaceAll("}", ""); //remove }  
-                         // Alert Dialog khi lỗi xảy ra
+                         //show dialog nếu lỗi
                          showDialog(
                            context: context, 
                            builder: (ctx1) => AlertDialog(
@@ -220,19 +223,37 @@ class ChangePasswordState extends State<ChangePassword>{
                          setState(() {
                            _isLoading = false;
                          });
+                         MessageDialog messageDialog = MessageDialog(
+                             dialogBackgroundColor: Colors.white,
+                             buttonOkColor: Colors.blue,
+                             title: 'Thông báo',
+                             titleColor: Colors.black,
+                             message: 'Mật khẩu đã được cập nhật',
+                             messageColor: Colors.grey,
+                             buttonOkText: 'OK',
+                             dialogRadius: 15.0,
+                             buttonRadius: 18.0,
+                             buttonOkOnPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                             },
+                         );
+                         messageDialog.show(context, barrierColor: Colors.black);                         
+                         /* show dialog nếu thành công
                          showDialog(
                            context: context, 
                            builder: (ctx1) => AlertDialog(
                            content: Text("Cập nhật mật khẩu thành công", style: TextStyle(fontSize: 24),),
                            actions: [TextButton(
-                              onPressed: () => Navigator.pop(ctx1),
+                              onPressed: () {
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUser()));
+                              },
                               child: Center (child: const Text(
                                 'OK',
                                  style: TextStyle(decoration: TextDecoration.underline,),
                               ),)
                               ),                      
                              ],)
-                         );
+                         );*/
                        });           
                   
                     }
