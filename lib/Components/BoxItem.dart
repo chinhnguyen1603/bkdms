@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 
 //String transformedUrl = "https://res.cloudinary.com/di6dsngnr/image/upload/v1647419888/bkdms/gqavvlhamwvsobpofqu7.jpg";
-class TestContainerItem extends StatelessWidget {
+class BoxItem extends StatelessWidget {
     late String? linkImg; 
     late int? numberOfTotalItem; 
     late String? priceAgency;
     late String? nameItem;
 
     // Constructor
-    TestContainerItem(this.linkImg,this.numberOfTotalItem,this.priceAgency, this.nameItem); 
+    BoxItem(this.linkImg,this.numberOfTotalItem,this.priceAgency, this.nameItem); 
 
     @override
     Widget build(BuildContext context) {
