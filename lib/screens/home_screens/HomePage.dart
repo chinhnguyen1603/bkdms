@@ -379,9 +379,9 @@ class HomePageState extends State<HomePage> {
                      // build gridview
                      return GridView.builder(
                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                         crossAxisCount: 2,
-                         crossAxisSpacing: 8, 
-                         mainAxisSpacing: 8,
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8, 
+                          mainAxisSpacing: 8,
                        ),
                        padding: EdgeInsets.all(8),
                        primary: false,
@@ -392,19 +392,19 @@ class HomePageState extends State<HomePage> {
                              print("click sản phẩm");
                            },
                            child:Container(
-                      width: 160,
-                      height: 160,
-                      color: Colors.white,    
-                      child: Text("${listItem[index].name}"),
-                    ));
-                },
-               );
-               }
-               else if (snapshot.hasError) {
-                throw "${snapshot.error}";
-              }
-              return Container(child: CircularProgressIndicator());
-               })
+                             width: 160,
+                             height: 160,
+                             color: Colors.white,    
+                             child: Text("${listItem[index].name}"),
+                           ));
+                       },
+                     );
+                   }
+                   else if (snapshot.hasError) {
+                      throw "${snapshot.error}";
+                   }
+                   return Container(child: CircularProgressIndicator());
+                })
             )],
         ),
       )
