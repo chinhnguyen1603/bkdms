@@ -90,7 +90,7 @@ class InfoUser extends StatelessWidget {
                           textAlign: TextAlign.left,
                         ),
                         SizedBox( 
-                         width: myWidth*0.4,          
+                         width: myWidth*0.38,          
                          child: IconButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword())), 
                           alignment: Alignment.topRight,

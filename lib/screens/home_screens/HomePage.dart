@@ -8,6 +8,7 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/FetchListItem.dart';
 import 'package:bkdms/components/BoxItem.dart';
+import 'package:bkdms/screens/home_screens/ShowItem.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -21,6 +22,8 @@ class HomePageState extends State<HomePage> {
   static const textGrey = Color(0xff282323);
 
   late Future<List<dynamic>> futureItem;
+  
+
   
   @override
   void didChangeDependencies() {
@@ -346,36 +349,41 @@ class HomePageState extends State<HomePage> {
                     width: widthDevice*0.25,
                     child: Text(  
                       "Sản phẩm",
-                      style: TextStyle(
-                       fontSize: 18,
-                       fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
                     )
                   ),
                   SizedBox(
                     width: widthDevice*0.65,
                     child:
                       TextButton(
-                       onPressed: (){}, 
+                       onPressed: (){
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => ShowItem()));
+                       }, 
                        child: SizedBox(
                          width: widthDevice*0.65,
                          child: Text(
                           "Xem thêm",
-                          textAlign: TextAlign.right,)
-                         ),
+                          textAlign: TextAlign.right,
+                         )
+                       ),
                       ),
                   )
                 ]
               )
             ),
-            //Gridview sản phẩm
-            BoxItem("bkdms/q9ldvcf3az15b8jmmvyy",10,"25000","Bột giặt omo thương hiệu vip pro siêu cấp liên minh huyền")
+            //Test Gridview sản phẩm
+            SizedBox(
+              height: 700,
+              width: widthDevice*0.98,
+              child: BoxItem(),             
+            )
+            
             
             
             /* //Gridview sản phẩm khi get API
             SizedBox(
               height: 700,
-              width: widthDevice*0.95,
+              width: widthDevice*0.96,
               child: FutureBuilder<List<dynamic>>(
                 future: futureItem,
                 builder: (ctxItem, snapshot){
