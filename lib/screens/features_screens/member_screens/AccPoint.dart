@@ -41,9 +41,9 @@ class AccPointState  extends State<AccPoint> {
             SizedBox(height: 120,),
             //icon barocde on tap
             GestureDetector(
-              onTap: (){
-                scanBarcodeNormal();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode()));
+              onTap: () async {
+                await scanBarcodeNormal();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
               },
               child: Container(
                 child: Column(
@@ -60,10 +60,10 @@ class AccPointState  extends State<AccPoint> {
                 ),
               ),
             ), 
+            
             // text kết quả quét barcode
             SizedBox(height: 10,),
-            Text("Kết quả:  $_scanBarcode")
-
+            Text("Kết quả thu được:" + " $_scanBarcode")
           ],),)
        ),
     );
@@ -71,15 +71,15 @@ class AccPointState  extends State<AccPoint> {
 
 
     Future < void > scanBarcodeNormal() async {
-        String barcodeScanRes;
+        String barcodeScanResponse;
         // Platform messages may fail, so we use a try/catch PlatformException.
         try {
-            barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-            print(barcodeScanRes);
+            barcodeScanResponse = await FlutterBarcodeScanner.scanBarcode(
+                '#ff6666', 'Hủy bỏ', true, ScanMode.BARCODE);
+            print(barcodeScanResponse);
         }
         on PlatformException {
-            barcodeScanRes = 'Failed to get platform version.';
+            barcodeScanResponse = 'Có lỗi xảy ra ở thiết bị';
         }
 
         // If the widget was removed from the tree while the asynchronous platform
@@ -88,7 +88,7 @@ class AccPointState  extends State<AccPoint> {
         if (!mounted) return;
 
         setState(() {
-            _scanBarcode = barcodeScanRes;
+            _scanBarcode = barcodeScanResponse;
         });
     }
 }
