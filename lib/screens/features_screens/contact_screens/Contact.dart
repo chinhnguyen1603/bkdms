@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-import './FeedBack.dart';
+import 'FeedBack.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 
 

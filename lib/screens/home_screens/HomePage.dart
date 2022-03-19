@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './InfoUser.dart';
-import 'package:bkdms/screens/features_screens/Contact.dart';
-import 'package:bkdms/screens/features_screens/Member.dart';
+import 'package:bkdms/screens/features_screens/contact_screens/Contact.dart';
+import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/FetchListItem.dart';
 import 'package:bkdms/components/BoxItem.dart';
-import 'package:bkdms/screens/home_screens/ShowItem.dart';
+import 'package:bkdms/screens/home_screens/ShowListItem.dart';
 
 class HomePage extends StatefulWidget {
 
