@@ -5,26 +5,22 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
 
-class AccPoint extends StatefulWidget {
-  const AccPoint({ Key? key }) : super(key: key);
+class ScanItem extends StatefulWidget {
+  const ScanItem ({ Key? key }) : super(key: key);
 
   @override
-  State<AccPoint> createState() => AccPointState();
+  State<ScanItem > createState() => ScanItemState();
 }
 
 
-class AccPointState  extends State<AccPoint> {
+class ScanItemState  extends State<ScanItem> {
     String _scanBarcode = '';
 
-    @override
-    void initState() {
-        super.initState();
-    }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBarTransparent(Colors.white,"Tích điểm khách hàng"),
+       appBar: AppBarTransparent(Colors.white,"Quét sản phẩm"),
        backgroundColor: Colors.white,
        body: SingleChildScrollView(child: Center( 
           child: Column(children: [
@@ -51,7 +47,7 @@ class AccPointState  extends State<AccPoint> {
                       //icon Bar code
                       Image.asset("assets/Barcode.png"),
                       //text nhấn vào đây
-                      SizedBox(height: 5,),
+                      SizedBox(height: 10,),
                       Text(
                          "NHẤN VÀO ĐÂY",
                           style: TextStyle(color: Color(0xff565151), fontSize: 30, fontWeight: FontWeight.bold,),  
@@ -60,16 +56,12 @@ class AccPointState  extends State<AccPoint> {
                 ),
               ),
             ), 
-            
-            // text kết quả quét barcode
-            SizedBox(height: 10,),
-            Text("Kết quả thu được:" + " $_scanBarcode")
           ],),)
        ),
     );
   }
 
-
+    // Function scan barcode
     Future < void > scanBarcodeNormal() async {
         String barcodeScanResponse;
         // Platform messages may fail, so we use a try/catch PlatformException.

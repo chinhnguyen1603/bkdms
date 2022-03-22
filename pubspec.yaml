@@ -35,6 +35,7 @@ dependencies:
   dialogs: ^0.0.7
   material_floating_search_bar: ^0.3.6
   flutter_barcode_scanner: ^2.0.0
+  future_progress_dialog: ^0.2.0
 
 
 dev_dependencies:

@@ -5,8 +5,10 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'splash_screen.dart';
-import 'package:bkdms/screens/features_screens/member_screens/AccPoint.dart';
-
+import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
+import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
+import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
+import 'package:bkdms/screens/home_screens/InfoUser.dart';
 
 
 
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: AccPoint(),
+        body: EnterCustomer(),
         ),
       )
     );

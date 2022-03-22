@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 class Member extends StatelessWidget {
   static const blueText = Color(0xff105480);
@@ -181,7 +182,7 @@ class Member extends StatelessWidget {
               SizedBox(
                 child: TextButton(
                   onPressed: (){
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EnterCustomer()));
                   }, 
                   child: Text(
                     "TẠO ĐƠN BÁN HÀNG",
