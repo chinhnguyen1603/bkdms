@@ -190,14 +190,14 @@ class Member extends StatelessWidget {
                   )
                 ),
               ),
-              // lịch sử tích điểm
+              // lịch sử bán hàng
               SizedBox(
                 child: TextButton(
                   onPressed: (){
 
                   }, 
                   child: Text(
-                    "LỊCH SỬ TÍCH ĐIỂM",
+                    "LỊCH SỬ BÁN HÀNG",
                     style: TextStyle(decoration: TextDecoration.underline, fontSize: 21, color: blueText,),
                   )
                 ),

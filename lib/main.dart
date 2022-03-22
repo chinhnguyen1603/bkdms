@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: EnterCustomer(),
+        body: ResultBarcode("1"),
         ),
       )
     );

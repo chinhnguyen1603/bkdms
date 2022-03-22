@@ -39,7 +39,9 @@ class ScanItemState  extends State<ScanItem> {
             GestureDetector(
               onTap: () async {
                 await scanBarcodeNormal();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
+                if(_scanBarcode != "-1"){
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
+                }
               },
               child: Container(
                 child: Column(
@@ -68,7 +70,6 @@ class ScanItemState  extends State<ScanItem> {
         try {
             barcodeScanResponse = await FlutterBarcodeScanner.scanBarcode(
                 '#ff6666', 'Hủy bỏ', true, ScanMode.BARCODE);
-            print(barcodeScanResponse);
         }
         on PlatformException {
             barcodeScanResponse = 'Có lỗi xảy ra ở thiết bị';

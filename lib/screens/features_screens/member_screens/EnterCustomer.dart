@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 
@@ -158,7 +159,9 @@ class EnterCustomerState extends State<EnterCustomer> {
                           width: widthDevice*0.7,
                           height: 35,
                           child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScanItem()));
+                              },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
