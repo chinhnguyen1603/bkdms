@@ -7,9 +7,8 @@ import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'splash_screen.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
-import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
-import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
 import 'package:bkdms/screens/home_screens/InfoUser.dart';
+import 'package:bkdms/screens/home_screens/DescribeItem.dart';
 
 
 
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: ResultBarcode("1"),
+        body: DescribeItem(),
         ),
       )
     );

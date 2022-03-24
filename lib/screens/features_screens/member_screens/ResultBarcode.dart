@@ -37,6 +37,7 @@ class ResultBarcodeState extends State<ResultBarcode> {
             icon: Icon(
               Icons.add,
               color: Color(0xff105480),
+              size: 30,
             )
           )
         ], 
@@ -66,11 +67,11 @@ class ResultBarcodeState extends State<ResultBarcode> {
             SizedBox(
               height: 45,
                child: Row(children: [
-                 SizedBox(width: widthDevice*0.07,),
+                 SizedBox(width: widthDevice*0.05,),
                  //Outline button hủy Bỏ
                  SizedBox(
-                   height: 45,
-                   width: widthDevice*0.4,
+                   height: 40,
+                   width: widthDevice*0.425,
                    child: OutlinedButton(
                      onPressed: (){
 
@@ -82,11 +83,11 @@ class ResultBarcodeState extends State<ResultBarcode> {
                    )
 
                  ),
-                 SizedBox(width: widthDevice*0.07),
+                 SizedBox(width: widthDevice*0.05),
                  //Button hoàn tất
                  SizedBox(
-                   height: 45,
-                   width: myWidth*0.4,
+                   height: 40,
+                   width: myWidth*0.45,
                    child: ElevatedButton(
                      onPressed: (){
 

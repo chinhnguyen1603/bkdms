@@ -25,7 +25,7 @@ class AppBarGrey extends StatelessWidget with PreferredSizeWidget {
         title: Text(
             textInCenter,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: FontWeight.w600,
               color: darkGrey,
             ),
