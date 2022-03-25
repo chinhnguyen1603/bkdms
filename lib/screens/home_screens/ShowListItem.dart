@@ -1,20 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:bkdms/components/BoxItem.dart';
 import 'package:bkdms/models/ItemTest.dart';
+import 'package:bkdms/screens/home_screens/DetailItem.dart';
 
-class ShowItem extends StatefulWidget {
-  const ShowItem({ Key? key }) : super(key: key);
+class ShowListItem extends StatefulWidget {
+  const ShowListItem({ Key? key }) : super(key: key);
 
   @override
-  State<ShowItem> createState() => ShowItemState();
+  State<ShowListItem> createState() => ShowListItemState();
 }
 
 
 
-class ShowItemState extends State<ShowItem> {
+class ShowListItemState extends State<ShowListItem> {
   static const darkGrey = Color(0xff544C4C); 
   FloatingSearchBarController? searchController;
   List<ItemTest> lstItem = [ItemTest("bkdms/moxdwpn5vrir9vndu5p8","Bột giặt omo siêu cấp vip pro trắng tinh khôi đến từ Mỹ Nga Nhật Úc","25000"),
@@ -58,6 +58,7 @@ class ShowItemState extends State<ShowItem> {
             }, 
             icon: Icon(
               Icons.shopping_cart,
+              size: 24,
               color: darkGrey,
             )
           )
@@ -65,7 +66,7 @@ class ShowItemState extends State<ShowItem> {
         centerTitle: true,
         title: Text(
             "Sản phẩm",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: darkGrey,),
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: darkGrey,),
         )
       ),
       backgroundColor: Color(0xfff0ecec),
@@ -125,30 +126,36 @@ class ShowItemState extends State<ShowItem> {
                 primary: false,
                 itemCount: searchList.length,
                 itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                        onTap: () {
-                            print("click sản phẩm $index");
-                        },
-                        child: Container(
+                    return  Container(
                             color: Colors.white,
                             child: Column(
                                 children: [
-                                    Image.network(
-                                        getUrlFromLinkImg("${searchList[index].linkImg}"),
-                                        width: widthDevice*0.38,                     
+                                    GestureDetector(
+                                        onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                       },
+                                        child: Image.network(
+                                            getUrlFromLinkImg("${searchList[index].linkImg}"),
+                                            width: widthDevice*0.38,                     
+                                       ),
                                     ),
+
                                     //Tên sản phẩm
-                                    SizedBox(
-                                        height: 32 ,
-                                        width: widthDevice*0.4,
-                                        child: Text(
-                                            "${searchList[index].nameItem}",
-                                            maxLines: 2, 
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: false,
-                                            style: TextStyle(fontSize: 12),
+                                    GestureDetector(
+                                        onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                        },
+                                        child: SizedBox(
+                                            height: 32 ,
+                                            width: widthDevice*0.4,
+                                            child: Text(
+                                               "${searchList[index].nameItem}",
+                                               maxLines: 2, 
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               style: TextStyle(fontSize: 12),
                                         )
-                                    ),
+                                    ),),
                                     // Price Agency
                                     SizedBox(
                                         height: 25,
@@ -160,8 +167,7 @@ class ShowItemState extends State<ShowItem> {
                                     ),
                                 ]
                             )
-                        )
-                      );
+                        );
                 },
         
                
@@ -179,30 +185,36 @@ class ShowItemState extends State<ShowItem> {
                 primary: false,
                 itemCount: lstItem.length,
                 itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                        onTap: () {
-                            print("click sản phẩm $index");
-                        },
-                        child: Container(
+                    return  Container(
                             color: Colors.white,
                             child: Column(
                                 children: [
-                                    Image.network(
-                                        getUrlFromLinkImg("${lstItem[index].linkImg}"),
-                                        width: widthDevice*0.38,                     
+                                    // Ảnh sản phẩm
+                                    GestureDetector(
+                                        onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                       },
+                                        child: Image.network(
+                                            getUrlFromLinkImg("${searchList[index].linkImg}"),
+                                            width: widthDevice*0.38,                     
+                                       ),
                                     ),
                                     //Tên sản phẩm
-                                    SizedBox(
-                                        height: 32 ,
-                                        width: widthDevice*0.4,
-                                        child: Text(
-                                            "${lstItem[index].nameItem}",
-                                            maxLines: 2, 
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: false,
-                                            style: TextStyle(fontSize: 12),
+                                    GestureDetector(
+                                        onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                        },
+                                        child: SizedBox(
+                                            height: 32 ,
+                                            width: widthDevice*0.4,
+                                            child: Text(
+                                               "${lstItem[index].nameItem}",
+                                               maxLines: 2, 
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               style: TextStyle(fontSize: 12),
                                         )
-                                    ),
+                                    ),),
                                     // Price Agency
                                     SizedBox(
                                         height: 25,
@@ -214,8 +226,7 @@ class ShowItemState extends State<ShowItem> {
                                     ),
                                 ]
                             )
-                        )
-                      );
+                        );
                 },
         
                

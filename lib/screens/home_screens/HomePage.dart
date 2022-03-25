@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './InfoUser.dart';
@@ -9,7 +8,8 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/FetchListItem.dart';
 import 'package:bkdms/components/BoxItem.dart';
 import 'package:bkdms/screens/home_screens/ShowListItem.dart';
-
+import 'package:bkdms/screens/home_screens/ScreenOrder.dart';
+import 'package:bkdms/screens/home_screens/ScreenStat.dart';
 class HomePage extends StatefulWidget {
 
   @override
@@ -18,11 +18,29 @@ class HomePage extends StatefulWidget {
 
 
 class HomePageState extends State<HomePage> {
-  static const heavyBlue = Color(0xff242266);
-  static const textGrey = Color(0xff282323);
+
 
   late Future<List<dynamic>> futureItem;
-  
+   int _pageIndex = 0;
+  late PageController _pageController;
+
+  List<Widget> tabPages = [
+      ScreenHome(),
+      ScreenOrder(),
+      ScreenStat(),
+  ];
+
+  @override
+  void initState(){
+    super.initState();
+    _pageController = PageController(initialPage: _pageIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   
   @override
@@ -32,12 +50,52 @@ class HomePageState extends State<HomePage> {
     futureItem =  fetchListItem(user.token, user.workspace);
   }
 
+  void onPageChanged(int page) {
+    setState(() {
+      this._pageIndex = page;
+    });
+  }
+
+  void onTabTapped(int index) {
+    this._pageController.animateToPage(index,duration: const Duration(milliseconds: 500),curve: Curves.easeInOut);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      backgroundColor: Color(0xffF0ECEC),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _pageIndex,
+        onTap: onTabTapped,
+        backgroundColor: Colors.white,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem( icon: Icon(Icons.home), label: "Trang chủ"),
+          BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: "Đơn hàng"),
+          BottomNavigationBarItem(icon: Icon(Icons.query_stats), label: "Thống kê"),
+        ],
+        selectedItemColor: Colors.amber[800],
+      ),
+      body: PageView(
+        children: tabPages,
+        onPageChanged: onPageChanged,
+        controller: _pageController,
+      ),
+ 
+ 
+    );
+  }
+}
+
+
+class ScreenHome extends StatelessWidget {
+  static const heavyBlue = Color(0xff242266);
+  static const textGrey = Color(0xff282323);
+
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
-    return Scaffold(
-      backgroundColor: Color(0xffF0ECEC),
-      body: SingleChildScrollView( 
+    return SingleChildScrollView( 
         child: Column(
           children: [
             // Container chứa gradient
@@ -308,7 +366,7 @@ class HomePageState extends State<HomePage> {
             ),
             // chứa ô khuyến mãi
             SizedBox(
-              height: 140,
+              height: 120,
               width: widthDevice*0.98,
               child: ListView.builder( 
                 scrollDirection: Axis.horizontal,
@@ -319,12 +377,13 @@ class HomePageState extends State<HomePage> {
                    onTap: (){
                      print("Click khuyến mãi");
                    },
-                   child:Container(
+                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
                     width: 160,
+                    height: 120,
                     child: Text(
                       "Voucher $index",
                       textAlign: TextAlign.center,
@@ -357,7 +416,7 @@ class HomePageState extends State<HomePage> {
                     child:
                       TextButton(
                        onPressed: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => ShowItem()));
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => ShowListItem()));
                        }, 
                        child: SizedBox(
                          width: widthDevice*0.65,
@@ -399,7 +458,7 @@ class HomePageState extends State<HomePage> {
             ) */
           ],
         ),
-      )
-    );
+      );
+ 
   }
 }
