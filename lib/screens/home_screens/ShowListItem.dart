@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:bkdms/components/BoxItem.dart';
-import 'package:bkdms/models/ItemTest.dart';
+import 'package:provider/provider.dart';
 import 'package:bkdms/screens/home_screens/DetailItem.dart';
+import 'package:bkdms/services/ItemProvider.dart';
+import 'package:bkdms/models/Item.dart';
 
 class ShowListItem extends StatefulWidget {
   const ShowListItem({ Key? key }) : super(key: key);
@@ -17,25 +18,19 @@ class ShowListItem extends StatefulWidget {
 class ShowListItemState extends State<ShowListItem> {
   static const darkGrey = Color(0xff544C4C); 
   FloatingSearchBarController? searchController;
-  List<ItemTest> lstItem = [ItemTest("bkdms/moxdwpn5vrir9vndu5p8","Bột giặt omo siêu cấp vip pro trắng tinh khôi đến từ Mỹ Nga Nhật Úc","25000"),
-                           ItemTest("bkdms/nvpfklknrimz4cia1b3o","Nước rửa chén SunLight","18000"),
-                           ItemTest("bkdms/yjws4912tr7djcm4xvi6","Xà phòng Camay","6000"),
-                           ItemTest("bkdms/yjws4912tr7djcm4xvi6","Bột tẩy trắng răng","10000"),
-                           ItemTest("bkdms/yjws4912tr7djcm4xvi6","Laptop phong vũ","10000000"),
-                           ItemTest("bkdms/yjws4912tr7djcm4xvi6","Đèn học bài","350000"),
-                           ItemTest("bkdms/q9ldvcf3az15b8jmmvyy","Nước lau nhà LightHouse","30000")].cast<ItemTest>();
-  List<ItemTest> searchList = [];
+  List<Item> searchList = [];
   bool _isSearching = false;
 
-
-
   @override
-  void initState() {
-     super.initState();
-     _isSearching = false;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    List<Item> lstItem = Provider.of<ItemProvider>(context).lstItem;
+    print(lstItem);
+    _isSearching = false;
      //mặc định searchList phải bằng lstItem để auto hiện khi xóa search
-     searchList = lstItem;
-  }
+    searchList = lstItem;
+  } 
+
 
 
 
@@ -70,8 +65,11 @@ class ShowListItemState extends State<ShowListItem> {
         )
       ),
       backgroundColor: Color(0xfff0ecec),
-      body: SingleChildScrollView(
-        child: Center( child:Column(
+      body: Consumer<ItemProvider>( builder: (ctxItemProvider, itemProvider, child) {  
+        return SingleChildScrollView(
+
+         child: Center(
+          child: Column(
           children: [
             SizedBox(height: 20,),
 
@@ -89,10 +87,10 @@ class ShowListItemState extends State<ShowListItem> {
                     onQueryChanged: (query) {
                        // Call your model, bloc, controller here.
                       setState(() {
-                         searchList = lstItem
+                         searchList = itemProvider.lstItem
                                   .where((element) =>
-                                     element.nameItem.toLowerCase().contains(query.toLowerCase()) ||
-                                     element.priceAgency.toLowerCase().contains(query.toLowerCase()))
+                                     element.name.toLowerCase().contains(query.toLowerCase()) ||
+                                     element.retailPrice.toLowerCase().contains(query.toLowerCase()))
                                   .toList();                
                          _isSearching = true;
                       });
@@ -115,7 +113,7 @@ class ShowListItemState extends State<ShowListItem> {
               child: _isSearching
               // Mặc định là false nên trả về dấu 2 chấm trước dấu hỏi. Đang search thì trả về dấu hỏi
               //Grid View của dấu hỏi là của searchList
-              ? GridView.builder(
+              ?  GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 4,
@@ -149,7 +147,7 @@ class ShowListItemState extends State<ShowListItem> {
                                             height: 32 ,
                                             width: widthDevice*0.4,
                                             child: Text(
-                                               "${searchList[index].nameItem}",
+                                               "${searchList[index].name}",
                                                maxLines: 2, 
                                                overflow: TextOverflow.ellipsis,
                                                softWrap: false,
@@ -161,7 +159,7 @@ class ShowListItemState extends State<ShowListItem> {
                                         height: 25,
                                         width: widthDevice*0.4,
                                         child: Text(
-                                          "${searchList[index].priceAgency}" + 'đ̳',
+                                          "${searchList[index].retailPrice}" + 'đ̳',
                                           style: TextStyle(fontSize:16, color: Color(0xffb01313))
                                         ) 
                                     ),
@@ -174,7 +172,8 @@ class ShowListItemState extends State<ShowListItem> {
               )          
 
               //Không search thì trả về nguyên mẫu. Gridview của lstItem
-              :GridView.builder(
+              : GridView.builder(
+                
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 4,
@@ -183,7 +182,7 @@ class ShowListItemState extends State<ShowListItem> {
                 ),
                 padding: EdgeInsets.all(8),
                 primary: false,
-                itemCount: lstItem.length,
+                itemCount: itemProvider.lstItem.length,
                 itemBuilder: (BuildContext context, int index) {
                     return  Container(
                             color: Colors.white,
@@ -195,7 +194,7 @@ class ShowListItemState extends State<ShowListItem> {
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
                                        },
                                         child: Image.network(
-                                            getUrlFromLinkImg("${searchList[index].linkImg}"),
+                                            getUrlFromLinkImg("${itemProvider.lstItem[index].linkImg}"),
                                             width: widthDevice*0.38,                     
                                        ),
                                     ),
@@ -208,7 +207,7 @@ class ShowListItemState extends State<ShowListItem> {
                                             height: 32 ,
                                             width: widthDevice*0.4,
                                             child: Text(
-                                               "${lstItem[index].nameItem}",
+                                               "${itemProvider.lstItem[index].name}",
                                                maxLines: 2, 
                                                overflow: TextOverflow.ellipsis,
                                                softWrap: false,
@@ -220,7 +219,7 @@ class ShowListItemState extends State<ShowListItem> {
                                         height: 25,
                                         width: widthDevice*0.4,
                                         child: Text(
-                                          "${lstItem[index].priceAgency}" + 'đ̳',
+                                          "${itemProvider.lstItem[index].retailPrice}" + 'đ',
                                           style: TextStyle(fontSize:16, color: Color(0xffb01313))
                                         ) 
                                     ),
@@ -230,11 +229,13 @@ class ShowListItemState extends State<ShowListItem> {
                 },
         
                
-              )          
-            )
-          ],
+              )
+              )                 
+          ]
         ))
-      ),
+        
+        );
+      })
     );
   }
 

@@ -7,7 +7,6 @@ import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/ItemProvider.dart';
-import 'package:bkdms/components/BoxItem.dart';
 import 'package:bkdms/screens/home_screens/ShowListItem.dart';
 import 'package:bkdms/screens/home_screens/ScreenOrder.dart';
 import 'package:bkdms/screens/home_screens/ScreenStat.dart';
@@ -42,14 +41,6 @@ class HomePageState extends State<HomePage> {
     _pageController.dispose();
     super.dispose();
   }
-
-  /*
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Agency? user = Provider.of<Agency>(context);
-    futureItem =  ItemProvider().fetchAndSetItem(user.token, user.workspace);
-  }*/
 
   void onPageChanged(int page) {
     setState(() {
@@ -106,8 +97,7 @@ class ScreenHomeState extends State<ScreenHome> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     Agency? user = Provider.of<Agency>(context);
-    futureItem =  ItemProvider().fetchAndSetItem(user.token, user.workspace);
-    print(ItemProvider().lstItem);
+    futureItem = ItemProvider().fetchAndSetItem(user.token, user.workspace);
   }  
 
   @override
@@ -448,15 +438,7 @@ class ScreenHomeState extends State<ScreenHome> {
                 ]
               )
             ),
-            /*
-            //Test Gridview sản phẩm
-            SizedBox(
-              height: 700,
-              width: widthDevice*0.98,
-              child: BoxItem(),             
-            )*/
-            
-    
+
             //Gridview sản phẩm khi get API
             SizedBox(
               height: 700,
@@ -467,61 +449,61 @@ class ScreenHomeState extends State<ScreenHome> {
                    if (snapshot.hasData) {
                      List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
                      print(listItem.length);
+                     Provider.of<ItemProvider>(context).updateValue(listItem);
                      // build gridview
                       return  GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 4,
-                    mainAxisSpacing: 4,
-                    childAspectRatio: 1/1.2,
-                ),
-                padding: EdgeInsets.all(8),
-                primary: false,
-                itemCount: listItem.length,
-                itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                        onTap: () {
-                            print("click sản phẩm");
-                        },
-                        child: Container(
-                            color: Colors.white,
-                            child: Column(
-                                children: [
-                                    Image.network(
-                                        getUrlFromLinkImg("${listItem[index].linkImg}"),
-                                        width: widthDevice*0.38,
-                                        height: widthDevice*0.38,                     
-                                    ),
-                                    //Tên sản phẩm
-                                    SizedBox(height: 5,),
-                                    SizedBox(
-                                        height: 32 ,
-                                        width: widthDevice*0.4,
-                                        child: Text(
-                                            "${listItem[index].name}",
-                                            maxLines: 2, 
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: false,
-                                            style: TextStyle(fontSize: 12),
-                                        )
-                                    ),
-                                    // Price Agency
-                                    SizedBox(
-                                        height: 25,
-                                        width: widthDevice*0.4,
-                                        child: Text(
-                                          "${listItem[index].retailPrice}" + 'đ',
-                                          style: TextStyle(fontSize:16, color: Color(0xffb01313))
-                                        ) 
-                                    ),
-                                ]
-                            )
-                        )
-                      );
-                },
-        
-        );
+                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 4,
+                              mainAxisSpacing: 4,
+                              childAspectRatio: 1 / 1.2,
+                         ),
+                         padding: EdgeInsets.all(8),
+                         primary: false,
+                         itemCount: listItem.length,
+                         itemBuilder: (BuildContext context, int index) {
+                         return GestureDetector(
+                              onTap: () {
+                                 print("click sản phẩm");
+                              },
+                              child: Container(
+                                 color: Colors.white,
+                                 child: Column(
+                                    children: [
+                                           Image.network(
+                                              getUrlFromLinkImg("${listItem[index].linkImg}"),
+                                              width: widthDevice * 0.38,
+                                              height: widthDevice * 0.38,
+                                           ),
+                                           //Tên sản phẩm
+                                           SizedBox(height: 5, ),
+                                           SizedBox(
+                                               height: 32,
+                                               width: widthDevice * 0.4,
+                                               child: Text(
+                                                  "${listItem[index].name}",
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  softWrap: false,
+                                                  style: TextStyle(fontSize: 12),
+                                               )
+                                           ),
+                                          // Price Agency
+                                          SizedBox(
+                                               height: 25,
+                                               width: widthDevice * 0.4,
+                                               child: Text(
+                                                 "${listItem[index].retailPrice}" + 'đ',
+                                                 style: TextStyle(fontSize: 16, color: Color(0xffb01313))
+                                               )
+                                          ),
+                                    ]
+                    )
+                )
+            );
+        },
 
+);
 
                    }
                    else if (snapshot.hasError) {

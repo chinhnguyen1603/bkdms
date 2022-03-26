@@ -1,16 +1,16 @@
 
 
 class Item {
-  late int? id;
-  late String? name;
-  late String? productPrice;
-  late String? retailPrice;
-  late String? countryProduce;
-  late String? dateManufacture;
-  late String? expirationDate;
-  late String? barcode;
-  late String? linkImg;
-  late String? description;
+  late int id;
+  late String name;
+  late String productPrice;
+  late String retailPrice;
+  late String countryProduce;
+  late String dateManufacture;
+  late String expirationDate;
+  late String barcode;
+  late String linkImg;
+  late String description;
   late int? categoryId; 
   late int? productlineId;
   late List<dynamic> units;
@@ -20,20 +20,20 @@ class Item {
 
 
   Item({
-    this.id,
-    this.name,
-    this.productPrice,
-    this.retailPrice,
-    this.countryProduce,
-    this.dateManufacture,
-    this.expirationDate,
-    this.barcode,
-    this.linkImg,
-    this.description,
-    this.categoryId,
-    this.productlineId,
+    required this.id,
+    required this.name,
+    required this.productPrice,
+    required this.retailPrice,
+    required this.countryProduce,
+    required this.dateManufacture,
+    required this.expirationDate,
+    required this.barcode,
+    required this.linkImg,
+    required this.description,
+    required this.categoryId,
+    required this.productlineId,
     required this.units,
-    this.category,
-    this.productline,   
+    required this.category,
+    required this.productline,   
   });
 }

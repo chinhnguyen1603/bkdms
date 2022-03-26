@@ -6,41 +6,8 @@ import 'package:bkdms/models/Item.dart';
 
 
 class ItemProvider with ChangeNotifier{
-  List<Item> _lstItem = [];
+  List<Item> lstItem = [];
 
-  List<Item> get lstItem {
-    return _lstItem;
-  }
-
-/*
-Future<List<Item>> fetchListItem(String? token, String? workspace) async {
-  print("bắt đầu get Item");
-  var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/product');
-  final response = await http.get(url, headers: ({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-      'Workspace' : "$workspace",
-  }));
-  List<dynamic> listItem;
-  print(response.statusCode);
-  print(response.body);
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    
-   listItem = jsonDecode(response.body)['data']['listProduct']
-      .map((data) => Item.fromJson(data))
-      .toList();
-    print(listItem[0].productPrice);
-    return listItem; 
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to fetch item');
-  }
-}*/
   Future<List<Item>> fetchAndSetItem(String? token, String? workspace) async {
     print("bắt đầu get Item");
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/product');
@@ -52,8 +19,6 @@ Future<List<Item>> fetchListItem(String? token, String? workspace) async {
       'Workspace' : "$workspace",
     }));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(response.statusCode);
-      print(response.body);
 
       final List<Item> loadedCategories = [];
       extractedData['data']['listProduct'].forEach((itemData) {
@@ -77,13 +42,21 @@ Future<List<Item>> fetchListItem(String? token, String? workspace) async {
           ),
         );
       });
-      _lstItem = loadedCategories;
-      notifyListeners();
-      return _lstItem;
-    } catch (error) {
+      this.lstItem = loadedCategories;
+      print("kết quả biến lstItem");
+      print(lstItem);
+      return lstItem;
+    }
+    catch (error) {
       print(error);
       throw error;
     }
+  }
+  void updateValue(List<dynamic> resultLstItem ){
+       for (var i in resultLstItem) {
+         lstItem.add(i);
+       }
+       notifyListeners();
   }
 
 }
