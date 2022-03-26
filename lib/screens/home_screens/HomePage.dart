@@ -23,6 +23,10 @@ class HomePageState extends State<HomePage> {
   late Future<List<dynamic>> futureItem;
    int _pageIndex = 0;
   late PageController _pageController;
+  
+  //thêm dấu chấm vào giá tiền
+  RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+  String Function(Match) mathFunc = (Match match) => '${match[1]}.';
 
   List<Widget> tabPages = [
       ScreenHome(),
@@ -97,9 +101,17 @@ class ScreenHomeState extends State<ScreenHome> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     Agency? user = Provider.of<Agency>(context);
-    futureItem = ItemProvider().fetchAndSetItem(user.token, user.workspace);
-  }  
+    futureItem = Provider.of<ItemProvider>(context).fetchAndSetItem(user.token, user.workspace);
+  }
 
+  @override
+  void dispose() {
+     super.dispose();
+  }
+  
+   
+
+ 
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
@@ -447,10 +459,12 @@ class ScreenHomeState extends State<ScreenHome> {
                 future: futureItem,
                 builder: (ctxItem, snapshot){
                    if (snapshot.hasData) {
-                     List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
-                     print(listItem.length);
-                     Provider.of<ItemProvider>(context).updateValue(listItem);
-                     // build gridview
+                      List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
+                      //thêm dấu chấm vào giá sản phẩm
+                      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+                      String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                
+                      // build gridview
                       return  GridView.builder(
                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -476,9 +490,9 @@ class ScreenHomeState extends State<ScreenHome> {
                                               height: widthDevice * 0.38,
                                            ),
                                            //Tên sản phẩm
-                                           SizedBox(height: 5, ),
+                                           SizedBox(height: 10, ),
                                            SizedBox(
-                                               height: 32,
+                                               height: 28,
                                                width: widthDevice * 0.4,
                                                child: Text(
                                                   "${listItem[index].name}",
@@ -493,18 +507,16 @@ class ScreenHomeState extends State<ScreenHome> {
                                                height: 25,
                                                width: widthDevice * 0.4,
                                                child: Text(
-                                                 "${listItem[index].retailPrice}" + 'đ',
+                                                 "${listItem[index].retailPrice.replaceAllMapped(reg, mathFunc)}" + 'đ',
                                                  style: TextStyle(fontSize: 16, color: Color(0xffb01313))
                                                )
                                           ),
                                     ]
-                    )
-                )
-            );
-        },
-
-);
-
+                           )
+                         )
+                        );
+                      },
+                    );
                    }
                    else if (snapshot.hasError) {
                       throw "${snapshot.error}";

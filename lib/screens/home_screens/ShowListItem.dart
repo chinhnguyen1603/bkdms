@@ -33,7 +33,6 @@ class ShowListItemState extends State<ShowListItem> {
 
 
 
-
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
@@ -124,27 +123,31 @@ class ShowListItemState extends State<ShowListItem> {
                 primary: false,
                 itemCount: searchList.length,
                 itemBuilder: (BuildContext context, int index) {
+                    //thêm dấu chấm vào giá sản phẩm
+                    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+                    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
                     return  Container(
                             color: Colors.white,
                             child: Column(
                                 children: [
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index])));
                                        },
                                         child: Image.network(
                                             getUrlFromLinkImg("${searchList[index].linkImg}"),
-                                            width: widthDevice*0.38,                     
+                                            width: widthDevice*0.38, 
+                                            height: widthDevice * 0.38,                    
                                        ),
                                     ),
-
+                                    SizedBox(height: 10, ),
                                     //Tên sản phẩm
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index])));
                                         },
                                         child: SizedBox(
-                                            height: 32 ,
+                                            height: 28 ,
                                             width: widthDevice*0.4,
                                             child: Text(
                                                "${searchList[index].name}",
@@ -159,7 +162,7 @@ class ShowListItemState extends State<ShowListItem> {
                                         height: 25,
                                         width: widthDevice*0.4,
                                         child: Text(
-                                          "${searchList[index].retailPrice}" + 'đ̳',
+                                          "${searchList[index].retailPrice.replaceAllMapped(reg, mathFunc)}" + 'đ',
                                           style: TextStyle(fontSize:16, color: Color(0xffb01313))
                                         ) 
                                     ),
@@ -184,6 +187,9 @@ class ShowListItemState extends State<ShowListItem> {
                 primary: false,
                 itemCount: itemProvider.lstItem.length,
                 itemBuilder: (BuildContext context, int index) {
+                    // thêm dấu chấm vào giá sản phẩm 
+                    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+                    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
                     return  Container(
                             color: Colors.white,
                             child: Column(
@@ -191,20 +197,22 @@ class ShowListItemState extends State<ShowListItem> {
                                     // Ảnh sản phẩm
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index])));
                                        },
                                         child: Image.network(
                                             getUrlFromLinkImg("${itemProvider.lstItem[index].linkImg}"),
-                                            width: widthDevice*0.38,                     
+                                            width: widthDevice*0.38,
+                                            height: widthDevice * 0.38,                       
                                        ),
                                     ),
                                     //Tên sản phẩm
+                                    SizedBox(height: 10, ),
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index])));
                                         },
                                         child: SizedBox(
-                                            height: 32 ,
+                                            height: 28 ,
                                             width: widthDevice*0.4,
                                             child: Text(
                                                "${itemProvider.lstItem[index].name}",
@@ -219,7 +227,7 @@ class ShowListItemState extends State<ShowListItem> {
                                         height: 25,
                                         width: widthDevice*0.4,
                                         child: Text(
-                                          "${itemProvider.lstItem[index].retailPrice}" + 'đ',
+                                          "${itemProvider.lstItem[index].retailPrice.replaceAllMapped(reg, mathFunc)}" + 'đ',
                                           style: TextStyle(fontSize:16, color: Color(0xffb01313))
                                         ) 
                                     ),
@@ -237,16 +245,14 @@ class ShowListItemState extends State<ShowListItem> {
         );
       })
     );
+    
   }
-
-
-
-
-    String getUrlFromLinkImg(String linkImg) {
+   
+  String getUrlFromLinkImg(String linkImg) {
         final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
         //linkImg receive from server as Public Id
         final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
-        String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
+        String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate() !;
         return transformedUrl;
-    }  
+  }    
 }

@@ -9,7 +9,6 @@ class ItemProvider with ChangeNotifier{
   List<Item> lstItem = [];
 
   Future<List<Item>> fetchAndSetItem(String? token, String? workspace) async {
-    print("bắt đầu get Item");
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/product');
     try {
       final response = await http.get(url, headers: ({
@@ -17,7 +16,7 @@ class ItemProvider with ChangeNotifier{
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
       'Workspace' : "$workspace",
-    }));
+      }));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
 
       final List<Item> loadedCategories = [];
@@ -43,20 +42,13 @@ class ItemProvider with ChangeNotifier{
         );
       });
       this.lstItem = loadedCategories;
-      print("kết quả biến lstItem");
-      print(lstItem);
+      notifyListeners();
       return lstItem;
     }
     catch (error) {
       print(error);
       throw error;
     }
-  }
-  void updateValue(List<dynamic> resultLstItem ){
-       for (var i in resultLstItem) {
-         lstItem.add(i);
-       }
-       notifyListeners();
   }
 
 }
