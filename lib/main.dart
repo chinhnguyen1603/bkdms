@@ -10,6 +10,7 @@ import 'package:bkdms/screens/home_screens/InfoUser.dart';
 import 'package:bkdms/screens/home_screens/DescribeItem.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
 import 'package:bkdms/screens/home_screens/ShowListItem.dart';
+import 'package:bkdms/services/ItemProvider.dart';
 
 
 
@@ -26,16 +27,18 @@ class MyApp extends StatelessWidget {
    return MultiProvider(
     providers: [
         ChangeNotifierProvider(create: (context) => Agency()),
-        ChangeNotifierProvider(create: (context) => Item()),
+        ChangeNotifierProvider(create: (context) => ItemProvider()),
     ],
     child: MaterialApp(
       title: "BKDMS Mobile App",
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: HomePage(),
+        body: Login(),
         ),
       )
     );
   }
 }
+
+
