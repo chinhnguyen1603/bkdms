@@ -12,6 +12,7 @@ import 'package:bkdms/screens/home_screens/DescribeItem.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
 import 'package:bkdms/screens/home_screens/ShowListItem.dart';
 import 'package:bkdms/services/ItemProvider.dart';
+import 'package:bkdms/models/CountBadge.dart';
 
 
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
     providers: [
         ChangeNotifierProvider(create: (context) => Agency()),
         ChangeNotifierProvider(create: (context) => ItemProvider()),
+        ChangeNotifierProvider(create: (context) => CountBadge()),
     ],
     child: MaterialApp(
       title: "BKDMS Mobile App",

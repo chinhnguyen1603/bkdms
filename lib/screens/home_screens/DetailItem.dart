@@ -12,6 +12,7 @@ class DetailItem extends StatelessWidget {
   //late List<dynamic> switchUnit;
   //DetailItem(this.myItem, this.baseUnit, this.switchUnit);
   static const lightGrey = Color(0xfffafafa);
+  static const greyText = Color(0xff544c4c);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class DetailItem extends StatelessWidget {
                             child: Text(
                               "VAT 8%",
                               style: TextStyle(
-                                 fontSize: 18,
+                                 fontSize: 16,
                                  fontWeight: FontWeight.w300,
                                  color: Color(0xfff53838),
                               ),
@@ -72,27 +73,165 @@ class DetailItem extends StatelessWidget {
                   ),
                   
                   // Container chứa giá sản phẩm
-                  SizedBox(height: 14,),
+                  SizedBox(height: 12,),
                   Container(
                     width: widthDevice,
-                    height: 200,
+                    height: 180,
                     color: Colors.white,
                     child: Column(
                       children: [
                         SizedBox(height: 5,),
+                        // text giá sản phẩm
                         Container(
                           width: myWidth,
                           child: Text("Giá sản phẩm", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),),
                         ),
+                        SizedBox(height: 5,),
+                        //text lưu ý giá sản phẩm đã bao gồm VAT
                         Container(
                           width: myWidth*0.9,
-                          height: 20,
+                          height: 35,
                           color: lightGrey,
-                          
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              Text("Lưu ý giá sản phẩm đã bao gồm VAT", style: TextStyle(color: greyText),),
+                            ],
+                          )  
                         ),
+                        // Radio các loại đơn vị
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              Text("Đơn vị", style: TextStyle(color: greyText),),
+                            ],
+                          )  
+                        ),                        
+                        // Đơn giá
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          color: lightGrey,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              SizedBox(
+                                width: myWidth*0.35,
+                                child: Text("Đơn giá", style: TextStyle(color: greyText),),
+                              ),
+                              SizedBox(
+                                width: myWidth*0.5,
+                                child: Text("10000000000"),
+                              )
+                            ],
+                          )  
+                        ),                        
+                        // Giá bán lẻ đề nghị
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              SizedBox(
+                                width: myWidth*0.35,
+                                child: Text("Giá bán lẻ đề nghị", style: TextStyle(color: greyText),),
+                              ),
+                              SizedBox(
+                                width: myWidth*0.5,
+                                child: Text("10000000000---------", style: TextStyle(fontWeight: FontWeight.w600),),
+                              )
+                            ],
+                          )  
+                        ),                        
+                                     
+                      ],
+                    ),
+                  ),
+                
+                  // Container chứa thông tin chi tiết
+                  SizedBox(height: 12,),
+                  Container(
+                    width: widthDevice,
+                    height: 180,
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 5,),
+                        // text giá sản phẩm
+                        Container(
+                          width: myWidth,
+                          child: Text("Thông tin chi tiết", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),),
+                        ),
+                        SizedBox(height: 5,),
+                        //text lưu ý giá sản phẩm đã bao gồm VAT
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          color: lightGrey,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              Text("Lưu ý giá sản phẩm đã bao gồm VAT", style: TextStyle(color: greyText),),
+                            ],
+                          )  
+                        ),
+                        // Radio các loại đơn vị
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              Text("Đơn vị", style: TextStyle(color: greyText),),
+                            ],
+                          )  
+                        ),                        
+                        // Đơn giá
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          color: lightGrey,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              SizedBox(
+                                width: myWidth*0.35,
+                                child: Text("Đơn giá", style: TextStyle(color: greyText),),
+                              ),
+                              SizedBox(
+                                width: myWidth*0.5,
+                                child: Text("10000000000"),
+                              )
+                            ],
+                          )  
+                        ),                        
+                        // Giá bán lẻ đề nghị
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              SizedBox(
+                                width: myWidth*0.35,
+                                child: Text("Giá bán lẻ đề nghị", style: TextStyle(color: greyText),),
+                              ),
+                              SizedBox(
+                                width: myWidth*0.5,
+                                child: Text("10000000000---------", style: TextStyle(fontWeight: FontWeight.w600),),
+                              )
+                            ],
+                          )  
+                        ),                        
+                                     
                       ],
                     ),
                   )
+ 
                 ],
             )
           )

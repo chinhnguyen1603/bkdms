@@ -38,6 +38,7 @@ dependencies:
   future_progress_dialog: ^0.2.0
   flutter_html: ^2.2.1
   fl_chart: ^0.50.0
+  badges: ^2.0.2
 
 
 dev_dependencies:

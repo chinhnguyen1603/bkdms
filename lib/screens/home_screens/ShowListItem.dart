@@ -1,10 +1,13 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
+import 'package:badges/badges.dart';
 import 'package:bkdms/screens/home_screens/DetailItem.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
+import 'package:bkdms/models/CountBadge.dart';
 
 class ShowListItem extends StatefulWidget {
   const ShowListItem({ Key? key }) : super(key: key);
@@ -22,20 +25,19 @@ class ShowListItemState extends State<ShowListItem> {
   bool _isSearching = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    List<Item> lstItem = Provider.of<ItemProvider>(context).lstItem;
-    print(lstItem);
+  void initState() {
+    super.initState();
     _isSearching = false;
      //mặc định searchList phải bằng lstItem để auto hiện khi xóa search
-    searchList = lstItem;
   } 
 
 
 
   @override
   Widget build(BuildContext context) {
+    int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart = 0
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
+    double widthContainerItem = widthDevice*0.4;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -46,15 +48,20 @@ class ShowListItemState extends State<ShowListItem> {
           },
         ),
         actions: [
-          IconButton(
-            onPressed: (){
-            
-            }, 
-            icon: Icon(
-              Icons.shopping_cart,
-              size: 24,
-              color: darkGrey,
-            )
+          Badge(
+             position: BadgePosition.topEnd(top: 0, end: 3),
+             animationDuration: Duration(milliseconds: 300),
+             animationType: BadgeAnimationType.slide,
+             badgeContent: Text(
+                counter.toString(),
+                style: TextStyle(color: Colors.white),
+             ),
+             child: IconButton(
+               icon: Icon(Icons.shopping_cart, color: darkGrey,), 
+               onPressed: () {
+
+               }
+             ),
           )
         ], 
         centerTitle: true,
@@ -158,7 +165,7 @@ class ShowListItemState extends State<ShowListItem> {
                                         },
                                         child: SizedBox(
                                             height: 28 ,
-                                            width: widthDevice*0.4,
+                                            width: widthContainerItem,
                                             child: Text(
                                                "${searchList[index].name}",
                                                maxLines: 2, 
@@ -167,14 +174,34 @@ class ShowListItemState extends State<ShowListItem> {
                                                style: TextStyle(fontSize: 12),
                                         )
                                     ),),
-                                    // Price Agency
+                                    // Price Agency + icon addCart
                                     SizedBox(
-                                        height: 25,
-                                        width: widthDevice*0.4,
-                                        child: Text(
-                                          "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
-                                          style: TextStyle(fontSize:16, color: Color(0xffb01313))
-                                        ) 
+                                        height: 20,
+                                        width: widthContainerItem,
+                                        child: Row(
+                                          children: [
+                                             // Price baseUnit Agency
+                                             SizedBox(
+                                               height: 20,
+                                               width: widthContainerItem*0.8,
+                                               child: Text(
+                                                 "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
+                                                 style: TextStyle(fontSize:16, color: Color(0xffb01313))
+                                               ),
+                                             ),
+                                             // icon add cart
+                                             GestureDetector(
+                                               onTap: (){
+                                                  Provider.of<CountBadge>(context, listen: false).updatePlus();
+                                               },
+                                               child: Container(
+                                                  height: 20,
+                                                  width: widthContainerItem*0.2,
+                                                  child: Icon(Icons.add_shopping_cart_sharp, size: 19, color: Color(0xff7b2626),),
+                                               ),
+                                             )
+                                          ]
+                                        )
                                     ),
                                 ]
                             )
@@ -242,14 +269,34 @@ class ShowListItemState extends State<ShowListItem> {
                                                style: TextStyle(fontSize: 12),
                                         )
                                     ),),
-                                    // Price Agency
+                                    // Price Agency + icon addCart
                                     SizedBox(
-                                        height: 25,
-                                        width: widthDevice*0.4,
-                                        child: Text(
-                                          "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
-                                          style: TextStyle(fontSize:16, color: Color(0xffb01313))
-                                        ) 
+                                        height: 20,
+                                        width: widthContainerItem,
+                                        child: Row(
+                                          children: [
+                                             // Price baseUnit Agency
+                                             SizedBox(
+                                               height: 20,
+                                               width: widthContainerItem*0.8,
+                                               child: Text(
+                                                 "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
+                                                 style: TextStyle(fontSize:16, color: Color(0xffb01313))
+                                               ),
+                                             ),
+                                             // icon add cart
+                                             GestureDetector(
+                                               onTap: (){
+                                                  print("cc");
+                                               },
+                                               child: Container(
+                                                  height: 20,
+                                                  width: widthContainerItem*0.2,
+                                                  child: Icon(Icons.add_shopping_cart_sharp, size: 19, color: Color(0xff7b2626),),
+                                               ),
+                                             )
+                                          ]
+                                        )
                                     ),
                                 ]
                             )
