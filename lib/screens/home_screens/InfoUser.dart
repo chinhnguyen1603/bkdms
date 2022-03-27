@@ -62,7 +62,7 @@ class InfoUser extends StatelessWidget {
                    SizedBox(height: 5,),
                    //Container chứa điện thoại
                    Container(
-                     height: 40,
+                     height: 50,
                      width: myWidth,
                      color: mintGrey,
                      child: Row(  
@@ -77,7 +77,7 @@ class InfoUser extends StatelessWidget {
                    ),
                    //Container chứa mật khẩu
                    Container(
-                     height: 40,
+                     height: 50,
                      width: myWidth,
                      child: Row(children: [
                         SizedBox(width:5,),

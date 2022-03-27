@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/home_screens/DetailItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';

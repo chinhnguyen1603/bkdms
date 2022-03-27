@@ -126,13 +126,23 @@ class ShowListItemState extends State<ShowListItem> {
                     //thêm dấu chấm vào giá sản phẩm
                     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                    //Xử lý đơn vị và chuyển đơn vị
+                    var baseUnit;
+                    List<dynamic> switchUnit = [];
+                    for(var unit in itemProvider.lstItem[index].units){
+                        if(unit['isBaseUnit'] == true) {
+                          baseUnit = unit;
+                        } else {
+                          switchUnit.add(unit);
+                        }
+                    }                  
                     return  Container(
                             color: Colors.white,
                             child: Column(
                                 children: [
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index])));
+                                        //    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index],baseUnit,switchUnit)));
                                        },
                                         child: Image.network(
                                             getUrlFromLinkImg("${searchList[index].linkImg}"),
@@ -144,7 +154,7 @@ class ShowListItemState extends State<ShowListItem> {
                                     //Tên sản phẩm
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index])));
+                                       //     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index],baseUnit,switchUnit)));
                                         },
                                         child: SizedBox(
                                             height: 28 ,
@@ -162,7 +172,7 @@ class ShowListItemState extends State<ShowListItem> {
                                         height: 25,
                                         width: widthDevice*0.4,
                                         child: Text(
-                                          "${searchList[index].retailPrice.replaceAllMapped(reg, mathFunc)}" + 'đ',
+                                          "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
                                           style: TextStyle(fontSize:16, color: Color(0xffb01313))
                                         ) 
                                     ),
@@ -190,6 +200,16 @@ class ShowListItemState extends State<ShowListItem> {
                     // thêm dấu chấm vào giá sản phẩm 
                     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                    //Xử lý đơn vị và chuyển đơn vị
+                    var baseUnit;
+                    List<dynamic> switchUnit = [];
+                    for(var unit in itemProvider.lstItem[index].units){
+                        if(unit['isBaseUnit'] == true) {
+                          baseUnit = unit;
+                        } else {
+                          switchUnit.add(unit);
+                        }
+                    }
                     return  Container(
                             color: Colors.white,
                             child: Column(
@@ -197,7 +217,7 @@ class ShowListItemState extends State<ShowListItem> {
                                     // Ảnh sản phẩm
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index])));
+                                         //   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit)));
                                        },
                                         child: Image.network(
                                             getUrlFromLinkImg("${itemProvider.lstItem[index].linkImg}"),
@@ -209,7 +229,7 @@ class ShowListItemState extends State<ShowListItem> {
                                     SizedBox(height: 10, ),
                                     GestureDetector(
                                         onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index])));
+                                         //   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit)));
                                         },
                                         child: SizedBox(
                                             height: 28 ,
@@ -227,7 +247,7 @@ class ShowListItemState extends State<ShowListItem> {
                                         height: 25,
                                         width: widthDevice*0.4,
                                         child: Text(
-                                          "${itemProvider.lstItem[index].retailPrice.replaceAllMapped(reg, mathFunc)}" + 'đ',
+                                          "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
                                           style: TextStyle(fontSize:16, color: Color(0xffb01313))
                                         ) 
                                     ),
