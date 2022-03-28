@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
+import 'package:bkdms/services/ItemProvider.dart';
+import 'package:bkdms/models/Item.dart';
 
 class ScanItem extends StatefulWidget {
   const ScanItem ({ Key? key }) : super(key: key);
@@ -14,8 +18,8 @@ class ScanItem extends StatefulWidget {
 
 
 class ScanItemState  extends State<ScanItem> {
-    String _scanBarcode = '';
-
+  String _scanBarcode = '';
+  bool isShowDialog = true;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +43,32 @@ class ScanItemState  extends State<ScanItem> {
             GestureDetector(
               onTap: () async {
                 await scanBarcodeNormal();
-                if(_scanBarcode != "-1"){
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
+                for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
+                  if(_scanBarcode == item.barcode){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
+                    setState(() {
+                      isShowDialog = false;
+                    });
+                  }
+                }
+                if(_scanBarcode != "-1") {
+                 isShowDialog
+                  ? showDialog(
+                        context: context, 
+                        builder: (ctx1) => AlertDialog(
+                          title: Text("Thông báo", style: TextStyle(fontSize: 22),),
+                          content: Text("Sản phẩm đã quét không thuộc danh mục của công ty", style: TextStyle(color: Color(0xff544c4c)),),
+                          actions: [TextButton(
+                             onPressed: () => Navigator.pop(ctx1),
+                             child: Center (child: const Text(
+                               'OK',
+                               style: TextStyle(decoration: TextDecoration.underline,),
+                             ),)
+                           ),                      
+                          ],                                      
+                        )
+                      )
+                  : Text("");
                 }
               },
               child: Container(
@@ -53,7 +81,8 @@ class ScanItemState  extends State<ScanItem> {
                       Text(
                          "NHẤN VÀO ĐÂY",
                           style: TextStyle(color: Color(0xff565151), fontSize: 30, fontWeight: FontWeight.bold,),  
-                      )
+                      ),
+                      Text("$_scanBarcode"),
                   ],
                 ),
               ),
@@ -64,7 +93,7 @@ class ScanItemState  extends State<ScanItem> {
   }
 
     // Function scan barcode
-    Future < void > scanBarcodeNormal() async {
+    Future<void> scanBarcodeNormal() async {
         String barcodeScanResponse;
         // Platform messages may fail, so we use a try/catch PlatformException.
         try {
@@ -81,7 +110,7 @@ class ScanItemState  extends State<ScanItem> {
         if (!mounted) return;
 
         setState(() {
-            _scanBarcode = barcodeScanResponse;
+            _scanBarcode = barcodeScanResponse;    
         });
     }
 }

@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:bkdms/services/ItemProvider.dart';
 
 class ResultBarcode extends StatefulWidget {
-  String? resultBarcode;
+  late String resultBarcode;
   ResultBarcode(this.resultBarcode);
 
   @override
@@ -12,13 +17,31 @@ class ResultBarcode extends StatefulWidget {
 
 
 class ResultBarcodeState extends State<ResultBarcode> {
-  List<String> result = [];
+  List<String> result =[];
+  String _scanBarcode = '';
 
+  @override
+  void initState() {
+    super.initState();
+  }
+ /* 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    List<Item> lstItem = Provider.of<ItemProvider>(context).lstItem;
+    String result0 = widget.resultBarcode; 
+    for (var item in lstItem){
+      if(widget.resultBarcode == item.barcode){
+        result.add(result0);
+      }
+    }  
+  }*/
 
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -31,8 +54,8 @@ class ResultBarcodeState extends State<ResultBarcode> {
         ),
         actions: [
           IconButton(
-            onPressed: (){
-            
+            onPressed: () async {
+              await scanBarcodeNormal(); 
             }, 
             icon: Icon(
               Icons.add,
@@ -48,15 +71,19 @@ class ResultBarcodeState extends State<ResultBarcode> {
         )
       ),
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: Consumer<ItemProvider>( builder: (ctxItemProvider, itemProvider, child) {
+       
+       return SingleChildScrollView(
         child: Column(
           children: [
              SizedBox(height: 20,),
-             Text("Mã barcode vừa quét:" + "${widget.resultBarcode}")
+             Text("$result"),
+             Text("biến mới quét là "),
 
           ]
         ),
-      ),
+       );
+      }),
       bottomNavigationBar: SizedBox(
         height: 55,
         width: widthDevice,
@@ -104,7 +131,35 @@ class ResultBarcodeState extends State<ResultBarcode> {
           ],
         ),
       ),
-      
     );
   }
+
+
+  // Function scan barcode
+    Future<void> scanBarcodeNormal() async {
+        String barcodeScanResponse;
+        // Platform messages may fail, so we use a try/catch PlatformException.
+        try {
+            barcodeScanResponse = await FlutterBarcodeScanner.scanBarcode(
+                '#ff6666', 'Hủy bỏ', true, ScanMode.BARCODE);
+        }
+        on PlatformException {
+            barcodeScanResponse = 'Có lỗi xảy ra ở thiết bị';
+        }
+
+        // If the widget was removed from the tree while the asynchronous platform
+        // message was in flight, we want to discard the reply rather than calling
+        // setState to update our non-existent appearance.
+        if (!mounted) return;
+
+        setState(() {
+            _scanBarcode = barcodeScanResponse;
+            for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
+               if(_scanBarcode == item.barcode){
+                   result.add(_scanBarcode);
+               }
+            } 
+        });
+  
+    }
 }
