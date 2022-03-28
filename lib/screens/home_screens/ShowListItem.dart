@@ -38,6 +38,7 @@ class ShowListItemState extends State<ShowListItem> {
     int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart = 0
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -149,7 +150,7 @@ class ShowListItemState extends State<ShowListItem> {
                                 children: [
                                     GestureDetector(
                                         onTap: (){
-                                        //    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index],baseUnit,switchUnit)));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index],baseUnit,switchUnit,itemProvider.lstItem[index].units)));
                                        },
                                         child: Image.network(
                                             getUrlFromLinkImg("${searchList[index].linkImg}"),
@@ -161,7 +162,7 @@ class ShowListItemState extends State<ShowListItem> {
                                     //Tên sản phẩm
                                     GestureDetector(
                                         onTap: (){
-                                       //     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index],baseUnit,switchUnit)));
+                                           Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index],baseUnit,switchUnit,itemProvider.lstItem[index].units)));
                                         },
                                         child: SizedBox(
                                             height: 28 ,
@@ -244,7 +245,7 @@ class ShowListItemState extends State<ShowListItem> {
                                     // Ảnh sản phẩm
                                     GestureDetector(
                                         onTap: (){
-                                         //   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit)));
+                                           Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit,itemProvider.lstItem[index].units)));
                                        },
                                         child: Image.network(
                                             getUrlFromLinkImg("${itemProvider.lstItem[index].linkImg}"),
@@ -256,7 +257,7 @@ class ShowListItemState extends State<ShowListItem> {
                                     SizedBox(height: 10, ),
                                     GestureDetector(
                                         onTap: (){
-                                         //   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit)));
+                                           Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit,itemProvider.lstItem[index].units)));
                                         },
                                         child: SizedBox(
                                             height: 28 ,
@@ -287,7 +288,7 @@ class ShowListItemState extends State<ShowListItem> {
                                              // icon add cart
                                              GestureDetector(
                                                onTap: (){
-                                                  print("cc");
+                                                  Provider.of<CountBadge>(context, listen: false).updatePlus();
                                                },
                                                child: Container(
                                                   height: 20,

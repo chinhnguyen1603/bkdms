@@ -484,7 +484,7 @@ class ScreenHomeState extends State<ScreenHome> {
                          }   
                          return GestureDetector(
                               onTap: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(listItem[index],baseUnit,switchUnit)));
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(listItem[index],baseUnit,switchUnit,listItem[index].units)));
                               },
                               child: Container(
                                  color: Colors.white,
@@ -555,7 +555,7 @@ class ScreenHomeState extends State<ScreenHome> {
                          }   
                          return GestureDetector(
                               onTap: () {
-                               // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(listItem[index],baseUnit,switchUnit)));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(listItem[index],baseUnit,switchUnit,listItem[index].units)));
                               },
                               child: Container(
                                  color: Colors.white,

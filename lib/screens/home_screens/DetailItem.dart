@@ -5,19 +5,35 @@ import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
 
+class DetailItem extends StatefulWidget {
+  late Item myItem;
+  late var baseUnit;
+  late List<dynamic> switchUnit;
+  late List<dynamic> listUnit;
+  DetailItem(this.myItem, this.baseUnit, this.switchUnit, this.listUnit);
 
-class DetailItem extends StatelessWidget {
-  //late Item myItem;
-  //late var baseUnit;
-  //late List<dynamic> switchUnit;
-  //DetailItem(this.myItem, this.baseUnit, this.switchUnit);
+  @override
+  State<DetailItem> createState() => DetailItemState();
+}
+
+
+class DetailItemState extends State<DetailItem> {
+
   static const lightGrey = Color(0xfffafafa);
   static const greyText = Color(0xff544c4c);
+  int value = -1;
+  String unitPrice ="";
 
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9; // chiều rộng hàng ngoài cùng(tê, giá sp, thông tin chi tiết,...)
+    //thêm dấu chấm vào giá sản phẩm
+    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+
+
+    //widget của screen
     return Scaffold(
       appBar: AppBarGrey("Chi tiết sản phẩm"),
       backgroundColor: Color(0xfff0ecec),
@@ -36,16 +52,16 @@ class DetailItem extends StatelessWidget {
                        children:[
                          //ảnh sản phẩm
                          Image.network(
-                           // getUrlFromLinkImg("${myItem.linkImg}"),
-                            getUrlFromLinkImg("bkdms/q9ldvcf3az15b8jmmvyy"),
+                            getUrlFromLinkImg("${widget.myItem.linkImg}"),
                             width: widthDevice * 0.8,
-                            height: 220,
+                            height: 210,
                          ),
+                         SizedBox(height: 10,),
                          // tên sản phẩm
                          SizedBox(
                             width: myWidth,
                             child: Text(
-                              "Smart Tivi LG 43 inch 43LH605T",
+                              "${widget.myItem.name}",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
@@ -99,14 +115,48 @@ class DetailItem extends StatelessWidget {
                             ],
                           )  
                         ),
-                        // Radio các loại đơn vị
+                        // Đơn vị
                         Container(
                           width: myWidth*0.9,
                           height: 35,
                           child: Row(
                             children: [
                               SizedBox(width: 5,),
-                              Text("Đơn vị", style: TextStyle(color: greyText),),
+                              SizedBox(
+                                width: myWidth*0.25,
+                                child: Text("Đơn vị", style: TextStyle(color: greyText),),
+                              ),
+                              //List Radio đơn vị
+                              SizedBox(
+                                height: 35,
+                                width: myWidth*0.5,
+                                child: ListView.builder(
+                                   scrollDirection: Axis.horizontal,
+                                   itemCount: widget.listUnit.length,
+                                   itemBuilder: (context, index) {
+                                      return  Center(
+                                        child: Row(
+                                          children: [
+                                            Radio<int>(
+                                               value: index, 
+                                               groupValue: value, 
+                                               onChanged: (val) {
+                                                 print(" đây là $index có value =");
+                                                 setState(() {
+                                                   value = val as int ;
+                                                   unitPrice = widget.listUnit[index]['agencyPrice']; 
+                                                 });
+                                                 print(value);
+                                               }
+                                            ),
+                                            Text('${widget.listUnit[index]['name']}'),
+                                            SizedBox(width: 20,),
+                                          ],
+                                        ),                                         
+                                      );
+                                   },
+                                ),
+                              )
                             ],
                           )  
                         ),                        
@@ -124,7 +174,7 @@ class DetailItem extends StatelessWidget {
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("10000000000"),
+                                child: Text("${unitPrice.replaceAllMapped(reg, mathFunc)}" + "VND", style: TextStyle(fontWeight: FontWeight.w600),),
                               )
                             ],
                           )  
@@ -142,7 +192,7 @@ class DetailItem extends StatelessWidget {
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("10000000000---------", style: TextStyle(fontWeight: FontWeight.w600),),
+                                child: Text("${widget.myItem.retailPrice.replaceAllMapped(reg, mathFunc)}" + "VND", style: TextStyle(fontWeight: FontWeight.w600),),
                               )
                             ],
                           )  
