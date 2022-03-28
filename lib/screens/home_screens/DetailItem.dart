@@ -21,8 +21,24 @@ class DetailItemState extends State<DetailItem> {
 
   static const lightGrey = Color(0xfffafafa);
   static const greyText = Color(0xff544c4c);
+  //khởi tạo value của radio
   int value = -1;
+  //giá từng đơn vị
   String unitPrice ="";
+  // dropdown tên đơn vị
+  String? btnSelectVal;
+  List<String> unitName = [];
+
+  @override
+  void initState(){
+    super.initState();
+    for(var unit in widget.listUnit){
+       unitName.add(unit['name']);
+    }
+    
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +47,18 @@ class DetailItemState extends State<DetailItem> {
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+    // tạo dropdown button chứa unit name
 
+    List<DropdownMenuItem<String>> createList() {
+     return unitName
+      .map<DropdownMenuItem<String>>(
+         (e) => DropdownMenuItem(
+             value: e,
+             child: Text("$e"),
+         ),
+      )
+      .toList();
+    }
 
     //widget của screen
     return Scaffold(
@@ -92,7 +119,7 @@ class DetailItemState extends State<DetailItem> {
                   SizedBox(height: 12,),
                   Container(
                     width: widthDevice,
-                    height: 180,
+                    height: 220,
                     color: Colors.white,
                     child: Column(
                       children: [
@@ -123,39 +150,31 @@ class DetailItemState extends State<DetailItem> {
                             children: [
                               SizedBox(width: 5,),
                               SizedBox(
-                                width: myWidth*0.25,
+                                width: myWidth*0.35,
                                 child: Text("Đơn vị", style: TextStyle(color: greyText),),
                               ),
-                              //List Radio đơn vị
+                              //Dropdown tên đơn vị đơn vị
                               SizedBox(
                                 height: 35,
-                                width: myWidth*0.5,
-                                child: ListView.builder(
-                                   scrollDirection: Axis.horizontal,
-                                   itemCount: widget.listUnit.length,
-                                   itemBuilder: (context, index) {
-                                      return  Center(
-                                        child: Row(
-                                          children: [
-                                            Radio<int>(
-                                               value: index, 
-                                               groupValue: value, 
-                                               onChanged: (val) {
-                                                 print(" đây là $index có value =");
-                                                 setState(() {
-                                                   value = val as int ;
-                                                   unitPrice = widget.listUnit[index]['agencyPrice']; 
-                                                 });
-                                                 print(value);
-                                               }
-                                            ),
-                                            Text('${widget.listUnit[index]['name']}'),
-                                            SizedBox(width: 20,),
-                                          ],
-                                        ),                                         
-                                      );
-                                   },
-                                ),
+                                width: myWidth*0.35,
+                                child: DropdownButton(
+                                  items: createList(),
+                                  hint: Text("Chọn đơn vị"),
+                                  value: btnSelectVal, 
+                                  onChanged: (newValue) {
+                                     if(newValue!=null){
+                                       setState(() {
+                                         btnSelectVal = newValue as String;
+                                         // lấy đơn giá của đơn vị
+                                         for( var unit in widget.listUnit){
+                                           if(newValue == unit['name']){
+                                              unitPrice = unit['agencyPrice'];
+                                           }
+                                         }
+                                       });
+                                     }
+                                  }
+                                )
                               )
                             ],
                           )  
@@ -174,7 +193,7 @@ class DetailItemState extends State<DetailItem> {
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("${unitPrice.replaceAllMapped(reg, mathFunc)}" + "VND", style: TextStyle(fontWeight: FontWeight.w600),),
+                                child: Text("${unitPrice.replaceAllMapped(reg, mathFunc)}" + " VND", style: TextStyle(fontWeight: FontWeight.w600),),
                               )
                             ],
                           )  
@@ -192,12 +211,117 @@ class DetailItemState extends State<DetailItem> {
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("${widget.myItem.retailPrice.replaceAllMapped(reg, mathFunc)}" + "VND", style: TextStyle(fontWeight: FontWeight.w600),),
+                                child: Text("${widget.myItem.retailPrice.replaceAllMapped(reg, mathFunc)}" + " VND", style: TextStyle(fontWeight: FontWeight.w600),),
                               )
                             ],
                           )  
                         ),                        
-                                     
+                        // bảng quy đổi đơn vị
+                        Container(
+                          width: myWidth*0.9,
+                          height: 35,
+                          color: lightGrey,
+                          child: Row(
+                            children: [
+                              SizedBox(width: 5,),
+                              SizedBox(
+                                width: myWidth*0.35,
+                                child: Text("Quy đổi đơn vị", style: TextStyle(color: greyText),),
+                              ),
+                              SizedBox(
+                                width: myWidth*0.5,
+                                child: GestureDetector(
+                                  onTap: (){
+                                     //bảng quy đổi đơn vị
+                                     showDialog(
+                           context: context, 
+                           builder: (ctx1) => AlertDialog(
+                           title: Text("Bảng quy đổi đơn vị", style: TextStyle(fontSize: 20),),
+                           content: Container(
+                             child: Column(
+                               mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Tiêu đề bảng
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 60,
+                                        child: Text("Đơn vị", style: TextStyle(fontWeight: FontWeight.bold),),
+                                      ),
+                                      SizedBox(
+                                        width: 80,
+                                        child: Text("Quy đổi", style: TextStyle(fontWeight: FontWeight.bold),),
+                                      ),
+                                      SizedBox(
+                                        width: 100,
+                                        child: Text("Đơn vị cơ bản", style: TextStyle(fontWeight: FontWeight.bold),),
+                                      )
+                                    ],
+                                  ),
+                                  // Đơn vị cơ bảng
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 60,
+                                        child: Text("${widget.baseUnit['name']}", ),
+                                      ),
+                                      SizedBox(
+                                        width: 80,
+                                        child: Text("1",),
+                                      ),
+                                      SizedBox(
+                                        width: 100,
+                                        child: Text("X"),
+                                      )
+                                    ],
+                                  ),                                  
+                                  //List view đơn vị chuyển đổi
+                                  SizedBox(
+                                    width: 240,
+                                    height: 36,
+                                    child: ListView.builder( 
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: widget.switchUnit.length,
+                                    itemBuilder:  (context, index) => SizedBox( 
+                                      width: 240,
+                                      child: Row( children: [
+                                         SizedBox(
+                                           width: 60,
+                                           child: Text("${widget.switchUnit[index]['name']}", ),
+                                         ),
+                                         SizedBox(
+                                           width: 80,
+                                           child: Text("${widget.switchUnit[index]['switchRate']}",),
+                                         ),
+                                         SizedBox(
+                                           width: 100,
+                                           child: Text(""),
+                                         )
+                                        ],),
+                                      )
+                                   )
+                                  )
+                             ],)
+                           ),
+                           
+                    
+                           actions: [TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Center (child: const Text(
+                                'OK',
+                                 style: TextStyle(decoration: TextDecoration.underline,),
+                              ),)
+                              ),                      
+                             ],                                      
+                         ));
+                                  }, 
+                                  child: Text("xem ở đây", style: TextStyle(color: Colors.blue),),
+                                ),
+                              )
+                            ],
+                          )  
+                        ),                        
+                                      
                       ],
                     ),
                   ),
@@ -211,13 +335,13 @@ class DetailItemState extends State<DetailItem> {
                     child: Column(
                       children: [
                         SizedBox(height: 5,),
-                        // text giá sản phẩm
+                        // text thông tin chi tiết
                         Container(
                           width: myWidth,
                           child: Text("Thông tin chi tiết", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),),
                         ),
                         SizedBox(height: 5,),
-                        //text lưu ý giá sản phẩm đã bao gồm VAT
+                        //Danh mục
                         Container(
                           width: myWidth*0.9,
                           height: 35,
@@ -225,22 +349,36 @@ class DetailItemState extends State<DetailItem> {
                           child: Row(
                             children: [
                               SizedBox(width: 5,),
-                              Text("Lưu ý giá sản phẩm đã bao gồm VAT", style: TextStyle(color: greyText),),
-                            ],
+                              SizedBox(
+                                width: myWidth*0.35,
+                                child: Text("Danh mục", style: TextStyle(color: greyText),),
+                              ),
+                              SizedBox(
+                                width: myWidth*0.5,
+                                child: Text("${widget.myItem.category?['name']}"),
+                              )
+                            ]
                           )  
                         ),
-                        // Radio các loại đơn vị
+                        // Xuất xứ
                         Container(
                           width: myWidth*0.9,
                           height: 35,
                           child: Row(
                             children: [
                               SizedBox(width: 5,),
-                              Text("Đơn vị", style: TextStyle(color: greyText),),
+                              SizedBox(
+                                width: myWidth*0.35,
+                                child: Text("Xuất xứ", style: TextStyle(color: greyText),),
+                              ),
+                              SizedBox(
+                                width: myWidth*0.5,
+                                child: Text("${widget.myItem.countryProduce}"),
+                              )                              
                             ],
                           )  
                         ),                        
-                        // Đơn giá
+                        // Thương hiệu
                         Container(
                           width: myWidth*0.9,
                           height: 35,
@@ -250,16 +388,16 @@ class DetailItemState extends State<DetailItem> {
                               SizedBox(width: 5,),
                               SizedBox(
                                 width: myWidth*0.35,
-                                child: Text("Đơn giá", style: TextStyle(color: greyText),),
+                                child: Text("Ngày sản xuất", style: TextStyle(color: greyText),),
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("10000000000"),
+                                child: Text("${widget.myItem.dateManufacture}"),
                               )
                             ],
                           )  
                         ),                        
-                        // Giá bán lẻ đề nghị
+                        // Mô tả sản phẩm
                         Container(
                           width: myWidth*0.9,
                           height: 35,
@@ -268,16 +406,20 @@ class DetailItemState extends State<DetailItem> {
                               SizedBox(width: 5,),
                               SizedBox(
                                 width: myWidth*0.35,
-                                child: Text("Giá bán lẻ đề nghị", style: TextStyle(color: greyText),),
+                                child: Text("Mô tả sản phẩm", style: TextStyle(color: greyText),),
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("10000000000---------", style: TextStyle(fontWeight: FontWeight.w600),),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    
+                                  }, 
+                                  child: Text("xem ở đây", style: TextStyle(color: Colors.blue),),
+                                ),
                               )
                             ],
                           )  
-                        ),                        
-                                     
+                        ),          
                       ],
                     ),
                   )

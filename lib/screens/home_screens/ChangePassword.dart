@@ -239,22 +239,6 @@ class ChangePasswordState extends State<ChangePassword>{
                              },
                          );
                          messageDialog.show(context, barrierColor: Colors.black);                         
-                         /* show dialog nếu thành công
-                         showDialog(
-                           context: context, 
-                           builder: (ctx1) => AlertDialog(
-                           content: Text("Cập nhật mật khẩu thành công", style: TextStyle(fontSize: 24),),
-                           actions: [TextButton(
-                              onPressed: () {
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUser()));
-                              },
-                              child: Center (child: const Text(
-                                'OK',
-                                 style: TextStyle(decoration: TextDecoration.underline,),
-                              ),)
-                              ),                      
-                             ],)
-                         );*/
                        });           
                   
                     }
