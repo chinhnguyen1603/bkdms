@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'FeedBack.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
+
 
 
 class TextGrey extends StatelessWidget {
@@ -34,7 +36,8 @@ class Contact extends StatefulWidget {
 class ContactState extends State<Contact> {
   static const greyBackground = Color(0xfffafafa);
   static const blueText = Color(0xff105480);
-
+  static const linkFB = "fb://page/108152788367178";
+  static const linkGmail = "https://mail.google.com/";
 
   @override
   Widget build(BuildContext context) {
@@ -73,89 +76,120 @@ class ContactState extends State<Contact> {
             ),
             child: Column(children: [
               SizedBox(height: 5,),
-              // Facebook    
-              SizedBox(
-                width: myWidth,
-                height: 30,
-                child: Row(children: [
-                  SizedBox(//icon Facbook
-                    width: myWidth*0.12,
-                    child: Icon(
-                      Icons.facebook_rounded,
-                      color: Color(0xff254fb0),
-                    ),
-                  ),
-                  SizedBox(
-                    width: myWidth*0.8,
-                    child: Text(
-                      "https://www.facebook.com/BachKhoaDMS"
-                    ),
-                  )
-                ],),
+              // Facebook
+              GestureDetector(
+                onTap: () async {
+                   await url_launcher.launch(linkFB, forceSafariVC: false, forceWebView: false);
+                },
+                child:Container(
+                  width: myWidth,
+                  height: 30,
+                  child: Row(children: [
+                     SizedBox(//icon Facbook
+                        width: myWidth*0.12,
+                        child: Icon(
+                          Icons.facebook_rounded,
+                          color: Color(0xff254fb0),
+                        ),
+                     ),
+                     SizedBox(
+                        width: myWidth*0.8,
+                        child: Text(
+                           "https://www.facebook.com/BachKhoaDMS"
+                        ),
+                     )
+                  ],),
+                ),
               ),
-              
               // Gmail
-              SizedBox(
-                width: myWidth,
-                height: 30,
-                child: Row(children: [
-                  SizedBox(//icon FGmail
-                    width: myWidth*0.12,
-                    child: Icon(
-                      Icons.email_outlined,
-                      color: Color(0xffb01313),
-                    ),
-                  ),
-                  SizedBox(
-                    width: myWidth*0.8,
-                    child: Text(
-                      "support@bkdms.vn"
-                    ),
-                  )
-                ],),
+              GestureDetector(
+                onTap: () async {
+                  if(await url_launcher.canLaunch(linkGmail)){
+                        await url_launcher.launch(linkGmail);  //forceWebView is true now
+                  }else {
+                      throw 'Could not launch $linkGmail';
+                  }
+                },
+                child: Container(
+                  width: myWidth,
+                  height: 30,
+                  child: Row(children: [
+                     SizedBox(//icon FGmail
+                        width: myWidth*0.12,
+                        child: Icon(
+                           Icons.email_outlined,
+                           color: Color(0xffb01313),
+                        ),
+                     ),
+                     SizedBox(
+                        width: myWidth*0.8,
+                        child: Text(
+                           "support@bkdms.vn"
+                        ),
+                     )
+                     ],),
+                ),
               ),
-
               //Phone
-              SizedBox(
-                width: myWidth,
-                height: 30,
-                child: Row(children: [
-                  SizedBox(//icon Phone
-                    width: myWidth*0.12,
-                    child: Icon(
-                      Icons.phone_in_talk,
-                      color: Color(0xff4bad3a),
-                    ),
-                  ),
-                  SizedBox(
-                    width: myWidth*0.8,
-                    child: Text(
-                      "0898125108 - 0987438140"
-                    ),
-                  )
-                ],),
+              GestureDetector(
+                 onTap: () async {
+                    String telephoneNumber = '+84898125108';
+                    String telephoneUrl = "tel:$telephoneNumber";
+                    if (await url_launcher.canLaunch(telephoneUrl)) {
+                          await url_launcher.launch(telephoneUrl);
+                    } else {
+                          throw "Error occured trying to call that number.";
+                    }
+                 },
+                 child: Container(
+                    width: myWidth,
+                    height: 30,
+                    child: Row(children: [
+                       SizedBox(//icon Phone
+                          width: myWidth*0.12,
+                          child: Icon(
+                            Icons.phone_in_talk,
+                            color: Color(0xff4bad3a),
+                            ),
+                       ),
+                       SizedBox(
+                          width: myWidth*0.8,
+                          child: Text( "0898125108 - 0987438140"),
+                       )
+                    ],),
+                 ),
               ),
-              
+   
               // Địa chỉ BKDMS
-              SizedBox(
-                width: myWidth,
-                height: 32,
-                child: Row(children: [
-                  SizedBox(//icon Phone
-                    width: myWidth*0.12,
-                    child: Icon(
-                      Icons.map_sharp,
-                      color: Color(0xffba5b47),
-                    ),
+              GestureDetector(
+                  onTap: () async{
+                  const String lat = "10.867521";
+                  const String lng = "106.794481";
+                  const String mapUrl = "geo:$lat,$lng";
+                  if (await url_launcher.canLaunch(mapUrl)) {
+                         await url_launcher.launch(mapUrl);
+                  } else {
+                         throw "Couldn't launch Map";
+                  }
+                  },
+                  child:Container(
+                     width: myWidth,
+                     height: 32,
+                     child: Row(children: [
+                        SizedBox(//icon Phone
+                           width: myWidth*0.12,
+                           child: Icon(
+                              Icons.map_sharp,
+                              color: Color(0xffba5b47),
+                           ),
+                        ),
+                        SizedBox(
+                           width: myWidth*0.8,
+                           child: Text("Khu công nghệ phần mềm ĐHQG, khu phố 6, phường Linh Trung, Thủ Đức, TPHCM"),
+                        )
+                     ],),
                   ),
-                  SizedBox(
-                    width: myWidth*0.8,
-                    child: Text(
-                      "Khu công nghệ phần mềm ĐHQG, khu phố 6, phường Linh Trung, Thủ Đức, TPHCM"
-                    ),
-                  )
-                ],),
-              ),
+                )
             ],),
           ),
           
