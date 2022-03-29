@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/home_screens/DescribeItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -411,7 +412,7 @@ class DetailItemState extends State<DetailItem> {
                                 width: myWidth*0.5,
                                 child: GestureDetector(
                                   onTap: (){
-                                    
+                                     Navigator.push(context, MaterialPageRoute(builder: (context) => DescribeItem(widget.myItem.description)));
                                   }, 
                                   child: Text("xem ở đây", style: TextStyle(color: Colors.blue),),
                                 ),
