@@ -378,7 +378,7 @@ class DetailItemState extends State<DetailItem> {
                             ],
                           )  
                         ),                        
-                        // Thương hiệu
+                        // Ngày sản xuất
                         Container(
                           width: myWidth*0.9,
                           height: 35,
@@ -422,8 +422,108 @@ class DetailItemState extends State<DetailItem> {
                         ),          
                       ],
                     ),
-                  )
- 
+                  ),
+                  
+                  // sản phâm chính hãng 100%
+                  SizedBox(height: 12,),
+                  Container(
+                    width: widthDevice,
+                    height: 100,
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        SizedBox(width: widthDevice*0.1,),
+                        //icon Circle check và text
+                        SizedBox(
+                          width: widthDevice*0.2,
+                          height: 100,
+                          child: Center( child: Column(
+                            children: [
+                              SizedBox(height: 5,),
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.blue,
+                              ),
+                              SizedBox(height: 5,),
+                              SizedBox(
+                                width: widthDevice*0.2,
+                                child:
+                                Center( 
+                                  child: Text(
+                                    "Sản phẩm chính hãng 100%",
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                       color: Color(0xff544c4c),
+                                    ),)
+                                )
+                              )
+                            ],
+                          ),)
+                        ),
+                        SizedBox(width: widthDevice*0.1,),
+                        //icon Protect và text
+                        SizedBox(
+                          width: widthDevice*0.2,
+                          height: 100,
+                          child: Center( child: Column(
+                            children: [
+                              SizedBox(height: 5,),
+                              Icon(
+                                Icons.shield_moon,
+                                color: Colors.blue,
+                              ),
+                              SizedBox(height: 5,),
+                              SizedBox(
+                                width: widthDevice*0.2,
+                                child:
+                                Center( 
+                                  child: Text(
+                                    "Bảo hành lỗi từ nhà sản xuất",
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                       color: Color(0xff544c4c),
+                                    ),)
+                                )
+                              )
+                            ],
+                          ),)
+                        ),
+                        SizedBox(width: widthDevice*0.1,),
+                        //icon Đổi trả và text
+                        SizedBox(
+                          width: widthDevice*0.2,
+                          height: 100,
+                          child: Center( child: Column(
+                            children: [
+                              SizedBox(height: 5,),
+                              Icon(
+                                Icons.wifi_protected_setup,
+                                color: Colors.blue,
+                              ),
+                              SizedBox(height: 5,),
+                              SizedBox(
+                                width: widthDevice*0.2,
+                                child:
+                                Center( 
+                                  child: Text(
+                                    "Đổi trả sản phẩm trong 7 ngày ",
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                       color: Color(0xff544c4c),
+                                    ),)
+                                )
+                              )
+                            ],
+                          ),)
+                        ),     
+                      ],
+                    ),
+                  ),
+                  // Khoảng trống cuối cùng
+                  SizedBox(height: 12,),
                 ],
             )
           )
