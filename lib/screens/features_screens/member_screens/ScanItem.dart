@@ -18,8 +18,8 @@ class ScanItem extends StatefulWidget {
 
 class ScanItemState  extends State<ScanItem> {
   String _scanBarcode = '';
-  bool isShowDialog = true;
-
+  bool isShowDialog = false;
+  int needShowDialog = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,15 +40,29 @@ class ScanItemState  extends State<ScanItem> {
             SizedBox(height: 120,),
             //icon barocde on tap
             GestureDetector(
+              // xử lý logic tại đây
               onTap: () async {
                 await scanBarcodeNormal();
                 for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
                   if(_scanBarcode == item.barcode){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
                     setState(() {
-                      isShowDialog = false;
+                      needShowDialog = 0;
                     });
-                  }
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
+                    break;
+                  } else{
+                      needShowDialog = 1;
+                  }         
+                }
+                if(needShowDialog == 0) {
+                    setState(() {
+                       isShowDialog = false;
+                    }); 
+                }
+                else {
+                    setState(() {
+                       isShowDialog = true;
+                    });                   
                 }
                 if(_scanBarcode != "-1") {
                  isShowDialog
@@ -81,7 +95,6 @@ class ScanItemState  extends State<ScanItem> {
                          "NHẤN VÀO ĐÂY",
                           style: TextStyle(color: Color(0xff565151), fontSize: 30, fontWeight: FontWeight.bold,),  
                       ),
-                      Text("$_scanBarcode"),
                   ],
                 ),
               ),

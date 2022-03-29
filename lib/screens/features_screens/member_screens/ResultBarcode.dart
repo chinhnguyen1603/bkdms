@@ -19,29 +19,20 @@ class ResultBarcode extends StatefulWidget {
 class ResultBarcodeState extends State<ResultBarcode> {
   List<String> result =[];
   String _scanBarcode = '';
+  bool isShowDialog = true;
+  int needShowDialog = 1;
 
   @override
   void initState() {
     super.initState();
+    
   }
- /* 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    List<Item> lstItem = Provider.of<ItemProvider>(context).lstItem;
-    String result0 = widget.resultBarcode; 
-    for (var item in lstItem){
-      if(widget.resultBarcode == item.barcode){
-        result.add(result0);
-      }
-    }  
-  }*/
 
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9;
-
+    
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -55,8 +46,50 @@ class ResultBarcodeState extends State<ResultBarcode> {
         actions: [
           IconButton(
             onPressed: () async {
-              await scanBarcodeNormal(); 
-            }, 
+                await scanBarcodeNormal();
+                for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
+                  if(_scanBarcode == item.barcode){
+                    setState(() {
+                      needShowDialog = 0;
+                    });
+                    result.add(_scanBarcode);
+                    break;
+                  } else{
+                      needShowDialog = 1;
+                  }       
+                }
+                print("$needShowDialog");
+                if(needShowDialog == 0) {
+                    setState(() {
+                       isShowDialog = false;
+                    }); 
+                }
+                else {
+                    setState(() {
+                       isShowDialog = true;
+                    });                   
+                }
+                if(_scanBarcode != "-1") {
+                 isShowDialog
+                  ? showDialog(
+                        context: context, 
+                        builder: (ctx1) => AlertDialog(
+                          title: Text("Thông báo", style: TextStyle(fontSize: 22),),
+                          content: Text("Sản phẩm đã quét không thuộc danh mục của công ty", style: TextStyle(color: Color(0xff544c4c)),),
+                          actions: [TextButton(
+                             onPressed: () => Navigator.pop(ctx1),
+                             child: Center (child: const Text(
+                               'OK',
+                               style: TextStyle(decoration: TextDecoration.underline,),
+                             ),)
+                           ),                      
+                          ],                                      
+                        )
+                      )
+                  : Text("");
+                }
+            },
+            //icon plus
             icon: Icon(
               Icons.add,
               color: Color(0xff105480),
@@ -154,11 +187,6 @@ class ResultBarcodeState extends State<ResultBarcode> {
 
         setState(() {
             _scanBarcode = barcodeScanResponse;
-            for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
-               if(_scanBarcode == item.barcode){
-                   result.add(_scanBarcode);
-               }
-            } 
         });
   
     }
