@@ -51,7 +51,7 @@ class EnterCustomerState extends State<EnterCustomer> {
                         cursorHeight: 23,
                         cursorColor: darkGrey,
                         textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(fontSize: 18, color: Color(0xff722828)),
+                        style: TextStyle(fontSize: 16, color: Color(0xff722828)),
                         validator: (value) {
                             if (value == null || value.isEmpty) {
                                 return 'Bạn chưa điền vào ô';
@@ -67,7 +67,7 @@ class EnterCustomerState extends State<EnterCustomer> {
                                 borderSide: BorderSide(color: Color(0xffE2DDDD)),
                             ),
                             hintText: "Số điện thoại",
-                            hintStyle: TextStyle(fontSize: 18.0, color: Color(0xff722828)),
+                            hintStyle: TextStyle(fontSize: 16.0, color: Color(0xff722828)),
 
                         ),
                       )
@@ -127,7 +127,7 @@ class EnterCustomerState extends State<EnterCustomer> {
                         cursorHeight: 23,
                         cursorColor: darkGrey,
                         textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(fontSize: 18, color: Color(0xff722828)),
+                        style: TextStyle(fontSize: 16, color: Color(0xff722828)),
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.supervisor_account),
                             fillColor: Color(0xffE2DDDD),
@@ -137,7 +137,7 @@ class EnterCustomerState extends State<EnterCustomer> {
                                 borderSide: BorderSide(color: Color(0xffE2DDDD)),
                             ),
                             hintText: "Họ và tên",
-                            hintStyle: TextStyle(fontSize: 18.0, color: Color(0xff722828)),
+                            hintStyle: TextStyle(fontSize: 16.0, color: Color(0xff722828)),
                         ),
 
                     ),
@@ -149,15 +149,24 @@ class EnterCustomerState extends State<EnterCustomer> {
 
       //bottom bar chỉ hiện khi isShowBottom true, update ở trên
       bottomNavigationBar: isShowBottom 
-      ? SizedBox(
-              width: widthDevice * 0.7,
+      ? Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [ BoxShadow(
+                   color: Colors.grey,
+                   blurRadius: 5.0,
+                   spreadRadius: 0.0,
+                   offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                )],
+              ),
+              width: widthDevice,
                   child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Divider(),
+                        SizedBox(height: 7,),
                         SizedBox(
-                          width: widthDevice*0.7,
-                          height: 35,
+                          width: widthDevice*0.8,
+                          height: 40,
                           child: ElevatedButton(
                               onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ScanItem()));
@@ -169,12 +178,13 @@ class EnterCustomerState extends State<EnterCustomer> {
                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
                                   )
                               ),
-                              child: Text("Tiến hành tạo đơn", )
+                              child: Text("Tiến hành tạo đơn", style: TextStyle(fontWeight: FontWeight.w600), )
                           )  
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(height: 7,),
                       ])
               )          
+                   
       :Text("")    
     );
   }

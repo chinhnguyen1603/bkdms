@@ -48,7 +48,7 @@ class ScanItemState  extends State<ScanItem> {
                     setState(() {
                       needShowDialog = 0;
                     });
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(_scanBarcode)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(item)));
                     break;
                   } else{
                       needShowDialog = 1;

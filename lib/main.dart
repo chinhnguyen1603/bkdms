@@ -6,11 +6,7 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'splash_screen.dart';
-import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
-import 'package:bkdms/screens/home_screens/InfoUser.dart';
 import 'package:bkdms/screens/home_screens/DescribeItem.dart';
-import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
-import 'package:bkdms/screens/home_screens/ShowListItem.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 
@@ -37,7 +33,7 @@ class MyApp extends StatelessWidget {
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: Login(),
+        body: SplashScreen(),
         ),
       )
     );

@@ -48,7 +48,6 @@ class DetailItemState extends State<DetailItem> {
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
     // tạo dropdown button chứa unit name
-
     List<DropdownMenuItem<String>> createList() {
      return unitName
       .map<DropdownMenuItem<String>>(
@@ -446,7 +445,7 @@ class DetailItemState extends State<DetailItem> {
                         SizedBox(height: 7,),
                         SizedBox(
                           width: widthDevice*0.8,
-                          height: 35,
+                          height: 40,
                           child: ElevatedButton(
                               onPressed: () {
                                   //Navigator.push(context, MaterialPageRoute(builder: (context) => ScanItem()));
@@ -461,7 +460,7 @@ class DetailItemState extends State<DetailItem> {
                               child: Text("Chọn mua", style: TextStyle(fontWeight: FontWeight.w700), )
                           )  
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(height: 7,),
                       ])
               )          
     );

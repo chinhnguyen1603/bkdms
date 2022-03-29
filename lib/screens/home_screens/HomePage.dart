@@ -383,7 +383,7 @@ class ScreenHomeState extends State<ScreenHome> {
             ),
             // chứa ô khuyến mãi
             SizedBox(
-              height: 120,
+              height: 100,
               width: widthDevice*0.98,
               child: ListView.builder( 
                 scrollDirection: Axis.horizontal,
