@@ -37,15 +37,15 @@ import 'dart:async';
 
   Future<void> getCart(String? token, String? workspace, int? agencyId) async {
 
-    //var url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart?' + 'agencyId = $agencyId');
-    var params = {
-      "agencyId": "$agencyId",
-    };
+    var url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart?' + 'agencyId=$agencyId');
+   // var params = {
+  //    "agencyId": "$agencyId",
+  //  };
 
-    Uri uri = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart?');
-    final url = uri.replace(queryParameters: params);
+    //Uri uri = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart');
+ //   final url = uri.replace(queryParameters: params);
     try {
-      final response = await http.post(
+      final response = await http.get(
         url, 
         headers: ({
           'Content-Type': 'application/json',

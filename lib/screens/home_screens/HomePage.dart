@@ -98,14 +98,6 @@ class ScreenHomeState extends State<ScreenHome> {
   static const textGrey = Color(0xff282323);
 
   late Future<List<Item>> futureItem;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Agency? user = Provider.of<Agency>(context);
-    futureItem = Provider.of<ItemProvider>(context).fetchAndSetItem(user.token, user.workspace);
-  }
-
-
    
 
  
@@ -452,151 +444,89 @@ class ScreenHomeState extends State<ScreenHome> {
             SizedBox(
               height: 700,
               width: widthDevice*0.98,
-              child: FutureBuilder<List<dynamic>>(
-                future: futureItem,
-                builder: (ctxItem, snapshot){
-                   if (snapshot.hasData) {
-                      List<dynamic> listItem = snapshot.data!; // đây là list Item thu được
-                      //thêm dấu chấm vào giá sản phẩm
-                      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-                      String Function(Match) mathFunc = (Match match) => '${match[1]}.';
-                      // build gridview
-                      return  GridView.builder(
-                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 4,
-                              mainAxisSpacing: 4,
-                              childAspectRatio: 1 / 1.2,
-                         ),
-                         padding: EdgeInsets.all(8),
-                         primary: false,
-                         itemCount: listItem.length,
-                         itemBuilder: (BuildContext context, int index) {
-                         //Xử lý đơn vị và chuyển đơn vị
-                         var baseUnit;
-                         List<dynamic> switchUnit = [];
-                         for(var unit in listItem[index].units){
-                            if(unit['isBaseUnit'] == true) {
-                                baseUnit = unit;
-                            } else {
-                                switchUnit.add(unit);
-                            }
-                         }   
-                         return GestureDetector(
-                              onTap: () {
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(listItem[index],baseUnit,switchUnit,listItem[index].units)));
-                              },
-                              child: Container(
-                                 color: Colors.white,
-                                 child: Column(
-                                    children: [
-                                           Image.network(
-                                              getUrlFromLinkImg("${listItem[index].linkImg}"),
-                                              width: widthDevice * 0.38,
-                                              height: widthDevice * 0.38,
-                                           ),
-                                           //Tên sản phẩm
-                                           SizedBox(height: 10, ),
-                                           SizedBox(
-                                               height: 28,
-                                               width: widthDevice * 0.4,
-                                               child: Text(
-                                                  "${listItem[index].name}",
-                                                  maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  softWrap: false,
-                                                  style: TextStyle(fontSize: 12),
-                                               )
-                                           ),
-                                          // Price Agency
-                                          SizedBox(
-                                               height: 25,
-                                               width: widthDevice * 0.4,
-                                               child: Text(
-                                                 "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
-                                                 style: TextStyle(fontSize: 16, color: Color(0xffb01313))
-                                               )
-                                          ),
-                                    ]
-                           )
-                         )
-                        );
-                      },
-                    );
-                   }
-                   else if (snapshot.hasError) {
-                      print("lỗi snapsht");
-                      throw "${snapshot.error}";
-                   }
-                   else {
-                      List<Item> listItem = Provider.of<ItemProvider>(context).lstItem;
-                      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-                      String Function(Match) mathFunc = (Match match) => '${match[1]}.';
-                      return  GridView.builder(
-                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 4,
-                              mainAxisSpacing: 4,
-                              childAspectRatio: 1 / 1.2,
-                         ),
-                         padding: EdgeInsets.all(8),
-                         primary: false,
-                         itemCount: listItem.length,
-                         itemBuilder: (BuildContext context, int index) {
-                         //Xử lý đơn vị và chuyển đơn vị
-                         var baseUnit;
-                         List<dynamic> switchUnit = [];
-                         for(var unit in listItem[index].units){
-                            if(unit['isBaseUnit'] == true) {
-                                baseUnit = unit;
-                            } else {
-                                switchUnit.add(unit);
-                            }
-                         }   
-                         return GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(listItem[index],baseUnit,switchUnit,listItem[index].units)));
-                              },
-                              child: Container(
-                                 color: Colors.white,
-                                 child: Column(
-                                    children: [
-                                           Image.network(
-                                              getUrlFromLinkImg("${listItem[index].linkImg}"),
-                                              width: widthDevice * 0.38,
-                                              height: widthDevice * 0.38,
-                                           ),
-                                           //Tên sản phẩm
-                                           SizedBox(height: 10, ),
-                                           SizedBox(
-                                               height: 28,
-                                               width: widthDevice * 0.4,
-                                               child: Text(
-                                                  "${listItem[index].name}",
-                                                  maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  softWrap: false,
-                                                  style: TextStyle(fontSize: 12),
-                                               )
-                                           ),
-                                          // Price Agency
-                                          SizedBox(
-                                               height: 25,
-                                               width: widthDevice * 0.4,
+              child: Consumer<ItemProvider>( builder: (ctxItemProvider, itemProvider, child) {  
+               return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 4,
+                    mainAxisSpacing: 4,
+                    childAspectRatio: 1/1.2,
+                ),
+                padding: EdgeInsets.all(8),
+                primary: false,
+                itemCount: itemProvider.lstItem.length,
+                itemBuilder: (BuildContext context, int index) {
+                    // thêm dấu chấm vào giá sản phẩm 
+                    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+                    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                    //Xử lý đơn vị và chuyển đơn vị
+                    var baseUnit;
+                    List<dynamic> switchUnit = [];
+                    for(var unit in itemProvider.lstItem[index].units){
+                        if(unit['isBaseUnit'] == true) {
+                          baseUnit = unit;
+                        } else {
+                          switchUnit.add(unit);
+                        }
+                    }
+                    return  Container(
+                            color: Colors.white,
+                            child: Column(
+                                children: [
+                                    // Ảnh sản phẩm
+                                    GestureDetector(
+                                        onTap: (){
+                                           Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit,itemProvider.lstItem[index].units)));
+                                       },
+                                        child: Image.network(
+                                            getUrlFromLinkImg("${itemProvider.lstItem[index].linkImg}"),
+                                            width: widthDevice*0.38,
+                                            height: widthDevice * 0.38,                       
+                                       ),
+                                    ),
+                                    //Tên sản phẩm
+                                    SizedBox(height: 10, ),
+                                    GestureDetector(
+                                        onTap: (){
+                                           Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(itemProvider.lstItem[index],baseUnit,switchUnit,itemProvider.lstItem[index].units)));
+                                        },
+                                        child: SizedBox(
+                                            height: 28 ,
+                                            width: widthDevice*0.4,
+                                            child: Text(
+                                               "${itemProvider.lstItem[index].name}",
+                                               maxLines: 2, 
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               style: TextStyle(fontSize: 12),
+                                        )
+                                    ),),
+                                    // Price Agency 
+                                    SizedBox(
+                                        height: 20,
+                                        width: widthDevice*0.4,
+                                        child: Row(
+                                          children: [
+                                             // Price baseUnit Agency
+                                             SizedBox(
+                                               height: 20,
+                                               width: widthDevice*0.34,
                                                child: Text(
                                                  "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + 'đ',
-                                                 style: TextStyle(fontSize: 16, color: Color(0xffb01313))
-                                               )
-                                          ),
-                                    ]
-                           )
-                         )
+                                                 style: TextStyle(fontSize:16, color: Color(0xffb01313))
+                                               ),
+                                             ),
+                                         ]
+                                        )
+                                    ),
+                                ]
+                            )
                         );
-                      },
-                    );
-                   }
-                })
-            ) 
+                },   
+              );
+              
+              },) 
+            )
           ],
         ),
       );
@@ -605,7 +535,6 @@ class ScreenHomeState extends State<ScreenHome> {
   
   // hàm lấy ảnh từ cloudinary
   String getUrlFromLinkImg(String linkImg) {
-        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
         //linkImg receive from server as Public Id
         final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;

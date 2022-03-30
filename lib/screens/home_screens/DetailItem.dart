@@ -555,7 +555,7 @@ class DetailItemState extends State<DetailItem> {
                                   Agency? user = Provider.of<Agency>(context, listen: false);
                                   print("in thử agency");
                                   print(user.id);
-                                  await getCart(user.token, user.workspace, 10);
+                                  await getCart(user.token, user.workspace, user.id);
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),
@@ -575,7 +575,6 @@ class DetailItemState extends State<DetailItem> {
 
   // hàm lấy ảnh từ cloudinary
   String getUrlFromLinkImg(String linkImg) {
-        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
         //linkImg receive from server as Public Id
         final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;

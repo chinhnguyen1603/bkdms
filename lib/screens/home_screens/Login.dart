@@ -8,6 +8,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
+import 'package:bkdms/services/ItemProvider.dart';
 
 
 
@@ -205,33 +206,34 @@ class LoginState extends State<Login> {
                          // phụ trợ xử lí String
                          String fault = onError.toString().replaceAll("{", ""); // remove {
                          String outputError = fault.replaceAll("}", ""); //remove }  
-                      // Alert Dialog khi lỗi xảy ra
-                      showDialog(
-                        context: context, 
-                        builder: (ctx1) => AlertDialog(
-                          title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                          content: Text(outputError),
-                          actions: [TextButton(
-                             onPressed: () => Navigator.pop(ctx1),
-                             child: Center (child: const Text(
-                               'OK',
-                               style: TextStyle(decoration: TextDecoration.underline,),
-                             ),)
-                           ),                      
-                          ],                                      
-                        ));
-                      setState(() {
-                        _isLoading = false;
-                      });
+                         // Alert Dialog khi lỗi xảy ra
+                         showDialog(
+                           context: context, 
+                           builder: (ctx1) => AlertDialog(
+                               title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                               content: Text(outputError),
+                               actions: [TextButton(
+                                 onPressed: () => Navigator.pop(ctx1),
+                                 child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                                    ),                      
+                               ],                                      
+                         ));
+                         setState(() {
+                            _isLoading = false;
+                         });
                       })
-                      .then((val) {
+                      .then((val) async {
                         setState(() {
                           _isLoading = false;
                         });
                         user?.updateValue(val);
-                        print(user?.token);
+                        print("test thử name");
+                        print(user?.name);
                       })
-                      .then((_) => {      
+                      .then((_) async => {      
+                        await Provider.of<ItemProvider>(context, listen: false).fetchAndSetItem(user?.token, user?.workspace),
+                        print("test in lstItem"),
+                        print(Provider.of<ItemProvider>(context, listen: false).lstItem),
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())),
                       });                      
                   }  
