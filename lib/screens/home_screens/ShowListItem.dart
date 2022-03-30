@@ -36,6 +36,7 @@ class ShowListItemState extends State<ShowListItem> {
   @override
   Widget build(BuildContext context) {
     int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart = 0
+    double heigtDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
     
@@ -148,6 +149,7 @@ class ShowListItemState extends State<ShowListItem> {
                             color: Colors.white,
                             child: Column(
                                 children: [
+                                    // ảnh sản phẩm
                                     GestureDetector(
                                         onTap: (){
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailItem(searchList[index],baseUnit,switchUnit,itemProvider.lstItem[index].units)));
@@ -192,8 +194,37 @@ class ShowListItemState extends State<ShowListItem> {
                                              ),
                                              // icon add cart
                                              GestureDetector(
+                                               //Show modal bottom sheet khi nhấn vào icon add cart
                                                onTap: (){
-                                                  Provider.of<CountBadge>(context, listen: false).updatePlus();
+                                                  //Provider.of<CountBadge>(context, listen: false).updatePlus();
+                                                  showModalBottomSheet<void>(
+                                                     backgroundColor: Colors.white,
+                                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
+                                                     context: ctxItemProvider,
+                                                     builder: (BuildContext context) {
+                                                        return Container(
+                                                           height: heigtDevice*0.6,
+                                                           child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              children: <Widget>[
+                                                                // icon button xóa 
+                                                                SizedBox(
+                                                                  width: widthDevice,
+                                                                  height: 20,
+                                                                  child: IconButton(
+                                                                    icon: Icon(Icons.cancel_presentation, size: 20,),
+                                                                    alignment: Alignment.centerRight,
+                                                                    onPressed: () => Navigator.pop(context),
+                                                                  ),
+                                                                ),
+                                                                // ảnh sp + tên + giá + số lượng
+                                                              ],
+                                                           ),
+                                                        );
+                                                     },//builder
+                                                  );//showmodal bottom sheet
                                                },
                                                child: Container(
                                                   height: 20,

@@ -12,10 +12,10 @@ class ItemProvider with ChangeNotifier{
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/product');
     try {
       final response = await http.get(url, headers: ({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-      'Workspace' : "$workspace",
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
       }));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Item> loadedCategories = [];

@@ -5,6 +5,8 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
+import 'package:bkdms/services/CartProvider.dart';
+import 'package:bkdms/models/Agency.dart';
 
 class DetailItem extends StatefulWidget {
   late Item myItem;
@@ -529,6 +531,7 @@ class DetailItemState extends State<DetailItem> {
           )
         );
       }),
+      //button chọn mua
       bottomNavigationBar: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -548,8 +551,11 @@ class DetailItemState extends State<DetailItem> {
                           width: widthDevice*0.8,
                           height: 40,
                           child: ElevatedButton(
-                              onPressed: () {
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ScanItem()));
+                              onPressed: () async {
+                                  Agency? user = Provider.of<Agency>(context, listen: false);
+                                  print("in thử agency");
+                                  print(user.id);
+                                  await getCart(user.token, user.workspace, 10);
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),

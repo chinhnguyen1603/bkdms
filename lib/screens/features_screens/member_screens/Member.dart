@@ -6,7 +6,7 @@ class Member extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    double heigtDevice = MediaQuery.of(context).size.height;
+    double heigtDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9;
     return Scaffold(
