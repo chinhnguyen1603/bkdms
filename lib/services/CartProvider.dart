@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:bkdms/models/Cart.dart';
 
-
-
-
+class CartProvider with ChangeNotifier{
+  List<Cart> lstCart = [];
+  
   Future<void> addCart(String? token, String? workspace, int? agencyId, int unitId, String quantity) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/cart');
-    try {
+    print(" bắt đầu add cart");
+     try {
       final response = await http.post(
         url, 
         headers: ({
@@ -23,10 +25,8 @@ import 'dart:async';
           'quantity': quantity,
         }),
       );
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(" post thử cart");
+      print("kêt quả add cart");
       print(response.statusCode);
-      print(extractedData);
     }
     catch (error) {
       print(error);
@@ -35,15 +35,13 @@ import 'dart:async';
   }
 
 
-  Future<void> getCart(String? token, String? workspace, int? agencyId) async {
-
-    var url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart?' + 'agencyId=$agencyId');
-   // var params = {
-  //    "agencyId": "$agencyId",
-  //  };
-
-    //Uri uri = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart');
- //   final url = uri.replace(queryParameters: params);
+  Future<List<Cart>> getCart(String? token, String? workspace, int? agencyId) async {
+    var params = {
+     "agencyId": "$agencyId",
+    };
+    Uri uri = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart');
+    final url = uri.replace(queryParameters: params);
+    print("bắt đầu get cart");
     try {
       final response = await http.get(
         url, 
@@ -55,9 +53,25 @@ import 'dart:async';
         }),
       );
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(" get thử cart");
-      print(response.statusCode);
-      print(extractedData);
+      print(response.statusCode);//test status code
+      final List<Cart> loadedCarts = [];
+      extractedData['data']['productWithUnit'].forEach((cartData) {
+        loadedCarts.add(
+          Cart(
+            id: cartData['id'],
+            quantity: cartData['quantity'],
+            unitId: cartData['unitId'],
+            agencyId: cartData['agencyId'],
+            unit: cartData['unit']
+          ),
+        );
+      });
+      this.lstCart = loadedCarts;
+      notifyListeners();
+      //test kết quả
+      print("kết quả get cart");
+      print(lstCart);
+      return lstCart;
     }
     catch (error) {
       print(error);
@@ -65,4 +79,4 @@ import 'dart:async';
     }
   }
 
-
+}

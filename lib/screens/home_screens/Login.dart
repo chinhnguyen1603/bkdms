@@ -232,7 +232,7 @@ class LoginState extends State<Login> {
                       })
                       .then((_) async => {      
                         await Provider.of<ItemProvider>(context, listen: false).fetchAndSetItem(user?.token, user?.workspace),
-                        print("test in lstItem"),
+                        print("test kết quả lstItem"),
                         print(Provider.of<ItemProvider>(context, listen: false).lstItem),
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())),
                       });                      

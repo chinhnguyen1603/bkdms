@@ -550,12 +550,10 @@ class DetailItemState extends State<DetailItem> {
                         SizedBox(
                           width: widthDevice*0.8,
                           height: 40,
+                          //button chọn mua
                           child: ElevatedButton(
                               onPressed: () async {
-                                  Agency? user = Provider.of<Agency>(context, listen: false);
-                                  print("in thử agency");
-                                  print(user.id);
-                                  await getCart(user.token, user.workspace, user.id);
+
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),

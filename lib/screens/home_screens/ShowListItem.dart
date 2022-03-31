@@ -8,6 +8,7 @@ import 'package:bkdms/screens/home_screens/DetailItem.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/models/CountBadge.dart';
+import 'package:bkdms/screens/home_screens/ScreenCart.dart';
 
 class ShowListItem extends StatefulWidget {
   const ShowListItem({ Key? key }) : super(key: key);
@@ -39,6 +40,7 @@ class ShowListItemState extends State<ShowListItem> {
     double heigtDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
+    double myWidth = widthDevice*0.9; // chiều rộng hàng ngoài cùng(tê, giá sp, thông tin chi tiết,...)
     
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +63,7 @@ class ShowListItemState extends State<ShowListItem> {
              child: IconButton(
                icon: Icon(Icons.shopping_cart, color: darkGrey,), 
                onPressed: () {
-
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCart()));
                }
              ),
           )
@@ -102,7 +104,6 @@ class ShowListItemState extends State<ShowListItem> {
                                   .toList();                
                          _isSearching = true;
                       });
-                      print(searchList);
                     },
                       // Specify a custom transition to be used for
                       // animating between opened and closed stated.
@@ -197,13 +198,14 @@ class ShowListItemState extends State<ShowListItem> {
                                                //Show modal bottom sheet khi nhấn vào icon add cart
                                                onTap: (){
                                                   //Provider.of<CountBadge>(context, listen: false).updatePlus();
+                                                  // để người dùng thêm vào giỏ hàng
                                                   showModalBottomSheet<void>(
                                                      backgroundColor: Colors.white,
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
                                                      context: ctxItemProvider,
                                                      builder: (BuildContext context) {
                                                         return Container(
-                                                           height: heigtDevice*0.6,
+                                                           height: heigtDevice*0.4,
                                                            child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               mainAxisAlignment: MainAxisAlignment.start,
@@ -219,7 +221,72 @@ class ShowListItemState extends State<ShowListItem> {
                                                                     onPressed: () => Navigator.pop(context),
                                                                   ),
                                                                 ),
-                                                                // ảnh sp + tên + giá + số lượng
+                                                               
+                                                                // ảnh sp + tên + + xuất xứ + giá 
+                                                                Container(
+                                                                   width: myWidth,
+                                                                   height: 80,
+                                                                   child: Row(children: [
+                                                                      //Ảnh sản phẩm
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.3,
+                                                                         child: Image.network(
+                                                                             getUrlFromLinkImg("${itemProvider.lstItem[index].linkImg}")
+                                                                         ),
+                                                                      ),
+                                                                      SizedBox(width: 10,),
+                                                                      //Tên, xuất xứ và giá
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.6,
+                                                                         child: Column(
+                                                                             children: [
+                                                                             // tên sản phẩm
+                                                                                SizedBox(
+                                                                                    height: 30,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                       "${itemProvider.lstItem[index].name}", 
+                                                                                       maxLines: 1,
+                                                                                       overflow: TextOverflow.ellipsis,
+                                                                                       softWrap: false,
+                                                                                       textAlign: TextAlign.left,
+                                                                                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),                                        
+                                                                                    )
+                                                                                ),
+                                                                             // Xuất xứ
+                                                                                SizedBox(
+                                                                                    height: 24,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "Xuất xứ: " + "${itemProvider.lstItem[index].countryProduce}", 
+                                                                                      maxLines: 1,
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                      softWrap: false,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 12, ),                                        
+                                                                                    )
+                                                                                ),                                                                     
+                                                                             // giá bán cho đại lý
+                                                                                SizedBox(
+                                                                                    height: 20,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                                                                      maxLines: 1,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                                                                    )
+                                                                                ),                                    
+                                                                             ],),
+                                                                      )
+                                                                  ]),
+                                                                ),
+                                                                
+                                                                //Chọn đơn vị + Nhập số lượng
+                                                                Divider(),
+                                                                
                                                               ],
                                                            ),
                                                         );

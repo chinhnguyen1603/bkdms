@@ -6,9 +6,9 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'splash_screen.dart';
-import 'package:bkdms/screens/home_screens/DescribeItem.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
+import 'package:bkdms/services/CartProvider.dart';
 
 
 
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Agency()),
         ChangeNotifierProvider(create: (context) => ItemProvider()),
         ChangeNotifierProvider(create: (context) => CountBadge()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
     ],
     child: MaterialApp(
       title: "BKDMS Mobile App",

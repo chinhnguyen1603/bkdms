@@ -8,9 +8,12 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/screens/home_screens/ShowListItem.dart';
-import 'package:bkdms/screens/home_screens/ScreenOrder.dart';
-import 'package:bkdms/screens/home_screens/ScreenStat.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/ScreenOrder.dart';
+import 'package:bkdms/screens/home_screens/stat_screen/ScreenStat.dart';
 import 'package:bkdms/screens/home_screens/DetailItem.dart';
+import 'package:bkdms/services/CartProvider.dart';
+import 'package:bkdms/models/CountBadge.dart';
+
 class HomePage extends StatefulWidget {
 
   @override
@@ -413,6 +416,7 @@ class ScreenHomeState extends State<ScreenHome> {
               width: widthDevice*0.9,
               child: Row(
                 children:[
+                  //text sản phẩm
                   SizedBox(
                     width: widthDevice*0.25,
                     child: Text(  
@@ -420,11 +424,17 @@ class ScreenHomeState extends State<ScreenHome> {
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
                     )
                   ),
+                  //text xem thêm
                   SizedBox(
                     width: widthDevice*0.65,
                     child:
                       TextButton(
-                       onPressed: (){
+                       onPressed: () async {
+                         // gọi số lượng cart để hiển thị bên icon giỏ hàng
+                         Agency? user = Provider.of<Agency>(context, listen: false);
+                         print("gọi user trước khi get cart\n" + "${user.id}");
+                         await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+                         Provider.of<CountBadge>(context, listen: false).counter = Provider.of<CartProvider>(context, listen: false).lstCart.length;
                          Navigator.push(context, MaterialPageRoute(builder: (context) => ShowListItem()));
                        }, 
                        child: SizedBox(
