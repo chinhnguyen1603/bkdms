@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
 
 
-  late Future<List<dynamic>> futureItem;
+
    int _pageIndex = 0;
   late PageController _pageController;
   
@@ -100,7 +100,7 @@ class ScreenHomeState extends State<ScreenHome> {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
 
-  late Future<List<Item>> futureItem;
+
    
 
  
@@ -429,12 +429,7 @@ class ScreenHomeState extends State<ScreenHome> {
                     width: widthDevice*0.65,
                     child:
                       TextButton(
-                       onPressed: () async {
-                         // gọi số lượng cart để hiển thị bên icon giỏ hàng
-                         Agency? user = Provider.of<Agency>(context, listen: false);
-                         print("gọi user trước khi get cart\n" + "${user.id}");
-                         await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
-                         Provider.of<CountBadge>(context, listen: false).counter = Provider.of<CartProvider>(context, listen: false).lstCart.length;
+                       onPressed: () {
                          Navigator.push(context, MaterialPageRoute(builder: (context) => ShowListItem()));
                        }, 
                        child: SizedBox(

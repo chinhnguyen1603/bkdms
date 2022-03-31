@@ -20,6 +20,7 @@ class ShowListItem extends StatefulWidget {
 
 
 class ShowListItemState extends State<ShowListItem> {
+ 
   static const darkGrey = Color(0xff544C4C); 
   //search bar
   FloatingSearchBarController? searchController;
@@ -27,25 +28,24 @@ class ShowListItemState extends State<ShowListItem> {
   bool _isSearching = false;
   //giá từng đơn vị
   String unitPrice ="";
-    // dropdown tên đơn vị
+  // dropdown tên đơn vị
   String? btnSelectVal;
+  //form nhập số lượng sản phẩm
+  final _formEnterAmountKey = GlobalKey<FormState>();
+  final enternAmountController = TextEditingController();
+ 
   @override
   void initState() {
     super.initState();
     _isSearching = false;
      //mặc định searchList phải bằng lstItem để auto hiện khi xóa search
   } 
-  
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
 
-  }
 
 
   @override
   Widget build(BuildContext context) {
-    int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart = 0
+    int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart 
     double heigtDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
@@ -144,7 +144,21 @@ class ShowListItemState extends State<ShowListItem> {
                     //thêm dấu chấm vào giá sản phẩm
                     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
-                    //Xử lý đơn vị và chuyển đơn vị
+                    // List tên đơn vị của mỗi sản phẩm
+                    final List<String> uName =  List<String>.generate(itemProvider.lstItem[index].units.length, (count) => "${itemProvider.lstItem[index].units[count]['name']}");
+                    uName.add("");
+                    List<DropdownMenuItem<String>> createList() {
+                        return uName
+                            .map<DropdownMenuItem<String>>( 
+                               (e) => DropdownMenuItem(
+                                 value: e,
+                                 child: Text("$e", style: TextStyle(fontSize: 14),),
+                               ),
+                            )
+                            .toList();
+                    } 
+
+                    //Xử lý đơn vị và chuyển đơn vị                                    
                     var baseUnit;
                     List<dynamic> switchUnit = [];
                     for(var unit in itemProvider.lstItem[index].units){
@@ -154,22 +168,7 @@ class ShowListItemState extends State<ShowListItem> {
                           switchUnit.add(unit);
                         }
                     }
-                                                          // lấy tên đơn vị vào list
-                                                          List<String> unitName = [];
-                                                          unitName.add(baseUnit['name']);
-                                                          for(var unitSw  in switchUnit){
-                                                            unitName.add(unitSw['name']);
-                                                          }
-                                                          List<DropdownMenuItem<String>> createList() {
-                                                              return unitName
-                                                                 .map<DropdownMenuItem<String>>( 
-                                                                   (e) => DropdownMenuItem(
-                                                                       value: e,
-                                                                       child: Text("$e"),
-                                                                    ),
-                                                                  )
-                                                                 .toList();
-                                                          }                                     
+                                   
                     return  Container(
                             color: Colors.white,
                             child: Column(
@@ -221,14 +220,15 @@ class ShowListItemState extends State<ShowListItem> {
                                              GestureDetector(
                                                //Show modal bottom sheet khi nhấn vào icon add cart
                                                onTap: (){
+                                                 print(uName);
                                                   // để người dùng thêm vào giỏ hàng
                                                   showModalBottomSheet<void>(
+                                                    useRootNavigator: true,
                                                      backgroundColor: Colors.white,
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
                                                      context: ctxGridview,
                                                      builder: (BuildContext context) {
-                                                       return StatefulBuilder(
-          builder: (BuildContext context, setState) =>
+                                                       return StatefulBuilder( builder: (BuildContext context, setState) =>
                                                         Container(
                                                            height: heigtDevice*0.4,
                                                            child: Column(
@@ -239,14 +239,22 @@ class ShowListItemState extends State<ShowListItem> {
                                                                 // icon button xóa 
                                                                 SizedBox(
                                                                   width: widthDevice,
-                                                                  height: 20,
+                                                                  height: 30,
                                                                   child: IconButton(
                                                                     icon: Icon(Icons.cancel_presentation, size: 20,),
                                                                     alignment: Alignment.centerRight,
-                                                                    onPressed: () => Navigator.pop(context),
+                                                                    onPressed: () {
+                                                                               setState(() {
+                                                                                    //set value của dropdowm về ""                
+                                                                                    btnSelectVal = "";
+                                                                                 });
+                                                                       Navigator.pop(context);
+                                                                    },
                                                                   ),
+ 
                                                                 ),
-                                                               
+                                                                SizedBox(height: 5,),
+
                                                                 // ảnh sp + tên + + xuất xứ + giá 
                                                                 Container(
                                                                    width: myWidth,
@@ -307,39 +315,118 @@ class ShowListItemState extends State<ShowListItem> {
                                                                              ],),
                                                                       )
                                                                   ]),
-                                                                ),
-                                                                
-                                                                //Chọn đơn vị + Nhập số lượng
+                                                                ),                        
+                                                               
                                                                 Divider(),
-                                                                                              SizedBox(
-                                height: 35,
-                                width: myWidth*0.35,
-                                child: DropdownButton(
-                                  items: createList(),
-                                  hint: Text("Chọn đơn vị"),
-                                  value: btnSelectVal, 
-                                  onChanged: (newValue) {
-                                     if(newValue!=null){
-
-                                         print(newValue.toString());
-                                         // lấy đơn giá của đơn vị
-                                         for( var unit in itemProvider.lstItem[index].units){
-                                         if(newValue == unit['name']){
-                                             setState(() {
-                                               unitPrice = unit['agencyPrice'];
-                                               btnSelectVal = newValue as String;
-                                             });
-                                           }
-                                         }
-                                     }
-                                  }
-                                )
-                              )
+                                                                
+                                                                //text lưu ý xem quy đổi
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                   SizedBox(width: widthDevice*0.1,),
+                                                                   SizedBox(
+                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết sản phẩm", style: TextStyle(color: darkGrey, fontSize:14,),),
+                                                                   ),
+                                                                  ])
+                                                                ),
+                                                                SizedBox(height: 10,),
+                                                                // chọn đơn vị
+                                                                SizedBox(
+                                                                  height: 20,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    // text chọn đơn vị
+                                                                    SizedBox(
+                                                                      width: myWidth*0.6,
+                                                                      height: 20,
+                                                                      child: Text("Đơn vị", style: TextStyle(color: darkGrey, fontSize: 14),),
+                                                                   ),
+                                                                   // dropdown button 
+                                                                   
+                                                                   SizedBox(
+                                                                      height: 20,
+                                                                      width: 60,
+                                                                      child: DropdownButton(
+                                                                         items: createList(),
+                                                                         value: btnSelectVal, // giá trị khi select
+                                                                         onChanged: (newValue) {
+                                                                            if(newValue!=null){
+                                                                               // lấy đơn giá của đơn vị
+                                                                               for( var unit in itemProvider.lstItem[index].units){
+                                                                                   if(newValue == unit['name']){
+                                                                                       setState(() {
+                                                                                          unitPrice = unit['agencyPrice'];
+                                                                                          btnSelectVal = newValue as String;
+                                                                                       });
+                                                                                   }
+                                                                               }
+                                                                            }
+                                                                         }
+                                                                      ) 
+                                                                    ),
+                                                                  ]),
+                                                                ),
+                                                                SizedBox(height: 10,),       
+                                                                //Nhập số lượng
+                                                                SizedBox(
+                                                                  height: 20,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    // text nhập số lượng
+                                                                    SizedBox(
+                                                                      width: myWidth*0.6,
+                                                                      height: 20,
+                                                                      child: Text("Nhập số lượng", style: TextStyle(color: darkGrey, fontSize: 14),),
+                                                                   ),
+                                                                   SizedBox(
+                                                                     height: 20,
+                                                                     width: 30, 
+                                                                     child: Form(
+                                                      
+                                                                       key: _formEnterAmountKey,
+                                                                       child: TextFormField(
+                                                                         controller: enternAmountController,
+                                                                         
+                keyboardType: TextInputType.number,
+                cursorHeight: 14,
+                textAlignVertical: TextAlignVertical.center,
+                style: TextStyle(fontSize: 12),
+                decoration:  InputDecoration(
+                  enabledBorder:  OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    borderSide: BorderSide(color: darkGrey),
+                  ),
+                ), 
+                
+              ),
  
-                                                              ],
+                                                                     ),
+                                                                   )
+                                                                  ])
+                                                                ),
+                                                                Divider(),
+                                                                //button thêm vào giỏ
+                                                                SizedBox(height: 10,),
+                                                                SizedBox(
+                                                                  height: 54,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    Container(
+                                                                      height: 54,
+                                                                      width: widthDevice*0.8,
+                                                                      color: Colors.blue,
+                                                                    )
+                                                                  ]),
+                                                                )
+
+                                                             ],
                                                            ),
                                                         ) );
-                                                     },//builder
+                                                      },//builder
                                                   );//showmodal bottom sheet
                                                },
                                                child: Container(

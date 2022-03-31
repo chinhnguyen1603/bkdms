@@ -7,9 +7,9 @@ import './Register.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/ItemProvider.dart';
-
+import 'package:bkdms/services/CartProvider.dart';
+import 'package:bkdms/models/CountBadge.dart';
 
 
 
@@ -45,6 +45,8 @@ class LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
+
     return  Scaffold(
       backgroundColor: Colors.white,
       body: _isLoading
@@ -96,7 +98,7 @@ class LoginState extends State<Login> {
             // chứa form số điện thoại
             SizedBox(
               height: 60,
-              width: 360,
+              width: widthDevice*0.9,
               // form số điện thoại
               child: TextFormField(
                 controller: phoneController,
@@ -129,7 +131,7 @@ class LoginState extends State<Login> {
             // chứa form mật khẩu
             SizedBox(
               height: 60,
-              width: 360,
+              width: widthDevice*0.9,
               // form mật khẩu
               child: TextFormField(
                 controller: passwordController,
@@ -223,17 +225,20 @@ class LoginState extends State<Login> {
                          });
                       })
                       .then((val) async {
-                        setState(() {
-                          _isLoading = false;
-                        });
                         user?.updateValue(val);
                         print("test thử name");
                         print(user?.name);
+                        //update số lượng hàng trong giỏ để show trên icon giỏ hàng
+                        await Provider.of<CartProvider>(context, listen: false).getCart(user?.token, user?.workspace, user?.id);
+                        Provider.of<CountBadge>(context, listen: false).counter = Provider.of<CartProvider>(context, listen: false).lstCart.length;
                       })
                       .then((_) async => {      
                         await Provider.of<ItemProvider>(context, listen: false).fetchAndSetItem(user?.token, user?.workspace),
                         print("test kết quả lstItem"),
                         print(Provider.of<ItemProvider>(context, listen: false).lstItem),
+                        setState(() {
+                          _isLoading = false;
+                        }),
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())),
                       });                      
                   }  
