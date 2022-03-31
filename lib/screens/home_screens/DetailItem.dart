@@ -117,7 +117,7 @@ class DetailItemState extends State<DetailItem> {
                      ),
                   ),
                   
-                  // Container chứa giá sản phẩm
+                  // Container chứa giá sản phẩm (chọn đơn vị => hiện giá)
                   SizedBox(height: 12,),
                   Container(
                     width: widthDevice,

@@ -21,17 +21,26 @@ class ShowListItem extends StatefulWidget {
 
 class ShowListItemState extends State<ShowListItem> {
   static const darkGrey = Color(0xff544C4C); 
+  //search bar
   FloatingSearchBarController? searchController;
   List<Item> searchList = [];
   bool _isSearching = false;
-
+  //giá từng đơn vị
+  String unitPrice ="";
+    // dropdown tên đơn vị
+  String? btnSelectVal;
   @override
   void initState() {
     super.initState();
     _isSearching = false;
      //mặc định searchList phải bằng lstItem để auto hiện khi xóa search
   } 
+  
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+  }
 
 
   @override
@@ -41,7 +50,6 @@ class ShowListItemState extends State<ShowListItem> {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
     double myWidth = widthDevice*0.9; // chiều rộng hàng ngoài cùng(tê, giá sp, thông tin chi tiết,...)
-    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -132,7 +140,7 @@ class ShowListItemState extends State<ShowListItem> {
                 padding: EdgeInsets.all(8),
                 primary: false,
                 itemCount: searchList.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (BuildContext ctxGridview, int index) {
                     //thêm dấu chấm vào giá sản phẩm
                     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
@@ -145,7 +153,23 @@ class ShowListItemState extends State<ShowListItem> {
                         } else {
                           switchUnit.add(unit);
                         }
-                    }                  
+                    }
+                                                          // lấy tên đơn vị vào list
+                                                          List<String> unitName = [];
+                                                          unitName.add(baseUnit['name']);
+                                                          for(var unitSw  in switchUnit){
+                                                            unitName.add(unitSw['name']);
+                                                          }
+                                                          List<DropdownMenuItem<String>> createList() {
+                                                              return unitName
+                                                                 .map<DropdownMenuItem<String>>( 
+                                                                   (e) => DropdownMenuItem(
+                                                                       value: e,
+                                                                       child: Text("$e"),
+                                                                    ),
+                                                                  )
+                                                                 .toList();
+                                                          }                                     
                     return  Container(
                             color: Colors.white,
                             child: Column(
@@ -197,14 +221,15 @@ class ShowListItemState extends State<ShowListItem> {
                                              GestureDetector(
                                                //Show modal bottom sheet khi nhấn vào icon add cart
                                                onTap: (){
-                                                  //Provider.of<CountBadge>(context, listen: false).updatePlus();
                                                   // để người dùng thêm vào giỏ hàng
                                                   showModalBottomSheet<void>(
                                                      backgroundColor: Colors.white,
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
-                                                     context: ctxItemProvider,
+                                                     context: ctxGridview,
                                                      builder: (BuildContext context) {
-                                                        return Container(
+                                                       return StatefulBuilder(
+          builder: (BuildContext context, setState) =>
+                                                        Container(
                                                            height: heigtDevice*0.4,
                                                            child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,7 +298,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                                     height: 20,
                                                                                     width: myWidth*0.6,
                                                                                     child: Text(
-                                                                                      "${baseUnit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                                                                      "${unitPrice.replaceAllMapped(reg, mathFunc)}" + "đ", 
                                                                                       maxLines: 1,
                                                                                       textAlign: TextAlign.left,
                                                                                       style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
@@ -286,10 +311,34 @@ class ShowListItemState extends State<ShowListItem> {
                                                                 
                                                                 //Chọn đơn vị + Nhập số lượng
                                                                 Divider(),
-                                                                
+                                                                                              SizedBox(
+                                height: 35,
+                                width: myWidth*0.35,
+                                child: DropdownButton(
+                                  items: createList(),
+                                  hint: Text("Chọn đơn vị"),
+                                  value: btnSelectVal, 
+                                  onChanged: (newValue) {
+                                     if(newValue!=null){
+
+                                         print(newValue.toString());
+                                         // lấy đơn giá của đơn vị
+                                         for( var unit in itemProvider.lstItem[index].units){
+                                         if(newValue == unit['name']){
+                                             setState(() {
+                                               unitPrice = unit['agencyPrice'];
+                                               btnSelectVal = newValue as String;
+                                             });
+                                           }
+                                         }
+                                     }
+                                  }
+                                )
+                              )
+ 
                                                               ],
                                                            ),
-                                                        );
+                                                        ) );
                                                      },//builder
                                                   );//showmodal bottom sheet
                                                },
