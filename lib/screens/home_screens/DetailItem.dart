@@ -8,6 +8,7 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/CountBadge.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 class DetailItem extends StatefulWidget {
   late Item myItem;
@@ -795,15 +796,18 @@ class DetailItemState extends State<DetailItem> {
                                                                         
                                                                         onPressed: () async {
                                                                           //post api add cart tại đây
-                                                                           if (_formEnterAmountKey.currentState!.validate()){
-                                                                              Agency user = Provider.of<Agency>(context, listen: false);
-                                                                              await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text);
+                                                                           if (_formEnterAmountKey.currentState!.validate())  {
+                                                                              //dialog loading chờ add rồi get cart
+                                                                              await showDialog (
+                                                                                 context: context,
+                                                                                 builder: (context) =>
+                                                                                    FutureProgressDialog(getFuture(), message: Text('Đang thêm vào giỏ')),
+                                                                              );
                                                                               setState(() {              
                                                                                   btnSelectVal = ""; //set value của dropdowm về ""
                                                                               });
                                                                               //update số lượng trên icon giỏ hàng
-                                                                              await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
-                                                                              Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);
+
                                                                               Navigator.pop(context);
                                                                            }
                                                                         },
@@ -847,4 +851,16 @@ class DetailItemState extends State<DetailItem> {
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
         return transformedUrl;
   }
+  
+  // hàm add cart rồi get, update số lượng sản phẩm
+  Future getFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text);
+      await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+      Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
+      return 'Hello, Future Progress Dialog!';
+    });
+  }
+
 }
