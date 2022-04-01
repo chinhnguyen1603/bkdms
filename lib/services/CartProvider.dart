@@ -25,11 +25,14 @@ class CartProvider with ChangeNotifier{
           'quantity': quantity,
         }),
       );
-      print("kêt quả add cart");
-      print(response.statusCode);
+      if (response.statusCode == 201){
+         print("kêt quả add cart");
+         print(response.statusCode);
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
     }
     catch (error) {
-      print(error);
       throw error;
     }
   }
@@ -52,25 +55,30 @@ class CartProvider with ChangeNotifier{
           'Workspace' : "$workspace",
         }),
       );
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(response.statusCode);//test status code
-      final List<Cart> loadedCarts = [];
-      extractedData['data']['productWithUnit'].forEach((cartData) {
-        loadedCarts.add(
-          Cart(
-            id: cartData['id'],
-            quantity: cartData['quantity'],
-            unitId: cartData['unitId'],
-            agencyId: cartData['agencyId'],
-            unit: cartData['unit']
-          ),
-        );
-      });
-      this.lstCart = loadedCarts;
-      notifyListeners();
-      //test kết quả
-      print(lstCart);
-      return lstCart;
+      // thành công
+      if (response.statusCode == 200) {
+        final extractedData = json.decode(response.body) as Map<String, dynamic>;
+        final List<Cart> loadedCarts = [];
+        extractedData['data']['productWithUnit'].forEach((cartData) {
+          loadedCarts.add(
+            Cart(
+              id: cartData['id'],
+              quantity: cartData['quantity'],
+              unitId: cartData['unitId'],
+              agencyId: cartData['agencyId'],
+              unit: cartData['unit']
+            ),
+          );
+        });
+        this.lstCart = loadedCarts;
+        notifyListeners();
+        //test kết quả
+        print(lstCart);
+        return lstCart;
+      } 
+      else{
+        throw jsonDecode(response.body);
+      } 
     }
     catch (error) {
       print(error);

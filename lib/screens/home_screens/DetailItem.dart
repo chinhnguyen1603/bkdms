@@ -856,7 +856,23 @@ class DetailItemState extends State<DetailItem> {
   Future getFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
-      await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text);
+      await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
+      .catchError((onError){
+          // Alert Dialog khi lỗi xảy ra
+          showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));              
+      });      
+      
+      //get cart và update CountBadge
       await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
       Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
       return 'Hello, Future Progress Dialog!';
