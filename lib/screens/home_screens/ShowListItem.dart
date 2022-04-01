@@ -229,7 +229,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                      builder: (BuildContext context) {
                                                        return StatefulBuilder( builder: (BuildContext context, setState) =>
                                                         Container(
-                                                           height: heigtDevice*0.42,
+                                                           height: 320,
                                                            child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               mainAxisAlignment: MainAxisAlignment.start,
@@ -243,10 +243,9 @@ class ShowListItemState extends State<ShowListItem> {
                                                                     icon: Icon(Icons.cancel_presentation, size: 20,),
                                                                     alignment: Alignment.centerRight,
                                                                     onPressed: () {
-                                                                               setState(() {
-                                                                                    //set value của dropdowm về ""                
-                                                                                    btnSelectVal = "";
-                                                                                 });
+                                                                       setState(() {              
+                                                                          btnSelectVal = ""; //set value của dropdowm về ""
+                                                                       });
                                                                        Navigator.pop(context);
                                                                     },
                                                                   ),
@@ -275,7 +274,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                          width: myWidth*0.6,
                                                                          child: Column(
                                                                              children: [
-                                                                             // tên sản phẩm
+                                                                                // tên sản phẩm
                                                                                 SizedBox(
                                                                                     height: 30,
                                                                                     width: myWidth*0.6,
@@ -288,7 +287,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),                                        
                                                                                     )
                                                                                 ),
-                                                                             // Xuất xứ
+                                                                                // Xuất xứ
                                                                                 SizedBox(
                                                                                     height: 24,
                                                                                     width: myWidth*0.6,
@@ -301,7 +300,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                                       style: TextStyle(fontSize: 12, ),                                        
                                                                                     )
                                                                                 ),                                                                     
-                                                                             // giá bán cho đại lý
+                                                                                // giá bán cho đại lý
                                                                                 SizedBox(
                                                                                     height: 20,
                                                                                     width: myWidth*0.6,
@@ -326,7 +325,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                   child: Row(children: [
                                                                    SizedBox(width: widthDevice*0.1,),
                                                                    SizedBox(
-                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết sản phẩm", style: TextStyle(color: darkGrey, fontSize:14,),),
+                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết sản phẩm", style: TextStyle(color: darkGrey, fontSize:14, fontFamily: "SegoeScript"),),
                                                                    ),
                                                                   ])
                                                                 ),
@@ -337,23 +336,20 @@ class ShowListItemState extends State<ShowListItem> {
                                                                   width: widthDevice,
                                                                   child: Row(children: [
                                                                     SizedBox(width: widthDevice*0.1,),
-                                                                    // text chọn đơn vị
-                                      
-                                                                   SizedBox(
+                                                                    // text chọn vị
+                                                                    SizedBox(
                                                                       width: myWidth*0.6,
                                                                       height: 30,
                                                                       child: Column(
                                                                         children: [
-                                                                          SizedBox(height: 7,),
-                                SizedBox(height: 20,width: myWidth*0.6, child: Text("Đơn vị", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
-SizedBox(height: 3,),
+                                                                          SizedBox(height: 8,),
+                                                                          SizedBox(height: 20,width: myWidth*0.6, child: Text("Đơn vị", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
+                                                                          SizedBox(height: 2,),
                                                                         ],
                                                                       )
-                                                          
-                                                                   ),
-                                                                   // dropdown button 
-                                                                   
-                                                                   SizedBox(
+                                                                    ),
+                                                                   // dropdown button
+                                                                    SizedBox(
                                                                       height: 30,
                                                                       width: 60,
                                                                       child: DropdownButton(
@@ -384,47 +380,44 @@ SizedBox(height: 3,),
                                                                   child: Row(children: [
                                                                     SizedBox(width: widthDevice*0.1,),
                                                                     // text nhập số lượng
-                                                                   SizedBox(
+                                                                    SizedBox(
                                                                       width: myWidth*0.6,
                                                                       height: 30,
                                                                       child: Column(
                                                                         children: [
-                                                                          SizedBox(height: 7,),
-                                SizedBox(height: 20,width: myWidth*0.6, child: Text("Nhập số lượng", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
-SizedBox(height: 3,),
+                                                                          SizedBox(height: 8,),
+                                                                          SizedBox(height: 20,width: myWidth*0.6, child: Text("Nhập số lượng", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
+                                                                          SizedBox(height: 2,),
                                                                         ],
                                                                       )
                                                           
-                                                                   ),
-                                                                   SizedBox(
-                                                                     height: 30,
-                                                                     width: 40, 
-                                                                     child: Form(
-                                                      
-                                                                       key: _formEnterAmountKey,
-                                                                       child: TextFormField(
-                                                                         controller: enternAmountController,
-                                                                         
-                keyboardType: TextInputType.number,
-                cursorHeight: 14,
-                textAlignVertical: TextAlignVertical.center,
-                style: TextStyle(fontSize: 12),
-                decoration:  InputDecoration(
-                  enabledBorder:  OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(color: darkGrey),
-                  ),
-                ), 
-                
-              ),
- 
-                                                                     ),
+                                                                    ),
+                                                                    //text formfield điền số lượng hàng
+                                                                    SizedBox(
+                                                                      height: 30,
+                                                                      width: 60, 
+                                                                      child: Form(
+                                                                        key: _formEnterAmountKey,
+                                                                        child: TextFormField(
+                                                                          controller: enternAmountController,        
+                                                                          keyboardType: TextInputType.number,
+                                                                          cursorHeight: 14,
+                                                                          textAlignVertical: TextAlignVertical.center,
+                                                                          style: TextStyle(fontSize: 12),
+                                                                          decoration:  InputDecoration(
+                                                                             enabledBorder:  OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(0),
+                                                                                borderSide: BorderSide(color: darkGrey),
+                                                                             ),
+                                                                          )
+                                                                        ),
+                                                                      ),
                                                                    )
                                                                   ])
                                                                 ),
                                                                 Divider(),
                                                                 //button thêm vào giỏ
-                                                                SizedBox(height: 10,),
+                                                                SizedBox(height: 5,),
                                                                 SizedBox(
                                                                   height: 50,
                                                                   width: widthDevice,
