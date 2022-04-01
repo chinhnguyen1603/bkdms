@@ -7,6 +7,7 @@ import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/CountBadge.dart';
 
 class DetailItem extends StatefulWidget {
   late Item myItem;
@@ -22,6 +23,7 @@ class DetailItem extends StatefulWidget {
 
 class DetailItemState extends State<DetailItem> {
 
+  static const darkGrey = Color(0xff544C4C); 
   static const lightGrey = Color(0xfffafafa);
   static const greyText = Color(0xff544c4c);
   //khởi tạo value của radio
@@ -31,7 +33,16 @@ class DetailItemState extends State<DetailItem> {
   // dropdown tên đơn vị
   String? btnSelectVal;
   List<String> unitName = [];
-
+  String? btnSelectValBottomSheet;
+   
+  //id của đơn vị
+  int unitId = 0;
+  //form nhập số lượng sản phẩm
+  final _formEnterAmountKey = GlobalKey<FormState>();
+  final enternAmountController = TextEditingController();
+  
+  
+  
   @override
   void initState(){
     super.initState();
@@ -61,7 +72,21 @@ class DetailItemState extends State<DetailItem> {
       )
       .toList();
     }
-
+    
+    // DropDown trong bottom sheet
+    final List<String> uName =  List<String>.generate(widget.myItem.units.length, (count) => "${widget.myItem.units[count]['name']}");
+    uName.add("");
+    List<DropdownMenuItem<String>> createListBottomSheet() {
+        return uName
+            .map<DropdownMenuItem<String>>( 
+                (e) => DropdownMenuItem(
+                  value: e,
+                  child: Text("$e", style: TextStyle(fontSize: 14),),
+                ),
+            )
+            .toList();
+    } 
+ 
     //widget của screen
     return Scaffold(
       appBar: AppBarGrey("Chi tiết sản phẩm"),
@@ -553,7 +578,251 @@ class DetailItemState extends State<DetailItem> {
                           //button chọn mua
                           child: ElevatedButton(
                               onPressed: () async {
+                                                  showModalBottomSheet<void>(
+                                                     isDismissible: false,
+                                                     useRootNavigator: true,
+                                                     backgroundColor: Colors.white,
+                                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
+                                                     context: context,
+                                                     builder: (BuildContext context) {
+                                                       return StatefulBuilder( builder: (BuildContext context, setState) =>
+                                                        Container(
+                                                           height: 320,
+                                                           child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              children: <Widget>[
+                                                                // icon button xóa 
+                                                                SizedBox(
+                                                                  width: widthDevice,
+                                                                  height: 30,
+                                                                  child: IconButton(
+                                                                    icon: Icon(Icons.cancel_presentation, size: 20,),
+                                                                    alignment: Alignment.centerRight,
+                                                                    onPressed: () {
+                                                                       setState(() {              
+                                                                          btnSelectVal = ""; //set value của dropdowm về ""
+                                                                       });
+                                                                       Navigator.pop(context);
+                                                                    },
+                                                                  ),
+ 
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                
+                                                                // ảnh sp + tên + + xuất xứ + giá 
+                                                                Container(
+                                                                   width: myWidth,
+                                                                   height: 80,
+                                                                   child: Row(children: [
+                                                                     SizedBox(width: 10,),
+                                                                      //Ảnh sản phẩm
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.3,
+                                                                         child: Image.network(
+                                                                             getUrlFromLinkImg("${widget.myItem.linkImg}")
+                                                                         ),
+                                                                      ),
+                                                                      SizedBox(width: 10,),
+                                                                      //Tên, xuất xứ và giá
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.6,
+                                                                         child: Column(
+                                                                             children: [
+                                                                                // tên sản phẩm
+                                                                                SizedBox(
+                                                                                    height: 30,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                       "${widget.myItem.name}", 
+                                                                                       maxLines: 1,
+                                                                                       overflow: TextOverflow.ellipsis,
+                                                                                       softWrap: false,
+                                                                                       textAlign: TextAlign.left,
+                                                                                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),                                        
+                                                                                    )
+                                                                                ),
+                                                                                // Xuất xứ
+                                                                                SizedBox(
+                                                                                    height: 24,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "Xuất xứ: " + "${widget.myItem.countryProduce}", 
+                                                                                      maxLines: 1,
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                      softWrap: false,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 12, ),                                        
+                                                                                    )
+                                                                                ),                                                                     
+                                                                                // giá bán cho đại lý
+                                                                                SizedBox(
+                                                                                    height: 20,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "${unitPrice.replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                                                                      maxLines: 1,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                                                                    )
+                                                                                ),                                    
+                                                                             ],),
+                                                                      )
+                                                                  ]),
+                                                                ),
+                                                                
+                                                                Divider(),
+                                                                
+                                                                //text lưu ý xem quy đổi
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                   SizedBox(width: widthDevice*0.1,),
+                                                                   SizedBox(
+                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết sản phẩm", style: TextStyle(color: darkGrey, fontSize:14, fontFamily: "SegoeScript"),),
+                                                                   ),
+                                                                  ])
+                                                                ),
+                                                                SizedBox(height: 10,),
+                                                                // chọn đơn vị
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    // text chọn vị
+                                                                    SizedBox(
+                                                                      width: myWidth*0.6,
+                                                                      height: 30,
+                                                                      child: Column(
+                                                                        children: [
+                                                                          SizedBox(height: 8,),
+                                                                          SizedBox(height: 20,width: myWidth*0.6, child: Text("Đơn vị", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
+                                                                          SizedBox(height: 2,),
+                                                                        ],
+                                                                      )
+                                                                    ),
+                                                                   // dropdown button
+                                                                    SizedBox(
+                                                                      height: 30,
+                                                                      width: 60,
+                                                                      child: DropdownButton(
+                                                                         items: createListBottomSheet(),
+                                                                         value: btnSelectVal, // giá trị khi select
+                                                                         onChanged: (newValue) {
+                                                                            if(newValue!=null){
+                                                                               // lấy đơn giá của đơn vị
+                                                                               for( var unit in widget.myItem.units){
+                                                                                   if(newValue == unit['name']){
+                                                                                       setState(() {
+                                                                                          unitPrice = unit['agencyPrice'];
+                                                                                          btnSelectVal = newValue as String;
+                                                                                          unitId = unit['id'];
+                                                                                       });
+                                                                                   }
+                                                                               }
+                                                                            }
+                                                                         }
+                                                                      ) 
+                                                                    ),
+                                                                  ]),
+                                                                ),
+                                                                SizedBox(height: 10,),       
+                                                                //Nhập số lượng
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    // text nhập số lượng
+                                                                    SizedBox(
+                                                                      width: myWidth*0.6,
+                                                                      height: 30,
+                                                                      child: Column(
+                                                                        children: [
+                                                                          SizedBox(height: 8,),
+                                                                          SizedBox(height: 20,width: myWidth*0.6, child: Text("Nhập số lượng", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
+                                                                          SizedBox(height: 2,),
+                                                                        ],
+                                                                      )
+                                                          
+                                                                    ),
+                                                                    //text formfield điền số lượng hàng
+                                                                    SizedBox(
+                                                                      height: 30,
+                                                                      width: 60, 
+                                                                      child: Form(
+                                                                        key: _formEnterAmountKey,
+                                                                        child: TextFormField(
+                                                                          controller: enternAmountController,        
+                                                                          keyboardType: TextInputType.number,
+                                                                          cursorHeight: 14,
+                                                                          textAlignVertical: TextAlignVertical.center,
+                                                                          style: TextStyle(fontSize: 12),
+                                                                          validator: (value) {
+                                                                             if (value == null || value.isEmpty) {
+                                                                                return "trống";
+                                                                             }
+                                                                             return null;
+                                                                          },  
+                                                                          decoration:  InputDecoration(
+                                                                             enabledBorder:  OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(0),
+                                                                                borderSide: BorderSide(color: darkGrey),
+                                                                             ),
+                                                                          )
+                                                                        ),
+                                                                      ),
+                                                                   )
+                                                                  ])
+                                                                ),
+                                                                Divider(),
+                                                                //button thêm vào giỏ
+                                                                SizedBox(height: 5,),
+                                                                SizedBox(
+                                                                  height: 50,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    Container(
+                                                                      height: 50,
+                                                                      width: widthDevice*0.8,
+                                                                      child: ElevatedButton(
+                                                                        
+                                                                        onPressed: () async {
+                                                                          //post api add cart tại đây
+                                                                           if (_formEnterAmountKey.currentState!.validate()){
+                                                                              Agency user = Provider.of<Agency>(context, listen: false);
+                                                                              await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text);
+                                                                              setState(() {              
+                                                                                  btnSelectVal = ""; //set value của dropdowm về ""
+                                                                              });
+                                                                              //update số lượng trên icon giỏ hàng
+                                                                              await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+                                                                              Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);
+                                                                              Navigator.pop(context);
+                                                                           }
+                                                                        },
+                                                                        child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                                                                        style: ButtonStyle(
+                                                                            elevation: MaterialStateProperty.all(0),
+                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ]),
+                                                                )
 
+                                                             ],
+                                                           ),
+                                                        ) );
+                                                      },//builder
+                                                  );//showmodal bottom sheet
+ 
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),

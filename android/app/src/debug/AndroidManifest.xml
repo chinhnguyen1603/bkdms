@@ -1,7 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bkdms">
+    package="com.example.bkdms"
+         xmlns:tools="http://schemas.android.com/tools"
+    >
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <application
+         tools:replace="android:label, theme"
+         android:label="bkdms"
+         android:theme="@style/LaunchTheme"
+    >
+    </application>
 </manifest>

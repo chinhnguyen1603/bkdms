@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  momo_vn: ^2.0.1  
   expansion_tile_card: ^2.0.0
   intl: ^0.17.0
   # The following adds the Cupertino Icons font to your application.
@@ -41,6 +42,7 @@ dependencies:
   badges: ^2.0.2
   url_launcher: ^6.0.20
   fluttertoast: ^8.0.9
+
 
 
 dev_dependencies:

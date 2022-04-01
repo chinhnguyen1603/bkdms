@@ -5,16 +5,5 @@ class CountBadge with ChangeNotifier{
      this.counter = length;
      notifyListeners();
    }
-   void updatePlus(){
-     this.counter++;
-     notifyListeners();
-   }
-   void updateMinus(){
-     if(this.counter>0){
-       this.counter--;
-     }
-     notifyListeners();
-   }
-  
 
 }

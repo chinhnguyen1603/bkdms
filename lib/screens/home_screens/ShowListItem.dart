@@ -40,6 +40,8 @@ class ShowListItemState extends State<ShowListItem> {
   final _formEnterAmountKey = GlobalKey<FormState>();
   final enternAmountController = TextEditingController();
   
+  //số mặt hàng trong giỏ, init = 0, update trong didChangeDependencies
+  int counter = 0;
 
   @override
   void initState() {
@@ -47,12 +49,18 @@ class ShowListItemState extends State<ShowListItem> {
     _isSearching = false;
      //mặc định searchList phải bằng lstItem để auto hiện khi xóa search
   } 
+  
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    counter = Provider.of<CountBadge>(context).counter;
+  }
 
 
 
   @override
   Widget build(BuildContext context) {
-    int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart 
+    //int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart 
     double heigtDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
@@ -78,8 +86,6 @@ class ShowListItemState extends State<ShowListItem> {
              child: IconButton(
                icon: Icon(Icons.shopping_cart, color: darkGrey,), 
                onPressed: () async {
-                  Agency user = Provider.of<Agency>(context, listen: false);
-                  await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCart()));
                }
              ),
@@ -153,6 +159,7 @@ class ShowListItemState extends State<ShowListItem> {
                     //thêm dấu chấm vào giá sản phẩm
                     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                    
                     // List tên đơn vị của mỗi sản phẩm
                     final List<String> uName =  List<String>.generate(itemProvider.lstItem[index].units.length, (count) => "${itemProvider.lstItem[index].units[count]['name']}");
                     uName.add("");
@@ -231,7 +238,8 @@ class ShowListItemState extends State<ShowListItem> {
                                                onTap: (){
                                                   // để người dùng thêm vào giỏ hàng
                                                   showModalBottomSheet<void>(
-                                                    useRootNavigator: true,
+                                                     isDismissible: false,
+                                                     useRootNavigator: true,
                                                      backgroundColor: Colors.white,
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
                                                      context: ctxGridview,
@@ -453,7 +461,8 @@ class ShowListItemState extends State<ShowListItem> {
                                                                                   btnSelectVal = ""; //set value của dropdowm về ""
                                                                               });
                                                                               //update số lượng trên icon giỏ hàng
-                                                                              Provider.of<CountBadge>(context, listen: false).updatePlus();
+                                                                              await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+                                                                              Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);
                                                                               Navigator.pop(context);
                                                                            }
                                                                         },
@@ -491,8 +500,7 @@ class ShowListItemState extends State<ShowListItem> {
               )          
 
               //Không search thì trả về nguyên mẫu. Gridview của lstItem
-              : GridView.builder(
-                
+              : GridView.builder(              
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 4,
@@ -502,10 +510,26 @@ class ShowListItemState extends State<ShowListItem> {
                 padding: EdgeInsets.all(8),
                 primary: false,
                 itemCount: itemProvider.lstItem.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (BuildContext ctxGridview, int index) {
                     // thêm dấu chấm vào giá sản phẩm 
                     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                   
+                    // List tên đơn vị của mỗi sản phẩm
+                    final List<String> uName =  List<String>.generate(itemProvider.lstItem[index].units.length, (count) => "${itemProvider.lstItem[index].units[count]['name']}");
+                    uName.add("");
+                    List<DropdownMenuItem<String>> createList() {
+                        return uName
+                            .map<DropdownMenuItem<String>>( 
+                               (e) => DropdownMenuItem(
+                                 value: e,
+                                 child: Text("$e", style: TextStyle(fontSize: 14),),
+                               ),
+                            )
+                            .toList();
+                    } 
+
+                   
                     //Xử lý đơn vị và chuyển đơn vị
                     var baseUnit;
                     List<dynamic> switchUnit = [];
@@ -566,7 +590,251 @@ class ShowListItemState extends State<ShowListItem> {
                                              // icon add cart
                                              GestureDetector(
                                                onTap: (){
-                                                  Provider.of<CountBadge>(context, listen: false).updatePlus();
+                                                  showModalBottomSheet<void>(
+                                                     isDismissible: false,
+                                                     useRootNavigator: true,
+                                                     backgroundColor: Colors.white,
+                                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
+                                                     context: ctxGridview,
+                                                     builder: (BuildContext context) {
+                                                       return StatefulBuilder( builder: (BuildContext context, setState) =>
+                                                        Container(
+                                                           height: 320,
+                                                           child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              children: <Widget>[
+                                                                // icon button xóa 
+                                                                SizedBox(
+                                                                  width: widthDevice,
+                                                                  height: 30,
+                                                                  child: IconButton(
+                                                                    icon: Icon(Icons.cancel_presentation, size: 20,),
+                                                                    alignment: Alignment.centerRight,
+                                                                    onPressed: () {
+                                                                       setState(() {              
+                                                                          btnSelectVal = ""; //set value của dropdowm về ""
+                                                                       });
+                                                                       Navigator.pop(context);
+                                                                    },
+                                                                  ),
+ 
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                
+                                                                // ảnh sp + tên + + xuất xứ + giá 
+                                                                Container(
+                                                                   width: myWidth,
+                                                                   height: 80,
+                                                                   child: Row(children: [
+                                                                     SizedBox(width: 10,),
+                                                                      //Ảnh sản phẩm
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.3,
+                                                                         child: Image.network(
+                                                                             getUrlFromLinkImg("${itemProvider.lstItem[index].linkImg}")
+                                                                         ),
+                                                                      ),
+                                                                      SizedBox(width: 10,),
+                                                                      //Tên, xuất xứ và giá
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.6,
+                                                                         child: Column(
+                                                                             children: [
+                                                                                // tên sản phẩm
+                                                                                SizedBox(
+                                                                                    height: 30,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                       "${itemProvider.lstItem[index].name}", 
+                                                                                       maxLines: 1,
+                                                                                       overflow: TextOverflow.ellipsis,
+                                                                                       softWrap: false,
+                                                                                       textAlign: TextAlign.left,
+                                                                                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),                                        
+                                                                                    )
+                                                                                ),
+                                                                                // Xuất xứ
+                                                                                SizedBox(
+                                                                                    height: 24,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "Xuất xứ: " + "${itemProvider.lstItem[index].countryProduce}", 
+                                                                                      maxLines: 1,
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                      softWrap: false,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 12, ),                                        
+                                                                                    )
+                                                                                ),                                                                     
+                                                                                // giá bán cho đại lý
+                                                                                SizedBox(
+                                                                                    height: 20,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "${unitPrice.replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                                                                      maxLines: 1,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                                                                    )
+                                                                                ),                                    
+                                                                             ],),
+                                                                      )
+                                                                  ]),
+                                                                ),
+                                                                
+                                                                Divider(),
+                                                                
+                                                                //text lưu ý xem quy đổi
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                   SizedBox(width: widthDevice*0.1,),
+                                                                   SizedBox(
+                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết sản phẩm", style: TextStyle(color: darkGrey, fontSize:14, fontFamily: "SegoeScript"),),
+                                                                   ),
+                                                                  ])
+                                                                ),
+                                                                SizedBox(height: 10,),
+                                                                // chọn đơn vị
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    // text chọn vị
+                                                                    SizedBox(
+                                                                      width: myWidth*0.6,
+                                                                      height: 30,
+                                                                      child: Column(
+                                                                        children: [
+                                                                          SizedBox(height: 8,),
+                                                                          SizedBox(height: 20,width: myWidth*0.6, child: Text("Đơn vị", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
+                                                                          SizedBox(height: 2,),
+                                                                        ],
+                                                                      )
+                                                                    ),
+                                                                   // dropdown button
+                                                                    SizedBox(
+                                                                      height: 30,
+                                                                      width: 60,
+                                                                      child: DropdownButton(
+                                                                         items: createList(),
+                                                                         value: btnSelectVal, // giá trị khi select
+                                                                         onChanged: (newValue) {
+                                                                            if(newValue!=null){
+                                                                               // lấy đơn giá của đơn vị
+                                                                               for( var unit in itemProvider.lstItem[index].units){
+                                                                                   if(newValue == unit['name']){
+                                                                                       setState(() {
+                                                                                          unitPrice = unit['agencyPrice'];
+                                                                                          btnSelectVal = newValue as String;
+                                                                                          unitId = unit['id'];
+                                                                                       });
+                                                                                   }
+                                                                               }
+                                                                            }
+                                                                         }
+                                                                      ) 
+                                                                    ),
+                                                                  ]),
+                                                                ),
+                                                                SizedBox(height: 10,),       
+                                                                //Nhập số lượng
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    // text nhập số lượng
+                                                                    SizedBox(
+                                                                      width: myWidth*0.6,
+                                                                      height: 30,
+                                                                      child: Column(
+                                                                        children: [
+                                                                          SizedBox(height: 8,),
+                                                                          SizedBox(height: 20,width: myWidth*0.6, child: Text("Nhập số lượng", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
+                                                                          SizedBox(height: 2,),
+                                                                        ],
+                                                                      )
+                                                          
+                                                                    ),
+                                                                    //text formfield điền số lượng hàng
+                                                                    SizedBox(
+                                                                      height: 30,
+                                                                      width: 60, 
+                                                                      child: Form(
+                                                                        key: _formEnterAmountKey,
+                                                                        child: TextFormField(
+                                                                          controller: enternAmountController,        
+                                                                          keyboardType: TextInputType.number,
+                                                                          cursorHeight: 14,
+                                                                          textAlignVertical: TextAlignVertical.center,
+                                                                          style: TextStyle(fontSize: 12),
+                                                                          validator: (value) {
+                                                                             if (value == null || value.isEmpty) {
+                                                                                return "trống";
+                                                                             }
+                                                                             return null;
+                                                                          },  
+                                                                          decoration:  InputDecoration(
+                                                                             enabledBorder:  OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(0),
+                                                                                borderSide: BorderSide(color: darkGrey),
+                                                                             ),
+                                                                          )
+                                                                        ),
+                                                                      ),
+                                                                   )
+                                                                  ])
+                                                                ),
+                                                                Divider(),
+                                                                //button thêm vào giỏ
+                                                                SizedBox(height: 5,),
+                                                                SizedBox(
+                                                                  height: 50,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    Container(
+                                                                      height: 50,
+                                                                      width: widthDevice*0.8,
+                                                                      child: ElevatedButton(
+                                                                        
+                                                                        onPressed: () async {
+                                                                          //post api add cart tại đây
+                                                                           if (_formEnterAmountKey.currentState!.validate()){
+                                                                              Agency user = Provider.of<Agency>(context, listen: false);
+                                                                              await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text);
+                                                                              setState(() {              
+                                                                                  btnSelectVal = ""; //set value của dropdowm về ""
+                                                                              });
+                                                                              //update số lượng trên icon giỏ hàng
+                                                                              await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+                                                                              Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);
+                                                                              Navigator.pop(context);
+                                                                           }
+                                                                        },
+                                                                        child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                                                                        style: ButtonStyle(
+                                                                            elevation: MaterialStateProperty.all(0),
+                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ]),
+                                                                )
+
+                                                             ],
+                                                           ),
+                                                        ) );
+                                                      },//builder
+                                                  );//showmodal bottom sheet
+                                                   
                                                },
                                                child: Container(
                                                   height: 20,

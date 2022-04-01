@@ -69,7 +69,6 @@ class CartProvider with ChangeNotifier{
       this.lstCart = loadedCarts;
       notifyListeners();
       //test kết quả
-      print("kết quả get cart");
       print(lstCart);
       return lstCart;
     }
