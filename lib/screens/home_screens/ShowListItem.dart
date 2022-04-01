@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/services/CartProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -26,14 +28,19 @@ class ShowListItemState extends State<ShowListItem> {
   FloatingSearchBarController? searchController;
   List<Item> searchList = [];
   bool _isSearching = false;
+  
+  //biến dưới đây được dùng trong bottom sheet
   //giá từng đơn vị
   String unitPrice ="";
-  // dropdown tên đơn vị
+  //dropdown tên đơn vị
   String? btnSelectVal;
+  //id của đơn vị
+  int unitId = 0;
   //form nhập số lượng sản phẩm
   final _formEnterAmountKey = GlobalKey<FormState>();
   final enternAmountController = TextEditingController();
- 
+  
+
   @override
   void initState() {
     super.initState();
@@ -70,7 +77,9 @@ class ShowListItemState extends State<ShowListItem> {
              ),
              child: IconButton(
                icon: Icon(Icons.shopping_cart, color: darkGrey,), 
-               onPressed: () {
+               onPressed: () async {
+                  Agency user = Provider.of<Agency>(context, listen: false);
+                  await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCart()));
                }
              ),
@@ -157,7 +166,7 @@ class ShowListItemState extends State<ShowListItem> {
                             )
                             .toList();
                     } 
-
+                
                     //Xử lý đơn vị và chuyển đơn vị                                    
                     var baseUnit;
                     List<dynamic> switchUnit = [];
@@ -314,7 +323,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                              ],),
                                                                       )
                                                                   ]),
-                                                                ),                        
+                                                                ),
                                                                 
                                                                 Divider(),
                                                                 
@@ -363,6 +372,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                                        setState(() {
                                                                                           unitPrice = unit['agencyPrice'];
                                                                                           btnSelectVal = newValue as String;
+                                                                                          unitId = unit['id'];
                                                                                        });
                                                                                    }
                                                                                }
@@ -404,6 +414,12 @@ class ShowListItemState extends State<ShowListItem> {
                                                                           cursorHeight: 14,
                                                                           textAlignVertical: TextAlignVertical.center,
                                                                           style: TextStyle(fontSize: 12),
+                                                                          validator: (value) {
+                                                                             if (value == null || value.isEmpty) {
+                                                                                return "trống";
+                                                                             }
+                                                                             return null;
+                                                                          },  
                                                                           decoration:  InputDecoration(
                                                                              enabledBorder:  OutlineInputBorder(
                                                                                 borderRadius: BorderRadius.circular(0),
@@ -426,7 +442,27 @@ class ShowListItemState extends State<ShowListItem> {
                                                                     Container(
                                                                       height: 50,
                                                                       width: widthDevice*0.8,
-                                                                      color: Colors.blue,
+                                                                      child: ElevatedButton(
+                                                                        
+                                                                        onPressed: () async {
+                                                                          //post api add cart tại đây
+                                                                           if (_formEnterAmountKey.currentState!.validate()){
+                                                                              Agency user = Provider.of<Agency>(context, listen: false);
+                                                                              await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text);
+                                                                              setState(() {              
+                                                                                  btnSelectVal = ""; //set value của dropdowm về ""
+                                                                              });
+                                                                              //update số lượng trên icon giỏ hàng
+                                                                              Provider.of<CountBadge>(context, listen: false).updatePlus();
+                                                                              Navigator.pop(context);
+                                                                           }
+                                                                        },
+                                                                        child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                                                                        style: ButtonStyle(
+                                                                            elevation: MaterialStateProperty.all(0),
+                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
+                                                                        ),
+                                                                      ),
                                                                     )
                                                                   ]),
                                                                 )

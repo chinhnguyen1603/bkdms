@@ -83,7 +83,7 @@ class LoginState extends State<Login> {
                 style: TextStyle(fontSize: 20),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Workspace không được để trống';
+                    return "Workspace không được để trống";
                   }
                   return null;
                 },                
