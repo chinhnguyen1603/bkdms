@@ -801,7 +801,7 @@ class DetailItemState extends State<DetailItem> {
                                                                               await showDialog (
                                                                                  context: context,
                                                                                  builder: (context) =>
-                                                                                    FutureProgressDialog(getFuture(), message: Text('Đang thêm vào giỏ')),
+                                                                                    FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color: Color(0xff7d7d7d)))),
                                                                               );
                                                                               setState(() {              
                                                                                   btnSelectVal = ""; //set value của dropdowm về ""
@@ -857,9 +857,10 @@ class DetailItemState extends State<DetailItem> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
-      .catchError((onError){
+     .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          showDialog(
+          print("Bắt lỗi");
+          await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
@@ -869,13 +870,14 @@ class DetailItemState extends State<DetailItem> {
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                   ),                      
                   ],                                      
-              ));              
-      });      
-      
-      //get cart và update CountBadge
-      await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
-      Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
-      return 'Hello, Future Progress Dialog!';
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+          //get cart và update CountBadge
+          await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+          Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
+      });    
     });
   }
 

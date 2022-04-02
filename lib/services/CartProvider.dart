@@ -33,6 +33,7 @@ class CartProvider with ChangeNotifier{
       }
     }
     catch (error) {
+      print(error);
       throw error;
     }
   }
