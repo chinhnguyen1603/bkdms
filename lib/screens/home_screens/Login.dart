@@ -232,7 +232,8 @@ class LoginState extends State<Login> {
                         await Provider.of<CartProvider>(context, listen: false).getCart(user?.token, user?.workspace, user?.id);
                         Provider.of<CountBadge>(context, listen: false).counter = Provider.of<CartProvider>(context, listen: false).lstCart.length;
                       })
-                      .then((_) async => {      
+                      .then((_) async => {   
+                        // get Item trong HomePage   
                         await Provider.of<ItemProvider>(context, listen: false).fetchAndSetItem(user?.token, user?.workspace),
                         print("test kết quả lstItem"),
                         print(Provider.of<ItemProvider>(context, listen: false).lstItem),

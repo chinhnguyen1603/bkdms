@@ -95,7 +95,7 @@ class ShowListItemState extends State<ShowListItem> {
         centerTitle: true,
         title: Text(
             "Sản phẩm",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: darkGrey,),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: darkGrey,),
         )
       ),
       backgroundColor: Color(0xfff0ecec),
@@ -820,7 +820,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                               Navigator.pop(context);
                                                                            }
                                                                         },
-                                                                        child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                                                                        child: Text("Chọn mua", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(
                                                                             elevation: MaterialStateProperty.all(0),
                                                                             backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
@@ -878,7 +878,7 @@ class ShowListItemState extends State<ShowListItem> {
       await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi");
+          print("Bắt lỗi future dialog");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(

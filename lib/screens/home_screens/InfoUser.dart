@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'package:bkdms/screens/home_screens/ChangePassword.dart';
 import 'package:bkdms/screens/home_screens/InfoApp.dart';
-import 'dart:ui';
 import 'package:bkdms/models/Agency.dart';
 import 'package:provider/provider.dart';
+import 'package:bkdms/services/CartProvider.dart';
 
 
 
@@ -324,6 +322,14 @@ class InfoUser extends StatelessWidget {
 
             // divider cuối cùng
             Divider(color: line, thickness: 1,),
+
+            ElevatedButton(
+              onPressed: () {
+                print("test cart");
+                print(Provider.of<CartProvider>(context, listen: false).lstCart[0].unit['product']['name']);
+              }, 
+              child: Text("Test cart")
+            )
           ],
         );
       })

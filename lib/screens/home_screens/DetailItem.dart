@@ -557,7 +557,7 @@ class DetailItemState extends State<DetailItem> {
           )
         );
       }),
-      //button chọn mua
+      //bottom button chọn mua
       bottomNavigationBar: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -580,6 +580,7 @@ class DetailItemState extends State<DetailItem> {
                           child: ElevatedButton(
                               onPressed: () async {
                                                   showModalBottomSheet<void>(
+                                                     isScrollControlled: true,
                                                      isDismissible: false,
                                                      useRootNavigator: true,
                                                      backgroundColor: Colors.white,
@@ -859,7 +860,7 @@ class DetailItemState extends State<DetailItem> {
       await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi");
+          print("Bắt lỗi future dialog");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(

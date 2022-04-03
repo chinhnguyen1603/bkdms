@@ -9,7 +9,7 @@ import 'splash_screen.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:bkdms/services/CartProvider.dart';
-import 'package:bkdms/screens/home_screens/TestMomo.dart';
+import 'package:bkdms/screens/home_screens/ScreenCart.dart';
 
 
 
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: SplashScreen(),
+        body: ScreenCart(),
         ),
       )
     );

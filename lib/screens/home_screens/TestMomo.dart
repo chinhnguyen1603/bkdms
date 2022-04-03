@@ -56,14 +56,14 @@ class _TestMomoState extends State<TestMomo> {
                           merchantName: "BKDMS",
                           appScheme: "momoawa120220330",
                           merchantCode: 'MOMOAWA120220330',
-                          partnerCode: 'MOMOAWA120220330',
-                          amount: 60000,
-                          orderId: '12321312',
-                          orderLabel: 'Gói combo',
-                          merchantNameLabel: "HLGD",
+                          partnerCode: '1',//id khách hàng
+                          amount: 6000000, // đặt giá trị tiền vào đây
+                          orderId: '12321312', // đặt id của giao dịch nợ
+                          orderLabel: 'Nợ', 
+                          merchantNameLabel: "Hệ thống quản lý phân phối BKDMS",
                           fee: 0,
-                          description: 'Thanh toán nợ',
-                          username: '01234567890',
+                          description: 'Thanh toán nợ đơn hàng #',
+                          username: 'Chính Nguyễn', // đặt tên agency ở đây
                           partner: 'merchant',
                           extra: "{\"key1\":\"value1\",\"key2\":\"value2\"}",
                           isTestMode: true
