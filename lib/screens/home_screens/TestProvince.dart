@@ -33,38 +33,28 @@ class TestProvinceState extends State<TestProvince> {
   List<Ward> lstWard = [];
   //dropdown xã phường
   String? btnSelectWard;
-
+  
+  List<String> lstNameProvince  = [];
+  List<String> lstNameDistrict = [];
+  List<String> lstNameWard = [];
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     lstProvince = Provider.of<ProvinceProvider>(context).lstProvince;
-    lstDistrict = Provider.of<ProvinceProvider>(context).lstDistrict; 
-    lstWard = Provider.of<ProvinceProvider>(context).lstWard; 
-    final List<String> lstNameDistrict =  List<String>.generate(lstDistrict.length, (index) => "${lstDistrict[index].name}");
-    List<DropdownMenuItem<String>> createListDistrict() {
-        return lstNameDistrict
-          .map<DropdownMenuItem<String>>( 
-             (e) => DropdownMenuItem(
-                value: e,
-                child: Text("$e", style: TextStyle(fontSize: 14),),
-              ),
-          )
-          .toList();
-    }     
-  }
-  
-  @override
-  void initState() {    
-    super.initState();
-  }
-  
+    lstNameProvince =  List<String>.generate(lstProvince.length, (index) => "${lstProvince[index].name}");
+    lstNameProvince.add("");
 
-  @override
-  Widget build(BuildContext context) {
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
+    lstDistrict = Provider.of<ProvinceProvider>(context).lstDistrict; 
+    lstNameDistrict =  List<String>.generate(lstDistrict.length, (index) => "${lstDistrict[index].name}");
+    lstNameDistrict.add("");
+
+    lstWard = Provider.of<ProvinceProvider>(context).lstWard; 
+    lstNameWard =  List<String>.generate(lstWard.length, (index) => "${lstWard[index].name}"); 
+    lstNameWard.add("");
+  }
+  
     // List tên tỉnh + menu item dropdown district
-    final List<String> lstNameProvince =  List<String>.generate(lstProvince.length, (index) => "${lstProvince[index].name}");
     List<DropdownMenuItem<String>> createListProvince() {
         return lstNameProvince
           .map<DropdownMenuItem<String>>( 
@@ -75,8 +65,7 @@ class TestProvinceState extends State<TestProvince> {
           )
           .toList();
     } 
-    // List tên huyện + menu item dropdown district
-    final List<String> lstNameDistrict =  List<String>.generate(lstDistrict.length, (index) => "${lstDistrict[index].name}");
+
     List<DropdownMenuItem<String>> createListDistrict() {
         return lstNameDistrict
           .map<DropdownMenuItem<String>>( 
@@ -86,9 +75,8 @@ class TestProvinceState extends State<TestProvince> {
               ),
           )
           .toList();
-    }   
-    // List tên xã phường + menu item dropdown ward
-    final List<String> lstNameWard =  List<String>.generate(lstWard.length, (index) => "${lstWard[index].name}");
+    }    
+
     List<DropdownMenuItem<String>> createListWard() {
         return lstNameWard
           .map<DropdownMenuItem<String>>( 
@@ -99,7 +87,12 @@ class TestProvinceState extends State<TestProvince> {
           )
           .toList();
     }         
-   
+     
+
+  @override
+  Widget build(BuildContext context) {
+    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
+
 
     return Scaffold(
       appBar: AppBar(
@@ -148,9 +141,11 @@ class TestProvinceState extends State<TestProvince> {
                   onChanged: (newValue) async {
                     setState(() {
                       btnSelectPronvince = newValue as String; 
+                      btnSelectDistrict = ""; //set huyện xã bằng null lại
+                      btnSelectWard = "";
                       for( var prov in lstProvince){
                         // lấy id của Tỉnh mới chọn
-                        if(btnSelectPronvince == prov.name){
+                        if(newValue == prov.name){
                             idProv = prov.id;
                         }
                       }
@@ -178,18 +173,18 @@ class TestProvinceState extends State<TestProvince> {
                      ),
                   color: Colors.white,
                   ),                                                       
-                  onChanged: (newValue)  {
-                    setState(() async {
+                  onChanged: (newValue) async {
+                    setState(() {
                       for( var distr in lstDistrict){
+                        btnSelectDistrict= newValue as String;
+                        btnSelectWard = ""; //set xã bằng null lại
                         // lấy id của Huyện mới chọn
                         if(newValue == distr.name){
                             idDistrict = distr.id;
                         }
                       }
-                      await Provider.of<ProvinceProvider>(context, listen: false).getWard(idDistrict); 
-                      btnSelectDistrict= newValue as String;
                     });     
-                                                       
+                    await Provider.of<ProvinceProvider>(context, listen: false).getWard(idDistrict);                          
                   }
               ) 
             ),
