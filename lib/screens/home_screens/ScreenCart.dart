@@ -7,6 +7,8 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:bkdms/services/ProvinceProvider.dart';
+import 'package:bkdms/screens/home_screens/TestProvince.dart';
 
 class ScreenCart extends StatefulWidget {
   const ScreenCart({ Key? key }) : super(key: key);
@@ -209,45 +211,48 @@ class ScreenCartState extends State<ScreenCart> {
           ],
         ),
       ),
+      //bottom button chọn mua
+      bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [ BoxShadow(
+                   color: Colors.grey,
+                   blurRadius: 5.0,
+                   spreadRadius: 0.0,
+                   offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                )],
+              ),
+              width: widthDevice,
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 7,),
+                        SizedBox(
+                          width: widthDevice*0.9,
+                          height: 40,
+                          //button tiến hành đặt hàng
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                  await Provider.of<ProvinceProvider>(context, listen: false).getProvince();
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => TestProvince()));
+                              },
+                              style: ButtonStyle(
+                                  elevation: MaterialStateProperty.all(0),
+                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
+                                  shape: MaterialStateProperty.all < RoundedRectangleBorder > (
+                                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
+                                  )
+                              ),
+                              child: Text("Tiến hành đặt hàng", style: TextStyle(fontWeight: FontWeight.w700), )
+                          )  
+                        ),
+                        SizedBox(height: 7,),
+                      ])
+              )          
+
     );
   }
-
-  // hàm lấy ảnh từ cloudinary 
-  String getUrlFromLinkImg(String linkImg) {
-        //linkImg receive from server as Public Id
-        final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
-        String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate() !;
-        return transformedUrl;
-  }   
-
-  // hàm add cart rồi get, update số lượng sản phẩm
-  Future getFuture() {
-    return Future(() async {
-      Agency user = Provider.of<Agency>(context, listen: false);
-      await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
-     .catchError((onError) async {
-          // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog");
-          await showDialog(
-              context: context, 
-              builder: (ctx1) => AlertDialog(
-                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
-                  actions: [TextButton(
-                      onPressed: () => Navigator.pop(ctx1),
-                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                  ),                      
-                  ],                                      
-              ));    
-            throw onError;          
-      })
-      .then((value) async {
-          //get cart và update CountBadge
-          await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
-          Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
-      });    
-    });
-  }     
+   
 
 
 }

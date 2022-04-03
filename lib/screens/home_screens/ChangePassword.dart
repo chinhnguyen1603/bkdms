@@ -1,4 +1,3 @@
-import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
@@ -7,6 +6,7 @@ import 'package:dialogs/dialogs.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ToChangePassword.dart';
+import 'package:bkdms/screens/home_screens/HomePage.dart';
 
 class ChangePassword extends StatefulWidget {
 
