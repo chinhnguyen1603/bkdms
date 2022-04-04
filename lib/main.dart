@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       
       home: Scaffold(
         backgroundColor: Color(0xffF4F4F4),
-        body: ScreenCart(),
+        body: SplashScreen(),
         ),
       )
     );

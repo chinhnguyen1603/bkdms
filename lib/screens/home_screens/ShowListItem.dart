@@ -343,7 +343,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                   child: Row(children: [
                                                                    SizedBox(width: widthDevice*0.1,),
                                                                    SizedBox(
-                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết sản phẩm", style: TextStyle(color: darkGrey, fontSize:14, fontFamily: "SegoeScript"),),
+                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết mỗi sản phẩm", style: TextStyle(color: darkGrey, fontSize:14, fontFamily: "SegoeScript"),),
                                                                    ),
                                                                   ])
                                                                 ),
@@ -459,7 +459,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                               await showDialog (
                                                                                  context: context,
                                                                                  builder: (context) =>
-                                                                                    FutureProgressDialog(getFuture(), message: Text('Đang thêm vào giỏ')),
+                                                                                    FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xffe2dddd)))),
                                                                               );
                                                                               setState(() {              
                                                                                   btnSelectVal = ""; //set value của dropdowm về ""

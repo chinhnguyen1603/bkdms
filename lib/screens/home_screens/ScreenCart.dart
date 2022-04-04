@@ -45,11 +45,18 @@ class ScreenCartState extends State<ScreenCart> {
         leading: IconButton(
           icon: Icon(
             Icons.close,
-            color: darkGrey,),
+            color: darkGrey,
+          ),
           onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pop(context), 
+            icon: Icon(Icons.add_shopping_cart, color: darkGrey, size: 22,)
+          )
+        ],
         centerTitle: true,
         title: Text(
             "Giỏ hàng",
@@ -132,7 +139,7 @@ class ScreenCartState extends State<ScreenCart> {
              //List view cart
              SizedBox(
                child: ListView.builder(
-                     itemCount: 3,              
+                     itemCount: 6,              
                      shrinkWrap: true,
                      physics: NeverScrollableScrollPhysics(),
                      itemBuilder: (BuildContext context, int index) {
@@ -140,10 +147,103 @@ class ScreenCartState extends State<ScreenCart> {
                          children: [
                            Container(
                              height: 140,
+                             width: widthDevice,
                              color: Colors.white,
+                             child: Center(
+                               child: Row( children:[
+                                 SizedBox(width: widthDevice*0.05),
+                                 // ảnh sản phẩm
+                                 SizedBox(
+                                   child: Image.network(getUrlFromLinkImg(lstCart[index].unit['product']['linkImg']), width: widthDevice*0.3, height: 120,),
+                                 ),
+                                 //Tên + giá + đơn vị + số lượng
+                                 SizedBox(
+                                   width: widthDevice*0.62,
+                                   height: 140,
+                                   child: Column(children: [
+                                     // icon button delete cart
+                                     SizedBox(
+                                       height: 30,
+                                       width: widthDevice*0.62,
+                                       child: IconButton(
+                                          onPressed: (){
+  
+                                          }, 
+                                          icon: Icon(Icons.cancel_presentation_sharp, size: 18,),
+                                          alignment: Alignment.topRight,
+                                     ),
+                                     ),
+                                     // tên sản phẩm + giá + đơn vị + số lượng
+                                     SizedBox(
+                                        height: 100,
+                                        width: widthDevice*0.6,
+                                        child: Column( children: [
+                                          // tên
+                                          SizedBox(
+                                            height: 24,
+                                            width: myWidth*0.6,
+                                            child: Text(
+                                               "${lstCart[index].unit['product']['name']}", 
+                                               maxLines: 1,
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600 ),                                        
+                                            )
+                                          ), 
+                                          // giá bán lẻ
+                                          SizedBox(
+                                            height: 24,
+                                            width: myWidth*0.6,
+                                            child: Text(
+                                               "${lstCart[index].unit['agencyPrice']}" + "đ", 
+                                               maxLines: 1,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                            )
+                                          ),     
+                                          // Đơn vị
+                                          SizedBox(
+                                            height: 22,
+                                            width: myWidth*0.6,
+                                            child: Text(
+                                               "Đơn vị: " + "${lstCart[index].unit['name']}", 
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 14, ),                                        
+                                            )
+                                          ),   
+                                          // Số lượng + thay đổi số lượng
+                                          SizedBox(
+                                            height: 22,
+                                            width: myWidth*0.6,
+                                            child: Row(children: [
+                                              SizedBox(
+                                                height: 22,
+                                                width: widthDevice*0.3,
+                                                child: Text("Số lượng: " + "${lstCart[index].quantity}", textAlign: TextAlign.left, style: TextStyle(fontSize: 14, ),),
+                                              ),
+                                              SizedBox(
+                                                height: 22,
+                                                width: widthDevice*0.2,
+                                                child: GestureDetector(
+                                                  onTap: (){
+
+                                                  }, 
+                                                  child: Text("Thay đổi", textAlign: TextAlign.left, style: TextStyle(fontSize: 14, color: Colors.blueAccent),),
+                                                )
+                                              )
+                                              
+                                            ])
+                                          ),                                                                                                    
+                                        ],),
+                                     )  
+                                   ])
+                                 )
+                                ])
+                             ),
                            ),
-                           SizedBox(height: 10,)
-                         ],
+                           SizedBox(height: 10,),
+                         ]
                        );
                      }
                )
@@ -229,6 +329,35 @@ class ScreenCartState extends State<ScreenCart> {
                         SizedBox(height: 7,),
                         SizedBox(
                           width: widthDevice*0.9,
+                          height: 24,
+                          child: Row(children: [
+                            //text thành tiền
+                            SizedBox(
+                              width: widthDevice*0.3,
+                              height: 24,
+                              child: Center(
+                                child: SizedBox(
+                                  width: widthDevice*0.3,
+                                  child: Text("Thành tiền", style: TextStyle(color: darkGrey, fontSize: 14))
+                                )
+                              )
+                            ),
+                            //Tổng giá tiền
+                            SizedBox(
+                              width: widthDevice*0.6,
+                              height: 24,
+                                            child: Text(
+                                               "16.000.000" + "đ", 
+                                               maxLines: 1,
+                                               textAlign: TextAlign.right,
+                                               style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                            )                              
+                            )
+                          ]),
+                        ),
+                        SizedBox(height: 7,),
+                        SizedBox(
+                          width: widthDevice*0.9,
                           height: 40,
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
@@ -249,10 +378,44 @@ class ScreenCartState extends State<ScreenCart> {
                         SizedBox(height: 7,),
                       ])
               )          
-
     );
   }
-   
+  // hàm lấy ảnh từ cloudinary 
+  String getUrlFromLinkImg(String linkImg) {
+        //linkImg receive from server as Public Id
+        final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
+        String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate() !;
+        return transformedUrl;
+  }   
+
+  // hàm add cart rồi get, update số lượng sản phẩm
+  Future getFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+          //get cart và update CountBadge
+          await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+          Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
+      });    
+    });
+  }      
 
 
 }
