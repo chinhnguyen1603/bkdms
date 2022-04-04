@@ -23,22 +23,30 @@ class ScreenCartState extends State<ScreenCart> {
   //list cart
   List<Cart> lstCart = [];
 
-  //id của đơn vị
-  int unitId = 0;
   //form nhập số lượng sản phẩm
   final _formEnterAmountKey = GlobalKey<FormState>();
   final enternAmountController = TextEditingController();
+
+  //tổng tiền 
+  int sumOfOrder = 0;
   
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     lstCart = Provider.of<CartProvider>(context).lstCart;
+    // tính tổng tiền của giỏ hàng
+    for (var cart in lstCart){
+      sumOfOrder = sumOfOrder + int.parse(cart.unit['agencyPrice'])*int.parse(cart.quantity);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9;
+    //thêm dấu chấm vào giá sản phẩm
+    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -139,7 +147,7 @@ class ScreenCartState extends State<ScreenCart> {
              //List view cart
              SizedBox(
                child: ListView.builder(
-                     itemCount: 6,              
+                     itemCount: lstCart.length,              
                      shrinkWrap: true,
                      physics: NeverScrollableScrollPhysics(),
                      itemBuilder: (BuildContext context, int index) {
@@ -196,7 +204,7 @@ class ScreenCartState extends State<ScreenCart> {
                                             height: 24,
                                             width: myWidth*0.6,
                                             child: Text(
-                                               "${lstCart[index].unit['agencyPrice']}" + "đ", 
+                                               "${lstCart[index].unit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + "đ", 
                                                maxLines: 1,
                                                textAlign: TextAlign.left,
                                                style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
@@ -222,12 +230,197 @@ class ScreenCartState extends State<ScreenCart> {
                                                 width: widthDevice*0.3,
                                                 child: Text("Số lượng: " + "${lstCart[index].quantity}", textAlign: TextAlign.left, style: TextStyle(fontSize: 14, ),),
                                               ),
+                                              //text button thay đổi số lượng
                                               SizedBox(
                                                 height: 22,
                                                 width: widthDevice*0.2,
                                                 child: GestureDetector(
                                                   onTap: (){
+                                                  showModalBottomSheet<void>(
+                                                     isDismissible: false,
+                                                     useRootNavigator: true,
+                                                     backgroundColor: Colors.white,
+                                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
+                                                     context: context,
+                                                     builder: (BuildContext context) {
+                                                       return StatefulBuilder( builder: (BuildContext context, setState) =>
+                                                        Container(
+                                                           height: 250,
+                                                           child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              mainAxisSize: MainAxisSize.max,
+                                                              children: <Widget>[
+                                                                // icon button xóa 
+                                                                SizedBox(
+                                                                  width: widthDevice,
+                                                                  height: 30,
+                                                                  child: IconButton(
+                                                                    icon: Icon(Icons.cancel_presentation, size: 20,),
+                                                                    alignment: Alignment.centerRight,
+                                                                    onPressed: () {
+                                                                       Navigator.pop(context);
+                                                                    },
+                                                                  ),
+ 
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                
+                                                                // ảnh sp + tên + giá + đơn vị
+                                                                Container(
+                                                                   width: myWidth,
+                                                                   height: 80,
+                                                                   child: Row(children: [
+                                                                     SizedBox(width: 10,),
+                                                                      //Ảnh sản phẩm
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.3,
+                                                                         child: Image.network(
+                                                                             getUrlFromLinkImg("${lstCart[index].unit['product']['linkImg']}")
+                                                                         ),
+                                                                      ),
+                                                                      SizedBox(width: 10,),
+                                                                      //Tên, xuất xứ và giá
+                                                                      SizedBox(
+                                                                         height: 100,
+                                                                         width: myWidth*0.6,
+                                                                         child: Column(
+                                                                             children: [
+                                                                                // tên sản phẩm
+                                                                                SizedBox(
+                                                                                    height: 30,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                       "${lstCart[index].unit['product']['name']}", 
+                                                                                       maxLines: 1,
+                                                                                       overflow: TextOverflow.ellipsis,
+                                                                                       softWrap: false,
+                                                                                       textAlign: TextAlign.left,
+                                                                                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),                                        
+                                                                                    )
+                                                                                ),
+                                                                                // Đơn vị
+                                                                                SizedBox(
+                                                                                    height: 24,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "Đơn vị: " + "${lstCart[index].unit['name']}", 
+                                                                                      maxLines: 1,
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                      softWrap: false,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 12, ),                                        
+                                                                                    )
+                                                                                ),                                                                     
+                                                                                // giá bán cho đại lý
+                                                                                SizedBox(
+                                                                                    height: 20,
+                                                                                    width: myWidth*0.6,
+                                                                                    child: Text(
+                                                                                      "${lstCart[index].unit['agencyPrice'].replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                                                                      maxLines: 1,
+                                                                                      textAlign: TextAlign.left,
+                                                                                      style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                                                                    )
+                                                                                ),                                    
+                                                                             ],),
+                                                                      )
+                                                                  ]),
+                                                                ),
+                                                                
+                                                                Divider(),    
+                                                                //Nhập số lượng
+                                                                SizedBox(
+                                                                  height: 30,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    // text nhập số lượng
+                                                                    SizedBox(
+                                                                      width: myWidth*0.6,
+                                                                      height: 30,
+                                                                      child: Column(
+                                                                        children: [
+                                                                          SizedBox(height: 8,),
+                                                                          SizedBox(height: 20,width: myWidth*0.6, child: Text("Nhập số lượng", textAlign: TextAlign.left,style: TextStyle(color: darkGrey, fontSize: 14),),),
+                                                                          SizedBox(height: 2,),
+                                                                        ],
+                                                                      )
+                                                          
+                                                                    ),
+                                                                    //text formfield điền số lượng hàng
+                                                                    SizedBox(
+                                                                      height: 30,
+                                                                      width: 60, 
+                                                                      child: Form(
+                                                                        key: _formEnterAmountKey,
+                                                                        child: TextFormField(
+                                                                          controller: enternAmountController,        
+                                                                          keyboardType: TextInputType.number,
+                                                                          cursorHeight: 14,
+                                                                          textAlignVertical: TextAlignVertical.center,
+                                                                          style: TextStyle(fontSize: 14),
+                                                                          validator: (value) {
+                                                                             if (value == null || value.isEmpty) {
+                                                                                return "trống";
+                                                                             }
+                                                                             return null;
+                                                                          },  
+                                                                          decoration:  InputDecoration(
+                                                                             enabledBorder:  OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.circular(0),
+                                                                                borderSide: BorderSide(color: darkGrey),
+                                                                             ),
+                                                                          )
+                                                                        ),
+                                                                      ),
+                                                                   )
+                                                                  ])
+                                                                ),
+                                                                Divider(),
+                                                                //button cập nhật số lượng
+                                                                SizedBox(height: 5,),
+                                                                SizedBox(
+                                                                  height: 45,
+                                                                  width: widthDevice,
+                                                                  child: Row(children: [
+                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    Container(
+                                                                      height: 45,
+                                                                      width: widthDevice*0.8,
+                                                                      child: ElevatedButton(
+                                                                        
+                                                                        onPressed: () async {
+                                                                          setState(() {              
+                                                                              sumOfOrder = 0; //set tổng tiền về 0
+                                                                          });
+                                                                          //post api add cart tại đây
+                                                                           if (_formEnterAmountKey.currentState!.validate()){
+                                                                              await showDialog (
+                                                                                 context: context,
+                                                                                 builder: (context) =>
+                                                                                    FutureProgressDialog(getFuture(lstCart[index].unitId), message: Text('Đang cập nhật...', style: TextStyle(color:Color(0xffe2dddd)))),
+                                                                              );
+                                                                              Navigator.pop(context);
+                                                                           }
+                                                                        },
+                                                                        child: Text("Cập nhật", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                                                                        style: ButtonStyle(
+                                                                            elevation: MaterialStateProperty.all(0),
+                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ]),
+                                                                )
 
+                                                             ],
+                                                           ),
+                                                        ) );
+                                                      },//builder
+                                                  );//showmodal bottom sheet
+ 
                                                   }, 
                                                   child: Text("Thay đổi", textAlign: TextAlign.left, style: TextStyle(fontSize: 14, color: Colors.blueAccent),),
                                                 )
@@ -346,12 +539,12 @@ class ScreenCartState extends State<ScreenCart> {
                             SizedBox(
                               width: widthDevice*0.6,
                               height: 24,
-                                            child: Text(
-                                               "16.000.000" + "đ", 
-                                               maxLines: 1,
-                                               textAlign: TextAlign.right,
-                                               style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
-                                            )                              
+                              child: Text(
+                                "${sumOfOrder.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                maxLines: 1,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                              )                              
                             )
                           ]),
                         ),
@@ -389,7 +582,7 @@ class ScreenCartState extends State<ScreenCart> {
   }   
 
   // hàm add cart rồi get, update số lượng sản phẩm
-  Future getFuture() {
+  Future getFuture(int unitId) {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
