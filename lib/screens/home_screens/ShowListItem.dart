@@ -696,7 +696,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                   child: Row(children: [
                                                                    SizedBox(width: widthDevice*0.1,),
                                                                    SizedBox(
-                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết sản phẩm", style: TextStyle(color: darkGrey, fontSize:14,),),
+                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết mỗi sản phẩm", style: TextStyle(color: darkGrey, fontSize:14,),),
                                                                    ),
                                                                   ])
                                                                 ),

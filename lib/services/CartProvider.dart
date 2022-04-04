@@ -7,6 +7,7 @@ import 'package:bkdms/models/Cart.dart';
 class CartProvider with ChangeNotifier{
   List<Cart> lstCart = [];
   
+  //add cart
   Future<void> addCart(String? token, String? workspace, int? agencyId, int unitId, String quantity) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/cart');
     print(" bắt đầu add cart");
@@ -38,7 +39,7 @@ class CartProvider with ChangeNotifier{
     }
   }
 
-
+  //get cart
   Future<List<Cart>> getCart(String? token, String? workspace, int? agencyId) async {
     var params = {
      "agencyId": "$agencyId",
@@ -76,6 +77,40 @@ class CartProvider with ChangeNotifier{
         //test kết quả
         print(lstCart);
         return lstCart;
+      } 
+      else{
+        throw jsonDecode(response.body);
+      } 
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  //delete cart
+  Future<void> deleteCart(String? token, String? workspace, int? agencyId,int uniId) async {
+
+    final url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart/deleteCart');
+    print("bắt đầu delete cart");
+    try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{
+          'agencyId': agencyId,
+          'unitId': uniId,
+        }),
+      );
+      print(response.statusCode);
+      // thành công
+      if (response.statusCode == 200) {
+        return ;
       } 
       else{
         throw jsonDecode(response.body);

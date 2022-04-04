@@ -802,7 +802,7 @@ class DetailItemState extends State<DetailItem> {
                                                                               await showDialog (
                                                                                  context: context,
                                                                                  builder: (context) =>
-                                                                                    FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xffe2dddd)))),
+                                                                                    FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xff7d7d7d)))),
                                                                               );
                                                                               setState(() {              
                                                                                   btnSelectVal = ""; //set value của dropdowm về ""

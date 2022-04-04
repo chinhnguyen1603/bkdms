@@ -323,13 +323,6 @@ class InfoUser extends StatelessWidget {
             // divider cuối cùng
             Divider(color: line, thickness: 1,),
 
-            ElevatedButton(
-              onPressed: () {
-                print("test cart");
-                print(Provider.of<CartProvider>(context, listen: false).lstCart[0].unit['product']['name']);
-              }, 
-              child: Text("Test cart")
-            )
           ],
         );
       })

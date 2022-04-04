@@ -174,8 +174,15 @@ class ScreenCartState extends State<ScreenCart> {
                                        height: 30,
                                        width: widthDevice*0.62,
                                        child: IconButton(
-                                          onPressed: (){
-  
+                                          onPressed: () async {
+                                            setState(() {              
+                                              sumOfOrder = 0; //set tổng tiền về 0
+                                            });                                            
+                                            await showDialog (
+                                              context: context,
+                                              builder: (context) =>
+                                                 FutureProgressDialog(deleteCart(lstCart[index].unitId)),
+                                            );                     
                                           }, 
                                           icon: Icon(Icons.cancel_presentation_sharp, size: 18,),
                                           alignment: Alignment.topRight,
@@ -400,7 +407,7 @@ class ScreenCartState extends State<ScreenCart> {
                                                                               await showDialog (
                                                                                  context: context,
                                                                                  builder: (context) =>
-                                                                                    FutureProgressDialog(getFuture(lstCart[index].unitId), message: Text('Đang cập nhật...', style: TextStyle(color:Color(0xffe2dddd)))),
+                                                                                    FutureProgressDialog(changeCart(lstCart[index].unitId), message: Text('Đang cập nhật...', style: TextStyle(color:Color(0xff7d7d7d)))),
                                                                               );
                                                                               Navigator.pop(context);
                                                                            }
@@ -582,13 +589,14 @@ class ScreenCartState extends State<ScreenCart> {
   }   
 
   // hàm add cart rồi get, update số lượng sản phẩm
-  Future getFuture(int unitId) {
+  Future changeCart(int unitId) {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<CartProvider>(context, listen: false).deleteCart(user.token, user.workspace, user.id, unitId);
       await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog");
+          print("Bắt lỗi future dialog addcart");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
@@ -610,5 +618,34 @@ class ScreenCartState extends State<ScreenCart> {
     });
   }      
 
+
+  // hàm delete cart rồi get, update số lượng sản phẩm
+  Future deleteCart(int unitId) {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<CartProvider>(context, listen: false).deleteCart(user.token, user.workspace, user.id, unitId)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+          //get cart và update CountBadge
+          await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+          Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
+      });    
+    });
+  }      
 
 }
