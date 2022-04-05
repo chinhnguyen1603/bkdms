@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:dialogs/dialogs.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ToChangePassword.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ChangePassword extends StatefulWidget {
 
@@ -224,21 +224,23 @@ class ChangePasswordState extends State<ChangePassword>{
                          setState(() {
                            _isLoading = false;
                          });
-                         MessageDialog messageDialog = MessageDialog(
-                             dialogBackgroundColor: Colors.white,
-                             buttonOkColor: Colors.blue,
-                             title: 'Thông báo',
-                             titleColor: Colors.black,
-                             message: 'Mật khẩu đã được cập nhật',
-                             messageColor: Colors.grey,
-                             buttonOkText: 'OK',
-                             dialogRadius: 15.0,
-                             buttonRadius: 18.0,
-                             buttonOkOnPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                             },
-                         );
-                         messageDialog.show(context, barrierColor: Colors.black);                         
+                         //aleart dialog thành công
+                         Alert(
+                           context: context,
+                           type: AlertType.success,
+                           style: AlertStyle(
+                             descTextAlign: TextAlign.start,
+                             descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Color(0xff544c4c)),
+                           ),
+                           desc: "Mật khẩu đã được đổi thành công",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())),
+                              width: 100,
+                             )
+                           ],
+                         ).show();
                        });           
                   
                     }
