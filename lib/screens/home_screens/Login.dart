@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import './HomePage.dart';
 import 'package:bkdms/services/ToLogin.dart';
-import './ResetPassword.dart';
-import './Register.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
-import 'package:sizer/sizer.dart';
+import './ResetPassword.dart';
+import './Register.dart';
+import './HomePage.dart';
 
 
 
@@ -209,17 +210,23 @@ class LoginState extends State<Login> {
                          String fault = onError.toString().replaceAll("{", ""); // remove {
                          String outputError = fault.replaceAll("}", ""); //remove }  
                          // Alert Dialog khi lỗi xảy ra
-                         showDialog(
-                           context: context, 
-                           builder: (ctx1) => AlertDialog(
-                               title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                               content: Text(outputError),
-                               actions: [TextButton(
-                                 onPressed: () => Navigator.pop(ctx1),
-                                 child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                                    ),                      
-                               ],                                      
-                         ));
+                         Alert(
+                           context: context,
+                           type: AlertType.error,
+                           style: AlertStyle(
+                             titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                             descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: darkGrey),
+                           ),
+                           title: "Oops! Có lỗi xảy ra",
+                           desc: outputError,
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.pop(context),
+                              width: 100,
+                             )
+                           ],
+                         ).show();
                          setState(() {
                             _isLoading = false;
                          });

@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:bkdms/components/AppBarTransWithHome.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class FeedBack extends StatefulWidget {
 
@@ -13,18 +14,10 @@ class FeedBack extends StatefulWidget {
 
 
 class  FeedBackState extends State<FeedBack> {
-  static const blueText = Color(0xff105480);
-  late String _timeString;
-
-  @override
-  // hàm khởi tạo state
- /* void didChangeDependencies() {
-    _timeString = _formatDateTime(DateTime.now());
-    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
-    super.didChangeDependencies();
-  }*/
+  static const blueText = Color(0xff105480);  
+  var darkGrey = Color(0xff544C4C); // màu xám
   
-  // Build widget
+  @override
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;
     double myWidth = widthDevice*0.9;  
@@ -126,30 +119,22 @@ class  FeedBackState extends State<FeedBack> {
                    ),
                    child: Center(
                     child: IconButton(
-                    onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      content: const Text(
-                        'CẢM ƠN ĐÃ GỬI PHẢN HỒI. CHÚNG TÔI ĐÃ TIẾP NHẬN VÀ SẼ XỬ LÝ SỚM NHẤT CÓ THỂ',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                           fontSize: 14,
-                           fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      actions: [TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Center( child: const Text(
-                            'OK',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),)
-                        ),                      
-                      ],                  
-                    ),
-                  ),
- 
+                    onPressed: () => Alert(
+                           context: context,
+                           type: AlertType.success,
+                           style: AlertStyle(
+                             descTextAlign: TextAlign.start,
+                             descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: darkGrey),
+                           ),
+                           desc: "Cảm ơn đã gửi thông tin. Chúng tôi sẽ phản hồi trong thời gian sớm nhất",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.pop(context),
+                              width: 100,
+                             )
+                           ],
+                         ).show(),
                        icon: Icon(
                          Icons.send,
                          color: Colors.white,

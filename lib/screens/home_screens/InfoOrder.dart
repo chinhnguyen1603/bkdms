@@ -1,9 +1,8 @@
-import 'package:bkdms/screens/home_screens/order_status_screen/ScreenOrder.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
-import 'package:bkdms/models/TotalPayment.dart';
 import 'package:sizer/sizer.dart';
+import 'package:bkdms/screens/home_screens/InfoPayment.dart';
+
 
 class InfoOrder extends StatefulWidget {
   late int totalPayment;
@@ -142,7 +141,7 @@ class _InfoOrderState extends State<InfoOrder> {
                        SizedBox(
                          width: myWidth*0.7,
                          height: 24,
-                         child: Text("$name", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: darkGrey),),
+                         child: Text("$name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
                        ),
                        //thay đổi
                        SizedBox(
@@ -204,7 +203,7 @@ class _InfoOrderState extends State<InfoOrder> {
                        SizedBox(
                          width: myWidth*0.8,
                          height: 40,
-                         child: Text("$address", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: darkGrey),),
+                         child: Text("$address", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
                        ),
                        //text thay đổi
                        SizedBox(
@@ -311,7 +310,7 @@ class _InfoOrderState extends State<InfoOrder> {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {                          
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenOrder()));
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment()));
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
