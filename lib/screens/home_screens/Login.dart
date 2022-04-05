@@ -10,6 +10,7 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
+import 'package:sizer/sizer.dart';
 
 
 
@@ -45,7 +46,6 @@ class LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
 
     return  Scaffold(
       backgroundColor: Colors.white,
@@ -98,7 +98,7 @@ class LoginState extends State<Login> {
             // chứa form số điện thoại
             SizedBox(
               height: 60,
-              width: widthDevice*0.9,
+              width: 90.w,
               // form số điện thoại
               child: TextFormField(
                 controller: phoneController,
@@ -131,7 +131,7 @@ class LoginState extends State<Login> {
             // chứa form mật khẩu
             SizedBox(
               height: 60,
-              width: widthDevice*0.9,
+              width: 90.w,
               // form mật khẩu
               child: TextFormField(
                 controller: passwordController,

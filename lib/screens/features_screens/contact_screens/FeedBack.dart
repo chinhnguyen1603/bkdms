@@ -95,6 +95,7 @@ class  FeedBackState extends State<FeedBack> {
               height: 150,
               width: myWidth*0.9,
               child: TextFormField(
+                maxLines: 7,
                 decoration: InputDecoration(
                   hintText: "Nhập nội dung...",
                   hintStyle: TextStyle(

@@ -1,14 +1,16 @@
-import 'package:bkdms/models/Cart.dart';
 import 'package:flutter/material.dart';
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
+import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:bkdms/models/Cart.dart';
+import 'package:bkdms/screens/home_screens/InfoOrder.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/CartProvider.dart';
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:provider/provider.dart';
 import 'package:bkdms/models/CountBadge.dart';
-import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
-import 'package:bkdms/screens/home_screens/TestProvince.dart';
+import 'package:bkdms/models/TotalPayment.dart';
+import 'package:sizer/sizer.dart';
 
 class ScreenCart extends StatefulWidget {
   const ScreenCart({ Key? key }) : super(key: key);
@@ -38,15 +40,17 @@ class ScreenCartState extends State<ScreenCart> {
     for (var cart in lstCart){
       sumOfOrder = sumOfOrder + int.parse(cart.unit['agencyPrice'])*int.parse(cart.quantity);
     }
+    //set giá trị tổng tiền
+    Provider.of<TotalPayment>(context, listen: false).setTotalPayment(sumOfOrder);
   }
-
+  
   @override
   Widget build(BuildContext context) {
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
-    double myWidth = widthDevice*0.9;
+    double myWidth = 90.w;
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+       
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -81,15 +85,15 @@ class ScreenCartState extends State<ScreenCart> {
           children: [
              // 3 icon đầu
              Container(
-               width: widthDevice,
+               width: 100.w,
                color: Colors.white,
                height: 50,
                child: Row(children: [
                  SizedBox(
-                  width: widthDevice*0.2,
+                  width: 20.w,
                  ),
                  Container(
-                   width: widthDevice*0.13,
+                   width: 13.w,
                    height: 25,
                    decoration: new BoxDecoration(
                      shape: BoxShape.circle,
@@ -102,12 +106,11 @@ class ScreenCartState extends State<ScreenCart> {
                    ),
                  ),
                  SizedBox(
-                   width: widthDevice*0.1,
+                   width: 10.w,
                    child: Text("-------------------", maxLines: 1, style: TextStyle(color: Color(0xff7b2626)),),
                  ),
                  Container(
-                   width: widthDevice*0.13,
-                   height: 25,
+                   width: 13.w,
                    decoration: new BoxDecoration(
                      shape: BoxShape.circle,
                      border: Border.all(color: Colors.grey)
@@ -119,11 +122,11 @@ class ScreenCartState extends State<ScreenCart> {
                    ),
                  ),
                  SizedBox(
-                   width: widthDevice*0.1,
+                   width: 10.w,
                    child: Text("----------------------", maxLines: 1, style: TextStyle(color: Color(0xff7b2626)),),
                  ),
                  Container(
-                   width: widthDevice*0.13,
+                   width: 13.w,
                    height: 25,
                    decoration: new BoxDecoration(
                      shape: BoxShape.circle,
@@ -155,34 +158,34 @@ class ScreenCartState extends State<ScreenCart> {
                          children: [
                            Container(
                              height: 140,
-                             width: widthDevice,
+                             width: 100.w,
                              color: Colors.white,
                              child: Center(
                                child: Row( children:[
-                                 SizedBox(width: widthDevice*0.05),
+                                 SizedBox(width: 5.w),
                                  // ảnh sản phẩm
                                  SizedBox(
-                                   child: Image.network(getUrlFromLinkImg(lstCart[index].unit['product']['linkImg']), width: widthDevice*0.3, height: 120,),
+                                   child: Image.network(getUrlFromLinkImg(lstCart[index].unit['product']['linkImg']), width: 30.w, height: 120,),
                                  ),
                                  //Tên + giá + đơn vị + số lượng
                                  SizedBox(
-                                   width: widthDevice*0.62,
+                                   width: 62.w,
                                    height: 140,
                                    child: Column(children: [
                                      // icon button delete cart
                                      SizedBox(
                                        height: 30,
-                                       width: widthDevice*0.62,
+                                       width: 62.w,
                                        child: IconButton(
-                                          onPressed: () async {
+                                          onPressed: () async {                                           
                                             setState(() {              
                                               sumOfOrder = 0; //set tổng tiền về 0
-                                            });                                            
+                                            });
                                             await showDialog (
                                               context: context,
                                               builder: (context) =>
                                                  FutureProgressDialog(deleteCart(lstCart[index].unitId)),
-                                            );                     
+                                            );                                                                  
                                           }, 
                                           icon: Icon(Icons.cancel_presentation_sharp, size: 18,),
                                           alignment: Alignment.topRight,
@@ -191,7 +194,7 @@ class ScreenCartState extends State<ScreenCart> {
                                      // tên sản phẩm + giá + đơn vị + số lượng
                                      SizedBox(
                                         height: 100,
-                                        width: widthDevice*0.6,
+                                        width: 60.w,
                                         child: Column( children: [
                                           // tên
                                           SizedBox(
@@ -234,13 +237,13 @@ class ScreenCartState extends State<ScreenCart> {
                                             child: Row(children: [
                                               SizedBox(
                                                 height: 22,
-                                                width: widthDevice*0.3,
+                                                width: 30.w,
                                                 child: Text("Số lượng: " + "${lstCart[index].quantity}", textAlign: TextAlign.left, style: TextStyle(fontSize: 14, ),),
                                               ),
                                               //text button thay đổi số lượng
                                               SizedBox(
                                                 height: 22,
-                                                width: widthDevice*0.2,
+                                                width: 20.w,
                                                 child: GestureDetector(
                                                   onTap: (){
                                                   showModalBottomSheet<void>(
@@ -260,7 +263,7 @@ class ScreenCartState extends State<ScreenCart> {
                                                               children: <Widget>[
                                                                 // icon button xóa 
                                                                 SizedBox(
-                                                                  width: widthDevice,
+                                                                  width: 100.w,
                                                                   height: 30,
                                                                   child: IconButton(
                                                                     icon: Icon(Icons.cancel_presentation, size: 20,),
@@ -340,9 +343,9 @@ class ScreenCartState extends State<ScreenCart> {
                                                                 //Nhập số lượng
                                                                 SizedBox(
                                                                   height: 30,
-                                                                  width: widthDevice,
+                                                                  width: 100.w,
                                                                   child: Row(children: [
-                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    SizedBox(width: 10.w,),
                                                                     // text nhập số lượng
                                                                     SizedBox(
                                                                       width: myWidth*0.6,
@@ -390,12 +393,12 @@ class ScreenCartState extends State<ScreenCart> {
                                                                 SizedBox(height: 5,),
                                                                 SizedBox(
                                                                   height: 45,
-                                                                  width: widthDevice,
+                                                                  width: 100.w,
                                                                   child: Row(children: [
-                                                                    SizedBox(width: widthDevice*0.1,),
+                                                                    SizedBox(width: 10.w,),
                                                                     Container(
                                                                       height: 45,
-                                                                      width: widthDevice*0.8,
+                                                                      width: 80.w,
                                                                       child: ElevatedButton(
                                                                         
                                                                         onPressed: () async {
@@ -451,7 +454,7 @@ class ScreenCartState extends State<ScreenCart> {
 
              //áp dụng khuyến mãi
              Container(
-               width: widthDevice,
+               width: 100.w,
                height: 80,
                color: Colors.white,
                child: SizedBox(
@@ -511,7 +514,7 @@ class ScreenCartState extends State<ScreenCart> {
           ],
         ),
       ),
-      //bottom button chọn mua
+      //bottom button Tiến hành đặt hàng
       bottomNavigationBar: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -522,29 +525,29 @@ class ScreenCartState extends State<ScreenCart> {
                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
                 )],
               ),
-              width: widthDevice,
+              width: 100.w,
                   child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(height: 7,),
                         SizedBox(
-                          width: widthDevice*0.9,
+                          width: 90.w,
                           height: 24,
                           child: Row(children: [
                             //text thành tiền
                             SizedBox(
-                              width: widthDevice*0.3,
+                              width: 30.w,
                               height: 24,
                               child: Center(
                                 child: SizedBox(
-                                  width: widthDevice*0.3,
+                                  width: 30.w,
                                   child: Text("Thành tiền", style: TextStyle(color: darkGrey, fontSize: 14))
                                 )
                               )
                             ),
                             //Tổng giá tiền
                             SizedBox(
-                              width: widthDevice*0.6,
+                              width: 60.w,
                               height: 24,
                               child: Text(
                                 "${sumOfOrder.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
@@ -557,16 +560,14 @@ class ScreenCartState extends State<ScreenCart> {
                         ),
                         SizedBox(height: 7,),
                         SizedBox(
-                          width: widthDevice*0.9,
+                          width: 90.w,
                           height: 40,
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
-                              onPressed: () async {
-                                  await Provider.of<ProvinceProvider>(context, listen: false).getProvince();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => TestProvince()));
+                              onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => InfoOrder(sumOfOrder)));
                               },
                               style: ButtonStyle(
-                                  elevation: MaterialStateProperty.all(0),
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
                                   shape: MaterialStateProperty.all < RoundedRectangleBorder > (
                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )

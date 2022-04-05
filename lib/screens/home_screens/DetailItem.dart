@@ -587,9 +587,10 @@ class DetailItemState extends State<DetailItem> {
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
                                                      context: context,
                                                      builder: (BuildContext context) {
-                                                       return StatefulBuilder( builder: (BuildContext context, setState) =>
+                                                       return StatefulBuilder( builder: (BuildContext context, setState) => SingleChildScrollView( child: 
                                                         Container(
-                                                           height: 320,
+                                                           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                           height: MediaQuery.of(context).size.height / 2 + MediaQuery.of(context).viewInsets.bottom,
                                                            child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               mainAxisAlignment: MainAxisAlignment.start,
@@ -824,7 +825,8 @@ class DetailItemState extends State<DetailItem> {
 
                                                              ],
                                                            ),
-                                                        ) );
+                                                         )
+                                                        ));
                                                       },//builder
                                                   );//showmodal bottom sheet
  

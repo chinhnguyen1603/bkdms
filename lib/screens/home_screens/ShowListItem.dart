@@ -61,8 +61,7 @@ class ShowListItemState extends State<ShowListItem> {
 
   @override
   Widget build(BuildContext context) {
-    //int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart 
-    double heigtDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
+    //int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
     double myWidth = widthDevice*0.9; // chiều rộng hàng ngoài cùng(tê, giá sp, thông tin chi tiết,...)
@@ -240,18 +239,20 @@ class ShowListItemState extends State<ShowListItem> {
                                                   // để người dùng thêm vào giỏ hàng
                                                   showModalBottomSheet<void>(
                                                      isDismissible: false,
+                                                     isScrollControlled: true,
                                                      useRootNavigator: true,
                                                      backgroundColor: Colors.white,
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
                                                      context: ctxGridview,
                                                      builder: (BuildContext context) {
-                                                       return StatefulBuilder( builder: (BuildContext context, setState) =>
+                                                       return StatefulBuilder( builder: (BuildContext context, setState) => SingleChildScrollView( child:
                                                         Container(
-                                                           height: 320,
+                                                           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                           height:  MediaQuery.of(context).size.height / 2 + MediaQuery.of(context).viewInsets.bottom,
                                                            child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               mainAxisAlignment: MainAxisAlignment.start,
-                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisSize: MainAxisSize.min,
                                                               children: <Widget>[
                                                                 // icon button xóa 
                                                                 SizedBox(
@@ -479,7 +480,8 @@ class ShowListItemState extends State<ShowListItem> {
 
                                                              ],
                                                            ),
-                                                        ) );
+                                                         ) 
+                                                        ));
                                                       },//builder
                                                   );//showmodal bottom sheet
                                                },
@@ -593,18 +595,20 @@ class ShowListItemState extends State<ShowListItem> {
                                                onTap: (){
                                                   showModalBottomSheet<void>(
                                                      isDismissible: false,
+                                                     isScrollControlled: true,
                                                      useRootNavigator: true,
                                                      backgroundColor: Colors.white,
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
                                                      context: ctxGridview,
                                                      builder: (BuildContext context) {
-                                                       return StatefulBuilder( builder: (BuildContext context, setState) =>
+                                                       return StatefulBuilder( builder: (BuildContext context, setState) => SingleChildScrollView( child:
                                                         Container(
-                                                           height: 320,
+                                                           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                           height: MediaQuery.of(context).size.height / 2 + MediaQuery.of(context).viewInsets.bottom,
                                                            child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               mainAxisAlignment: MainAxisAlignment.start,
-                                                              mainAxisSize: MainAxisSize.max,
+                                                              mainAxisSize: MainAxisSize.min,
                                                               children: <Widget>[
                                                                 // icon button xóa 
                                                                 SizedBox(
@@ -765,7 +769,8 @@ class ShowListItemState extends State<ShowListItem> {
                                                           
                                                                     ),
                                                                     //text formfield điền số lượng hàng
-                                                                    SizedBox(
+                                                                     Container(
+                                                                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                                                       height: 30,
                                                                       width: 60, 
                                                                       child: Form(
@@ -820,7 +825,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                               Navigator.pop(context);
                                                                            }
                                                                         },
-                                                                        child: Text("Chọn mua", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                                                                        child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(
                                                                             elevation: MaterialStateProperty.all(0),
                                                                             backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
@@ -832,7 +837,8 @@ class ShowListItemState extends State<ShowListItem> {
 
                                                              ],
                                                            ),
-                                                        ) );
+                                                        ) 
+                                                        ));
                                                       },//builder
                                                   );//showmodal bottom sheet
                                                    
