@@ -1,6 +1,9 @@
+import 'package:bkdms/screens/home_screens/SuccessOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:provider/provider.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
+import 'package:bkdms/models/TotalPayment.dart';
 
 
 class InfoPayment extends StatelessWidget {
@@ -9,6 +12,10 @@ class InfoPayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //thêm dấu chấm vào giá sản phẩm
+    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+    
     return Scaffold(
       appBar: AppBarGrey("Thanh toán"),
       body: SingleChildScrollView(
@@ -78,7 +85,71 @@ class InfoPayment extends StatelessWidget {
         ),
 
       ),
-      
-    );
+      //bottombar Tiếp tục
+      bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [ BoxShadow(
+                   color: Colors.grey,
+                   blurRadius: 5.0,
+                   spreadRadius: 0.0,
+                   offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                )],
+              ),
+              width: 100.w,
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 7,),
+                        SizedBox(
+                          width: 90.w,
+                          height: 24,
+                          child: Row(children: [
+                            //text thành tiền
+                            SizedBox(
+                              width: 30.w,
+                              height: 24,
+                              child: Center(
+                                child: SizedBox(
+                                  width: 30.w,
+                                  child: Text("Thành tiền", style: TextStyle(color: darkGrey, fontSize: 14))
+                                )
+                              )
+                            ),
+                            //Tổng giá tiền
+                            SizedBox(
+                              width: 60.w,
+                              height: 24,
+                              child: Text(
+                                "${Provider.of<TotalPayment>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                maxLines: 1,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                              )                              
+                            )
+                          ]),
+                        ),
+                        SizedBox(height: 7,),
+                        SizedBox(
+                          width: 90.w,
+                          height: 40,
+                          //button tiến hành đặt hàng
+                          child: ElevatedButton(
+                              onPressed: () async {                          
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder()));
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
+                                  shape: MaterialStateProperty.all < RoundedRectangleBorder > (
+                                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
+                                  )
+                              ),
+                              child: Text("Đặt hàng", style: TextStyle(fontWeight: FontWeight.w700), )
+                          )  
+                        ),
+                        SizedBox(height: 7,),
+                      ])
+              )          
+   );
   }
 }
