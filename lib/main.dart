@@ -1,5 +1,6 @@
 import 'package:bkdms/screens/home_screens/InfoOrder.dart';
 import 'package:bkdms/screens/home_screens/InfoPayment.dart';
+import 'package:bkdms/screens/home_screens/SuccessOrder.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/ScreenOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
            title: "BKDMS Mobile App",
            home: Scaffold(
               backgroundColor: Color(0xffF4F4F4),
-             body: InfoOrder(10000),
+             body: SplashScreen(),
            ),
       );
       }

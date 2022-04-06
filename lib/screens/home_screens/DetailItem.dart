@@ -763,9 +763,9 @@ class DetailItemState extends State<DetailItem> {
                                                                         child: TextFormField(
                                                                           controller: enternAmountController,        
                                                                           keyboardType: TextInputType.number,
-                                                                          cursorHeight: 14,
+                                                                          cursorHeight: 18,
                                                                           textAlignVertical: TextAlignVertical.center,
-                                                                          style: TextStyle(fontSize: 12),
+                                                                          style: TextStyle(fontSize: 14),
                                                                           validator: (value) {
                                                                              if (value == null || value.isEmpty) {
                                                                                 return "trống";
@@ -816,7 +816,7 @@ class DetailItemState extends State<DetailItem> {
                                                                         child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(
                                                                             elevation: MaterialStateProperty.all(0),
-                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
+                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xfff53838)),
                                                                         ),
                                                                       ),
                                                                     )

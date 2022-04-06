@@ -10,7 +10,7 @@ class InfoApp extends StatelessWidget {
     double myWidth = widthDevice*0.9;
     return Scaffold(
       appBar: AppBarGreyWithHome("Thông tin ứng dụng"),
-      backgroundColor: Color(0xffF0ECEC), // background color của màn hình
+      backgroundColor: Color(0xffd9d9d9), // background color của màn hình
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -18,13 +18,6 @@ class InfoApp extends StatelessWidget {
             Container(
                width: double.infinity,
                height: 140,
-               decoration: BoxDecoration(
-                 gradient: LinearGradient(
-                     begin: Alignment.topRight,
-                     end: Alignment.bottomCenter,
-                     colors: [Color(0xffFF3A5E),Color(0xffFFE4AF)],
-                 ),
-               ),
                child: Column(
                  children: [
                    SizedBox(height: 15,),
@@ -43,7 +36,7 @@ class InfoApp extends StatelessWidget {
                      "Phiên bản 1.0.0",
                      style: TextStyle(
                        fontSize: 18,
-                       color: Color(0xff7B2626),
+                       color: Colors.white,
                      ),                     
                    ),
                    SizedBox(height: 5,),
@@ -51,7 +44,7 @@ class InfoApp extends StatelessWidget {
                      "Kích thước 30MB",
                      style: TextStyle(
                        fontSize: 18,
-                       color: Color(0xff7B2626),
+                       color: Colors.white,
                      ),
                    )
 
@@ -68,11 +61,12 @@ class InfoApp extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
+                  color: Color(0xffc20000),
                 ),
               ),
             ),
             SizedBox(height: 8,),
-            Text("Copyright © BK.DMS"),       
+            Text("Copyright © BK.DMS", style: TextStyle(color: Color(0xffc20000)),),       
           ],
         ),
       ),

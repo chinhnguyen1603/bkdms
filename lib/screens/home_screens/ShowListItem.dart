@@ -344,7 +344,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                   child: Row(children: [
                                                                    SizedBox(width: widthDevice*0.1,),
                                                                    SizedBox(
-                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết mỗi sản phẩm", style: TextStyle(color: darkGrey, fontSize:14, fontFamily: "SegoeScript"),),
+                                                                     child: Text("Xem quy đổi đơn vị ở chi tiết mỗi sản phẩm", style: TextStyle(color: darkGrey, fontSize:14,),),
                                                                    ),
                                                                   ])
                                                                 ),
@@ -421,9 +421,9 @@ class ShowListItemState extends State<ShowListItem> {
                                                                         child: TextFormField(
                                                                           controller: enternAmountController,        
                                                                           keyboardType: TextInputType.number,
-                                                                          cursorHeight: 14,
+                                                                          cursorHeight: 18,
                                                                           textAlignVertical: TextAlignVertical.center,
-                                                                          style: TextStyle(fontSize: 12),
+                                                                          style: TextStyle(fontSize: 14),
                                                                           validator: (value) {
                                                                              if (value == null || value.isEmpty) {
                                                                                 return "trống";
@@ -606,7 +606,6 @@ class ShowListItemState extends State<ShowListItem> {
                                                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                                            height: MediaQuery.of(context).size.height / 2 + MediaQuery.of(context).viewInsets.bottom,
                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                               mainAxisSize: MainAxisSize.min,
                                                               children: <Widget>[
@@ -769,8 +768,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                           
                                                                     ),
                                                                     //text formfield điền số lượng hàng
-                                                                     Container(
-                                                                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                                     SizedBox(
                                                                       height: 30,
                                                                       width: 60, 
                                                                       child: Form(
@@ -778,9 +776,9 @@ class ShowListItemState extends State<ShowListItem> {
                                                                         child: TextFormField(
                                                                           controller: enternAmountController,        
                                                                           keyboardType: TextInputType.number,
-                                                                          cursorHeight: 14,
+                                                                          cursorHeight: 18,
                                                                           textAlignVertical: TextAlignVertical.center,
-                                                                          style: TextStyle(fontSize: 12),
+                                                                          style: TextStyle(fontSize: 14),
                                                                           validator: (value) {
                                                                              if (value == null || value.isEmpty) {
                                                                                 return "trống";
@@ -788,10 +786,10 @@ class ShowListItemState extends State<ShowListItem> {
                                                                              return null;
                                                                           },  
                                                                           decoration:  InputDecoration(
-                                                                             enabledBorder:  OutlineInputBorder(
+                                                                            enabledBorder:  OutlineInputBorder(
                                                                                 borderRadius: BorderRadius.circular(0),
                                                                                 borderSide: BorderSide(color: darkGrey),
-                                                                             ),
+                                                                            ),
                                                                           )
                                                                         ),
                                                                       ),

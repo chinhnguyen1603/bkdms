@@ -256,7 +256,7 @@ class TestProvinceState extends State<TestProvince> {
                     },                 
                     decoration:  InputDecoration(
                       hintText: "Tên đường, số nhà...",
-                      hintStyle: TextStyle(fontSize: 16),
+                      hintStyle: TextStyle(fontSize: 16, color: Color(0xff544c4c)),
                       fillColor: Colors.white, 
                       filled: true,
                       enabledBorder:  OutlineInputBorder(
