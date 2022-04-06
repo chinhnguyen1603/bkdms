@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:bkdms/components/AppBarGrey.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/screens/home_screens/InfoPayment.dart';
+import 'package:bkdms/services/ProvinceProvider.dart';
+import 'package:bkdms/screens/home_screens/TestProvince.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 
 class InfoOrder extends StatefulWidget {
@@ -17,19 +22,26 @@ class _InfoOrderState extends State<InfoOrder> {
   String phone = "0898125108";
   String address = "63 Trần Bình Trọng, Phường 1, Gò Vấp, Thành phố Hồ Chí Minh";
   final noteController = TextEditingController();  
-  late GlobalKey _formNoteKey;
+
+  // form thay đổi name
+  final nameController = TextEditingController();  
+  final _formNameKey = GlobalKey<FormState>();
+
+  // form thay đổi phone
+  final phoneController = TextEditingController();  
+  final _formPhoneKey = GlobalKey<FormState>();
   
   
   @override
   void dispose(){
      noteController.dispose();
+     phoneController.dispose();
      super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _formNoteKey = GlobalKey();
     //name = Provider.of<Agency>(context, listen: false).nameOwn;
     //phone = Provider.of<Agency>(context, listen: false).phone;
   }
@@ -141,7 +153,7 @@ class _InfoOrderState extends State<InfoOrder> {
                        SizedBox(
                          width: myWidth*0.7,
                          height: 24,
-                         child: Text("$name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
+                         child: Text("$name", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: darkGrey),),
                        ),
                        //thay đổi
                        SizedBox(
@@ -149,7 +161,47 @@ class _InfoOrderState extends State<InfoOrder> {
                          height: 24,
                          child: GestureDetector(
                            onTap: (){
-    
+                              //Dialog điền tên mới
+                              Alert(
+                              context: context,
+                              type: AlertType.none,
+                              content: Form(
+                               key: _formNameKey,
+                               child: TextFormField(
+                                 controller: nameController,
+                                 keyboardType: TextInputType.text,
+                                 cursorHeight: 20,
+                                 cursorColor: Colors.black,
+                                 textAlignVertical: TextAlignVertical.center,
+                                 style: TextStyle(fontSize: 18),
+                                 validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                       return "trống";
+                                    }
+                                    return null;
+                                 },                
+                                 decoration:  InputDecoration(
+                                     prefixIcon: const Icon(Icons.abc,size: 26,),
+                                 ),
+                                ),
+                              ),
+                              buttons: [ 
+                                 DialogButton(
+                                    width: 100,
+                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                    onPressed: () {
+                                       // check form có null không
+                                       if (_formNameKey.currentState!.validate()){
+                                         setState(() {
+                                           name = nameController.text;
+                                         });
+                                         Navigator.pop(context);
+                                       }
+                                    },
+                                    
+                              )
+                            ],
+                           ).show();                             
                            },
                            child: Text("Thay đổi", textAlign: TextAlign.right ,style: TextStyle(color: Color(0xff105480), fontSize: 15,),),
                          ),
@@ -175,12 +227,55 @@ class _InfoOrderState extends State<InfoOrder> {
                          height: 24,
                          child: Text("$phone", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: darkGrey),),
                        ),
-                       //text thay đổi
+                       //text button thay đổi
                        SizedBox(
                          width: myWidth*0.3,
                          height: 24,
                          child: GestureDetector(
-                           onTap: (){},
+                           onTap: (){
+                              //Dialog điền số điện thoại
+                              Alert(
+                              context: context,
+                              type: AlertType.none,
+                              content: Form(
+                               key: _formPhoneKey,
+                               child: TextFormField(
+                                 controller: phoneController,
+                                 keyboardType: TextInputType.number,
+                                 cursorHeight: 20,
+                                 cursorColor: Colors.black,
+                                 textAlignVertical: TextAlignVertical.center,
+                                 style: TextStyle(fontSize: 18),
+                                 validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                       return "trống";
+                                    }
+                                    return null;
+                                 },                
+                                 decoration:  InputDecoration(
+                                     prefixIcon: const Icon(Icons.phone_enabled,size: 26,),
+                                 ),
+                                ),
+                              ),
+                              buttons: [ 
+                                 DialogButton(
+                                    width: 100,
+                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                    onPressed: () {
+                                       // check form có null không
+                                       if (_formPhoneKey.currentState!.validate()){
+                                         setState(() {
+                                           phone = phoneController.text;
+                                         });
+                                         Navigator.pop(context);
+                                       }
+
+                                    },
+                                    
+                              )
+                            ],
+                           ).show();                             
+                           },
                            child: Text("Thay đổi", textAlign: TextAlign.right ,style: TextStyle(color: Color(0xff105480), fontSize: 15,),),
                          ),
                        )
@@ -205,12 +300,17 @@ class _InfoOrderState extends State<InfoOrder> {
                          height: 40,
                          child: Text("$address", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
                        ),
-                       //text thay đổi
+                       //text button thay đổi
                        SizedBox(
                          width: myWidth*0.2,
                          height: 40,
                          child: GestureDetector(
-                           onTap: (){},
+                           onTap: () async {
+                            await showDialog (
+                               context: context,
+                               builder: (context) => FutureProgressDialog(getAddress()),
+                            );
+                          },
                            child: Text("Thay đổi", textAlign: TextAlign.right ,style: TextStyle(color: Color(0xff105480), fontSize: 15,),),
                          ),
                        )
@@ -239,7 +339,6 @@ class _InfoOrderState extends State<InfoOrder> {
                    width: myWidth,
                    height: 180,
                    child:  TextField(
-                     key: _formNoteKey,
                      controller: noteController,
                      maxLines: 5,
                      style: TextStyle(color: darkGrey),
@@ -327,8 +426,17 @@ class _InfoOrderState extends State<InfoOrder> {
 
         
 
-      );
-      
-    
+      );  
+  }
+
+  // get api tỉnh thành giao hàng nhanh
+  Future getAddress() {
+    return Future(() async {
+      await Provider.of<ProvinceProvider>(context, listen: false).getProvince()
+      .catchError((onError){
+         throw onError;
+      })
+      .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => TestProvince())), );
+    });
   }
 }

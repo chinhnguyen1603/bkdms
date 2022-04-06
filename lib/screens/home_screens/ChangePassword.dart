@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ToChangePassword.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
@@ -33,7 +33,7 @@ class ChangePasswordState extends State<ChangePassword>{
     double myWidth = widthDevice*0.9;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBarTransparent(Colors.white,"Đổi mật khẩu"),
+      appBar: AppBarGrey("Đổi mật khẩu"),
       body: _isLoading
       ? Center(child: CircularProgressIndicator(),) 
       : SingleChildScrollView(child: Center( child: Form( 

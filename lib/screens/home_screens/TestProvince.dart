@@ -1,9 +1,9 @@
-import 'package:bkdms/models/Cart.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:provider/provider.dart';
+import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:sizer/sizer.dart';
 
 class TestProvince extends StatefulWidget {
   const TestProvince({ Key? key }) : super(key: key);
@@ -17,26 +17,31 @@ class TestProvinceState extends State<TestProvince> {
   static const darkGrey = Color(0xff544C4C);
   //list tỉnh
   List<Province> lstProvince = [];
-  //dropdown tỉnh 
+  //Value select tỉnh 
   String? btnSelectPronvince;
   //id tỉnh khi user chọn
   int idProv = 0;
 
   //list quận huyện
   List<District> lstDistrict = [];
-  //dropdown huyện 
+  //Value select huyện 
   String? btnSelectDistrict;
   //id huyện khi user chọn
   int idDistrict = 0;
 
   //list xã phường
   List<Ward> lstWard = [];
-  //dropdown xã phường
+  //Value xã phường
   String? btnSelectWard;
   
+  //create list dropdown
   List<String> lstNameProvince  = [];
   List<String> lstNameDistrict = [];
   List<String> lstNameWard = [];
+
+  // form extraOfAddress
+  final extraController = TextEditingController();  
+  final _formExtraKey = GlobalKey<FormState>();
 
   @override
   void didChangeDependencies() {
@@ -91,37 +96,29 @@ class TestProvinceState extends State<TestProvince> {
 
   @override
   Widget build(BuildContext context) {
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
-
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.close,
-            color: darkGrey,),
-          onPressed: (){
-              Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        title: Text(
-            "Test Chọn địa chỉ",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: darkGrey,
-            ),
-        )
-      ), 
-      backgroundColor: Color(0xffF0ECEC), // background color của màn hình
+      appBar: AppBarTransparent(Color(0xfffcfcfc), "Địa chỉ"),
+      backgroundColor: Color(0xfffcfcfc), // background color của màn hình
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 10,),
+            Container(
+              width: 100.w,
+              height: 10,
+            ),
+            // text tỉnh thành
+            SizedBox(
+              width: 90.w,
+              child: Text("Tỉnh, Thành", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
+            ),
+            SizedBox(height: 5,),
             // dropdown button Tỉnh
             SizedBox(
+             width: 90.w,
+             child: DropdownButtonHideUnderline(
                child: DropdownButton2(
                   isExpanded: true,
                   dropdownMaxHeight: 250,
@@ -152,11 +149,20 @@ class TestProvinceState extends State<TestProvince> {
                     });   
                     await Provider.of<ProvinceProvider>(context, listen: false).getDistrict(idProv);                                                   
                   }
-              ) 
+                ) 
+              ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 15,),
+            // text quận huyện
+            SizedBox(
+              width: 90.w,
+              child: Text("Quận, Huyện", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
+            ),
+            SizedBox(height: 5,),
             // dropdown button Huyện
             SizedBox(
+              width: 90.w,
+              child: DropdownButtonHideUnderline(
                child: DropdownButton2(
                   isExpanded: true,
                   dropdownMaxHeight: 250,
@@ -186,11 +192,20 @@ class TestProvinceState extends State<TestProvince> {
                     });     
                     await Provider.of<ProvinceProvider>(context, listen: false).getWard(idDistrict);                          
                   }
-              ) 
+               ) 
+              )
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 15,),
+            // text xã phường
+            SizedBox(
+              width: 90.w,
+              child: Text("Xã, Phường", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
+            ),
+            SizedBox(height: 5,),
             // dropdown button xã phường
             SizedBox(
+              width: 90.w,
+              child: DropdownButtonHideUnderline(
                child: DropdownButton2(
                   isExpanded: true,
                   dropdownMaxHeight: 250,
@@ -210,16 +225,52 @@ class TestProvinceState extends State<TestProvince> {
                   onChanged: (newValue) async {
                     setState(() {
                       btnSelectWard= newValue as String;
-                    });   
-                                                       
+                    });                                               
                   }
               ) 
             ),
- 
+           ),
+            SizedBox(height: 15,), 
+            // text Thông tin thêm
+            SizedBox(
+              width: 90.w,
+              child: Text("Thông tin thêm", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
+            ),    
+            SizedBox(height: 5,),         
+            // form thông tin chi tiết
+            SizedBox(
+              height: 45,
+              width: 90.w,
+              child: Form(
+                key: _formExtraKey,
+                child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    cursorHeight: 24,
+                    controller: extraController,
+                    style: TextStyle(fontSize: 15),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                         return "Không được để trống";
+                      }
+                      return null;
+                    },                 
+                    decoration:  InputDecoration(
+                      hintText: "Tên đường, số nhà...",
+                      hintStyle: TextStyle(fontSize: 16),
+                      fillColor: Colors.white, 
+                      filled: true,
+                      enabledBorder:  OutlineInputBorder(
+                         borderRadius: BorderRadius.circular(5),
+                         borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),   
+                ),
+              ),
+            )
          ],
         ),
       ),
-      //bottom button chọn mua
+      //bottom button Lưu thông tin
       bottomNavigationBar: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -230,27 +281,29 @@ class TestProvinceState extends State<TestProvince> {
                    offset: Offset(2.0, 2.0), // shadow direction: bottom right
                 )],
               ),
-              width: widthDevice,
+              width: 100.w,
                   child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(height: 7,),
                         SizedBox(
-                          width: widthDevice*0.9,
+                          width: 90.w,
                           height: 40,
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
-                              onPressed: () async {
-                                  await Provider.of<ProvinceProvider>(context, listen: false).getProvince();
+                              onPressed: () {
+                              if (_formExtraKey.currentState!.validate()){     
+                                  Navigator.pop(context);
+                                }
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),
-                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
+                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xfff53838)),
                                   shape: MaterialStateProperty.all < RoundedRectangleBorder > (
                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
                                   )
                               ),
-                              child: Text("Tiến hành đặt hàng", style: TextStyle(fontWeight: FontWeight.w700), )
+                              child: Text("Lưu thông tin", style: TextStyle(fontWeight: FontWeight.w700), )
                           )  
                         ),
                         SizedBox(height: 7,),
