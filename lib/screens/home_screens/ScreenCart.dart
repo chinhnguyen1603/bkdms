@@ -8,7 +8,6 @@ import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
-import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:bkdms/models/TotalPayment.dart';
 import 'package:sizer/sizer.dart';
 
@@ -41,7 +40,7 @@ class ScreenCartState extends State<ScreenCart> {
       sumOfOrder = sumOfOrder + int.parse(cart.unit['agencyPrice'])*int.parse(cart.quantity);
     }
     //set giá trị tổng tiền
-    Provider.of<TotalPayment>(context, listen: false).setTotalPayment(sumOfOrder);
+    Provider.of<TotalPayment>(context).setTotalPayment(sumOfOrder);
   }
   
   @override

@@ -247,6 +247,7 @@ class TestProvinceState extends State<TestProvince> {
                     keyboardType: TextInputType.text,
                     cursorHeight: 24,
                     controller: extraController,
+                    textAlignVertical: TextAlignVertical.bottom,
                     style: TextStyle(fontSize: 15),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -256,6 +257,7 @@ class TestProvinceState extends State<TestProvince> {
                     },                 
                     decoration:  InputDecoration(
                       hintText: "Tên đường, số nhà...",
+                      
                       hintStyle: TextStyle(fontSize: 16, color: Color(0xff544c4c)),
                       fillColor: Colors.white, 
                       filled: true,

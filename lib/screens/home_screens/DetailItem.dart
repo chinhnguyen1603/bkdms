@@ -816,7 +816,7 @@ class DetailItemState extends State<DetailItem> {
                                                                         child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(
                                                                             elevation: MaterialStateProperty.all(0),
-                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xfff53838)),
+                                                                            backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
                                                                         ),
                                                                       ),
                                                                     )
@@ -833,7 +833,7 @@ class DetailItemState extends State<DetailItem> {
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),
-                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
+                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xfff53838)),
                                   shape: MaterialStateProperty.all < RoundedRectangleBorder > (
                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
                                   )
