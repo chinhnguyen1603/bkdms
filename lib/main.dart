@@ -31,7 +31,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  /*await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
@@ -42,7 +44,7 @@ Future<void> main() async {
     alert: true,
     badge: true,
     sound: true,
-  );
+  );*/
   runApp(MyApp());
 }
 

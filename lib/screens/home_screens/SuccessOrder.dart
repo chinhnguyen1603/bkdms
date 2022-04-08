@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/ScreenOrder.dart';
 
 class SuccessOrder extends StatelessWidget {
   const SuccessOrder({ Key? key }) : super(key: key);
@@ -9,9 +10,10 @@ class SuccessOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return Container(
-      color: Colors.white,
-      child: Column(
+    return Scaffold(
+      body: Container(
+       color: Colors.white,
+       child: Column(
           children: [
             Container(width: 100.w, height: 10,),
             SizedBox(
@@ -20,13 +22,13 @@ class SuccessOrder extends StatelessWidget {
             Image.asset("assets/success.png"),
             SizedBox(height: 30,),
             SizedBox(
-              width: 70.w,
-              child: Text("Đặt hàng thành công!!!", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500, color: textColor),),
+              width: 80.w,
+              child: Text("Đặt hàng thành công!!!", textAlign: TextAlign.center ,maxLines: 2, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: textColor),),
             ),
             SizedBox(height: 10,),
             SizedBox(
-              width: 70.w,
-              child: Text("Thông tin đơn hàng đã được gửi và chờ xác nhận từ hệ thống", textAlign: TextAlign.center ,maxLines: 2, style: TextStyle(fontSize: 15, color: textColor),)
+              width: 80.w,
+              child: Text("Thông tin đơn hàng đã được gửi và chờ xác nhận từ hệ thống", textAlign: TextAlign.center ,maxLines: 2, style: TextStyle(fontSize: 14, color: textColor, fontWeight: FontWeight.w200),)
             ),
             SizedBox(height: 10.h,),
             //Button Đơn hàng
@@ -35,7 +37,7 @@ class SuccessOrder extends StatelessWidget {
               width: 30.w,
               child: ElevatedButton(
                 onPressed: (){
-         
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenOrder()));
                 },
                 style: ButtonStyle(
                    elevation: MaterialStateProperty.all(0),
@@ -67,7 +69,7 @@ class SuccessOrder extends StatelessWidget {
           ], 
           
       ),
-      
+      )
     );
   }
 }
