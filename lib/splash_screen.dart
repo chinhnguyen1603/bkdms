@@ -1,11 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:bkdms/screens/home_screens/Login.dart';
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+    playSound: true
+);
 
-class SplashScreen extends StatelessWidget{
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({ Key? key }) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => SplashScreenState();
+}
+
+
+class SplashScreenState extends State<SplashScreen>{
   
+   @override
+  void initState() {
+    super.initState();
+
+    //foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification notification = message.notification as RemoteNotification;
+      AndroidNotification android = message.notification?.android as AndroidNotification;
+      if (notification != null && android != null)  {
+        await flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ))
+           .then((value)  async {
+              await showDialog(
+                 context: context,
+                 builder: (_) {
+                   return AlertDialog(
+                      title: Text("Thông báo"),
+                      content: Text("${notification.body}. Kiểm tra ngay tại mục đơn hàng.", style: TextStyle(color: Color(0xff544c4c)),),
+              );
+            });
+
+            });
+      }
+
+    });
+    
+    //background
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification as RemoteNotification;
+      AndroidNotification android = message.notification?.android as AndroidNotification;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text("Thông báo"),
+                content: Text("${notification.body}. Kiểm tra ngay tại mục đơn hàng.", style: TextStyle(color: Color(0xff544c4c)),),
+              );
+            });
+      }
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     Timer(Duration(seconds: 5), () {

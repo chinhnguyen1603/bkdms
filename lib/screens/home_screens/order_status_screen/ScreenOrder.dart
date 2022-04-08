@@ -14,10 +14,10 @@ class ScreenOrder extends StatefulWidget {
 
 class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
   late TabController _tabController;
-  
   @override
   void initState() {
     super.initState();
+     //tab page view
     _tabController = TabController(length: 4, vsync: this);
   }
   @override

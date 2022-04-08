@@ -135,7 +135,7 @@ class DetailItemState extends State<DetailItem> {
                               style: TextStyle(
                                  fontSize: 16,
                                  fontWeight: FontWeight.w300,
-                                 color: Color(0xfff53838),
+                                 color: Color(0xff7b2626),
                               ),
                           ),
                         )
@@ -833,7 +833,7 @@ class DetailItemState extends State<DetailItem> {
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),
-                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xfff53838)),
+                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xff7b2626)),
                                   shape: MaterialStateProperty.all < RoundedRectangleBorder > (
                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
                                   )

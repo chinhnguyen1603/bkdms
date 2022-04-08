@@ -19,7 +19,10 @@ class SuccessOrder extends StatelessWidget {
             ),
             Image.asset("assets/success.png"),
             SizedBox(height: 30,),
-            Text("Đặt hàng thành công!!!", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500, color: textColor),),
+            SizedBox(
+              width: 70.w,
+              child: Text("Đặt hàng thành công!!!", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500, color: textColor),),
+            ),
             SizedBox(height: 10,),
             SizedBox(
               width: 70.w,

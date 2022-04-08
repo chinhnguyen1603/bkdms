@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1033531230273",
+    "project_id": "bkdms-ce42d",
+    "storage_bucket": "bkdms-ce42d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033531230273:android:48ec72116269a0c9739ec0",
+        "android_client_info": {
+          "package_name": "com.example.bkdms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033531230273-t4kk1hmlqg4jmjhk65vij09pgoqsci56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSFdsca2mNFwyau2y4PmnRazQdk5qdI_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033531230273-t4kk1hmlqg4jmjhk65vij09pgoqsci56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

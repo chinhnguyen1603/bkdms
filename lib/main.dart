@@ -1,7 +1,3 @@
-import 'package:bkdms/screens/home_screens/InfoOrder.dart';
-import 'package:bkdms/screens/home_screens/InfoPayment.dart';
-import 'package:bkdms/screens/home_screens/SuccessOrder.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/ScreenOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
@@ -13,17 +9,47 @@ import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:bkdms/models/TotalPayment.dart';
 import 'package:sizer/sizer.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:bkdms/screens/home_screens/TestFirebase.dart';
 
 
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+    playSound: true
+);
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('A cloud message just showed up :  ${message.messageId}');
+}
 
-void main() => runApp( MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  runApp(MyApp());
+}
 
 
 class MyApp extends StatelessWidget {
   
-
+  
   @override
   Widget build(BuildContext context) {
     
@@ -41,7 +67,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
            title: "BKDMS Mobile App",
            home: Scaffold(
-              backgroundColor: Color(0xffF4F4F4),
+             backgroundColor: Color(0xffF4F4F4),
              body: SplashScreen(),
            ),
       );
@@ -50,5 +76,4 @@ class MyApp extends StatelessWidget {
   );
  }
 }
-
 

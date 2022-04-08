@@ -291,7 +291,7 @@ class TestProvinceState extends State<TestProvince> {
                         SizedBox(
                           width: 90.w,
                           height: 40,
-                          //button tiến hành đặt hàng
+                          //button tlưu thông tin
                           child: ElevatedButton(
                               onPressed: () {
                               if (_formExtraKey.currentState!.validate()){     
@@ -300,7 +300,7 @@ class TestProvinceState extends State<TestProvince> {
                               },
                               style: ButtonStyle(
                                   elevation: MaterialStateProperty.all(0),
-                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xfff53838)),
+                                  backgroundColor: MaterialStateProperty.all < Color > (Color(0xff7b2626)),
                                   shape: MaterialStateProperty.all < RoundedRectangleBorder > (
                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
                                   )
