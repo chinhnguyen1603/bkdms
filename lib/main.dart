@@ -50,25 +50,13 @@ Future<void> main() async {
 }
 
 
-class MyApp extends StatefulWidget {
-
-  @override
-  State <MyApp> createState() =>  MyAppState();
-}
 
 
 
-class MyAppState extends State<MyApp> {
-  bool changeToLogin = false;
-  
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //set 4s rồi chuyển qua Login
-    Timer(Duration(seconds: 4), () {  
-      setState(() {
-        changeToLogin =true;
-      });
-    });  
+
    return MultiProvider(
     providers: [
         ChangeNotifierProvider(create: (context) => Agency()),
@@ -84,9 +72,7 @@ class MyAppState extends State<MyApp> {
            title: "BKDMS Mobile App",
            home: Scaffold(
              backgroundColor: Color(0xffF4F4F4),
-             body: changeToLogin
-                   ? Login()
-                   : SplashScreen()
+             body: SplashScreen()
            ),
       );
       }

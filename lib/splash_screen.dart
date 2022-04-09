@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:async';
+import 'package:bkdms/screens/home_screens/Login.dart';
 
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -21,8 +23,8 @@ class SplashScreen extends StatefulWidget {
 
 
 class SplashScreenState extends State<SplashScreen>{
-  
-   @override
+   
+  @override
   void initState() {
     super.initState();
 
@@ -81,7 +83,10 @@ class SplashScreenState extends State<SplashScreen>{
 
   @override
   Widget build(BuildContext context) {
-   
+      //set 4s rồi chuyển qua Login
+    Timer(Duration(seconds: 4), () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
+    }); 
     return Scaffold(
         backgroundColor: Color(0xffF4F4F4),
         body: SingleChildScrollView( 
