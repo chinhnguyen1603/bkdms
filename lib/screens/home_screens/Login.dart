@@ -248,7 +248,7 @@ class LoginState extends State<Login> {
                           _isLoading = false;
                         }),
                         //push xong xóa route để homepage không remove về được
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()),  (Route<dynamic> route) => false),
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0))),
                       });                      
                   }  
                 }

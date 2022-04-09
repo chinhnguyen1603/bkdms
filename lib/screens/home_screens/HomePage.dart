@@ -15,7 +15,8 @@ import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 
 class HomePage extends StatefulWidget {
-
+  late int index;
+  HomePage(this.index);
   @override
   State<HomePage> createState() => HomePageState();
 }
@@ -23,9 +24,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
 
-
-
-   int _pageIndex = 0;
+  late int _pageIndex;
   late PageController _pageController;
   
   //thêm dấu chấm vào giá tiền
@@ -41,7 +40,8 @@ class HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    _pageController = PageController(initialPage: _pageIndex);
+    _pageController = PageController(initialPage: widget.index);
+    _pageIndex = widget.index;
   }
 
   @override

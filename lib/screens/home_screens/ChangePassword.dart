@@ -236,7 +236,7 @@ class ChangePasswordState extends State<ChangePassword>{
                            buttons: [ 
                              DialogButton(
                               child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())),
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0))),
                               width: 100,
                              )
                            ],

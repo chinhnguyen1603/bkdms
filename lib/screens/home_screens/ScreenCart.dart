@@ -59,7 +59,7 @@ class ScreenCartState extends State<ScreenCart> {
             color: darkGrey,
           ),
           onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0)));
           },
         ),
         actions: [

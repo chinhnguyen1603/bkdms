@@ -322,7 +322,7 @@ class ResultBarcodeState extends State<ResultBarcode> {
                           width: widthDevice*0.425,
                           child: OutlinedButton(
                              onPressed: (){
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0)));
                              },
                              child: Text("Hủy bỏ", style: TextStyle(color: Color(0xff4690ff), fontWeight: FontWeight.w700),),
                              style: OutlinedButton.styleFrom(

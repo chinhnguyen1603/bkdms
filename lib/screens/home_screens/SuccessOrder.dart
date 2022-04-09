@@ -37,7 +37,7 @@ class SuccessOrder extends StatelessWidget {
               width: 30.w,
               child: ElevatedButton(
                 onPressed: (){
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenOrder()));
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(1)));
                 },
                 style: ButtonStyle(
                    elevation: MaterialStateProperty.all(0),
@@ -57,7 +57,7 @@ class SuccessOrder extends StatelessWidget {
                           width: 45.w,
                           child: OutlinedButton(
                              onPressed: (){
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0)));
                              },
                              child: Text("Về trang chủ", style: TextStyle(color: Color(0xff4690ff), fontWeight: FontWeight.w700),),
                              style: OutlinedButton.styleFrom(
