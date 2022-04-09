@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bkdms/screens/home_screens/Login.dart';
-import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -83,11 +81,8 @@ class SplashScreenState extends State<SplashScreen>{
 
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 4), () {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
-    });    
-    return MaterialApp(      
-      home: Scaffold(
+   
+    return Scaffold(
         backgroundColor: Color(0xffF4F4F4),
         body: SingleChildScrollView( 
          child: Container(
@@ -133,7 +128,7 @@ class SplashScreenState extends State<SplashScreen>{
           ),
         ),
       ),
-      )
+      
     );
     
   }

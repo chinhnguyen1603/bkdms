@@ -1,4 +1,6 @@
+import 'package:bkdms/screens/home_screens/Login.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Item.dart';
@@ -31,8 +33,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  /*await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  await Firebase.initializeApp(
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -44,17 +45,30 @@ Future<void> main() async {
     alert: true,
     badge: true,
     sound: true,
-  );*/
+  );
   runApp(MyApp());
 }
 
 
-class MyApp extends StatelessWidget {
-  
+class MyApp extends StatefulWidget {
+
+  @override
+  State <MyApp> createState() =>  MyAppState();
+}
+
+
+
+class MyAppState extends State<MyApp> {
+  bool changeToLogin = false;
   
   @override
   Widget build(BuildContext context) {
-    
+    //set 4s rồi chuyển qua Login
+    Timer(Duration(seconds: 4), () {  
+      setState(() {
+        changeToLogin =true;
+      });
+    });  
    return MultiProvider(
     providers: [
         ChangeNotifierProvider(create: (context) => Agency()),
@@ -70,7 +84,9 @@ class MyApp extends StatelessWidget {
            title: "BKDMS Mobile App",
            home: Scaffold(
              backgroundColor: Color(0xffF4F4F4),
-             body: SplashScreen(),
+             body: changeToLogin
+                   ? Login()
+                   : SplashScreen()
            ),
       );
       }

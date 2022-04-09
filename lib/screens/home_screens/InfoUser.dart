@@ -287,7 +287,7 @@ class InfoUser extends StatelessWidget {
             //Container chứa đăng xuất
             GestureDetector(
             onTap:(){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Login()),  (Route<dynamic> route) => false);
             } ,
             child:
             Container(
