@@ -1,3 +1,4 @@
+import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,6 @@ import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
-import 'package:bkdms/models/InfoOfOrder.dart';
 import 'package:sizer/sizer.dart';
 
 class ScreenCart extends StatefulWidget {
@@ -563,7 +563,7 @@ class ScreenCartState extends State<ScreenCart> {
                           child: ElevatedButton(
                               onPressed: () {
                                     //set giá trị tổng tiền
-                                  Provider.of<InfoOfOrder>(context, listen: false).setTotalPayment(sumOfOrder);
+                                  Provider.of<OrderProvider>(context, listen: false).setTotalPayment(sumOfOrder);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => InfoOrder(sumOfOrder)));
                               },
                               style: ButtonStyle(

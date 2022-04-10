@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
-import 'package:bkdms/models/InfoOfOrder.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:bkdms/models/Agency.dart';
 
@@ -122,7 +121,7 @@ class InfoPayment extends StatelessWidget {
                               width: 60.w,
                               height: 24,
                               child: Text(
-                                "${Provider.of<InfoOfOrder>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                "${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
                                 maxLines: 1,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        

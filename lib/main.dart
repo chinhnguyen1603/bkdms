@@ -9,7 +9,6 @@ import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
-import 'package:bkdms/models/InfoOfOrder.dart';
 import 'package:sizer/sizer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -64,7 +63,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CountBadge()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => ProvinceProvider()),
-        ChangeNotifierProvider(create: (context) => InfoOfOrder()),
         ChangeNotifierProvider(create: (context) => OrderProvider()),
     ],
     child: Sizer(

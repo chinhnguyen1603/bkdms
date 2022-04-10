@@ -1,10 +1,10 @@
+import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:sizer/sizer.dart';
-import 'package:bkdms/models/InfoOfOrder.dart';
 
 class TestProvince extends StatefulWidget {
   const TestProvince({ Key? key }) : super(key: key);
@@ -297,7 +297,7 @@ class TestProvinceState extends State<TestProvince> {
                               onPressed: () {
                               // phải điền mới lưu thông tin
                               if (_formExtraKey.currentState!.validate()){     
-                                  Provider.of<InfoOfOrder>(context, listen: false).setAddress(btnSelectPronvince as String, btnSelectDistrict as String, btnSelectWard as String, extraController.text);
+                                  Provider.of<OrderProvider>(context, listen: false).setAddress(btnSelectPronvince as String, btnSelectDistrict as String, btnSelectWard as String, extraController.text);
                                   Navigator.pop(context);
                                 }
                               },

@@ -6,8 +6,34 @@ import 'dart:async';
 
 class OrderProvider with ChangeNotifier{
   static const purOrder ="PURCHASE_ORDER";
-  //add cart
+  late int totalPayment;
+   late List<dynamic> listProduct;
+   late String province;
+   late String district ;
+   late String ward;
+   late String extra;
+   late String phone;
+   String note = "";
+   void setPhoneAndNote(String newPhone, String newNote){
+     this.phone = newPhone;
+     this.note = newNote;
+     notifyListeners();
+   }
+   void setAddress(String newProvince, String newDistrict, String newWard, String newExtra){
+     this.province = newProvince;
+     this.district = newDistrict;
+     this.ward = newWard;
+     this.extra = newExtra; 
+     notifyListeners();
+   }
+
+   void setTotalPayment(int money){
+     this.totalPayment = money;
+     notifyListeners();
+   } 
+
   // nhớ chuyển totalPayment thành String
+  //http create order
   Future<void> createOrder(String? token, String? workspace, int? agencyId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/order/create-by-agency');
     print(" bắt đầu create order");
@@ -21,8 +47,9 @@ class OrderProvider with ChangeNotifier{
           'Workspace' : "$workspace",
         }),
         body: jsonEncode(<String, dynamic>{
+          'type': "cc",
           'agencyId': agencyId,
-          'type': purOrder,
+          
         }),
       );
       if (response.statusCode == 201){
@@ -37,7 +64,5 @@ class OrderProvider with ChangeNotifier{
       throw error;
     }
   }
-
-
 
 }

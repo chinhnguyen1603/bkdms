@@ -1,4 +1,5 @@
 import 'package:bkdms/screens/home_screens/TestInfoOfOrder.dart';
+import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -8,7 +9,6 @@ import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:bkdms/screens/home_screens/TestProvince.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/models/InfoOfOrder.dart';
 
 
 class InfoOrder extends StatefulWidget {
@@ -52,14 +52,14 @@ class _InfoOrderState extends State<InfoOrder> {
     name = user.nameOwn as String;
     phone = user.phone as String;
     //khởi tạo InfoOfOrder address bằng agency
-    Provider.of<InfoOfOrder>(context, listen: false).setAddress(user.province as String, user.district as String, user.ward as String, user.extraInfoOfAddress as String);
+    Provider.of<OrderProvider>(context, listen: false).setAddress(user.province as String, user.district as String, user.ward as String, user.extraInfoOfAddress as String);
   }
   
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     //khởi tạo address UI bằng addressInfoOrder, update liên tục
-    InfoOfOrder myInfo = Provider.of<InfoOfOrder>(context);
+    OrderProvider myInfo = Provider.of<OrderProvider>(context);
     extra = myInfo.extra;
     ward = myInfo.ward;
     district = myInfo.district;
@@ -430,6 +430,8 @@ class _InfoOrderState extends State<InfoOrder> {
                           child: ElevatedButton(
                               onPressed: () async {                          
                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment()));
+                                 //set phone và note để tạo đơn hàng
+                                 Provider.of<OrderProvider>(context, listen: false).setPhoneAndNote(phone, noteController.text);
                                  Navigator.push(context, MaterialPageRoute(builder: (context) => TestInfoOfOrder()));
                               },
                               style: ButtonStyle(
