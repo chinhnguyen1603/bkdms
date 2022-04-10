@@ -1,4 +1,3 @@
-import 'package:bkdms/screens/home_screens/TestInfoOfOrder.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:bkdms/screens/home_screens/TestProvince.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/screens/home_screens/InfoPayment.dart';
 
 
 class InfoOrder extends StatefulWidget {
@@ -432,7 +432,7 @@ class _InfoOrderState extends State<InfoOrder> {
                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment()));
                                  //set phone và note để tạo đơn hàng
                                  Provider.of<OrderProvider>(context, listen: false).setPhoneAndNote(phone, noteController.text);
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => TestInfoOfOrder()));
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>  InfoPayment()));
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),

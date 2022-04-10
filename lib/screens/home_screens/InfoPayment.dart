@@ -1,4 +1,5 @@
 import 'package:bkdms/screens/home_screens/SuccessOrder.dart';
+import 'package:bkdms/services/CartProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
@@ -136,6 +137,9 @@ class InfoPayment extends StatelessWidget {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {  
+                                  //cập nhật list product
+                                  Provider.of<OrderProvider>(context, listen: false).setListProduct(Provider.of<CartProvider>(context, listen: false).lstCart);
+                                  //đặt hàng
                                   Agency user = Provider.of<Agency>(context, listen: false);                
                                   await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id);                      
                               },
