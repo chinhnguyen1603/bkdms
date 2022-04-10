@@ -115,7 +115,6 @@ class ProvinceProvider with ChangeNotifier{
         }),
       );
       print(response.statusCode);
-      print(response.body);
       // thành công
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body);

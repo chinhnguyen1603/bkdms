@@ -8,7 +8,7 @@ import 'package:bkdms/screens/home_screens/HomePage.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
-import 'package:bkdms/models/TotalPayment.dart';
+import 'package:bkdms/models/InfoOfOrder.dart';
 import 'package:sizer/sizer.dart';
 
 class ScreenCart extends StatefulWidget {
@@ -39,8 +39,6 @@ class ScreenCartState extends State<ScreenCart> {
     for (var cart in lstCart){
       sumOfOrder = sumOfOrder + int.parse(cart.unit['agencyPrice'])*int.parse(cart.quantity);
     }
-    //set giá trị tổng tiền
-    Provider.of<TotalPayment>(context).setTotalPayment(sumOfOrder);
   }
   
   @override
@@ -564,6 +562,8 @@ class ScreenCartState extends State<ScreenCart> {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () {
+                                    //set giá trị tổng tiền
+                                  Provider.of<InfoOfOrder>(context, listen: false).setTotalPayment(sumOfOrder);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => InfoOrder(sumOfOrder)));
                               },
                               style: ButtonStyle(

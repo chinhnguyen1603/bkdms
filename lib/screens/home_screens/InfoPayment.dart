@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
-import 'package:bkdms/models/TotalPayment.dart';
-
+import 'package:bkdms/models/InfoOfOrder.dart';
+import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/models/Agency.dart';
 
 class InfoPayment extends StatelessWidget {
   const InfoPayment({ Key? key }) : super(key: key);
@@ -121,7 +122,7 @@ class InfoPayment extends StatelessWidget {
                               width: 60.w,
                               height: 24,
                               child: Text(
-                                "${Provider.of<TotalPayment>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                "${Provider.of<InfoOfOrder>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
                                 maxLines: 1,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
@@ -135,8 +136,9 @@ class InfoPayment extends StatelessWidget {
                           height: 40,
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
-                              onPressed: () async {                          
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder()));
+                              onPressed: () async {  
+                                  Agency user = Provider.of<Agency>(context, listen: false);                
+                                  await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id);                      
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),

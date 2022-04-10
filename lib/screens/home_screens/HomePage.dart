@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 import './InfoUser.dart';
 import 'package:bkdms/screens/features_screens/contact_screens/Contact.dart';
 import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
@@ -363,7 +364,9 @@ class ScreenHomeState extends State<ScreenHome> {
                     width: widthDevice*0.65,
                     child:
                       TextButton(
-                       onPressed: (){}, 
+                       onPressed: (){
+                         
+                       }, 
                        child: SizedBox(
                          width: widthDevice*0.65,
                          child: Text(
@@ -429,8 +432,14 @@ class ScreenHomeState extends State<ScreenHome> {
                     width: widthDevice*0.65,
                     child:
                       TextButton(
-                       onPressed: () {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => ShowListItem()));
+                       onPressed: () async{
+                          //show dialog chờ get cart
+                          await showDialog (
+                             context: context,
+                             builder: (context) =>
+                             FutureProgressDialog(getFuture()),
+                          ); 
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ShowListItem()));
                        }, 
                        child: SizedBox(
                          width: widthDevice*0.65,
@@ -537,6 +546,17 @@ class ScreenHomeState extends State<ScreenHome> {
       );
  
   }
+
+  // hàm gt cart
+  Future getFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+      Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
+     
+    });
+  }   
+
   
   // hàm lấy ảnh từ cloudinary
   String getUrlFromLinkImg(String linkImg) {

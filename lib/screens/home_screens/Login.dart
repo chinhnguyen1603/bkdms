@@ -7,8 +7,6 @@ import 'package:sizer/sizer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ItemProvider.dart';
-import 'package:bkdms/services/CartProvider.dart';
-import 'package:bkdms/models/CountBadge.dart';
 import './ResetPassword.dart';
 import './Register.dart';
 import './HomePage.dart';
@@ -235,9 +233,6 @@ class LoginState extends State<Login> {
                         user?.updateValue(val);
                         print("test thử name");
                         print(user?.name);
-                        //update số lượng hàng trong giỏ để show trên icon giỏ hàng
-                        await Provider.of<CartProvider>(context, listen: false).getCart(user?.token, user?.workspace, user?.id);
-                        Provider.of<CountBadge>(context, listen: false).counter = Provider.of<CartProvider>(context, listen: false).lstCart.length;
                       })
                       .then((_) async => {   
                         // get Item trong HomePage   
@@ -247,7 +242,7 @@ class LoginState extends State<Login> {
                         setState(() {
                           _isLoading = false;
                         }),
-                        //push xong xóa route để homepage không remove về được
+                        //push
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0))),
                       });                      
                   }  

@@ -1,12 +1,14 @@
+import 'package:bkdms/screens/home_screens/TestInfoOfOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
-import 'package:bkdms/screens/home_screens/InfoPayment.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:bkdms/screens/home_screens/TestProvince.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/InfoOfOrder.dart';
 
 
 class InfoOrder extends StatefulWidget {
@@ -18,9 +20,13 @@ class InfoOrder extends StatefulWidget {
 
 class _InfoOrderState extends State<InfoOrder> {
   static const darkGrey = Color(0xff544C4C);
-  String name = "Chính Nguyễn";
-  String phone = "0898125108";
-  String address = "63 Trần Bình Trọng, Phường 1, Gò Vấp, Thành phố Hồ Chí Minh";
+  late String name;
+  late String phone;
+  late String extra;
+  late String ward;
+  late String district;
+  late String province;
+
   final noteController = TextEditingController();  
 
   // form thay đổi name
@@ -42,8 +48,22 @@ class _InfoOrderState extends State<InfoOrder> {
   @override
   void initState() {
     super.initState();
-    //name = Provider.of<Agency>(context, listen: false).nameOwn;
-    //phone = Provider.of<Agency>(context, listen: false).phone;
+    Agency user = Provider.of<Agency>(context, listen: false);
+    name = user.nameOwn as String;
+    phone = user.phone as String;
+    //khởi tạo InfoOfOrder address bằng agency
+    Provider.of<InfoOfOrder>(context, listen: false).setAddress(user.province as String, user.district as String, user.ward as String, user.extraInfoOfAddress as String);
+  }
+  
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    //khởi tạo address UI bằng addressInfoOrder, update liên tục
+    InfoOfOrder myInfo = Provider.of<InfoOfOrder>(context);
+    extra = myInfo.extra;
+    ward = myInfo.ward;
+    district = myInfo.district;
+    province = myInfo.province;
   }
 
   @override
@@ -298,7 +318,7 @@ class _InfoOrderState extends State<InfoOrder> {
                        SizedBox(
                          width: myWidth*0.8,
                          height: 40,
-                         child: Text("$address", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
+                         child: Text("$extra," +" $ward," +" $district,"+" $province", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
                        ),
                        //text button thay đổi
                        SizedBox(
@@ -409,7 +429,8 @@ class _InfoOrderState extends State<InfoOrder> {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {                          
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment()));
+                                 //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment()));
+                                 Navigator.push(context, MaterialPageRoute(builder: (context) => TestInfoOfOrder()));
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),

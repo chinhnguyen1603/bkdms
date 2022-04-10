@@ -9,12 +9,12 @@ import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
-import 'package:bkdms/models/TotalPayment.dart';
+import 'package:bkdms/models/InfoOfOrder.dart';
 import 'package:sizer/sizer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:bkdms/screens/home_screens/TestFirebase.dart';
+import 'package:bkdms/services/OrderProvider.dart';
 
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -32,7 +32,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  /*WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -45,7 +45,7 @@ Future<void> main() async {
     alert: true,
     badge: true,
     sound: true,
-  );
+  );*/
   runApp(MyApp());
 }
 
@@ -64,7 +64,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CountBadge()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => ProvinceProvider()),
-        ChangeNotifierProvider(create: (context) => TotalPayment()),
+        ChangeNotifierProvider(create: (context) => InfoOfOrder()),
+        ChangeNotifierProvider(create: (context) => OrderProvider()),
     ],
     child: Sizer(
       builder: (context, orientation, deviceType) {
