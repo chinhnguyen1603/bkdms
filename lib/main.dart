@@ -1,4 +1,5 @@
 import 'package:bkdms/screens/home_screens/Login.dart';
+import 'package:bkdms/services/LevelProvider.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => ProvinceProvider()),
         ChangeNotifierProvider(create: (context) => OrderProvider()),
+        ChangeNotifierProvider(create: (context) => LevelProvider()),
     ],
     child: Sizer(
       builder: (context, orientation, deviceType) {

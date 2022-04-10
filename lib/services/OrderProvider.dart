@@ -49,8 +49,6 @@ class OrderProvider with ChangeNotifier{
        'unitId': eachCart.unitId,
        'totalPrice': (int.parse(eachCart.quantity)*int.parse(eachCart.unit['agencyPrice'])).toString(),
     })).toList();
-    print(listProduct[0] );
-    print( listProduct[1]);
     notifyListeners();
   }
   

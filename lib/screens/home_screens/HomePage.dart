@@ -1,3 +1,4 @@
+import 'package:bkdms/services/LevelProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -364,8 +365,10 @@ class ScreenHomeState extends State<ScreenHome> {
                     width: widthDevice*0.65,
                     child:
                       TextButton(
-                       onPressed: (){
-                         
+                       onPressed: ()async {
+                         //test get level
+                         Agency user = Provider.of<Agency>(context, listen: false);                
+                         await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace);                           
                        }, 
                        child: SizedBox(
                          width: widthDevice*0.65,

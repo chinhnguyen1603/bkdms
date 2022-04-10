@@ -6,9 +6,20 @@ import 'package:provider/provider.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
-class InfoPayment extends StatelessWidget {
+
+class InfoPayment extends StatefulWidget {
   const InfoPayment({ Key? key }) : super(key: key);
+
+  @override
+  State<InfoPayment> createState() => InfoPaymentState();
+}
+
+
+
+class InfoPaymentState extends State<InfoPayment> {
   static const darkGrey = Color(0xff544C4C);
 
   @override
@@ -137,12 +148,33 @@ class InfoPayment extends StatelessWidget {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {  
+                                //check xem tổng tiền có bằng 0
+                                if(Provider.of<OrderProvider>(context, listen: false).totalPayment == 0){
+                                  //show dialog lỗi
+                                  Alert(
+                                     context: context,
+                                     type: AlertType.warning,
+                                     style: AlertStyle( titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                                     title: "Giỏ hàng trống",
+                                     buttons: [ DialogButton(
+                                        child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                        onPressed: () => Navigator.pop(context),
+                                        width: 100,
+                                        )
+                                     ],
+                                  ).show();
+                                } else {
                                   //cập nhật list product
                                   Provider.of<OrderProvider>(context, listen: false).setListProduct(Provider.of<CartProvider>(context, listen: false).lstCart);
-                                  //đặt hàng
-                                  Agency user = Provider.of<Agency>(context, listen: false);                
-                                  await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id);                      
-                              },
+                                  //đặt hàng             
+                                  await showDialog (
+                                     context: context,
+                                     builder: (context)  =>
+                                        FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
+                                  );                      
+                                }
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder()));
+                             },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
                                   shape: MaterialStateProperty.all < RoundedRectangleBorder > (
@@ -157,4 +189,33 @@ class InfoPayment extends StatelessWidget {
               )          
    );
   }
+
+  // hàm create order
+  Future getFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value){
+          //move to succes
+      });    
+    });
+  }
+
+
 }
