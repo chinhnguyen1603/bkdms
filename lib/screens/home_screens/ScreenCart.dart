@@ -10,6 +10,7 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:sizer/sizer.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ScreenCart extends StatefulWidget {
   const ScreenCart({ Key? key }) : super(key: key);
@@ -562,9 +563,26 @@ class ScreenCartState extends State<ScreenCart> {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () {
-                                    //set giá trị tổng tiền
+                                  //set giá trị tổng tiền
                                   Provider.of<OrderProvider>(context, listen: false).setTotalPayment(sumOfOrder);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => InfoOrder(sumOfOrder)));
+                                  //check xem tổng tiền có bằng 0
+                                  if(sumOfOrder == 0){
+                                  //show dialog lỗi
+                                    Alert(
+                                      context: context,
+                                      type: AlertType.warning,
+                                      style: AlertStyle( titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                                      title: "Giỏ hàng trống",
+                                      buttons: [ DialogButton(
+                                        child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                        onPressed: () => Navigator.pop(context),
+                                        width: 100,
+                                        )
+                                      ],
+                                    ).show();
+                                  } else{
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => InfoOrder(sumOfOrder)));
+                                  }
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
