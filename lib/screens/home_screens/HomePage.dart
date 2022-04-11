@@ -193,7 +193,7 @@ class ScreenHomeState extends State<ScreenHome> {
                        )],
                     ),),
                   
-                  // chứa 3 Icon Button Tồn Kho, Thành Viên, Liên hệ
+                  // chứa 3 Icon Button Trả hàng, Thành Viên, Liên hệ
                   SizedBox(height: 25,),
                   //Container màu trắng bọc ngoài
                   Container(
@@ -207,7 +207,7 @@ class ScreenHomeState extends State<ScreenHome> {
                      ),
                      child: Row(
                        children: [
-                         //Icon button tồn kho
+                         //Icon button trả hàng
                          SizedBox(
                            width: widthDevice*0.26,
                            height: 54,
@@ -234,7 +234,7 @@ class ScreenHomeState extends State<ScreenHome> {
                               SizedBox(
                                 height: 15,
                                 child: Text(
-                                  "Tồn kho",      
+                                  "Trả hàng",      
                                   style: TextStyle(
                                       fontSize: 12,
                                       color: textGrey,

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:bkdms/models/Cart.dart';
 
-
+//list product để create order
 class Product {
    late String quantity;
    late String price;
@@ -12,8 +12,9 @@ class Product {
    late String totalPrice;
 }
 
+//service provider tại đây
 class OrderProvider with ChangeNotifier{
-  
+   //biến dưới đây để create order
    static const purOrder ="PURCHASE_ORDER";
    late int totalPayment;
    late var listProduct;
@@ -23,6 +24,9 @@ class OrderProvider with ChangeNotifier{
    late String extra;
    late String phone;
    String note = '';
+
+   //biến dưới đây để get order
+   List<OrderInfo> lstOrderInfo = [];
 
    void setPhoneAndNote(String newPhone, String newNote){
      this.phone = newPhone;
@@ -92,4 +96,115 @@ class OrderProvider with ChangeNotifier{
     }
   }
 
+  //http get order
+  Future<void> getOrder(String? token, String? workspace, int? agencyId) async {
+    //
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/order/get-order-by-agency');
+    print(" bắt đầu get order");
+     try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{           
+          'agencyId': agencyId,
+        }),
+      );
+      if (response.statusCode == 200){
+         final extractedData = json.decode(response.body) as Map<String, dynamic>;
+         final List<OrderInfo> loadListOrderInfo = [];
+         extractedData['data']['listOrder'].forEach((orderData) {
+         loadListOrderInfo.add(
+          OrderInfo(
+            orderCode: orderData['orderCode'],
+            phone: orderData['phone'],
+            address: orderData['address'],
+            createTime: orderData['createTime'],
+            approvedTime: orderData['approvedTime'],
+            shippingTime: orderData['shippigTime'],
+            cancelledTime: orderData['cancelledTime'],
+            returnReason: orderData['returnReason'],
+            configDeliveryTime: orderData['configDeliveryTime'],
+            deliveredTime: orderData['deliveredTime'],
+            waitingDeliveryTime: orderData['waitingDeliveryTime'],
+            deliveryStatus: orderData['deliveryStatus'],
+            deliveryNote: orderData['deliveryNote'],
+            deliveryVoucherCode: orderData['deliveryVoucherCode'],
+            note: orderData['note'],
+            orderStatus: orderData['orderStatus'],
+            paymentStatus: orderData['paymentStatus'],
+            type: orderData['type'],
+            totalPayment: orderData['totalPayment'],
+            totalDiscount: orderData['totalDiscount'],
+            orderDetails: orderData['orderDetails']        
+          ),
+        );
+      });
+      this.lstOrderInfo = loadListOrderInfo;
+      notifyListeners();
+      print(lstOrderInfo);
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+}
+
+
+
+// list order info để get order
+class OrderInfo {
+  late String orderCode;
+  late String phone;
+  late String address;
+  late String createTime;
+  String? approvedTime;
+  String? shippingTime;
+  String? cancelledTime;
+  String? returnReason;
+  String? configDeliveryTime;
+  String? deliveredTime;
+  String? waitingDeliveryTime;
+  String? deliveryStatus;
+  String? deliveryNote;
+  String? deliveryVoucherCode;
+  String? note;
+  late String orderStatus;
+  String? paymentStatus;
+  late String type;
+  late String totalPayment;
+  String? totalDiscount;
+  late List<dynamic> orderDetails;
+
+  OrderInfo({
+    required this.orderCode,
+    required this.phone,
+    required this.address,
+    required this.createTime,
+    this.approvedTime,
+    this.shippingTime,
+    this.cancelledTime,
+    this.returnReason,
+    this.configDeliveryTime,
+    this.deliveredTime,
+    this.waitingDeliveryTime,
+    this.deliveryStatus,
+    this.deliveryNote,
+    this.deliveryVoucherCode,
+    this.note,
+    required this.orderStatus, 
+    this.paymentStatus,
+    required this.type,
+    required this.totalPayment,
+    required this.totalDiscount,
+    required this.orderDetails,  
+  });
 }

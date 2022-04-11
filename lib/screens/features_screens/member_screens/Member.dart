@@ -68,7 +68,7 @@ class Member extends StatelessWidget {
                   height: 100,
                   child: Row(
                      children: [
-                       //Hạng mức
+                       //Hạn mức
                        SizedBox( 
                          height: 100,
                          width: myWidth*0.33,
@@ -81,7 +81,7 @@ class Member extends StatelessWidget {
                            SizedBox(
                              height: 20,
                              width: myWidth*0.33,
-                             child: Center(child: Text("Hạng mức")),
+                             child: Center(child: Text("Hạn mức")),
                            )
                          ],),
                        ),
