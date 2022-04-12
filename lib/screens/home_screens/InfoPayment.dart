@@ -210,9 +210,6 @@ class InfoPaymentState extends State<InfoPayment> {
                   ],                                      
               ));    
             throw onError;          
-      })
-      .then((value){
-          //move to succes
       });    
     });
   }

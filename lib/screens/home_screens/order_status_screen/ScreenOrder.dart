@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/Confirm.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/WaitConfirm.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/Delivering.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/Delivered.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/CancelOrder.dart';
@@ -54,7 +54,7 @@ class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
       body: TabBarView(
         controller: _tabController,
         children: [
-          Confirm(),
+          WaitConfirm(),
           Delivering(),
           Delivered(),
           CancelOrder(),

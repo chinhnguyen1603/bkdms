@@ -96,7 +96,7 @@ class OrderProvider with ChangeNotifier{
     }
   }
 
-  //http get order
+  //http get order (auto update list order)
   Future<void> getOrder(String? token, String? workspace, int? agencyId) async {
     //
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/order/get-order-by-agency');
@@ -114,6 +114,7 @@ class OrderProvider with ChangeNotifier{
           'agencyId': agencyId,
         }),
       );
+      print(response.statusCode);
       if (response.statusCode == 200){
          final extractedData = json.decode(response.body) as Map<String, dynamic>;
          final List<OrderInfo> loadListOrderInfo = [];
@@ -144,9 +145,9 @@ class OrderProvider with ChangeNotifier{
           ),
         );
       });
+      print(response.body);
       this.lstOrderInfo = loadListOrderInfo;
       notifyListeners();
-      print(lstOrderInfo);
       } else{
         throw jsonDecode(response.body.toString());
       }

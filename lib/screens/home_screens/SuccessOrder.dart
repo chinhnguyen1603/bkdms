@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:provider/provider.dart';
 import 'package:bkdms/screens/home_screens/HomePage.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/ScreenOrder.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/services/OrderProvider.dart';
 
 class SuccessOrder extends StatelessWidget {
   const SuccessOrder({ Key? key }) : super(key: key);
@@ -31,12 +33,16 @@ class SuccessOrder extends StatelessWidget {
               child: Text("Thông tin đơn hàng đã được gửi và chờ xác nhận từ hệ thống", textAlign: TextAlign.center ,maxLines: 2, style: TextStyle(fontSize: 14, color: textColor, fontWeight: FontWeight.w200),)
             ),
             SizedBox(height: 10.h,),
-            //Button Đơn hàng
+            //Button đến Đơn hàng
             SizedBox(
               height: 45,
               width: 30.w,
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: () async {
+                   //update đơn hàng
+                   Agency user = Provider.of<Agency>(context, listen: false);
+                   await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
+                   //move to screen order
                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(1)));
                 },
                 style: ButtonStyle(
@@ -44,7 +50,7 @@ class SuccessOrder extends StatelessWidget {
                    backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690ff)),
                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                      
-                      RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0),)
+                      RoundedRectangleBorder( borderRadius: BorderRadius.circular(5),)
                    )                                
                 ), 
                 child: Text("Đơn hàng", style: TextStyle(fontWeight: FontWeight.w700,),), 
@@ -73,3 +79,5 @@ class SuccessOrder extends StatelessWidget {
     );
   }
 }
+
+
