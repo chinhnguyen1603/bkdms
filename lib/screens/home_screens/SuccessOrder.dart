@@ -35,7 +35,7 @@ class SuccessOrder extends StatelessWidget {
             SizedBox(height: 10.h,),
             //Button đến Đơn hàng
             SizedBox(
-              height: 45,
+              height: 42,
               width: 30.w,
               child: ElevatedButton(
                 onPressed: () async {
