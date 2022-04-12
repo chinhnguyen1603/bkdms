@@ -15,7 +15,6 @@ class WaitConfirm extends StatefulWidget {
 
 class WaitConfirmState extends State<WaitConfirm> {
   List<OrderInfo> lstOrder = [];
-  bool isHasOrder = false;
 
   @override
   void didChangeDependencies() {
@@ -33,22 +32,42 @@ class WaitConfirmState extends State<WaitConfirm> {
           usedLstOrder.add(order);
         }
     }
-    //check if has or not order
+    //check if has or not order, mỗi lần update tự đặt isHasOrder = false, nếu có list thì về true
+    bool isHasOrder = false;
     if(usedLstOrder.length !=0 ) {
       isHasOrder = true;
     }
     //
-    return Container(
+    return SingleChildScrollView(
       child: isHasOrder 
       //có đơn
-      ?ListView.builder(
-         itemCount:usedLstOrder.length,              
-         shrinkWrap: true,
-         physics: NeverScrollableScrollPhysics(),
-         itemBuilder: (BuildContext context, int index) {
-            return Text("Đơn hàng #" + "${usedLstOrder[index].orderCode}" + "  Thời gian đặt" + "${convertTime(usedLstOrder[index].createTime)}");
-         }
-      )
+      ? Container(
+         child: Column( children: [
+            SizedBox(width: 100.w, height: 10,),
+            ListView.builder(
+               itemCount:usedLstOrder.length,              
+               shrinkWrap: true,
+               physics: NeverScrollableScrollPhysics(),
+               itemBuilder: (BuildContext context, int index) {
+                 return Column(
+                   children: [   
+                     //container chứa chi tiết đơn                 
+                     Container(
+                        width: 100.w,
+                        height: 200,
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            Text("Alo"),
+                          ],
+                        ),
+                     ),
+                     SizedBox(width: 100.w, height: 10,),   
+                 ]);
+               }
+            )
+         ])
+        )       
       //không có đơn nào
       : Container(
         child: Column(

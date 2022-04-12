@@ -12,15 +12,16 @@ class Delivered extends StatefulWidget {
 
 class DeliveredState extends State<Delivered> {  
   List<String> lstDelivered = [];
-  bool isHasOrder = false;
   
   //widget
   @override
   Widget build(BuildContext context) {
-    //check if has or not order
+    //check if has or not order, phải để trong widget để build lại khi list change
+    bool isHasOrder = false;
     if(lstDelivered.length !=0 ) {
       isHasOrder = true;
     }
+    //
     return Container(
       child: isHasOrder 
       //có đơn
