@@ -121,17 +121,21 @@ class OrderProvider with ChangeNotifier{
          extractedData['data']['listOrder'].forEach((orderData) {
          loadListOrderInfo.add(
           OrderInfo(
+            id:  orderData['id'],
             orderCode: orderData['orderCode'],
             phone: orderData['phone'],
             address: orderData['address'],
             createTime: orderData['createTime'],
             approvedTime: orderData['approvedTime'],
             shippingTime: orderData['shippigTime'],
-            cancelledTime: orderData['cancelledTime'],
+            completedTime: orderData['completedTime'],
+            cancelledTimeByAgency: orderData['cancelledTimeByAgency'],
+            cancelledTimeBySupplier: orderData['cancelledTimeBySupplier'],
             returnReason: orderData['returnReason'],
-            configDeliveryTime: orderData['configDeliveryTime'],
+            waitingDeliveryTime: orderData['configDeliveryTime'],
+            deliveryFailed: orderData['deliveryFailed'],
+            deliveryFailedReason: orderData['deliveryFailedReason'],
             deliveredTime: orderData['deliveredTime'],
-            waitingDeliveryTime: orderData['waitingDeliveryTime'],
             deliveryStatus: orderData['deliveryStatus'],
             deliveryNote: orderData['deliveryNote'],
             deliveryVoucherCode: orderData['deliveryVoucherCode'],
@@ -156,23 +160,60 @@ class OrderProvider with ChangeNotifier{
       throw error;
     }
   }
+
+
+  //http delete order
+  Future<void> deleteOrder(String? token, String? workspace, int? agencyId, int orderId) async {
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/order/cancel-order-by-agency');
+    print(" bắt đầu delete order");
+     try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{     
+          'orderId': orderId,
+        }),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 201){
+         print(response.body);
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+
 }
 
 
 
 // list order info để get order
 class OrderInfo {
+  late int id;
   late String orderCode;
   late String phone;
   late String address;
   late String createTime;
   String? approvedTime;
   String? shippingTime;
-  String? cancelledTime;
+  String? completedTime;
+  String? cancelledTimeByAgency;
+  String? cancelledTimeBySupplier;
   String? returnReason;
-  String? configDeliveryTime;
-  String? deliveredTime;
   String? waitingDeliveryTime;
+  String? deliveredTime;
+  String? deliveryFailed;
+  String? deliveryFailedReason;
   String? deliveryStatus;
   String? deliveryNote;
   String? deliveryVoucherCode;
@@ -185,17 +226,21 @@ class OrderInfo {
   late List<dynamic> orderDetails;
 
   OrderInfo({
+    required this.id,
     required this.orderCode,
     required this.phone,
     required this.address,
     required this.createTime,
     this.approvedTime,
     this.shippingTime,
-    this.cancelledTime,
+    this.completedTime,
+    this.cancelledTimeByAgency,
+    this.cancelledTimeBySupplier,
     this.returnReason,
-    this.configDeliveryTime,
-    this.deliveredTime,
     this.waitingDeliveryTime,
+    this.deliveredTime,
+    this.deliveryFailed,
+    this.deliveryFailedReason,
     this.deliveryStatus,
     this.deliveryNote,
     this.deliveryVoucherCode,

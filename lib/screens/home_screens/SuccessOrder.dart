@@ -62,7 +62,11 @@ class SuccessOrder extends StatelessWidget {
                           height: 45,
                           width: 45.w,
                           child: OutlinedButton(
-                             onPressed: (){
+                             onPressed: () async {
+                                 //update đơn hàng
+                                 Agency user = Provider.of<Agency>(context, listen: false);
+                                 await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
+                                 //move to screen order                               
                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0)));
                              },
                              child: Text("Về trang chủ", style: TextStyle(color: Color(0xff4690ff), fontWeight: FontWeight.w700),),

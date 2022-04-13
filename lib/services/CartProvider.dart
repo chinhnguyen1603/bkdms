@@ -122,4 +122,37 @@ class CartProvider with ChangeNotifier{
     }
   }
 
+  //delete all cart
+  Future<void> deleteAllCart(String? token, String? workspace, int? agencyId) async {
+
+    final url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart/deleteCart');
+    print("bắt đầu delete tất cả cart");
+    try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{
+          'agencyId': agencyId,
+        }),
+      );
+      print(response.statusCode);
+      // thành công
+      if (response.statusCode == 200) {
+        return ;
+      } 
+      else{
+        throw jsonDecode(response.body);
+      } 
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
 }
