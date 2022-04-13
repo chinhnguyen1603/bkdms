@@ -23,7 +23,7 @@ class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFAFAFA),
+      backgroundColor: Color(0xfff0ecec),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -46,7 +46,7 @@ class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
               text: "Đã giao",  
             ),
             Tab(
-              text: "Hủy/Trả hàng",
+              text: "Đã hủy",
             ),          
           ],
         ),

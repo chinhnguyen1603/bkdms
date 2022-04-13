@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/ScreenLevel.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
@@ -69,23 +70,28 @@ class Member extends StatelessWidget {
                   child: Row(
                      children: [
                        //Hạn mức
-                       SizedBox( 
-                         height: 100,
-                         width: myWidth*0.33,
-                         child: Column(children: [
-                           SizedBox(
-                             height: 60,
-                             width: myWidth*0.33,
-                             child: Image.asset("assets/hangmuc.png", scale: 1.2, ),
-                           ),
-                           SizedBox(
-                             height: 20,
-                             width: myWidth*0.33,
-                             child: Center(child: Text("Hạn mức")),
-                           )
-                         ],),
+                       GestureDetector(
+                         onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenLevel()));
+                         },
+                         child: SizedBox( 
+                            height: 100,
+                            width: myWidth*0.33,
+                            child: Column(children: [
+                               SizedBox(
+                                 height: 60,
+                                 width: myWidth*0.33,
+                                 child: Image.asset("assets/hangmuc.png", scale: 1.2, ),
+                               ),
+                               SizedBox(
+                                 height: 20,
+                                 width: myWidth*0.33,
+                                 child: Center(child: Text("Hạn mức")),
+                               )
+                            ],),
+                         ),
                        ),
-                       // Khách hàng
+                      // Khách hàng
                        SizedBox( 
                          height: 100,
                          width: myWidth*0.33,

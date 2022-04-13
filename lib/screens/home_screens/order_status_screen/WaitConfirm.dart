@@ -68,7 +68,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                      //container chứa chi tiết đơn                 
                      GestureDetector(
                        onTap: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirm()));
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirm(usedLstOrder[index])));
                        },
                        child: Container(
                          width: 100.w,
@@ -221,11 +221,11 @@ class WaitConfirmState extends State<WaitConfirm> {
                                            height: 20,
                                            child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight,),
                                          ),
-                                         SizedBox(width: 5,),
                                          SizedBox(
                                            width: myWidth*0.22,
                                            child: Text(
-                                             "${usedLstOrder[index].totalPayment.replaceAllMapped(reg, mathFunc)}đ", 
+                                             "${usedLstOrder[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                             textAlign: TextAlign.right,
                                              style: TextStyle(color: Color(0xff7b2626)),
                                            )
                                          )

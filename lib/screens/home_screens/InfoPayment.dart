@@ -173,7 +173,8 @@ class InfoPaymentState extends State<InfoPayment> {
                                         FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
                                   );                      
                                 }
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder()));
+                                //push xong xóa route tại đây
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SuccessOrder()), (Route<dynamic> route) => false);
                              },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
