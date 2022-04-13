@@ -125,7 +125,7 @@ class CartProvider with ChangeNotifier{
   //delete all cart
   Future<void> deleteAllCart(String? token, String? workspace, int? agencyId) async {
 
-    final url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart/deleteCart');
+    final url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart/delete-all-cart');
     print("bắt đầu delete tất cả cart");
     try {
       final response = await http.post(

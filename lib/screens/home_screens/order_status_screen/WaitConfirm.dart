@@ -308,7 +308,7 @@ class WaitConfirmState extends State<WaitConfirm> {
 
   // Hàm convert thời gian
   String convertTime(String time){
-    var timeConvert = DateFormat('HH:mm dd/MM/yyyy').format(DateTime.parse(time));
+    var timeConvert = DateFormat('HH:mm dd/MM/yyyy').format(DateTime.parse(time).add(const Duration(hours: 7)));
     return timeConvert;
   }
   //hàm lấy ảnh cloudinary

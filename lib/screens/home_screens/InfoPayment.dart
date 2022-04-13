@@ -27,7 +27,7 @@ class InfoPaymentState extends State<InfoPayment> {
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
-    
+    double myWidth = 90.w;
     return Scaffold(
       appBar: AppBarGrey("Thanh toán"),
       body: SingleChildScrollView(
@@ -92,6 +92,66 @@ class InfoPaymentState extends State<InfoPayment> {
                  ]),
             ),
             SizedBox(height: 12,),
+            //áp dụng khuyến mãi
+            Container(
+               width: 100.w,
+               height: 80,
+               color: Colors.white,
+               child: SizedBox(
+                  width: myWidth,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 5,),
+                      //text khuyến mãi
+                      SizedBox(
+                        width: myWidth,
+                        height: 20,
+                        child: Text("Khuyến mãi", textAlign: TextAlign.left, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                      ),
+                      SizedBox(height: 5,),
+                      //formfield điền mã km
+                      SizedBox(
+                        width: myWidth,
+                        height: 35,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: myWidth*0.65,
+                              child:  TextFormField(
+                                 keyboardType: TextInputType.text,
+                                 cursorHeight: 24,
+                                 textAlignVertical: TextAlignVertical.bottom,
+                                 style: TextStyle(fontSize: 16, ),
+                                 decoration:  InputDecoration(
+                                    hintText: "Nhập mã",
+                                    prefixIcon: Icon(Icons.discount_outlined),
+                                    enabledBorder:  OutlineInputBorder(
+                                       borderRadius: BorderRadius.circular(5),
+                                      borderSide: BorderSide(color: Color(0xff544c4c)),
+                                    ),
+                                 ), 
+                              ), 
+                            ),
+                            SizedBox(width: myWidth*0.1,),
+                            SizedBox(
+                              width: myWidth*0.25,
+                              child: ElevatedButton(
+                              onPressed: (){}, 
+                              child: Text("Áp dụng"),
+                                 style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all(0),
+                                    backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff105480)),
+                                 ),                             
+                            )
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+               ),
+             )
+ 
              
           ],
         ),

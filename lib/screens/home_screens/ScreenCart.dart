@@ -22,6 +22,7 @@ class ScreenCart extends StatefulWidget {
 
 class ScreenCartState extends State<ScreenCart> {
   static const darkGrey = Color(0xff544C4C);
+  static const dialogColor = Color(0xff4690FF);
   //list cart
   List<Cart> lstCart = [];
 
@@ -449,67 +450,46 @@ class ScreenCartState extends State<ScreenCart> {
                      }
                )
              ),
-
-             //áp dụng khuyến mãi
-             Container(
-               width: 100.w,
-               height: 80,
-               color: Colors.white,
-               child: SizedBox(
-                  width: myWidth,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 5,),
-                      //text khuyến mãi
-                      SizedBox(
-                        width: myWidth,
-                        height: 20,
-                        child: Text("Khuyến mãi", textAlign: TextAlign.left, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
-                      ),
-                      SizedBox(height: 5,),
-                      //formfield điền mã km
-                      SizedBox(
-                        width: myWidth,
-                        height: 35,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: myWidth*0.65,
-                              child:  TextFormField(
-                                 keyboardType: TextInputType.text,
-                                 cursorHeight: 24,
-                                 textAlignVertical: TextAlignVertical.bottom,
-                                 style: TextStyle(fontSize: 16, ),
-                                 decoration:  InputDecoration(
-                                    hintText: "Nhập mã",
-                                    prefixIcon: Icon(Icons.discount_outlined),
-                                    enabledBorder:  OutlineInputBorder(
-                                       borderRadius: BorderRadius.circular(5),
-                                      borderSide: BorderSide(color: Color(0xff544c4c)),
-                                    ),
-                                 ), 
-                              ), 
-                            ),
-                            SizedBox(width: myWidth*0.1,),
-                            SizedBox(
-                              width: myWidth*0.25,
-                              child: ElevatedButton(
-                              onPressed: (){}, 
-                              child: Text("Áp dụng"),
-                                 style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff105480)),
-                                 ),                             
-                            )
-                            )
-                          ],
+             //button xóa tất cả Color(0xffb01313)
+             ElevatedButton.icon(
+               onPressed: () async {
+                  //dialog hỏi user xác nhận
+                  Alert(
+                    context: context,
+                    type: AlertType.warning,
+                    desc: "Bạn có chắc chắn muốn xóa không?",
+                    buttons: [
+                        DialogButton(
+                           child: Text("Hủy bỏ", style: TextStyle(color: dialogColor, fontSize: 18),),
+                           onPressed: () => Navigator.pop(context),
+                           color: Colors.white,
                         ),
-                      )
-                    ],
-                  ),
-               ),
-             )
-          ],
+                        //delete all cart tại đây
+                        DialogButton(        
+                           color: dialogColor,
+                           child: Text("Xác nhận", style: TextStyle(color: Colors.white, fontSize: 18),),
+                           onPressed: () async {
+                              setState(() {              
+                                 sumOfOrder = 0; //set tổng tiền về 0
+                              });
+                              await showDialog (
+                                 context: context,
+                                 builder: (context) =>
+                                    FutureProgressDialog(deleteAllCart()),
+                              );
+                              //ẩn dialog alert
+                              Navigator.pop(context);
+                           },
+                        )
+                    ],).show();             
+               }, 
+               icon: Icon(Icons.delete),
+               label: Text("Xóa giỏ hàng"),
+               style: ButtonStyle(backgroundColor:  MaterialStateProperty.all<Color>( Colors.red),),
+             ),
+             //
+             SizedBox(height: 10,),
+         ],
         ),
       ),
       //bottom button Tiến hành đặt hàng
@@ -637,7 +617,7 @@ class ScreenCartState extends State<ScreenCart> {
   }      
 
 
-  // hàm delete cart rồi get, update số lượng sản phẩm
+  // hàm delete 1 cart rồi get, update số lượng sản phẩm
   Future deleteCart(int unitId) {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
@@ -645,6 +625,35 @@ class ScreenCartState extends State<ScreenCart> {
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi future dialog delete cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+          //get cart và update CountBadge
+          await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
+          Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
+      });    
+    });
+  }      
+
+  // hàm delete all cart rồi get, update số lượng sản phẩm
+  Future deleteAllCart() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<CartProvider>(context, listen: false).deleteAllCart(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete all cart");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
