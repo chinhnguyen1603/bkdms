@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/HistoryRegister.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:sizer/sizer.dart';
@@ -33,8 +34,8 @@ class ScreenLevel extends StatelessWidget {
                   children: [
                     //thông tin
                     SizedBox(
-                      width: 60.h,
-                      height: 45,
+                      width: 70.w,
+                      height: 50,
                       child: ElevatedButton(
                         onPressed: (){
 
@@ -46,13 +47,13 @@ class ScreenLevel extends StatelessWidget {
                                RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0),)
                            )
                         ),
-                        child: Text("Thông tin", style: TextStyle(color: Color(0xff6c3131)),),
+                        child: Text("Thông tin", style: TextStyle(color: Color(0xff6c3131), fontSize: 18, fontWeight: FontWeight.w700),),
                       ),
                     ),
                     //Đăng kí
                     SizedBox(
-                      width: 60.h,
-                      height: 45,
+                      width: 70.w,
+                      height: 50,
                       child: ElevatedButton(
                         onPressed: (){
 
@@ -64,16 +65,16 @@ class ScreenLevel extends StatelessWidget {
                                RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0),)
                            )
                         ),
-                        child: Text("Đăng kí", style: TextStyle(color: Color(0xff6c3131)),),
+                        child: Text("Đăng kí", style: TextStyle(color: Color(0xff6c3131), fontSize: 18, fontWeight: FontWeight.w700),),
                       ),
                     ),
                     //Lịch sử đăng kí
                     SizedBox(
-                      width: 60.h,
-                      height: 45,
+                      width: 70.w,
+                      height: 50,
                       child: ElevatedButton(
                         onPressed: (){
-
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryRegister()));
                         }, 
                         style: ButtonStyle(
                            elevation: MaterialStateProperty.all(0),
@@ -82,7 +83,7 @@ class ScreenLevel extends StatelessWidget {
                                RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0),)
                            )
                         ),
-                        child: Text("Lịch sử đăng kí", style: TextStyle(color: Color(0xff6c3131)),),
+                        child: Text("Lịch sử đăng kí", style: TextStyle(color: Color(0xff6c3131), fontSize: 18, fontWeight: FontWeight.w700),),
                       ),
                     ),
                   ],

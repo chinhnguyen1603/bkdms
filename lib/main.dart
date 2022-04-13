@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/ScreenLevel.dart';
 import 'package:bkdms/services/LevelProvider.dart';
 import 'package:bkdms/testTime.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
            title: "BKDMS Mobile App",
            home: Scaffold(
              backgroundColor: Color(0xffF4F4F4),
-             body: SplashScreen()
+             body: ScreenLevel()
            ),
       );
       }
