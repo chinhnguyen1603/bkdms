@@ -145,7 +145,6 @@ class OrderProvider with ChangeNotifier{
           ),
         );
       });
-      print(response.body);
       this.lstOrderInfo = loadListOrderInfo;
       notifyListeners();
       } else{

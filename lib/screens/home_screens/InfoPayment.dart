@@ -155,9 +155,9 @@ class InfoPaymentState extends State<InfoPayment> {
                                      context: context,
                                      type: AlertType.warning,
                                      style: AlertStyle( titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
-                                     title: "Giỏ hàng trống",
+                                     title: "Vượt hạn mức nợ cho phép",
                                      buttons: [ DialogButton(
-                                        child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                        child: Text("Quay lại", style: TextStyle(color: Colors.white, fontSize: 20),),
                                         onPressed: () => Navigator.pop(context),
                                         width: 100,
                                         )
