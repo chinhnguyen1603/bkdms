@@ -21,6 +21,7 @@ class InfoPayment extends StatefulWidget {
 
 class InfoPaymentState extends State<InfoPayment> {
   static const darkGrey = Color(0xff544C4C);
+  static const textColor = Color(0xff27214d);
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +93,54 @@ class InfoPaymentState extends State<InfoPayment> {
                  ]),
             ),
             SizedBox(height: 12,),
+            //Chính sách thanh toán
+            Container(
+              width: 100.w,
+              height: 100,
+              color: Colors.white,
+              child: Column(
+                children: [
+                  SizedBox(height: 5,),
+                  SizedBox(
+                    width: myWidth,
+                    height: 20,
+                    child: Text("Chính sách thanh toán", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                  ), 
+                ],
+              ),
+            ),
+            SizedBox(height: 12,),
+            //Hạn mức
+            Container(
+              width: 100.w,
+              height: 100,
+              color: Colors.white,
+              child: Column(
+                children: [
+                  SizedBox(height: 5,),
+                  //text in đậm
+                  SizedBox(
+                    width: myWidth,
+                    height: 20,
+                    child: Text("Hạn mức", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
+                  ), 
+                  SizedBox(height: 5,),
+                  //số liệu
+                  SizedBox(
+                    width: myWidth,
+                    height: 20,
+                    child: Text("Mức nợ tối đa của bạn:", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                  ), 
+                  SizedBox(
+                    width: myWidth,
+                    height: 20,
+                    child: Text("Nợ hiện tại của bạn:", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                  ),                   
+                ],
+              ),
+            ),
+            SizedBox(height: 12,),
+
             //áp dụng khuyến mãi
             Container(
                width: 100.w,
@@ -106,7 +155,7 @@ class InfoPaymentState extends State<InfoPayment> {
                       SizedBox(
                         width: myWidth,
                         height: 20,
-                        child: Text("Khuyến mãi", textAlign: TextAlign.left, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                        child: Text("Khuyến mãi", textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
                       ),
                       SizedBox(height: 5,),
                       //formfield điền mã km
@@ -193,7 +242,8 @@ class InfoPaymentState extends State<InfoPayment> {
                               width: 60.w,
                               height: 24,
                               child: Text(
-                                "${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                //"${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
+                                "0",
                                 maxLines: 1,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
