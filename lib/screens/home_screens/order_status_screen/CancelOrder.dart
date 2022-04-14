@@ -212,16 +212,16 @@ class CancelOrderState extends State<CancelOrder> {
                                        ],
                                      ),
                                    ),
-                                   SizedBox(width: myWidth*0.2,),
+                                   SizedBox(width: myWidth*0.25,),
                                    //tổng tiền
                                    SizedBox(
-                                     width: myWidth*0.4,
+                                     width: myWidth*0.35,
                                      child: Row(
                                        children: [
                                          SizedBox(
-                                           width: myWidth*0.15,
+                                           width: myWidth*0.1,
                                            height: 20,
-                                           child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight,),
+                                           child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight, width: myWidth*0.1,),
                                          ),
                                          SizedBox(
                                            width: myWidth*0.22,
@@ -240,8 +240,8 @@ class CancelOrderState extends State<CancelOrder> {
                              Divider(),
                              //Button Hủy đơn hàng
                              SizedBox(
-                               width: myWidth*0.9,
-                               child: Text("Đơn hàng được hủy bởi người dùng", textAlign: TextAlign.left ,style: TextStyle(color: textColor),),
+                               width: myWidth*0.94,
+                               child: Text("Hủy đơn bởi người dùng", textAlign: TextAlign.left ,style: TextStyle(color: textColor),),
                              )
                            ],
                          ),

@@ -30,7 +30,7 @@ class SuccessOrder extends StatelessWidget {
             SizedBox(height: 10,),
             SizedBox(
               width: 80.w,
-              child: Text("Thông tin đơn hàng đã được gửi và chờ xác nhận từ hệ thống", textAlign: TextAlign.center ,maxLines: 2, style: TextStyle(fontSize: 14, color: textColor, fontWeight: FontWeight.w200),)
+              child: Text("Thông tin đơn hàng đã được gửi và chờ xác nhận từ hệ thống", textAlign: TextAlign.center ,maxLines: 2, style: TextStyle(fontSize: 14, color: textColor, fontWeight: FontWeight.w300),)
             ),
             SizedBox(height: 10.h,),
             //Button đến Đơn hàng

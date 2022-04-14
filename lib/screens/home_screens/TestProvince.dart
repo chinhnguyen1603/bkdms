@@ -1,3 +1,4 @@
+import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -99,7 +100,7 @@ class TestProvinceState extends State<TestProvince> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBarTransparent(Color(0xfffcfcfc), "Địa chỉ"),
+      appBar: AppBarGrey("Địa chỉ"),
       backgroundColor: Color(0xfffcfcfc), // background color của màn hình
       body: SingleChildScrollView(
         child: Column(

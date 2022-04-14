@@ -148,7 +148,7 @@ class Member extends StatelessWidget {
           Center(
             child: Column(children: [
               SizedBox(height: 120,),
-              // Thể lệ thành viên
+              // chính sách bán sỉ
               SizedBox(
                 child: TextButton(
                   onPressed: (){
@@ -173,10 +173,12 @@ class Member extends StatelessWidget {
                                SizedBox(width: myWidth, child: Text("• Áp dụng phân phối hàng một cấp - tức là không phân phối cùng một sản phẩm cho đại lý của đại lý"),),
                                SizedBox(width: myWidth, child: Text("• Nếu có trường hợp tranh chấp xảy ra, thì cả ba bên sẽ ngồi lại bàn bạc sao cho hợp lý, cùng có lợi"),),
                                //phương thức kinh donah
+                               SizedBox(width: 100.w, height: 5,),
                                SizedBox(width: myWidth, child: Text("2. Phương thức kinh doanh", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
                                SizedBox(width: myWidth, child: Text("• Giá sản phẩm bao gồm giá đại lý và giá bán lẻ tại thời điểm niêm yết, nếu có thay đổi giá thì BKDMS sẽ thông báo và gửi bảng báo giá mới trước ít nhất 15 ngày."),),
                                SizedBox(width: myWidth, child: Text("• Đại lý tự quyết định giá bán để phù hợp với vị thế. Tuy nhiên giá bán ra không được thấp hơn 10% so với giá bán lẻ đề nghị cùng thời điểm."),),
                                //Xử lý công nợ
+                               SizedBox(width: 100.w, height: 5,),
                                SizedBox(width: myWidth, child: Text("3. Xử lý công nợ", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
                                SizedBox(width: myWidth, child: Text("• Mỗi đại lý có nợ tối đa dựa trên hạn mức đăng kí với nhà cung cấp. Đến hạn thanh toán mà đại lý vẫn chưa thanh toán đủ công nợ phát sinh của tháng trước thì sẽ bị tính lãi xuất phát sinh. % lãi xuất"),),
                                SizedBox(width: myWidth, child: Text("• Nếu đến đối chiếu công nợ lần 2 mà đại lý vẫn chưa thanh toán hết nợ thì BKDMS sẽ tạm ngưng giao đơn hàng mới."),),

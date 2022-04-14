@@ -212,16 +212,16 @@ class WaitConfirmState extends State<WaitConfirm> {
                                        ],
                                      ),
                                    ),
-                                   SizedBox(width: myWidth*0.2,),
+                                   SizedBox(width: myWidth*0.25,),
                                    //tổng tiền
                                    SizedBox(
-                                     width: myWidth*0.4,
+                                     width: myWidth*0.35,
                                      child: Row(
                                        children: [
                                          SizedBox(
-                                           width: myWidth*0.15,
+                                           width: myWidth*0.1,
                                            height: 20,
-                                           child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight,),
+                                           child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight, width: myWidth*0.1,),
                                          ),
                                          SizedBox(
                                            width: myWidth*0.22,
