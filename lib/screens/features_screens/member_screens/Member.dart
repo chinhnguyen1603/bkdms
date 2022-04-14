@@ -1,15 +1,17 @@
-import 'package:bkdms/screens/features_screens/member_screens/ScreenLevel.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/screens/features_screens/member_screens/ScreenLevel.dart';
+
 class Member extends StatelessWidget {
   static const blueText = Color(0xff105480);
+  static const textColor = Color(0xff27214d);
  
   @override
   Widget build(BuildContext context) {
-    double heigtDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
-    double myWidth = widthDevice*0.9;
+    double heightDevice = 100.h;// chiều cao thiết bị
+    double myWidth = 90.w;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBarTransparent(Colors.white,"Thành viên"),
@@ -92,38 +94,48 @@ class Member extends StatelessWidget {
                          ),
                        ),
                       // Khách hàng
-                       SizedBox( 
-                         height: 100,
-                         width: myWidth*0.33,
-                         child: Column(children: [
-                           SizedBox(
-                             height: 60,
-                             width: myWidth*0.33,
-                             child: Image.asset("assets/khachhang.png", scale: 1.1, ),
-                           ),
-                           SizedBox(
-                             height: 20,
-                             width: myWidth*0.33,
-                             child: Center(child: Text("Khách hàng")),
-                           )
-                         ],),
+                       GestureDetector(
+                         onTap: (){
+
+                         },
+                         child: SizedBox( 
+                           height: 100,
+                           width: myWidth*0.33,
+                           child: Column(children: [
+                             SizedBox(
+                               height: 60,
+                               width: myWidth*0.33,
+                               child: Image.asset("assets/khachhang.png", scale: 1.1, ),
+                             ),
+                             SizedBox(
+                               height: 20,
+                               width: myWidth*0.33,
+                               child: Center(child: Text("Khách hàng")),
+                             )
+                           ],),
+                         ),
                        ),
                        // Công nợ
-                       SizedBox( 
-                         height: 100,
-                         width: myWidth*0.33,
-                         child: Column(children: [
-                           SizedBox(
-                             height: 60,
-                             width: myWidth*0.33,
-                             child: Image.asset("assets/congno.png", scale: 1.3, ),
-                           ),
-                           SizedBox(
-                             height: 20,
-                             width: myWidth*0.33,
-                             child: Center(child: Text("Công nợ")),
-                           )
-                         ],),
+                       GestureDetector(
+                         onTap: (){
+
+                         },
+                         child: SizedBox( 
+                           height: 100,
+                           width: myWidth*0.33,
+                           child: Column(children: [
+                             SizedBox(
+                               height: 60,
+                               width: myWidth*0.33,
+                               child: Image.asset("assets/congno.png", scale: 1.3, ),
+                             ),
+                             SizedBox(
+                               height: 20,
+                               width: myWidth*0.33,
+                               child: Center(child: Text("Công nợ")),
+                             )
+                           ],),
+                         ),
                        ),
                      ],
                    ),
@@ -146,32 +158,29 @@ class Member extends StatelessWidget {
                      context: context,
                      builder: (BuildContext context) {
                        return Container(
-                           height: heigtDevice*0.6,
+                           height: heightDevice*0.6,
                            child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             mainAxisAlignment: MainAxisAlignment.start,
-                             mainAxisSize: MainAxisSize.max,
                              children: <Widget>[
-                               SizedBox(width: widthDevice,child: IconButton(
-                                 icon: Icon(Icons.cancel_presentation, size: 20,),
+                               SizedBox(width: 100.w , child: IconButton(
+                                 icon: Icon(Icons.cancel_presentation, size: 18,),
                                  alignment: Alignment.centerRight,
                                  onPressed: (){Navigator.pop(context);},
                                ),),
-                               SizedBox(width: widthDevice,child:Text('Thể lệ thành viên dành cho đại lý', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold),),),
-                               SizedBox(height: 5,),
-                               SizedBox(width: widthDevice, child: Text("   Có 4 cấp thành viên tương ứng là Cơ bản, Đồng, Bạc và Vàng."),),
-                               //thành viên cơ bản, hạng mức 1
-                               SizedBox(width: widthDevice, child: Text("  • Thành viên cơ bản", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),),),
-                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 1. Thành viên cơ bản bắt buộc phải thanh toán trước khi nhận hàng."),),
-                               //thành viên đồng, hạng mức 2
-                               SizedBox(width: widthDevice, child: Text("  • Thành viên đồng", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xffde7325)),),),
-                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 2")),
-                               //thành viên bạc, hạng mức 3
-                               SizedBox(width: widthDevice, child: Text("  • Thành viên bạc", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xffd8d2cf)),),),
-                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 3")),
-                               //thành viên vàng, hạng mức 4
-                               SizedBox(width: widthDevice, child: Text("  • Thành viên vàng", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent),),),  
-                               SizedBox(width: widthDevice, child: Text("  Tương ứng với hạng mức 4")),
+                               SizedBox(width: 100.w, child:Text('Dưới đây là các chính sách bán sỉ của BKDMS', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffde7325)),),),
+                               SizedBox(width: 100.w, height: 5,),
+                               //quy tắc phân phối 
+                               SizedBox(width: myWidth, child: Text("1. Cam kết quy tắc phân phối", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
+                               SizedBox(width: myWidth, child: Text("• Áp dụng phân phối hàng một cấp - tức là không phân phối cùng một sản phẩm cho đại lý của đại lý"),),
+                               SizedBox(width: myWidth, child: Text("• Nếu có trường hợp tranh chấp xảy ra, thì cả ba bên sẽ ngồi lại bàn bạc sao cho hợp lý, cùng có lợi"),),
+                               //phương thức kinh donah
+                               SizedBox(width: myWidth, child: Text("2. Phương thức kinh doanh", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
+                               SizedBox(width: myWidth, child: Text("• Giá sản phẩm bao gồm giá đại lý và giá bán lẻ tại thời điểm niêm yết, nếu có thay đổi giá thì BKDMS sẽ thông báo và gửi bảng báo giá mới trước ít nhất 15 ngày."),),
+                               SizedBox(width: myWidth, child: Text("• Đại lý tự quyết định giá bán để phù hợp với vị thế. Tuy nhiên giá bán ra không được thấp hơn 10% so với giá bán lẻ đề nghị cùng thời điểm."),),
+                               //Xử lý công nợ
+                               SizedBox(width: myWidth, child: Text("3. Xử lý công nợ", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
+                               SizedBox(width: myWidth, child: Text("• Mỗi đại lý có nợ tối đa dựa trên hạn mức đăng kí với nhà cung cấp. Đến hạn thanh toán mà đại lý vẫn chưa thanh toán đủ công nợ phát sinh của tháng trước thì sẽ bị tính lãi xuất phát sinh. % lãi xuất"),),
+                               SizedBox(width: myWidth, child: Text("• Nếu đến đối chiếu công nợ lần 2 mà đại lý vẫn chưa thanh toán hết nợ thì BKDMS sẽ tạm ngưng giao đơn hàng mới."),),
+      
                              ],
                            ),
                        );
@@ -179,19 +188,19 @@ class Member extends StatelessWidget {
                    );
                   }, 
                   child: Text(
-                    "THỂ LỆ THÀNH VIÊN",
+                    "CHÍNH SÁCH BÁN SỈ",
                     style: TextStyle(decoration: TextDecoration.underline, fontSize: 21, color: blueText,),
                   )
                 ),
               ),
-              // tạo đơn bán hàng
+              // tạo đơn bán lẻ
               SizedBox(
                 child: TextButton(
                   onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => EnterCustomer()));
                   }, 
                   child: Text(
-                    "TẠO ĐƠN BÁN HÀNG",
+                    "TẠO ĐƠN BÁN LẺ",
                     style: TextStyle(decoration: TextDecoration.underline, fontSize: 21, color: blueText,),
                   )
                 ),

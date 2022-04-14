@@ -269,7 +269,7 @@ class CancelOrderState extends State<CancelOrder> {
 
   // Hàm convert thời gian
   String convertTime(String time){
-    var timeConvert = DateFormat('HH:mm dd/MM/yyyy').format(DateTime.parse(time).add(const Duration(hours: 7)));
+    var timeConvert = DateFormat('HH:mm dd/MM/yyyy').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }
   //hàm lấy ảnh cloudinary

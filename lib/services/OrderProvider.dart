@@ -114,7 +114,6 @@ class OrderProvider with ChangeNotifier{
           'agencyId': agencyId,
         }),
       );
-      print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200){
          final extractedData = json.decode(response.body) as Map<String, dynamic>;
