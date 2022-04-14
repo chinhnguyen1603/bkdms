@@ -453,35 +453,51 @@ class ScreenCartState extends State<ScreenCart> {
              //button xóa tất cả Color(0xffb01313)
              ElevatedButton.icon(
                onPressed: () async {
-                  //dialog hỏi user xác nhận
-                  Alert(
-                    context: context,
-                    type: AlertType.warning,
-                    desc: "Bạn có chắc chắn muốn xóa không?",
-                    buttons: [
-                        DialogButton(
-                           child: Text("Hủy bỏ", style: TextStyle(color: dialogColor, fontSize: 18),),
-                           onPressed: () => Navigator.pop(context),
-                           color: Colors.white,
-                        ),
-                        //delete all cart tại đây
-                        DialogButton(        
-                           color: dialogColor,
-                           child: Text("Xác nhận", style: TextStyle(color: Colors.white, fontSize: 18),),
-                           onPressed: () async {
-                              setState(() {              
-                                 sumOfOrder = 0; //set tổng tiền về 0
-                              });
-                              await showDialog (
-                                 context: context,
-                                 builder: (context) =>
-                                    FutureProgressDialog(deleteAllCart()),
-                              );
+                  //tổng tiền = 0  thì ko thể xóa
+                  if(sumOfOrder == 0){
+                     //show dialog lỗi
+                     Alert(
+                        context: context,
+                        type: AlertType.warning,
+                        style: AlertStyle( titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                        title: "Giỏ hàng trống",
+                        buttons: [ DialogButton(
+                            child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                            onPressed: () => Navigator.pop(context),
+                            width: 100,
+                        )],
+                     ).show();
+                  } else {
+                     //dialog hỏi user xác nhận
+                     Alert(
+                        context: context,
+                        type: AlertType.warning,
+                        desc: "Bạn có chắc chắn muốn xóa không?",
+                        buttons: [
+                          DialogButton(
+                             child: Text("Hủy bỏ", style: TextStyle(color: dialogColor, fontSize: 18),),
+                             onPressed: () => Navigator.pop(context),
+                             color: Colors.white,
+                          ),
+                          //delete all cart tại đây
+                          DialogButton(        
+                             color: dialogColor,
+                             child: Text("Xác nhận", style: TextStyle(color: Colors.white, fontSize: 18),),
+                             onPressed: () async {
+                                setState(() {              
+                                   sumOfOrder = 0; //set tổng tiền về 0
+                                });
+                                await showDialog (
+                                  context: context,
+                                  builder: (context) =>
+                                     FutureProgressDialog(deleteAllCart()),
+                                );
                               //ẩn dialog alert
                               Navigator.pop(context);
                            },
-                        )
-                    ],).show();             
+                        )],
+                      ).show();             
+                  }
                }, 
                icon: Icon(Icons.delete),
                label: Text("Xóa giỏ hàng"),

@@ -202,12 +202,13 @@ class WaitConfirmState extends State<WaitConfirm> {
                                      width: myWidth*0.4,
                                      child: Row(
                                        children: [
+                                         SizedBox(width: myWidth*0.05),
                                          SizedBox(
                                            width: myWidth*0.1,
                                            height: 20,
                                            child: Image.asset("assets/box.png",),
                                          ),
-                                         SizedBox(width: 5,),
+                                         SizedBox(width: 2,),
                                          Text("${lstWaitOrder[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
                                        ],
                                      ),
@@ -219,7 +220,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                      child: Row(
                                        children: [
                                          SizedBox(
-                                           width: myWidth*0.1,
+                                           width: myWidth*0.08,
                                            height: 20,
                                            child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight, width: myWidth*0.1,),
                                          ),
