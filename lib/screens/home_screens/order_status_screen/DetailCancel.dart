@@ -7,20 +7,21 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 
-class DetailConfirm extends StatefulWidget {
-  late OrderInfo orderInfo ;
-  DetailConfirm(this.orderInfo);
+class DetailCancel extends StatefulWidget {
+  late OrderInfo orderCancelInfo ;
+  DetailCancel(this.orderCancelInfo);
+  
   @override
-  State<DetailConfirm> createState() => DetailConfirmState();
+  State<DetailCancel> createState() => DetailCancelState();
 }
 
-class DetailConfirmState extends State<DetailConfirm> {
+class DetailCancelState extends State<DetailCancel> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 
   @override
   Widget build(BuildContext context) {
-    OrderInfo thisOrderInfo = widget.orderInfo;
+    OrderInfo thisOrderCancel = widget.orderCancelInfo;
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
@@ -48,7 +49,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                              width: myWidth*0.12,
                              child: Icon(Icons.assignment_outlined, color: darkBlue, ),
                            ),
-                           Text("Mã đơn hàng: " + "${thisOrderInfo.orderCode}", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                           Text("Mã đơn hàng: " + "${thisOrderCancel.orderCode}", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
                          ],
                        ),
                        SizedBox(height: 5,),
@@ -58,7 +59,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Ngày đặt hàng: " + "${convertTime(thisOrderInfo.createTime)}")
+                           Text("Ngày đặt hàng: " + "${convertTime(thisOrderCancel.createTime)}")
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -105,7 +106,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Cửa hàng ${ Provider.of<Agency>(context, listen: false).name} - " + "${thisOrderInfo.phone}")
+                           Text("Cửa hàng ${ Provider.of<Agency>(context, listen: false).name} - " + "${thisOrderCancel.phone}")
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -119,7 +120,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                            SizedBox(
                              width: myWidth*0.85,
                              height: 50,
-                             child: Text("${thisOrderInfo.address}", overflow: TextOverflow.ellipsis, maxLines: 2,  style: TextStyle(fontWeight: FontWeight.w300),)
+                             child: Text("${thisOrderCancel.address}", overflow: TextOverflow.ellipsis, maxLines: 2,  style: TextStyle(fontWeight: FontWeight.w300),)
                            )
                          ],
                        )
@@ -151,7 +152,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                        SizedBox(height: 5,),
                        //List cart of order
                        ListView.builder(
-                          itemCount: thisOrderInfo.orderDetails.length,              
+                          itemCount: thisOrderCancel.orderDetails.length,              
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
@@ -170,7 +171,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                                           height: 100,
                                           width: myWidth*0.3,
                                           child: Image.network(
-                                            getUrlFromLinkImg("${thisOrderInfo.orderDetails[index]['unit']['product']['linkImg']}")
+                                            getUrlFromLinkImg("${thisOrderCancel.orderDetails[index]['unit']['product']['linkImg']}")
                                           ),
                                         ),
                                         SizedBox(width: 10,),
@@ -185,7 +186,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                                                  height: 24,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "${thisOrderInfo.orderDetails[index]['unit']['product']['name']}", 
+                                                    "${thisOrderCancel.orderDetails[index]['unit']['product']['name']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -198,7 +199,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Đơn vị: " + "${thisOrderInfo.orderDetails[index]['unit']['name']}", 
+                                                    "Đơn vị: " + "${thisOrderCancel.orderDetails[index]['unit']['name']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -211,7 +212,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Số lượng: " + "${thisOrderInfo.orderDetails[index]['quantity']}", 
+                                                    "Số lượng: " + "${thisOrderCancel.orderDetails[index]['quantity']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -224,7 +225,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Thành tiền: " + "${thisOrderInfo.orderDetails[index]['totalPrice'].replaceAllMapped(reg, mathFunc)}đ", 
+                                                    "Thành tiền: " + "${thisOrderCancel.orderDetails[index]['totalPrice'].replaceAllMapped(reg, mathFunc)}đ", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -278,7 +279,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Tổng tiền: " + "${thisOrderInfo.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
+                           Text("Tổng tiền: " + "${thisOrderCancel.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
                          ],
                        ),
                        SizedBox(height: 7,),
