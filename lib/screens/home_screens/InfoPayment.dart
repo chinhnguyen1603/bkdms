@@ -242,8 +242,7 @@ class InfoPaymentState extends State<InfoPayment> {
                               width: 60.w,
                               height: 24,
                               child: Text(
-                                //"${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ", 
-                                "0",
+                                "${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ",   
                                 maxLines: 1,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        

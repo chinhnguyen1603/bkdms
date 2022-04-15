@@ -173,7 +173,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                       height: 25,
                                       width: myWidth*0.5,
                                       child: Text(
-                                         "Số lượng " + "${lstWaitOrder[index].orderDetails[0]['quantity']}", 
+                                         "Số lượng: " + "${lstWaitOrder[index].orderDetails[0]['quantity']}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,

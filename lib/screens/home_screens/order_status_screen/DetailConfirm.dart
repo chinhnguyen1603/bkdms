@@ -72,6 +72,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                 ),
               ),
               SizedBox(height: 12,),
+        
               //Địa chỉ nhận hàng
               Container(
                 width: 100.w,
@@ -119,6 +120,103 @@ class DetailConfirmState extends State<DetailConfirm> {
                          ],
                        )
                     ]
+                  ),
+                ),
+              ),
+              SizedBox(height: 12,),
+        
+              //Địa chỉ nhận hàng
+              Container(
+                width: 100.w,
+                color: Colors.white,
+                child: SizedBox(
+                  width: myWidth,
+                  child: Column(
+                    children: [
+                       SizedBox(height: 10,),
+                       //icon và text thông tin kiện hàng
+                       Row(
+                         children: [
+                           SizedBox(
+                             width: myWidth*0.12,
+                             child: Icon(Icons.all_inbox_outlined, color: darkBlue, size: 24,),
+                           ),
+                           Text("Thông tin kiện hàng", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                         ],
+                       ),
+                       SizedBox(height: 5,),
+                       //List cart of order
+                       ListView.builder(
+                          itemCount: thisOrderInfo.orderDetails.length,              
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                              return SizedBox(
+                                 width: myWidth,
+                                 height: 80,
+                                 child: Row(children: [
+                                    //Ảnh sản phẩm
+                                    SizedBox(
+                                      height: 100,
+                                      width: myWidth*0.3,
+                                      child: Image.network(
+                                        getUrlFromLinkImg("${thisOrderInfo.orderDetails[index]['unit']['product']['linkImg']}")
+                                      ),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    //Tên, đơn vị + số lượng
+                                    SizedBox(
+                                      height: 100,
+                                      width: myWidth*0.5,
+                                      child: Column(
+                                          children: [
+                                          // tên sản phẩm
+                                          SizedBox(
+                                             height: 30,
+                                             width: myWidth*0.5,
+                                             child: Text(
+                                                "${thisOrderInfo.orderDetails[index]['unit']['product']['name']}", 
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                softWrap: false,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),                                        
+                                             )
+                                          ),
+                                          // Đơn vị
+                                          SizedBox(
+                                             height: 25,
+                                             width: myWidth*0.5,
+                                             child: Text(
+                                           "Đơn vị: " + "${thisOrderInfo.orderDetails[index]['unit']['name']}", 
+                                           maxLines: 1,
+                                           overflow: TextOverflow.ellipsis,
+                                           softWrap: false,
+                                           textAlign: TextAlign.left,
+                                           style: TextStyle(fontSize: 14, ),                                        
+                                        )
+                                      ),   
+                                      // Số lượng
+                                      SizedBox(
+                                        height: 25,
+                                        width: myWidth*0.5,
+                                        child: Text(
+                                           "Số lượng: " + "${thisOrderInfo.orderDetails[index]['quantity']}", 
+                                           maxLines: 1,
+                                           overflow: TextOverflow.ellipsis,
+                                           softWrap: false,
+                                           textAlign: TextAlign.left,
+                                           style: TextStyle(fontSize: 14,),                                        
+                                        )
+                                      ),                                                                                                       
+                                    ],
+                                   ),
+                                  )
+                                ]),
+                               );
+                          }),
+                        Divider(),
+                   ]
                   ),
                 ),
               )

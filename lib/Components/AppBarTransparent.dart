@@ -17,9 +17,7 @@ class AppBarTransparent extends StatelessWidget with PreferredSizeWidget {
         elevation: 0,
         backgroundColor: color,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: blueText,),
+          icon: Icon(Icons.arrow_back_ios, color: blueText,),
           onPressed: (){
             Navigator.pop(context);
           },

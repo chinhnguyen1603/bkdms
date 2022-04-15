@@ -384,7 +384,7 @@ class ScreenHomeState extends State<ScreenHome> {
             ),
             // chứa ô khuyến mãi
             SizedBox(
-              height: 100,
+              height: 70,
               width: widthDevice*0.98,
               child: ListView.builder( 
                 scrollDirection: Axis.horizontal,
@@ -400,15 +400,9 @@ class ScreenHomeState extends State<ScreenHome> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
-                    width: 160,
-                    height: 120,
-                    child: Text(
-                      "Voucher $index",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-
-                      ),
-                      )
+                    width: 180,
+                    height: 70,
+                    child: Image.asset("assets/voucher.png")
                    )
                   ),
                   ),

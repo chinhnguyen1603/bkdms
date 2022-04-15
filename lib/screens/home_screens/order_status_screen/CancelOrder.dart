@@ -173,7 +173,7 @@ class CancelOrderState extends State<CancelOrder> {
                                       height: 25,
                                       width: myWidth*0.5,
                                       child: Text(
-                                         "Số lượng " + "${lstCancelOrder[index].orderDetails[0]['quantity']}", 
+                                         "Số lượng: " + "${lstCancelOrder[index].orderDetails[0]['quantity']}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
