@@ -48,6 +48,9 @@ dependencies:
   firebase_core: ^1.14.0
   firebase_messaging: ^11.2.12
   flutter_local_notifications: ^9.4.0
+  encrypt: ^5.0.1
+  pointycastle: ^3.5.2
+  basic_utils: ^4.2.0
 
 
 

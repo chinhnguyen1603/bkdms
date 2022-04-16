@@ -5,6 +5,7 @@ import 'package:bkdms/screens/home_screens/ChangePassword.dart';
 import 'package:bkdms/screens/home_screens/InfoApp.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'package:bkdms/services/CartProvider.dart';
 
 
@@ -35,12 +36,8 @@ class InfoUser extends StatelessWidget {
         String? ward = user?.ward;
         String? district = user?.district;
         String? province = user?.province;
-
-        //xử lý datejoin
         String? dateJoin = user?.dateJoin;
-        String dateJoin1 = "$dateJoin";
-        List<String> splitDate = dateJoin1.split('-');
-        String dateOutput = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+
         
         return Column(
           children: [
@@ -236,7 +233,7 @@ class InfoUser extends StatelessWidget {
                        width: myWidth*0.5,
                        child: 
                         Text(                       
-                          "$dateOutput",
+                          "${convertTime(dateJoin as String)}",
                         ),
                        )
                     ]
@@ -322,10 +319,15 @@ class InfoUser extends StatelessWidget {
 
             // divider cuối cùng
             Divider(color: line, thickness: 1,),
-
           ],
         );
       })
     ));
+  }
+
+  // Hàm convert thời gian
+  String convertTime(String time){
+    var timeConvert = DateFormat('dd/MM/yyyy').format(DateTime.parse(time).toLocal());
+    return timeConvert;
   }
 }

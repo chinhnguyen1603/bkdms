@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.0"
+  asn1lib:
+    dependency: transitive
+    description:
+      name: asn1lib
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   async:
     dependency: transitive
     description:
@@ -22,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  basic_utils:
+    dependency: "direct main"
+    description:
+      name: basic_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -120,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   crypto:
     dependency: transitive
     description:
@@ -162,6 +183,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.3"
+  encrypt:
+    dependency: "direct main"
+    description:
+      name: encrypt
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.1"
   equatable:
     dependency: transitive
     description:
@@ -401,6 +429,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.4.0"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   matcher:
     dependency: transitive
     description:
@@ -506,6 +548,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  pointycastle:
+    dependency: "direct main"
+    description:
+      name: pointycastle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.5.2"
   process:
     dependency: transitive
     description:
