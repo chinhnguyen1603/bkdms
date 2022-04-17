@@ -297,33 +297,6 @@ class DetailConfirmState extends State<DetailConfirm> {
               ),
               SizedBox(height: 12,),
 
-              //Trạng thái đơn hàng
-              Container(
-                width: 100.w,
-                height: 120,
-                color: Colors.white,
-                child: SizedBox(
-                  width: myWidth,
-                  height: 100,
-                  child: Column(
-                    children: [
-                       SizedBox(height: 10,),
-                       //icon và text trạng thái đơn hàng
-                       Row(
-                         children: [
-                           SizedBox(
-                             width: myWidth*0.12,
-                             child: Icon(Icons.flag_outlined, color: darkBlue, size: 24,),
-                           ),
-                           Text("Trạng thái đơn hàng", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
-                         ],
-                       ),
-                   ]
-                  ),
-                ),
-              ),
-              SizedBox(height: 12,),
-
           ]),
       ),
     );

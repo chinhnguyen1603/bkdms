@@ -4,9 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 
 
