@@ -119,7 +119,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                            SizedBox(
                              width: myWidth*0.85,
                              height: 50,
-                             child: Text("${thisOrderInfo.address}", overflow: TextOverflow.ellipsis, maxLines: 2,  style: TextStyle(fontWeight: FontWeight.w300),)
+                             child: Text("${thisOrderInfo.address}", overflow: TextOverflow.ellipsis, maxLines: 2,)
                            )
                          ],
                        )

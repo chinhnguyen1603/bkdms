@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -70,7 +71,7 @@ class CancelOrderState extends State<CancelOrder> {
                      //container chứa chi tiết đơn                 
                      GestureDetector(
                        onTap: (){
-                         //
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancel(lstCancelOrder[index])));
                        },
                        child: Container(
                          width: 100.w,

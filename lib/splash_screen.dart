@@ -28,6 +28,7 @@ class SplashScreenState extends State<SplashScreen>{
   void initState() {
     super.initState();
 
+    /*
     //foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification notification = message.notification as RemoteNotification;
@@ -58,7 +59,7 @@ class SplashScreenState extends State<SplashScreen>{
 
             });
       }
-
+    
     });
     
     //background
@@ -76,7 +77,7 @@ class SplashScreenState extends State<SplashScreen>{
               );
             });
       }
-    });
+    }); */
   }
 
 
@@ -87,6 +88,9 @@ class SplashScreenState extends State<SplashScreen>{
     Timer(Duration(seconds: 4), () {
         Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
     }); 
+    /*FirebaseMessaging.instance.getToken().then((token){
+      print(token);
+    });*/
     return Scaffold(
         backgroundColor: Color(0xffF4F4F4),
         body: SingleChildScrollView( 

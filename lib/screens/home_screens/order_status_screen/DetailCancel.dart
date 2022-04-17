@@ -69,7 +69,7 @@ class DetailCancelState extends State<DetailCancel> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Đang chờ xác nhận", style: TextStyle(fontWeight: FontWeight.w300),)
+                           Text("Đã hủy", style: TextStyle(fontWeight: FontWeight.w300),)
                          ],
                        )
                     ]
@@ -120,7 +120,7 @@ class DetailCancelState extends State<DetailCancel> {
                            SizedBox(
                              width: myWidth*0.85,
                              height: 50,
-                             child: Text("${thisOrderCancel.address}", overflow: TextOverflow.ellipsis, maxLines: 2,  style: TextStyle(fontWeight: FontWeight.w300),)
+                             child: Text("${thisOrderCancel.address}", overflow: TextOverflow.ellipsis, maxLines: 2,)
                            )
                          ],
                        )

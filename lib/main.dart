@@ -28,11 +28,11 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
+/*
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('A cloud message just showed up :  ${message.messageId}');
-}
+}*/
 
 Future<void> main() async {
   /*WidgetsFlutterBinding.ensureInitialized();
@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
            title: "BKDMS Mobile App",
            home: Scaffold(
              backgroundColor: Color(0xffF4F4F4),
-             body: TestMomo()
+             body: SplashScreen()
            ),
       );
       }
