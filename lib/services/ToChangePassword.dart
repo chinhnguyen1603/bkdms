@@ -6,7 +6,7 @@ Future<List<dynamic>> postNewPassword(String? token, String? workspace, int? id,
   print("bắt đầu Đổi mật khẩu");
   //try catch
   try{
-   var url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/changeInfo/changePass/agency');
+   var url = Uri.parse('https://bkdms.herokuapp.com' + '/mobile/api/v1/changeInfo/changePass/agency');
    final response = await http.post(
      url,
      headers: <String, String>{

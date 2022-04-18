@@ -99,7 +99,7 @@ class OrderProvider with ChangeNotifier{
   //http get order (auto update list order)
   Future<void> getOrder(String? token, String? workspace, int? agencyId) async {
     //
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/order/get-order-by-agency');
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/get-order-by-agency');
     print(" bắt đầu get order");
      try {
       final response = await http.post(
@@ -164,7 +164,7 @@ class OrderProvider with ChangeNotifier{
 
   //http delete order
   Future<void> deleteOrder(String? token, String? workspace, int? agencyId, int orderId) async {
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/order/cancel-order-by-agency');
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/cancel-order-by-agency');
     print(" bắt đầu delete order");
      try {
       final response = await http.post(

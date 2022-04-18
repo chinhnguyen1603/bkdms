@@ -9,7 +9,7 @@ class ItemProvider with ChangeNotifier{
   List<Item> lstItem = [];
 
   Future<List<Item>> fetchAndSetItem(String? token, String? workspace) async {
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/product');
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/product');
     try {
       final response = await http.get(url, headers: ({
           'Content-Type': 'application/json',
@@ -17,6 +17,8 @@ class ItemProvider with ChangeNotifier{
           'Authorization': 'Bearer $token',
           'Workspace' : "$workspace",
       }));
+      
+      print(response.body);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Item> loadedCategories = [];
       extractedData['data']['listProduct'].forEach((itemData) {

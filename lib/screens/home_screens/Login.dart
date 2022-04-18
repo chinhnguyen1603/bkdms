@@ -236,7 +236,7 @@ class LoginState extends State<Login> {
                         print(user?.name);
                       })
                       .then((_) async => {   
-                        // get Item trong HomePage   
+                        // get Item trong HomePage    
                         await Provider.of<ItemProvider>(context, listen: false).fetchAndSetItem(user?.token, user?.workspace)
                           .catchError((onError){
                             // phụ trợ xử lí String
@@ -265,7 +265,7 @@ class LoginState extends State<Login> {
                             });
                           }),
                         print("test kết quả lstItem"),
-                        print(Provider.of<ItemProvider>(context, listen: false).lstItem),
+                        print(Provider.of<ItemProvider>(context, listen: false).lstItem), 
                         //get Order trong HomePage   
                         await Provider.of<OrderProvider>(context, listen: false).getOrder(user?.token, user?.workspace, user?.id)                     
                           .catchError((onError){
