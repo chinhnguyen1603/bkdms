@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/home_screens/order_status_screen/DetailCreateSupply.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -83,7 +84,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirm(lstWaitOrder[index])));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCreateSupply(lstWaitOrder[index])));
                            },
                            child: Container(
                              width: 100.w,

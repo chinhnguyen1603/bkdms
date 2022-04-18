@@ -60,7 +60,7 @@ class DetailDeliveringState extends State<DetailDelivering> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Ngày đặt hàng: " + "${convertTime(thisOrderDelivering.createTime)}")
+                           Text("Thời gian đặt đơn: " + "${convertTime(thisOrderDelivering.createTime)}")
                          ],
                        ),
                        SizedBox(height: 7,),

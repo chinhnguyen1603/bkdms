@@ -7,14 +7,14 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 
-class DetailConfirm extends StatefulWidget {
+class DetailCreateSupply extends StatefulWidget {
   late OrderInfo orderInfo ;
-  DetailConfirm(this.orderInfo);
+  DetailCreateSupply(this.orderInfo);
   @override
-  State<DetailConfirm> createState() => DetailConfirmState();
+  State<DetailCreateSupply> createState() => DetailCreateSupplyState();
 }
 
-class DetailConfirmState extends State<DetailConfirm> {
+class DetailCreateSupplyState extends State<DetailCreateSupply> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 
@@ -58,7 +58,7 @@ class DetailConfirmState extends State<DetailConfirm> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Thời gian đặt đơn: " + "${convertTime(thisOrderInfo.createTime)}")
+                           Text("Thời gian tạo: " + "${convertTime(thisOrderInfo.createTime)}")
                          ],
                        ),
                        SizedBox(height: 7,),
