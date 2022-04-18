@@ -9,7 +9,7 @@ class CartProvider with ChangeNotifier{
   
   //add cart
   Future<void> addCart(String? token, String? workspace, int? agencyId, int unitId, String quantity) async {
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/cart');
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/cart');
     print(" bắt đầu add cart");
      try {
       final response = await http.post(
@@ -44,7 +44,7 @@ class CartProvider with ChangeNotifier{
     var params = {
      "agencyId": "$agencyId",
     };
-    Uri uri = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart');
+    Uri uri = Uri.parse('https://bkdms.herokuapp.com' + '/mobile/api/v1/cart');
     final url = uri.replace(queryParameters: params);
     print("bắt đầu get cart");
     try {
@@ -57,6 +57,7 @@ class CartProvider with ChangeNotifier{
           'Workspace' : "$workspace",
         }),
       );
+      
       // thành công
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -91,7 +92,7 @@ class CartProvider with ChangeNotifier{
   //delete cart
   Future<void> deleteCart(String? token, String? workspace, int? agencyId,int uniId) async {
 
-    final url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart/deleteCart');
+    final url = Uri.parse('https://bkdms.herokuapp.com' + '/mobile/api/v1/cart/deleteCart');
     print("bắt đầu delete cart");
     try {
       final response = await http.post(
@@ -125,7 +126,7 @@ class CartProvider with ChangeNotifier{
   //delete all cart
   Future<void> deleteAllCart(String? token, String? workspace, int? agencyId) async {
 
-    final url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/cart/delete-all-cart');
+    final url = Uri.parse('https://bkdms.herokuapp.com' + '/mobile/api/v1/cart/delete-all-cart');
     print("bắt đầu delete tất cả cart");
     try {
       final response = await http.post(
