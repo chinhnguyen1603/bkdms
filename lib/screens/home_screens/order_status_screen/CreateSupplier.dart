@@ -256,7 +256,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                  //text đơn hàng tạo bởi nhà cung cấp
                                  SizedBox(
                                    height: 30,
-                                   child: Text("Đơn hàng tạo bởi nhà cung cấp", style: TextStyle(color: textColor),)
+                                   child: Text("Đơn hàng tạo bởi nhà cung cấp", style: TextStyle(color: Color(0xff7b2626)),)
                                  )
                                ],
                              ),
