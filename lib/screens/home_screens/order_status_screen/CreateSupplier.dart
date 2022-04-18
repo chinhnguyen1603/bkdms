@@ -1,23 +1,29 @@
-import 'package:bkdms/screens/home_screens/order_status_screen/DetailDelivering.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
+import 'package:bkdms/services/OrderProvider.dart';
 
-class Delivering extends StatefulWidget {
-  const Delivering({ Key? key }) : super(key: key);
+class CreateSupplier extends StatefulWidget {
+  const CreateSupplier({ Key? key }) : super(key: key);
 
   @override
-  State<Delivering> createState() => DeliveringState();
+  State<CreateSupplier> createState() => CreateSupplierState();
 }
 
 
-class DeliveringState extends State<Delivering> {
+
+class CreateSupplierState extends State<CreateSupplier> {
   List<OrderInfo> lstOrder = [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);
+  static const dialogColor = Color(0xff4690FF);
+
 
   @override
   void didChangeDependencies() {
@@ -25,25 +31,25 @@ class DeliveringState extends State<Delivering> {
     this.lstOrder = Provider.of<OrderProvider>(context).lstOrderInfo;
   }
 
-  //widget
+  //widget 
   @override
   Widget build(BuildContext context) {
-    //width dùng trong container
-    double myWidth = 95.w;    
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
-    List<OrderInfo> lstDelivering = [];
+    List<OrderInfo> lstWaitOrder = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "APPROVED" ||order.orderStatus == "SHIPPING"  ) && order.type == "PURCHASE_ORDER" ){
-          lstDelivering.add(order);
+        if((order.orderStatus == "WAITING_FOR_APPROVED" || order.orderStatus == "PROCESSING" ) && order.type == "PURCHASE_ORDER" ){
+          lstWaitOrder.add(order);
         }
-    }    
-    //check if has or not order, phải để trong widget để build lại khi list change
+    }  
+    //width dùng trong container
+    double myWidth = 95.w;
+    //check if has or not order, mỗi lần update tự đặt isHasOrder = false, nếu có list thì về true
     bool isHasOrder = false;
-    if(lstDelivering.length !=0 ) {
+    if(lstWaitOrder.length !=0 ) {
       isHasOrder = true;
     }
     //
-    return Container(
+    return SingleChildScrollView(
       child: isHasOrder 
       //có đơn
       ? Container(
@@ -51,7 +57,7 @@ class DeliveringState extends State<Delivering> {
             SizedBox(width: 100.w, height: 12,),
             //UI List Order
             ListView.builder(
-               itemCount:lstDelivering.length,              
+               itemCount:lstWaitOrder.length,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
@@ -64,11 +70,11 @@ class DeliveringState extends State<Delivering> {
                      //container chứa chi tiết đơn                 
                      GestureDetector(
                        onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDelivering(lstDelivering[index])));
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirm(lstWaitOrder[index])));
                        },
                        child: Container(
                          width: 100.w,
-                         height: 210,
+                         height: 245,
                          color: Colors.white,
                          child: Column(
                            children: [
@@ -92,7 +98,7 @@ class DeliveringState extends State<Delivering> {
                                     SizedBox(
                                       width: myWidth*0.6,
                                       child:  Text(
-                                        "Đơn hàng #" + "${lstDelivering[index].orderCode}",
+                                        "Đơn hàng #" + "${lstWaitOrder[index].orderCode}",
                                         style: TextStyle(
                                           color: textColor,
                                           fontSize: 16,
@@ -104,7 +110,7 @@ class DeliveringState extends State<Delivering> {
                                     SizedBox(
                                       width: myWidth*0.3,
                                       child: Text(
-                                        "${convertTime(lstDelivering[index].createTime)}",
+                                        "${convertTime(lstWaitOrder[index].createTime)}",
                                         style: TextStyle(
                                           color: textColor,
                                           fontSize: 12,
@@ -126,7 +132,7 @@ class DeliveringState extends State<Delivering> {
                                     height: 100,
                                     width: myWidth*0.3,
                                     child: Image.network(
-                                      getUrlFromLinkImg("${lstDelivering[index].orderDetails[0]['unit']['product']['linkImg']}")
+                                      getUrlFromLinkImg("${lstWaitOrder[index].orderDetails[0]['unit']['product']['linkImg']}")
                                     ),
                                   ),
                                   SizedBox(width: 10,),
@@ -141,7 +147,7 @@ class DeliveringState extends State<Delivering> {
                                       height: 30,
                                       width: myWidth*0.5,
                                       child: Text(
-                                        "${lstDelivering[index].orderDetails[0]['unit']['product']['name']}", 
+                                        "${lstWaitOrder[index].orderDetails[0]['unit']['product']['name']}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
@@ -154,7 +160,7 @@ class DeliveringState extends State<Delivering> {
                                       height: 25,
                                       width: myWidth*0.5,
                                       child: Text(
-                                         "Đơn vị: " + "${lstDelivering[index].orderDetails[0]['unit']['name']}", 
+                                         "Đơn vị: " + "${lstWaitOrder[index].orderDetails[0]['unit']['name']}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
@@ -167,7 +173,7 @@ class DeliveringState extends State<Delivering> {
                                       height: 25,
                                       width: myWidth*0.5,
                                       child: Text(
-                                         "Số lượng: " + "${lstDelivering[index].orderDetails[0]['quantity']}", 
+                                         "Số lượng: " + "${lstWaitOrder[index].orderDetails[0]['quantity']}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
@@ -203,7 +209,7 @@ class DeliveringState extends State<Delivering> {
                                            child: Image.asset("assets/box.png",),
                                          ),
                                          SizedBox(width: 2,),
-                                         Text("${lstDelivering[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
+                                         Text("${lstWaitOrder[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
                                        ],
                                      ),
                                    ),
@@ -221,7 +227,7 @@ class DeliveringState extends State<Delivering> {
                                          SizedBox(
                                            width: myWidth*0.22,
                                            child: Text(
-                                             "${lstDelivering[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                             "${lstWaitOrder[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
                                              textAlign: TextAlign.center,
                                              style: TextStyle(color: Color(0xff7b2626)),
                                            )
@@ -233,7 +239,12 @@ class DeliveringState extends State<Delivering> {
                                ),
                              ),
                              Divider(),
-                          ],
+                             //text đơn hàng tạo bởi nhà cung cấp
+                             SizedBox(
+                               height: 30,
+                               child: Text("Đơn hàng tạo bởi nhà cung cấp", style: TextStyle(color: textColor),)
+                             )
+                           ],
                          ),
                        ),
                      ),
@@ -243,7 +254,6 @@ class DeliveringState extends State<Delivering> {
             )
          ])
         )       
-     
       //không có đơn nào
       : Container(
         child: Column(
@@ -264,11 +274,42 @@ class DeliveringState extends State<Delivering> {
     return timeConvert;
   }
   //hàm lấy ảnh cloudinary
-  String getUrlFromLinkImg(String linkImg) {      //linkImg receive from server as Public Id
+  String getUrlFromLinkImg(String linkImg) {
+        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
+        //linkImg receive from server as Public Id
         final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
         return transformedUrl;
   }    
 
+  
+  // hàm add cart rồi get, update số lượng sản phẩm
+  Future deleteThisOrder( int orderId) {
+    return Future(() async {
+    //gọi provide order delete sau đó get lại
+    Agency user = Provider.of<Agency>(context, listen: false);
+    await Provider.of<OrderProvider>(context, listen: false).deleteOrder(user.token, user.workspace, user.id, orderId)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi delete order future dialog");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+          //update lại màn hình đơn hàng
+          await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
+      });    
+    });
+  }   
 
-} 
+}

@@ -246,7 +246,7 @@ class LoginState extends State<Login> {
                           _isLoading = false;
                         }),
                         //push
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(0)), (Route<dynamic> route) => false),
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0))), //(Route<dynamic> route) => false),
                       });                      
                   }  
                 }

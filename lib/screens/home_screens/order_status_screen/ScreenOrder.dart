@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/home_screens/order_status_screen/CreateSupplier.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/WaitConfirm.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/Delivering.dart';
@@ -18,7 +19,7 @@ class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
   void initState() {
     super.initState();
      //tab page view
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
   @override
   Widget build(BuildContext context) {
@@ -37,6 +38,9 @@ class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
           unselectedLabelColor: Color(0xff544c4c),
           tabs: const <Widget>[
             Tab(
+              text: "Đơn nhà cung cấp",     
+            ),            
+            Tab(
               text: "Chờ xác nhận",     
             ),
             Tab(
@@ -54,6 +58,7 @@ class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
       body: TabBarView(
         controller: _tabController,
         children: [
+          CreateSupplier(),
           WaitConfirm(),
           Delivering(),
           Delivered(),

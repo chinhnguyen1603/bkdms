@@ -37,10 +37,10 @@ class WaitConfirmState extends State<WaitConfirm> {
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
     List<OrderInfo> lstWaitOrder = [];
     for( var order in lstOrder) {
-        if(order.orderStatus == "WAITING_FOR_APPROVED" && order.type == "PURCHASE_ORDER"){
+        if((order.orderStatus == "WAITING_FOR_APPROVED" || order.orderStatus == "PROCESSING" ) && order.type == "PURCHASE_ORDER" ){
           lstWaitOrder.add(order);
         }
-    }
+    }  
     //width dùng trong container
     double myWidth = 95.w;
     //check if has or not order, mỗi lần update tự đặt isHasOrder = false, nếu có list thì về true

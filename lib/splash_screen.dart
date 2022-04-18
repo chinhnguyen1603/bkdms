@@ -28,7 +28,7 @@ class SplashScreenState extends State<SplashScreen>{
   void initState() {
     super.initState();
 
-    /*
+    
     //foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification notification = message.notification as RemoteNotification;
@@ -77,7 +77,7 @@ class SplashScreenState extends State<SplashScreen>{
               );
             });
       }
-    }); */
+    }); 
   }
 
 
