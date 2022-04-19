@@ -100,9 +100,9 @@ class ProvinceProvider with ChangeNotifier{
       } 
     }
  
-  Future<void> getWard(int district_id) async {
+  Future<void> getWard(int districtId) async {
     var params = {
-     "district_id": "$district_id",
+     "district_id": "$districtId",
     };
     Uri uri = Uri.parse('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward');
     final url = uri.replace(queryParameters: params);

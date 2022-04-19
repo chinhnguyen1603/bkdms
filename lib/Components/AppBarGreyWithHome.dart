@@ -17,7 +17,8 @@ class AppBarGreyWithHome extends StatelessWidget with PreferredSizeWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: darkGrey,),
+            color: darkGrey,
+          ),
           onPressed: (){
             Navigator.pop(context);
           },

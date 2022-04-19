@@ -77,6 +77,7 @@ class CancelOrderState extends State<CancelOrder> {
                      //thêm dấu chấm vào giá sản phẩm
                      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                      String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                     //logic hủy đơn bởi nhà cung cấp hay người dùng. mặc định là người dùng
                      //widget
                      return Column(
                        children: [   

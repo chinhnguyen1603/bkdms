@@ -1,5 +1,6 @@
 import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ScreenLevel.dart';
+import 'package:bkdms/screens/features_screens/return_screens/MainPage.dart';
 import 'package:bkdms/screens/home_screens/InfoPayment.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/Delivering.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailDelivering.dart';
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
            title: "BKDMS Mobile App",
            home: Scaffold(
              backgroundColor: Color(0xffF4F4F4),
-             body: SplashScreen()
+             body: MainPageReturn()
            ),
       );
       }

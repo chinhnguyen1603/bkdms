@@ -1,6 +1,9 @@
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/return_screens/ReturnOrder.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/OrderProvider.dart';
@@ -93,12 +96,60 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
  
   @override
   Widget build(BuildContext context) {
+    print(DateTime.now());
     return Scaffold(
-      appBar: AppBarTransparent(Color(0xfffafafa),"Trả hàng"),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: heavyBlue,
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: Text(
+            "Trả hàng",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: heavyBlue,),
+        )
+      ),
       backgroundColor: Color(0xfffafafa),
+
+      //widget body 
       body: SingleChildScrollView( 
           child: Column(
             children: [
+              SizedBox(width: 100.w,height: 10),
+              TextButton(
+                onPressed: () async{
+                  showDatePicker(
+                    context: context, 
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2021), 
+                    lastDate: DateTime(2023),
+                  ).then((DateTime? value){
+                      if(value != null) {
+                        DateTime fromDate = DateTime.now();
+                        fromDate = value;
+                        final String date =  DateFormat('dd/MM/yyyy').format(fromDate);
+                        //show toast
+                        Fluttertoast.showToast(
+                          msg: "Bạn vừa chọn $date",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          backgroundColor: Colors.black,
+                          textColor: Colors.white,
+                          fontSize: 14.0
+                        );
+                        
+                      } 
+
+                  });
+                }, 
+                child: Text("Chọn ngày giao", style: TextStyle(color: Color(0xff7b2626)),)
+              )
 
             ]
           )

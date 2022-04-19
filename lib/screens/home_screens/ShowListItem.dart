@@ -12,6 +12,7 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:bkdms/screens/home_screens/ScreenCart.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:sizer/sizer.dart';
 
 class ShowListItem extends StatefulWidget {
   const ShowListItem({ Key? key }) : super(key: key);
@@ -62,7 +63,7 @@ class ShowListItemState extends State<ShowListItem> {
   @override
   Widget build(BuildContext context) {
     //int counter = Provider.of<CountBadge>(context).counter;// khởi tạo counter là số mặt hàng trong cart
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
+    double widthDevice = 100.w;// chiều rộng thiết bị
     double widthContainerItem = widthDevice*0.4;
     double myWidth = widthDevice*0.9; // chiều rộng hàng ngoài cùng(tê, giá sp, thông tin chi tiết,...)
     return Scaffold(

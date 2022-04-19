@@ -42,7 +42,7 @@ class CartProvider with ChangeNotifier{
   //get cart
   Future<List<Cart>> getCart(String? token, String? workspace, int? agencyId) async {
     var params = {
-     "agencyId": "$agencyId",
+     "agencyId": "$agencyId", 
     };
     Uri uri = Uri.parse('https://bkdms.herokuapp.com' + '/mobile/api/v1/cart');
     final url = uri.replace(queryParameters: params);

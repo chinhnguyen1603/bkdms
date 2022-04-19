@@ -329,7 +329,6 @@ class WaitConfirmState extends State<WaitConfirm> {
   }
   //hàm lấy ảnh cloudinary
   String getUrlFromLinkImg(String linkImg) {
-        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
         //linkImg receive from server as Public Id
         final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;

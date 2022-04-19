@@ -44,7 +44,7 @@ class OrderReturningState extends State<OrderReturning> {
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
     List<OrderInfo> lstOrderReturning = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "APPROVED" ||order.orderStatus == "SHIPPING"  ) && order.type == "PURCHASE_ORDER" ){
+        if((order.orderStatus == "APPROVED" ||order.orderStatus == "SHIPPING"  ) && order.type == "RETURN_ORDER" ){
           lstOrderReturning.add(order);
         }
     }    

@@ -83,8 +83,7 @@ class OrderProvider with ChangeNotifier{
         }),
       );
       if (response.statusCode == 201){
-         print("kêt quả create order");
-         print(response.body);
+         print("thành công");
       } else{
         throw jsonDecode(response.body.toString());
       }
@@ -114,6 +113,7 @@ class OrderProvider with ChangeNotifier{
         }),
       );
       print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200){
          final extractedData = json.decode(response.body) as Map<String, dynamic>;
          final List<OrderInfo> loadListOrderInfo = [];
@@ -149,6 +149,7 @@ class OrderProvider with ChangeNotifier{
         );
       });
       this.lstOrderInfo = loadListOrderInfo;
+      print(lstOrderInfo.length);
       notifyListeners();
       } else{
         throw jsonDecode(response.body.toString());
