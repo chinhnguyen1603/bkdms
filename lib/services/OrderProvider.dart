@@ -58,7 +58,7 @@ class OrderProvider with ChangeNotifier{
   
   //http create order
   Future<void> createOrder(String? token, String? workspace, int? agencyId) async {
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/api/v1/order/create-by-agency');
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-by-agency');
     print(" bắt đầu create order");
      try {
       final response = await http.post(
@@ -73,7 +73,6 @@ class OrderProvider with ChangeNotifier{
           'phone': this.phone,
           'extraInfoOfAddress': this.extra,
           'note': this.note,
-          'returnReason': '',
           'province': this.province,
           'district': this.district,
           'ward': this.ward, 

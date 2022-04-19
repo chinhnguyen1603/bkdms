@@ -280,11 +280,11 @@ class InfoPaymentState extends State<InfoPayment> {
                                      context: context,
                                      builder: (context)  =>
                                         FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
-                                  );                      
+                                  );
+                                  //push xong xóa route tại đây
+                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SuccessOrder()), (Route<dynamic> route) => false);                   
                                 }
-                                //push xong xóa route tại đây
-                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SuccessOrder()), (Route<dynamic> route) => false);
-                             },
+                              },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
                                   shape: MaterialStateProperty.all < RoundedRectangleBorder > (
@@ -314,13 +314,15 @@ class InfoPaymentState extends State<InfoPayment> {
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
                   content: Text("$onError"),
                   actions: [TextButton(
-                      onPressed: () => Navigator.pop(ctx1),
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment())),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                   ),                      
                   ],                                      
               ));    
             throw onError;          
-      });    
+      })
+     .then((value) {
+     });    
     });
   }
 

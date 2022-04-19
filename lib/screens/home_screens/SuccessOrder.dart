@@ -39,9 +39,6 @@ class SuccessOrder extends StatelessWidget {
               width: 30.w,
               child: ElevatedButton(
                 onPressed: () async {
-                   //update đơn hàng
-                   Agency user = Provider.of<Agency>(context, listen: false);
-                   await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
                    //move to screen order
                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(1)));
                 },

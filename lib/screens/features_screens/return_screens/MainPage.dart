@@ -1,3 +1,4 @@
+import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/return_screens/ReturnOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,6 @@ class MainPageReturnState extends State<MainPageReturn> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Color(0xffF0ECEC),
       //bottombar ở đây
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
@@ -61,7 +61,7 @@ class MainPageReturnState extends State<MainPageReturn> {
           BottomNavigationBarItem( icon: Icon(Icons.history), label: "Lịch sử đơn"),
           BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: "Đơn trả"),
         ],
-        selectedItemColor: Color(0xff4690ff),
+        selectedItemColor: Color(0xff105480),
       ),
       body: PageView(
         children: tabPages,
@@ -93,12 +93,16 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
  
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView( 
-        child: Column(
-          children: [
+    return Scaffold(
+      appBar: AppBarTransparent(Color(0xfffafafa),"Trả hàng"),
+      backgroundColor: Color(0xfffafafa),
+      body: SingleChildScrollView( 
+          child: Column(
+            children: [
 
-          ]
-        )
+            ]
+          )
+      ),
     );
   }
 

@@ -1,37 +1,33 @@
+import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 
-class WaitConfirm extends StatefulWidget {
-  const WaitConfirm({ Key? key }) : super(key: key);
+class OrderReturning extends StatefulWidget {
+  const OrderReturning({ Key? key }) : super(key: key);
 
   @override
-  State<WaitConfirm> createState() => WaitConfirmState();
+  State<OrderReturning> createState() => OrderReturningState();
 }
 
 
-
-class WaitConfirmState extends State<WaitConfirm> {
+class OrderReturningState extends State<OrderReturning> {
   List<OrderInfo> lstOrder = [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);
-  static const dialogColor = Color(0xff4690FF);
   late Future _myFuture;
 
- @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //mỗi lần click vào tab là get order
+    //mỗi lần click vào tab là gọi order
     Agency user = Provider.of<Agency>(context, listen: false);
-    _myFuture = Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);  
+    _myFuture = Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
+    
   }
 
   @override
@@ -40,37 +36,37 @@ class WaitConfirmState extends State<WaitConfirm> {
     this.lstOrder = Provider.of<OrderProvider>(context).lstOrderInfo;
   }
 
-  //widget 
+  //widget
   @override
   Widget build(BuildContext context) {
-    //update lstWaiOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
-    List<OrderInfo> lstWaitOrder = [];
-    for( var order in lstOrder) {
-        if((order.orderStatus == "WAITING_FOR_APPROVED" || order.orderStatus == "PROCESSING" ) && order.type == "PURCHASE_ORDER" ){
-          lstWaitOrder.add(order);
-        }
-    }  
     //width dùng trong container
-    double myWidth = 95.w;
-    //check if has or not order, mỗi lần update tự đặt isHasOrder = false, nếu có list thì về true
+    double myWidth = 95.w;    
+    //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
+    List<OrderInfo> lstOrderReturning = [];
+    for( var order in lstOrder) {
+        if((order.orderStatus == "APPROVED" ||order.orderStatus == "SHIPPING"  ) && order.type == "PURCHASE_ORDER" ){
+          lstOrderReturning.add(order);
+        }
+    }    
+    //check if has or not order, phải để trong widget để build lại khi list change
     bool isHasOrder = false;
-    if(lstWaitOrder.length !=0 ) {
+    if(lstOrderReturning.length !=0 ) {
       isHasOrder = true;
     }
     //
     return FutureBuilder<void>(
       future: _myFuture,
       builder: (context, snapshot) {
-        return SingleChildScrollView(
+        return Container(
           child: isHasOrder 
           //có đơn
-          ? Container(
+          ? SingleChildScrollView(
              child: Column( children: [
                 SizedBox(width: 100.w, height: 12,),
                 //UI List Order
                 ListView.builder(
                    reverse: true,
-                   itemCount:lstWaitOrder.length,              
+                   itemCount:lstOrderReturning.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),
                    itemBuilder: (BuildContext context, int index) {
@@ -83,11 +79,11 @@ class WaitConfirmState extends State<WaitConfirm> {
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirm(lstWaitOrder[index])));
+                           // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrderReturning(lstOrderReturning[index])));
                            },
                            child: Container(
                              width: 100.w,
-                             height: 245,
+                             height: 210,
                              color: Colors.white,
                              child: Column(
                                children: [
@@ -111,7 +107,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                         SizedBox(
                                           width: myWidth*0.6,
                                           child:  Text(
-                                            "Đơn hàng #" + "${lstWaitOrder[index].orderCode}",
+                                            "Đơn hàng #" + "${lstOrderReturning[index].orderCode}",
                                             style: TextStyle(
                                               color: textColor,
                                               fontSize: 16,
@@ -123,7 +119,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                         SizedBox(
                                           width: myWidth*0.3,
                                           child: Text(
-                                            "${convertTime(lstWaitOrder[index].createTime)}",
+                                            "${convertTime(lstOrderReturning[index].createTime)}",
                                             style: TextStyle(
                                               color: textColor,
                                               fontSize: 12,
@@ -145,7 +141,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                         height: 100,
                                         width: myWidth*0.3,
                                         child: Image.network(
-                                          getUrlFromLinkImg("${lstWaitOrder[index].orderDetails[0]['unit']['product']['linkImg']}")
+                                          getUrlFromLinkImg("${lstOrderReturning[index].orderDetails[0]['unit']['product']['linkImg']}")
                                         ),
                                       ),
                                       SizedBox(width: 10,),
@@ -160,7 +156,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                           height: 30,
                                           width: myWidth*0.5,
                                           child: Text(
-                                            "${lstWaitOrder[index].orderDetails[0]['unit']['product']['name']}", 
+                                            "${lstOrderReturning[index].orderDetails[0]['unit']['product']['name']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -173,7 +169,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                           height: 25,
                                           width: myWidth*0.5,
                                           child: Text(
-                                             "Đơn vị: " + "${lstWaitOrder[index].orderDetails[0]['unit']['name']}", 
+                                             "Đơn vị: " + "${lstOrderReturning[index].orderDetails[0]['unit']['name']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -186,7 +182,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                           height: 25,
                                           width: myWidth*0.5,
                                           child: Text(
-                                             "Số lượng: " + "${lstWaitOrder[index].orderDetails[0]['quantity']}", 
+                                             "Số lượng: " + "${lstOrderReturning[index].orderDetails[0]['quantity']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -222,7 +218,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                                child: Image.asset("assets/box.png",),
                                              ),
                                              SizedBox(width: 2,),
-                                             Text("${lstWaitOrder[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
+                                             Text("${lstOrderReturning[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
                                            ],
                                          ),
                                        ),
@@ -240,7 +236,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                              SizedBox(
                                                width: myWidth*0.22,
                                                child: Text(
-                                                 "${lstWaitOrder[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                                 "${lstOrderReturning[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
                                                  textAlign: TextAlign.center,
                                                  style: TextStyle(color: Color(0xff7b2626)),
                                                )
@@ -252,51 +248,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                                    ),
                                  ),
                                  Divider(),
-                                 //Button Hủy đơn hàng
-                                 SizedBox(
-                                   height: 30,
-                                   width: myWidth*0.3,
-                                   child: ElevatedButton(
-                                      onPressed: (){
-                                        //dialog xác nhận
-                                        Alert(
-                                          context: context,
-                                          type: AlertType.warning,
-                                          desc: "Bạn có chắc chắn muốn hủy đơn không?",
-                                          buttons: [
-                                          DialogButton(
-                                            child: Text("Hủy bỏ", style: TextStyle(color: dialogColor, fontSize: 18),),
-                                            onPressed: () => Navigator.pop(context),
-                                            color: Colors.white,
-                                          ),
-                                          //delete order tại đây
-                                          DialogButton(
-                                            child: Text("Xác nhận", style: TextStyle(color: Colors.white, fontSize: 18),),
-                                            onPressed: () async {
-                                              await showDialog (
-                                                  context: context,
-                                                  builder: (context) =>
-                                                    FutureProgressDialog(deleteThisOrder(lstWaitOrder[index].id), message: Text('Đang xóa...', style: TextStyle(color:Color(0xffe2dddd)))),
-                                              );
-                                              //ẩn pop-up
-                                              Navigator.pop(context);
-                                            },
-                                            color: dialogColor,
-                                          )
-                                          ],
-                                        ).show();
-                                      }, 
-                                      child: Text("Hủy đơn"),
-                                      style: ButtonStyle(
-                                         elevation: MaterialStateProperty.all(0),
-                                         backgroundColor:  MaterialStateProperty.all<Color>(Color(0xffffa451)),
-                                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                            RoundedRectangleBorder( borderRadius: BorderRadius.circular(5.0),)
-                                         )
-                                      ),
-                                   )
-                                 )
-                               ],
+                              ],
                              ),
                            ),
                          ),
@@ -306,6 +258,7 @@ class WaitConfirmState extends State<WaitConfirm> {
                 )
              ])
             )       
+         
           //không có đơn nào
           : Container(
             child: Column(
@@ -328,42 +281,11 @@ class WaitConfirmState extends State<WaitConfirm> {
     return timeConvert;
   }
   //hàm lấy ảnh cloudinary
-  String getUrlFromLinkImg(String linkImg) {
-        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
-        //linkImg receive from server as Public Id
+  String getUrlFromLinkImg(String linkImg) {      //linkImg receive from server as Public Id
         final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
         return transformedUrl;
   }    
 
-  
-  // hàm delete this Order
-  Future deleteThisOrder( int orderId) {
-    return Future(() async {
-    //gọi provide order delete sau đó get lại
-    Agency user = Provider.of<Agency>(context, listen: false);
-    await Provider.of<OrderProvider>(context, listen: false).deleteOrder(user.token, user.workspace, user.id, orderId)
-     .catchError((onError) async {
-          // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi delete order future dialog");
-          await showDialog(
-              context: context, 
-              builder: (ctx1) => AlertDialog(
-                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
-                  actions: [TextButton(
-                      onPressed: () => Navigator.pop(ctx1),
-                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                  ),                      
-                  ],                                      
-              ));    
-            throw onError;          
-      })
-      .then((value) async {
-          //update lại màn hình đơn hàng
-          await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
-      });    
-    });
-  }   
 
-}
+} 

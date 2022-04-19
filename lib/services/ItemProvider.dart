@@ -18,7 +18,6 @@ class ItemProvider with ChangeNotifier{
           'Workspace' : "$workspace",
       }));
       
-      print(response.body);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Item> loadedCategories = [];
       extractedData['data']['listProduct'].forEach((itemData) {

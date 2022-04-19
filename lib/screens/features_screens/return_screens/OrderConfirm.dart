@@ -9,16 +9,16 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 
-class WaitConfirm extends StatefulWidget {
-  const WaitConfirm({ Key? key }) : super(key: key);
+class OrderConfirm extends StatefulWidget {
+  const OrderConfirm({ Key? key }) : super(key: key);
 
   @override
-  State<WaitConfirm> createState() => WaitConfirmState();
+  State<OrderConfirm> createState() => OrderConfirmState();
 }
 
 
 
-class WaitConfirmState extends State<WaitConfirm> {
+class OrderConfirmState extends State<OrderConfirm> {
   List<OrderInfo> lstOrder = [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);
@@ -46,7 +46,7 @@ class WaitConfirmState extends State<WaitConfirm> {
     //update lstWaiOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
     List<OrderInfo> lstWaitOrder = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "WAITING_FOR_APPROVED" || order.orderStatus == "PROCESSING" ) && order.type == "PURCHASE_ORDER" ){
+        if((order.orderStatus == "WAITING_FOR_APPROVED" || order.orderStatus == "PROCESSING" ) && order.type == "RETURN_ORDER" ){
           lstWaitOrder.add(order);
         }
     }  
