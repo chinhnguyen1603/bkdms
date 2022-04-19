@@ -1,9 +1,7 @@
+import 'package:bkdms/screens/features_screens/return_screens/OrderConfirm.dart';
+import 'package:bkdms/screens/features_screens/return_screens/OrderReturning.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/CreateSupplier.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/WaitConfirm.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/Delivering.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/Delivered.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/CancelOrder.dart';
 
 class ReturnOrder extends StatefulWidget {
   const ReturnOrder({ Key? key }) : super(key: key);
@@ -28,7 +26,7 @@ class  ReturnOrderState extends State< ReturnOrder> with TickerProviderStateMixi
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text("Đơn hàng", style: TextStyle(fontSize: 20, color: Colors.black),),
+        title: Text("Đơn trả", style: TextStyle(fontSize: 20, color: Colors.black),),
         centerTitle: true,
         bottom: TabBar(
           isScrollable: true,
@@ -41,10 +39,10 @@ class  ReturnOrderState extends State< ReturnOrder> with TickerProviderStateMixi
               text: "Chờ xác nhận",     
             ),
             Tab(
-              text: "Đang giao",   
+              text: "Đang trả hàng",   
             ),
             Tab(
-              text: "Đã giao",  
+              text: "Đã trả hàng",  
             ),
             Tab(
               text: "Đã hủy",
@@ -55,11 +53,10 @@ class  ReturnOrderState extends State< ReturnOrder> with TickerProviderStateMixi
       body: TabBarView(
         controller: _tabController,
         children: [
-          CreateSupplier(),
-          WaitConfirm(),
-          Delivering(),
-          Delivered(),
-          CancelOrder(),
+          OrderConfirm(),
+          OrderReturning(),
+          OrderReturned(),
+          CancelReturn(),
         ],
       )
     );
