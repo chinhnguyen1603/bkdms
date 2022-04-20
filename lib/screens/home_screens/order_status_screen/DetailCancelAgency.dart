@@ -7,15 +7,15 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 
-class DetailCancel extends StatefulWidget {
+class DetailCancelAgency extends StatefulWidget {
   late OrderInfo orderCancelInfo ;
-  DetailCancel(this.orderCancelInfo);
+  DetailCancelAgency(this.orderCancelInfo);
   
   @override
-  State<DetailCancel> createState() => DetailCancelState();
+  State<DetailCancelAgency> createState() => DetailCancelAgencyState();
 }
 
-class DetailCancelState extends State<DetailCancel> {
+class DetailCancelAgencyState extends State<DetailCancelAgency> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 

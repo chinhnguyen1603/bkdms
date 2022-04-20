@@ -1,4 +1,4 @@
-import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancel.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancelAgency.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -83,7 +83,7 @@ class CancelReturnState extends State<CancelReturn> {
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancel(lstCancelReturn[index])));
+                        //     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancel(lstCancelReturn[index])));
                            },
                            child: Container(
                              width: 100.w,
