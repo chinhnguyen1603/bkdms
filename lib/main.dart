@@ -1,7 +1,7 @@
 import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ScreenLevel.dart';
 import 'package:bkdms/screens/features_screens/return_screens/MainPage.dart';
-import 'package:bkdms/screens/home_screens/InfoPayment.dart';
+import 'package:bkdms/screens/home_screens/homepage_screens/InfoPayment.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/Delivering.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailDelivering.dart';
 import 'package:bkdms/services/LevelProvider.dart';
@@ -20,7 +20,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:bkdms/services/OrderProvider.dart';
-import 'package:bkdms/screens/home_screens/Momo.dart';
+import 'package:bkdms/screens/home_screens/homepage_screens/Momo.dart';
 
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
            title: "BKDMS Mobile App",
            home: Scaffold(
              backgroundColor: Color(0xffF4F4F4),
-             body: MainPageReturn()
+             body: SplashScreen()
            ),
       );
       }

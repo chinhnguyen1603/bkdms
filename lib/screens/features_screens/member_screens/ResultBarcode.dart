@@ -6,7 +6,7 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
-import 'package:bkdms/screens/home_screens/HomePage.dart';
+import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
 
 class ResultBarcode extends StatefulWidget {
   late Item receiveItem;
