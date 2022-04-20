@@ -34,7 +34,7 @@ class Contact extends StatefulWidget {
 
 
 class ContactState extends State<Contact> {
-  static const greyBackground = Color(0xfffafafa);
+  static const greyBackground = Color(0xfffdfdfd);
   static const blueText = Color(0xff105480);
   static const linkFB = "fb://page/108152788367178";
   static const linkGmail = "https://mail.google.com/";

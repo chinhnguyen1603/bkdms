@@ -25,7 +25,7 @@ class  FeedBackState extends State<FeedBack> {
     double widthDevice = MediaQuery.of(context).size.width;
     double myWidth = widthDevice*0.9;  
     return Scaffold(
-      backgroundColor: Colors.white,    
+      backgroundColor: Color(0xfffdfdfd),    
       appBar: AppBarTransparentWithHome(Colors.white,"Gửi phản hồi"),
       body: Form(
         key: _formFeedBackKey,

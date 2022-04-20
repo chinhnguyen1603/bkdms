@@ -1,15 +1,32 @@
-import 'package:bkdms/screens/features_screens/member_screens/HistoryRegister.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/HistoryRegister.dart';
 import 'package:flutter/material.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:sizer/sizer.dart';
 
 class ScreenLevel extends StatelessWidget {
   const ScreenLevel({ Key? key }) : super(key: key);
+  static const heavyBlue = Color(0xff242266);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarTransparent(Colors.white,"Hạn mức"),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: heavyBlue,
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: Text(
+            "Hạn mức",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: heavyBlue,),
+        )
+      ),
       body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
