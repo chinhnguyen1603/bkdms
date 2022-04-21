@@ -9,8 +9,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:encrypt/encrypt.dart';
 import 'package:basic_utils/basic_utils.dart';
-
 import 'package:intl/intl.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 class TestMomo extends StatefulWidget {
 
@@ -192,7 +192,15 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
                     //hash dữ liệu gửi đi                     
                     final rsaEncrypt = Encrypter(RSA(publicKey: pubkey, encoding: RSAEncoding.PKCS1));
                     var hash = rsaEncrypt.encrypt("$dataEncode").base64;
-                    await postMomoCallback(_momoPaymentResult.phoneNumber as String, _momoPaymentResult.token as String, hash);
+                    //call api
+                    await showDialog (
+                      context: context,
+                      builder: (context) =>
+                        FutureProgressDialog(
+                          postMomoCallback(_momoPaymentResult.phoneNumber as String, _momoPaymentResult.token as String, hash)
+                          .then((value) => Navigator.pop(context))
+                        ),
+                    );                   
                   },
                   child: Text("Hoàn tất giao dịch")
                  )
@@ -279,4 +287,5 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
     return timeConvert;
   }
  
+  
 }
