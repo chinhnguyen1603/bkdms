@@ -1,4 +1,5 @@
 import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -349,52 +350,57 @@ class _DebtScreenState extends State<DebtScreen> {
                     ),
                   ),
                  //Ví momo
-                  Container(
-                    height: 70,
-                    width: myWidth,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: greyBorder),
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),                        
-                    child: SizedBox(
-                      width: myWidth,
+                   GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TestMomo()));
+                    },
+                    child: Container(
                       height: 70,
-                      child: Row(
-                        children: [
-                          //ảnh
-                          SizedBox(
-                            width: myWidth*0.3,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xfff9fafb),
-                                shape: BoxShape.circle,
-                              ),   
-                              child: SizedBox(height: 30,width: 30, child: Image.asset("assets/momo.png", fit: BoxFit.cover,), )
-                            ),
-                          ),                         
-                          //text 
-                          SizedBox(
-                            height: 70,
-                            width: myWidth*0.6,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 12,),
-                                SizedBox(
-                                  width: myWidth*0.6,
-                                  child: Text("Ví điện tử Momo", style: TextStyle(color: bigTextColor, fontSize: 16, fontWeight: FontWeight.w500),)
-                                ),
-                                SizedBox(height: 3,),
-                                SizedBox(
-                                  width: myWidth*0.6,
-                                  child: Text("Một chạm", style: TextStyle(color: smallTextColor, fontSize: 12))
-                                )
-                              ],
-                            ),
-                          ) 
-                        ],
+                      width: myWidth,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: greyBorder),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),                        
+                      child: SizedBox(
+                        width: myWidth,
+                        height: 70,
+                        child: Row(
+                          children: [
+                            //ảnh
+                            SizedBox(
+                              width: myWidth*0.3,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xfff9fafb),
+                                  shape: BoxShape.circle,
+                                ),   
+                                child: SizedBox(height: 30,width: 30, child: Image.asset("assets/momo.png", fit: BoxFit.cover,), )
+                              ),
+                            ),                         
+                            //text 
+                            SizedBox(
+                              height: 70,
+                              width: myWidth*0.6,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 12,),
+                                  SizedBox(
+                                    width: myWidth*0.6,
+                                    child: Text("Ví điện tử Momo", style: TextStyle(color: bigTextColor, fontSize: 16, fontWeight: FontWeight.w500),)
+                                  ),
+                                  SizedBox(height: 3,),
+                                  SizedBox(
+                                    width: myWidth*0.6,
+                                    child: Text("Một chạm", style: TextStyle(color: smallTextColor, fontSize: 12))
+                                  )
+                                ],
+                              ),
+                            ) 
+                          ],
+                        ),
                       ),
                     ),
                   ),

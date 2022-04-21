@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
@@ -118,7 +119,7 @@ class Member extends StatelessWidget {
                        // Công nợ
                        GestureDetector(
                          onTap: (){
-
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => DebtScreen()));
                          },
                          child: SizedBox( 
                            height: 100,
