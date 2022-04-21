@@ -191,7 +191,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                                   boxShadow: [
                                     BoxShadow(
                                       color: Color.fromRGBO(28, 58, 128, 0.1),
-                                      blurRadius: 8,        
+                                      blurRadius: 10,        
                                       offset: Offset(0,0), 
                                     )
                                   ]
