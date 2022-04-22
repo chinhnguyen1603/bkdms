@@ -603,7 +603,7 @@ class ScreenCartState extends State<ScreenCart> {
   }   
 
   // hàm add cart rồi get, update số lượng sản phẩm
-  Future changeCart(int unitId) {
+  Future changeCart(String unitId) {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<CartProvider>(context, listen: false).deleteCart(user.token, user.workspace, user.id, unitId);
@@ -634,7 +634,7 @@ class ScreenCartState extends State<ScreenCart> {
 
 
   // hàm delete 1 cart rồi get, update số lượng sản phẩm
-  Future deleteCart(int unitId) {
+  Future deleteCart(String unitId) {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<CartProvider>(context, listen: false).deleteCart(user.token, user.workspace, user.id, unitId)
