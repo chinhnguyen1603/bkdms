@@ -337,7 +337,7 @@ class WaitConfirmState extends State<WaitConfirm> {
 
   
   // hàm delete this Order
-  Future deleteThisOrder( int orderId) {
+  Future deleteThisOrder( String orderId) {
     return Future(() async {
     //gọi provide order delete sau đó get lại
     Agency user = Provider.of<Agency>(context, listen: false);

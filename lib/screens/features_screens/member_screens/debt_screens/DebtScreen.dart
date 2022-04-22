@@ -244,7 +244,7 @@ class _DebtScreenState extends State<DebtScreen> {
             //Container chứa các phương thức thanht toán
             SizedBox(
               width: myWidth,
-              height: 250,
+              height: 260,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

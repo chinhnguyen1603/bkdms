@@ -299,33 +299,5 @@ class CreateSupplierState extends State<CreateSupplier> {
   }    
 
   
-  // hàm add cart rồi get, update số lượng sản phẩm
-  Future deleteThisOrder( int orderId) {
-    return Future(() async {
-    //gọi provide order delete sau đó get lại
-    Agency user = Provider.of<Agency>(context, listen: false);
-    await Provider.of<OrderProvider>(context, listen: false).deleteOrder(user.token, user.workspace, user.id, orderId)
-     .catchError((onError) async {
-          // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi delete order future dialog");
-          await showDialog(
-              context: context, 
-              builder: (ctx1) => AlertDialog(
-                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
-                  actions: [TextButton(
-                      onPressed: () => Navigator.pop(ctx1),
-                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                  ),                      
-                  ],                                      
-              ));    
-            throw onError;          
-      })
-      .then((value) async {
-          //update lại màn hình đơn hàng
-          await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
-      });    
-    });
-  }   
 
 }

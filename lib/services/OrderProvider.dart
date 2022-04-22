@@ -113,6 +113,7 @@ class OrderProvider with ChangeNotifier{
         }),
       );
       print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200){
          final extractedData = json.decode(response.body) as Map<String, dynamic>;
          final List<OrderInfo> loadListOrderInfo = [];
@@ -161,7 +162,7 @@ class OrderProvider with ChangeNotifier{
 
 
   //http delete order
-  Future<void> deleteOrder(String? token, String? workspace, String? agencyId, int orderId) async {
+  Future<void> deleteOrder(String? token, String? workspace, String? agencyId, String orderId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/cancel-order-by-agency');
     print(" bắt đầu delete order");
      try {
@@ -197,7 +198,7 @@ class OrderProvider with ChangeNotifier{
 
 // list order info để get order
 class OrderInfo {
-  late int id;
+  late String id;
   late String orderCode;
   late String phone;
   late String address;

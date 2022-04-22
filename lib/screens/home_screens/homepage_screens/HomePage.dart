@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'InfoUser.dart';
 import 'package:bkdms/screens/features_screens/contact_screens/Contact.dart';
 import 'package:bkdms/screens/features_screens/member_screens/Member.dart';
@@ -15,6 +16,9 @@ import 'package:bkdms/screens/home_screens/stat_screen/ScreenStat.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/DetailItem.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
+
+import 'package:flutter/services.dart';
+
 
 class HomePage extends StatefulWidget {
   late int index;
@@ -28,7 +32,8 @@ class HomePageState extends State<HomePage> {
 
   late int _pageIndex;
   late PageController _pageController;
-  
+  DateTime? currentBackPressTime;
+
   //thêm dấu chấm vào giá tiền
   RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
   String Function(Match) mathFunc = (Match match) => '${match[1]}.';
@@ -65,29 +70,53 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: Color(0xffF0ECEC),
-      //bottombar ở đây
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _pageIndex,
-        onTap: onTabTapped,
-        backgroundColor: Colors.white,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem( icon: Icon(Icons.home), label: "Trang chủ"),
-          BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: "Đơn hàng"),
-          BottomNavigationBarItem(icon: Icon(Icons.query_stats), label: "Thống kê"),
-        ],
-        selectedItemColor: Colors.amber[800],
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        backgroundColor: Color(0xffF0ECEC),
+        //bottombar ở đây
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _pageIndex,
+          onTap: onTabTapped,
+          backgroundColor: Colors.white,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem( icon: Icon(Icons.home), label: "Trang chủ"),
+            BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: "Đơn hàng"),
+            BottomNavigationBarItem(icon: Icon(Icons.query_stats), label: "Thống kê"),
+          ],
+          selectedItemColor: Colors.amber[800],
+        ),
+        body: PageView(
+          children: tabPages,
+          onPageChanged: onPageChanged,
+          controller: _pageController,
+        ),
+     
+     
       ),
-      body: PageView(
-        children: tabPages,
-        onPageChanged: onPageChanged,
-        controller: _pageController,
-      ),
- 
- 
     );
   }
+
+  //nhấn 2 lần để thoát màn hình
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null || now.difference(currentBackPressTime as DateTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      //show toast
+      Fluttertoast.showToast(
+        msg: "Nhấn một lần nữa để thoát",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0
+      );
+      return Future.value(false);
+    }
+    Fluttertoast.cancel();
+    SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+    return Future.value(true);
+  }  
 }
 
 

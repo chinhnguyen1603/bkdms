@@ -57,7 +57,6 @@ class CartProvider with ChangeNotifier{
           'Workspace' : "$workspace",
         }),
       );
-      print(response.body);
       
       // thành công
       if (response.statusCode == 200) {
