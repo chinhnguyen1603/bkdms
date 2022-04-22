@@ -1,8 +1,8 @@
 class Cart {
-   late int id;
+   late String id;
    late String quantity;
    late String unitId;
-   late int agencyId;
+   late String agencyId;
    late Map unit;
    Cart({
      required this.id, 

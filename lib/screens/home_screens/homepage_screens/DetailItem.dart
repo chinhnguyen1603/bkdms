@@ -718,7 +718,7 @@ class DetailItemState extends State<DetailItem> {
                                                                       height: 30,
                                                                       width: 60,
                                                                       child: DropdownButton(
-                                                                         items: createList(),
+                                                                         items: createListBottomSheet(),
                                                                          value: btnSelectVal, // giá trị khi select
                                                                          onChanged: (newValue) {
                                                                             if(newValue!=null){

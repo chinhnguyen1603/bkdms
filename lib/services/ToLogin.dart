@@ -19,7 +19,6 @@ Future<Agency> postAPI(String phone, String password, String workspace) async {
      }),
    );
    print(response.statusCode);
-   print(response.body);
 
    if (response.statusCode == 200) {
      return Agency.fromJson(jsonDecode(response.body));
