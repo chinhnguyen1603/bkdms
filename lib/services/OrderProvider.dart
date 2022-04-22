@@ -57,7 +57,7 @@ class OrderProvider with ChangeNotifier{
   }
   
   //http create order
-  Future<void> createOrder(String? token, String? workspace, int? agencyId) async {
+  Future<void> createOrder(String? token, String? workspace, String? agencyId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-by-agency');
     print(" bắt đầu create order");
      try {
@@ -95,7 +95,7 @@ class OrderProvider with ChangeNotifier{
   }
 
   //http get order (auto update list order)
-  Future<void> getOrder(String? token, String? workspace, int? agencyId) async {
+  Future<void> getOrder(String? token, String? workspace, String? agencyId) async {
     //
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/get-order-by-agency');
     print(" bắt đầu get order");
@@ -161,7 +161,7 @@ class OrderProvider with ChangeNotifier{
 
 
   //http delete order
-  Future<void> deleteOrder(String? token, String? workspace, int? agencyId, int orderId) async {
+  Future<void> deleteOrder(String? token, String? workspace, String? agencyId, int orderId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/cancel-order-by-agency');
     print(" bắt đầu delete order");
      try {

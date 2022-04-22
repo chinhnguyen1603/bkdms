@@ -37,7 +37,7 @@ class ShowListItemState extends State<ShowListItem> {
   //dropdown tên đơn vị
   String? btnSelectVal;
   //id của đơn vị
-  int unitId = 0;
+  String unitId = "";
   //form nhập số lượng sản phẩm
   final _formEnterAmountKey = GlobalKey<FormState>();
   final enternAmountController = TextEditingController();
@@ -109,7 +109,7 @@ class ShowListItemState extends State<ShowListItem> {
 
             // SizedBox Search
             SizedBox(
-              height: 100,
+              height: 80,
               child: Center(
                 child: FloatingSearchBar(
                     controller: searchController,
@@ -123,8 +123,7 @@ class ShowListItemState extends State<ShowListItem> {
                       setState(() {
                          searchList = itemProvider.lstItem
                                   .where((element) =>
-                                     element.name.toLowerCase().contains(query.toLowerCase()) ||
-                                     element.retailPrice.toLowerCase().contains(query.toLowerCase()))
+                                     element.name.toLowerCase().contains(query.toLowerCase()))
                                   .toList();                
                          _isSearching = true;
                       });

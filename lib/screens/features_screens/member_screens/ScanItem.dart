@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -44,15 +43,18 @@ class ScanItemState  extends State<ScanItem> {
               onTap: () async {
                 await scanBarcodeNormal();
                 for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
-                  if(_scanBarcode == item.barcode){
-                    setState(() {
-                      needShowDialog = 0;
-                    });
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(item)));
-                    break;
-                  } else{
+                  for(var unit in item.units) {
+                    if(_scanBarcode == unit['barcode']){
+                      setState(() {
+                        needShowDialog = 0;
+                      });
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(item, unit)));
+                      break;
+                    } 
+                    else{
                       needShowDialog = 1;
-                  }         
+                    }       
+                  }  
                 }
                 if(needShowDialog == 0) {
                     setState(() {

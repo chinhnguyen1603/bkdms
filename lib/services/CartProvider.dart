@@ -8,7 +8,7 @@ class CartProvider with ChangeNotifier{
   List<Cart> lstCart = [];
   
   //add cart
-  Future<void> addCart(String? token, String? workspace, int? agencyId, int unitId, String quantity) async {
+  Future<void> addCart(String? token, String? workspace, String? agencyId, String unitId, String quantity) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/cart');
     print(" bắt đầu add cart");
      try {
@@ -40,7 +40,7 @@ class CartProvider with ChangeNotifier{
   }
 
   //get cart
-  Future<List<Cart>> getCart(String? token, String? workspace, int? agencyId) async {
+  Future<List<Cart>> getCart(String? token, String? workspace, String? agencyId) async {
     var params = {
      "agencyId": "$agencyId", 
     };
@@ -90,7 +90,7 @@ class CartProvider with ChangeNotifier{
   }
 
   //delete cart
-  Future<void> deleteCart(String? token, String? workspace, int? agencyId,int uniId) async {
+  Future<void> deleteCart(String? token, String? workspace, String? agencyId, String uniId) async {
 
     final url = Uri.parse('https://bkdms.herokuapp.com' + '/mobile/api/v1/cart/deleteCart');
     print("bắt đầu delete cart");
@@ -124,7 +124,7 @@ class CartProvider with ChangeNotifier{
   }
 
   //delete all cart
-  Future<void> deleteAllCart(String? token, String? workspace, int? agencyId) async {
+  Future<void> deleteAllCart(String? token, String? workspace, String? agencyId) async {
 
     final url = Uri.parse('https://bkdms.herokuapp.com' + '/mobile/api/v1/cart/delete-all-cart');
     print("bắt đầu delete tất cả cart");

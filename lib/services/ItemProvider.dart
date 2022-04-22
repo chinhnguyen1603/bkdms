@@ -17,6 +17,7 @@ class ItemProvider with ChangeNotifier{
           'Authorization': 'Bearer $token',
           'Workspace' : "$workspace",
       }));
+      print(response.body);
       
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Item> loadedCategories = [];
@@ -25,19 +26,15 @@ class ItemProvider with ChangeNotifier{
           Item(
             id: itemData['id'],
             name: itemData['name'],
-            productPrice: itemData['productPrice'],
-            retailPrice: itemData['retailPrice'],
+            type: itemData['type'],
             countryProduce: itemData['countryProduce'],
             dateManufacture: itemData['dateManufacture'],
             expirationDate: itemData['expirationDate'],
-            barcode: itemData['barcode'],
             linkImg: itemData['linkImg'],
             description: itemData['description'],
             categoryId: itemData['categoryId'],
             productlineId: itemData['productlineId'],
             units: itemData['units'],
-            category: itemData['category'],
-            productline: itemData['productline'],
           ),
         );
       });

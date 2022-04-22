@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-Future<List<dynamic>> postNewPassword(String? token, String? workspace, int? id, String oldPassword, String newPassword) async {
+Future<List<dynamic>> postNewPassword(String? token, String? workspace, String? agencyId, String oldPassword, String newPassword) async {
   print("bắt đầu Đổi mật khẩu");
   //try catch
   try{
@@ -16,7 +16,7 @@ Future<List<dynamic>> postNewPassword(String? token, String? workspace, int? id,
        'Workspace' : "$workspace",
      },
      body: jsonEncode(<String, dynamic>{
-       'id': id,
+       'id': agencyId,
        'oldPassword': oldPassword,
        'newPassword': newPassword,
      }),

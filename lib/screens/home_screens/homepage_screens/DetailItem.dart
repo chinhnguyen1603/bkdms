@@ -31,13 +31,16 @@ class DetailItemState extends State<DetailItem> {
   int value = -1;
   //giá từng đơn vị
   String unitPrice ="";
+  //giá bán lẻ đề nghị
+  String retailPrice = "";
+
   // dropdown tên đơn vị
   String? btnSelectVal;
   List<String> unitName = [];
   String? btnSelectValBottomSheet;
-   
+  
   //id của đơn vị
-  int unitId = 0;
+  String unitId = "";
   //form nhập số lượng sản phẩm
   final _formEnterAmountKey = GlobalKey<FormState>();
   final enternAmountController = TextEditingController();
@@ -50,6 +53,7 @@ class DetailItemState extends State<DetailItem> {
     for(var unit in widget.listUnit){
        unitName.add(unit['name']);
     }
+    retailPrice = widget.baseUnit['retailPrice'];
     
   }
 
@@ -239,7 +243,7 @@ class DetailItemState extends State<DetailItem> {
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("${widget.myItem.retailPrice.replaceAllMapped(reg, mathFunc)}" + " VND", style: TextStyle(fontWeight: FontWeight.w600),),
+                                child: Text("${retailPrice.replaceAllMapped(reg, mathFunc)}" + " VND", style: TextStyle(fontWeight: FontWeight.w600),),
                               )
                             ],
                           )  
@@ -379,11 +383,11 @@ class DetailItemState extends State<DetailItem> {
                               SizedBox(width: 5,),
                               SizedBox(
                                 width: myWidth*0.35,
-                                child: Text("Danh mục", style: TextStyle(color: greyText),),
+                                child: Text("Loại hàng", style: TextStyle(color: greyText),),
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("${widget.myItem.category?['name']}"),
+                                child: Text("Kinh doanh"),
                               )
                             ]
                           )  
@@ -714,7 +718,7 @@ class DetailItemState extends State<DetailItem> {
                                                                       height: 30,
                                                                       width: 60,
                                                                       child: DropdownButton(
-                                                                         items: createListBottomSheet(),
+                                                                         items: createList(),
                                                                          value: btnSelectVal, // giá trị khi select
                                                                          onChanged: (newValue) {
                                                                             if(newValue!=null){

@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:sizer/sizer.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
 
 class ResultBarcode extends StatefulWidget {
   late Item receiveItem;
-  ResultBarcode(this.receiveItem);
-  List<Item> resultItem = [];
+  late var receiveUnit;
+  ResultBarcode(this.receiveItem, this.receiveUnit);
 
   @override
   State<ResultBarcode> createState() => ResultBarcodeState();
@@ -21,7 +22,8 @@ class ResultBarcode extends StatefulWidget {
 
 
 class ResultBarcodeState extends State<ResultBarcode> {
-  List<Item> resultItem = [];
+  List<Item> resultItems = [];
+  List<dynamic> resultUnits = [];
   String _scanBarcode = '';
   bool isShowDialog = true;
   int needShowDialog = 1;
@@ -31,15 +33,16 @@ class ResultBarcodeState extends State<ResultBarcode> {
   @override
   void initState() {
     super.initState();
-    resultItem.add(widget.receiveItem);
+    resultItems.add(widget.receiveItem);
+    resultUnits.add(widget.receiveUnit);
     // tổng tiền của đơn hàng
-    sumOfOrder = int.parse(widget.receiveItem.retailPrice);
+    sumOfOrder = int.parse(widget.receiveUnit['retailPrice']);
   }
 
   @override
   Widget build(BuildContext context) {
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
-    double heightDevice = MediaQuery.of(context).size.height;// chiều cao thiết bị
+    double widthDevice = 100.w;// chiều rộng thiết bị
+    double heightDevice = 100.h;// chiều cao thiết bị
     double myWidth = widthDevice*0.96;
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
@@ -62,17 +65,21 @@ class ResultBarcodeState extends State<ResultBarcode> {
             onPressed: () async {
                 await scanBarcodeNormal();
                 for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
-                  if(_scanBarcode == item.barcode){
-                    setState(() {
-                      needShowDialog = 0;
-                      sumOfOrder = sumOfOrder + int.parse(item.retailPrice);
-                      print(sumOfOrder);
-                    });
-                    resultItem.add(item);
-                    break;
-                  } else{
+                  for(var unit in item.units){
+                    if(_scanBarcode == unit['barcode']){
+                      setState(() {
+                        needShowDialog = 0;
+                        sumOfOrder = sumOfOrder + int.parse(unit['retailPrice']);
+                        print(sumOfOrder);
+                      });
+                      resultItems.add(item);
+                      resultUnits.add(unit);
+                      break;
+                    } 
+                    else{
                       needShowDialog = 1;
-                  }       
+                    }  
+                  }     
                 }
                 if(needShowDialog == 0) {
                     setState(() {
@@ -131,7 +138,7 @@ class ResultBarcodeState extends State<ResultBarcode> {
                  height: heightDevice*0.72,
                  child: ListView.builder(
                      padding: const EdgeInsets.all(8),
-                     itemCount: resultItem.length,
+                     itemCount: resultItems.length,
                      itemBuilder: (BuildContext context, int index) {
                        return Column(children: [
                          Container(
@@ -143,11 +150,11 @@ class ResultBarcodeState extends State<ResultBarcode> {
                                 height: 100,
                                 width: myWidth*0.3,
                                 child: Image.network(
-                                   getUrlFromLinkImg("${resultItem[index].linkImg}")
+                                   getUrlFromLinkImg("${resultItems[index].linkImg}")
                                 ),
                               ),
                               SizedBox(width: 10,),
-                              //Tên, xuất xứ và giá. SL: x1
+                              //Tên sp, tên đơn vị, xuất xứ và giá. SL: x1
                               SizedBox(
                                 height: 100,
                                 width: myWidth*0.6,
@@ -158,7 +165,7 @@ class ResultBarcodeState extends State<ResultBarcode> {
                                       height: 30,
                                       width: myWidth*0.6,
                                       child: Text(
-                                        "${resultItem[index].name}", 
+                                        "${resultItems[index].name}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
@@ -166,12 +173,12 @@ class ResultBarcodeState extends State<ResultBarcode> {
                                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),                                        
                                       )
                                     ),
-                                    // Danh mục
+                                    // Đơn vị
                                     SizedBox(
                                       height: 24,
                                       width: myWidth*0.6,
                                       child: Text(
-                                         "Danh mục: " + "${resultItem[index].category?['name']}", 
+                                         "Đơn vị: " + "${resultUnits[index]['name']}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
@@ -184,7 +191,7 @@ class ResultBarcodeState extends State<ResultBarcode> {
                                       height: 24,
                                       width: myWidth*0.6,
                                       child: Text(
-                                         "Xuất xứ: " + "${resultItem[index].countryProduce}", 
+                                         "Xuất xứ: " + "${resultItems[index].countryProduce}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
@@ -197,7 +204,7 @@ class ResultBarcodeState extends State<ResultBarcode> {
                                       height: 20,
                                       width: myWidth*0.6,
                                       child: Text(
-                                         "${resultItem[index].retailPrice.replaceAllMapped(reg, mathFunc)}" + "đ" + "         x1", 
+                                         "${resultUnits[index]['retailPrice'].replaceAllMapped(reg, mathFunc)}" + "đ" + "         x1", 
                                          maxLines: 1,
                                          textAlign: TextAlign.left,
                                          style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
@@ -276,7 +283,7 @@ class ResultBarcodeState extends State<ResultBarcode> {
                               child: SizedBox(
                                 width: myWidth*0.4,
                                 child: Center(child: Text(
-                                  "${resultItem.length}",
+                                  "${resultItems.length}",
                                   style: TextStyle(
                                      fontSize: 13,
                                      fontWeight: FontWeight.w800,

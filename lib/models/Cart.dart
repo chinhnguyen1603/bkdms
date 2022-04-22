@@ -1,7 +1,7 @@
 class Cart {
    late int id;
    late String quantity;
-   late int unitId;
+   late String unitId;
    late int agencyId;
    late Map unit;
    Cart({

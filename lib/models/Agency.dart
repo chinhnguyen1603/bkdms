@@ -1,39 +1,41 @@
 
 import 'package:flutter/cupertino.dart';
 
-class Agency with ChangeNotifier {
-  late int? id;
-  late String? name;
-  late String? nameOwn;
-  late String? phone;
-  late String? dateJoin;
-  late String? province;
-  late String? district;
-  late String? ward;
-  late String? extraInfoOfAddress;
-  late String? password; 
-  late String? workspace;
-  late String? paymentType;
+class Agency with ChangeNotifier{
+  late String id;
+  late String name;
+  late String nameOwn;
+  late String phone;
+  late String dateJoin;
+  late String province;
+  late String district;
+  late String ward;
+  late String extraInfoOfAddress;
+  late String password; 
+  late String workspace;
+  late String paymentType;
   late String? maxDebt;
   late String? maxDebtPeriod;
-  late String? token;
-
-  Agency({
-     this.id,
-     this.name,
-     this.nameOwn,
-     this.phone, 
-     this.dateJoin,
-     this.province,
-     this.district,
-     this.ward,
-     this.extraInfoOfAddress,
-     this.password,
-     this.workspace,
-     this.paymentType,
+  late String currentTotalDebt;
+  late String token;
+  Agency();
+  Agency.getApi({
+     required this.id,
+     required this.name,
+     required this.nameOwn,
+     required this.phone, 
+     required this.dateJoin,
+     required this.province,
+     required this.district,
+     required this.ward,
+     required this.extraInfoOfAddress,
+     required this.password,
+     required this.workspace,
+     required this.paymentType,
      this.maxDebt,
      this.maxDebtPeriod,
-     this.token,
+     required this.currentTotalDebt,
+     required this.token,
   });
   
   void updateValue (Agency newAgency){
@@ -51,14 +53,15 @@ class Agency with ChangeNotifier {
      this.paymentType = newAgency.paymentType;
      this.maxDebt = newAgency.maxDebt;
      this.maxDebtPeriod = newAgency.maxDebtPeriod;
+     this.currentTotalDebt = newAgency.currentTotalDebt;
      this.token = newAgency.token;
     notifyListeners();
 
   }
 
   factory Agency.fromJson(Map<String, dynamic> json) {
-    return Agency(
-      id: json['data']['user']['id'] as int,
+    return Agency.getApi(
+      id: json['data']['user']['id'] as String,
       name: json['data']['user']['name'] as String,
       nameOwn: json['data']['user']['nameOwn'] as String,
       phone: json['data']['user']['phone'] as String,
@@ -70,10 +73,10 @@ class Agency with ChangeNotifier {
       password: json['data']['user']['password'] as String,
       workspace: json['data']['user']['workspace'] as String,
       paymentType:  json['data']['user']['paymentType'] as String,
-      maxDebt:  json['data']['user']['maxDebt'] as String,
-      maxDebtPeriod:  json['data']['user']['maxDebtPeriod'] as String,
-      token: json['data']['jwtToken'] as String,
-      
+      maxDebt:  json['data']['user']['maxDebt'],
+      maxDebtPeriod:  json['data']['user']['maxDebtPeriod'],
+      currentTotalDebt: json['data']['user']['currentTotalDebt'] as String,
+      token: json['data']['jwtToken'] as String,    
     );
     
   }
