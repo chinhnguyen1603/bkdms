@@ -180,9 +180,9 @@ class Member extends StatelessWidget {
                                SizedBox(width: myWidth, child: Text("• Đại lý tự quyết định giá bán để phù hợp với vị thế. Tuy nhiên giá bán ra không được thấp hơn 10% so với giá bán lẻ đề nghị cùng thời điểm."),),
                                //Xử lý công nợ
                                SizedBox(width: 100.w, height: 5,),
-                               SizedBox(width: myWidth, child: Text("3. Xử lý công nợ", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
-                               SizedBox(width: myWidth, child: Text("• Mỗi đại lý có nợ tối đa dựa trên hạn mức đăng kí với nhà cung cấp. Đến hạn thanh toán mà đại lý vẫn chưa thanh toán đủ công nợ phát sinh của tháng trước thì sẽ bị tính lãi xuất phát sinh. % lãi xuất"),),
-                               SizedBox(width: myWidth, child: Text("• Nếu đến đối chiếu công nợ lần 2 mà đại lý vẫn chưa thanh toán hết nợ thì BKDMS sẽ tạm ngưng giao đơn hàng mới."),),
+                               SizedBox(width: myWidth, child: Text("3. Hỗ trợ về hàng hóa", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
+                               SizedBox(width: myWidth, child: Text("• Trong vòng 07 (bảy) ngày kể từ giao hàng. Quý đại lý sẽ được đổi hàng mới nếu sản phẩm được xác định lỗi từ nhà sản xuất."),),
+                               SizedBox(width: myWidth, child: Text("• Trong trường hợp hàng hóa, giá cả không đúng với thỏa thuận mua hàng, Quý đại lý có quyền trả lại hàng cho TGTN. Việc trả lại hàng được thực hiện trong vòng 1 tháng kể từ ngày đại lý xác nhận đã nhận đơn hàng."),),
       
                              ],
                            ),

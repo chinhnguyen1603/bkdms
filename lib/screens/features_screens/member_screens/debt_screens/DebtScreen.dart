@@ -1,5 +1,6 @@
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
+import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PolicyDebt.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -208,7 +209,7 @@ class _DebtScreenState extends State<DebtScreen> {
                   //chính sách
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PolicyDebt()));
                     },
                     child: Column(
                       children: [

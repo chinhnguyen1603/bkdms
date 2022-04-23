@@ -22,13 +22,16 @@ class InfoPayment extends StatefulWidget {
 class InfoPaymentState extends State<InfoPayment> {
   static const darkGrey = Color(0xff544C4C);
   static const textColor = Color(0xff27214d);
-
+  //khởi tạo radio = nợ đơn hàng
+  int valueRadio = 1;
+  //
   @override
   Widget build(BuildContext context) {
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
     double myWidth = 90.w;
+    //
     return Scaffold(
       appBar: AppBarGrey("Thanh toán"),
       body: SingleChildScrollView(
@@ -96,7 +99,7 @@ class InfoPaymentState extends State<InfoPayment> {
             //Chính sách thanh toán
             Container(
               width: 100.w,
-              height: 100,
+              height: 140,
               color: Colors.white,
               child: Column(
                 children: [
@@ -106,6 +109,15 @@ class InfoPaymentState extends State<InfoPayment> {
                     height: 20,
                     child: Text("Chính sách thanh toán", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                   ), 
+                  SizedBox(height: 8,),
+                  //text giải thích
+                  SizedBox(
+                    width: myWidth,
+                    child: Text(
+                      "Có 2 hình thức là nợ đơn hàng(cộng dồn công nợ) và thanh toán COD(trả tiền mặt lúc nhận hàng). \nNếu nợ đơn hàng, giá trị đơn hàng mới cộng với nợ hiện tại không được vượt quá công nợ tối đa của bạn. Xem thêm chính sách hạn mức tại mục \'Thành viên\'.",
+                      maxLines: 5, 
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                  ),                   
                 ],
               ),
             ),
@@ -124,18 +136,67 @@ class InfoPaymentState extends State<InfoPayment> {
                     height: 20,
                     child: Text("Hạn mức", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
                   ), 
-                  SizedBox(height: 5,),
+                  SizedBox(height: 8,),
                   //số liệu
                   SizedBox(
                     width: myWidth,
-                    height: 20,
+                    height: 24,
                     child: Text("Mức nợ tối đa của bạn:", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
                   ), 
                   SizedBox(
                     width: myWidth,
-                    height: 20,
+                    height: 24,
                     child: Text("Nợ hiện tại của bạn:", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
                   ),                   
+                ],
+              ),
+            ),
+            SizedBox(height: 12,),
+
+            //Hình thức thanh toán
+            Container(
+              width: 100.w,
+              height: 150,
+              color: Colors.white,
+              child: Column(
+                children: [
+                  SizedBox(height: 5,),
+                  //text in đậm
+                  SizedBox(
+                    width: myWidth,
+                    height: 20,
+                    child: Text("Hình thức thanh toán", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
+                  ), 
+                  SizedBox(height: 5,),
+                  //radio Nợ đơn hàng + thanh toán COD
+                  Column(
+                    children: [
+                      ListTile(
+                        title: const Text("Nợ đơn hàng", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                        leading: Radio(
+                          value: 1, 
+                          groupValue: valueRadio, 
+                          onChanged: (val) {
+                            setState(() {
+                              valueRadio = val as int ;
+                            });
+                          }
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text("Thanh toán COD", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                        leading: Radio(
+                          value: 2, 
+                          groupValue: valueRadio, 
+                          onChanged: (val) {
+                            setState(() {
+                              valueRadio = val as int ;
+                            });
+                          }
+                        ),                        
+                      )
+                    ],
+                  )                 
                 ],
               ),
             ),
@@ -242,9 +303,9 @@ class InfoPaymentState extends State<InfoPayment> {
                               width: 60.w,
                               height: 24,
                               child: Text(
-                                "${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ",   
+                                "\${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ",   
                                 maxLines: 1,
-                                textAlign: TextAlign.right,
+                                textAlign: TextAlign.right, 
                                 style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
                               )                              
                             )
