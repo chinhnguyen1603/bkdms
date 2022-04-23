@@ -1,5 +1,6 @@
+import 'package:bkdms/screens/home_screens/stat_screen/PurchaseMoney.dart';
+import 'package:bkdms/screens/home_screens/stat_screen/TurnoverMoney.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class ScreenStat extends StatefulWidget {
   const ScreenStat({ Key? key }) : super(key: key);
@@ -9,181 +10,49 @@ class ScreenStat extends StatefulWidget {
 }
 
 
-class ScreenStatState extends State<ScreenStat> {
-
+class ScreenStatState extends State<ScreenStat> with TickerProviderStateMixin{
+  late TabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+     //tab page view
+    _tabController = TabController(length: 2, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: BarChart(
-          BarChartData(
-              // read about it in the BarChartData section
-              barTouchData: barTouchData,
-              titlesData: titlesData,
-              borderData: borderData,
-              barGroups: barGroups,
-              gridData: FlGridData(show: false),
-              alignment: BarChartAlignment.spaceAround,
-              maxY: 20,
-          ),
-          swapAnimationDuration: Duration(milliseconds: 150), // Optional
-          swapAnimationCurve: Curves.linear, // Optional
-          ),
+    return Scaffold(
+      backgroundColor: Color(0xfff0ecec),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text("Biểu đồ doanh số", style: TextStyle(fontSize: 20, color: Colors.black),),
+        centerTitle: true,
+        bottom: TabBar(
+          isScrollable: false,
+          controller: _tabController,
+          labelColor: Color(0xff105480),
+          indicatorColor: Color(0xff105480),
+          unselectedLabelColor: Color(0xff544c4c),
+          tabs: const <Widget>[
+            Tab(
+              text: "Nhập vào",     
+            ),            
+            Tab(
+              text: "Bán ra",     
+            ),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          PurchaseMoney(),
+          TurnoverMoney(),
+        ],
+      )
+
     );
   }
 
-  BarTouchData get barTouchData => BarTouchData(
-        enabled: false,
-        touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.transparent,
-          tooltipPadding: const EdgeInsets.all(0),
-          tooltipMargin: 8,
-          getTooltipItem: (
-            BarChartGroupData group,
-            int groupIndex,
-            BarChartRodData rod,
-            int rodIndex,
-          ) {
-            return BarTooltipItem(
-              rod.toY.round().toString(),
-              const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            );
-          },
-        ),
-      );
-
-  Widget getTitles(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff7589a2),
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 0:
-        text = 'Mn';
-        break;
-      case 1:
-        text = 'Te';
-        break;
-      case 2:
-        text = 'Wd';
-        break;
-      case 3:
-        text = 'Tu';
-        break;
-      case 4:
-        text = 'Fr';
-        break;
-      case 5:
-        text = 'St';
-        break;
-      case 6:
-        text = 'Sn';
-        break;
-      default:
-        text = '';
-        break;
-    }
-    return Center(child: Text(text, style: style));
-  }
-
-  FlTitlesData get titlesData => FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: getTitles,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      );
-
-  FlBorderData get borderData => FlBorderData(
-        show: false,
-      );
-
-  final _barsGradient = const LinearGradient(
-    colors: [
-      Colors.lightBlueAccent,
-      Colors.greenAccent,
-    ],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  );
-
-  List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [
-            BarChartRodData(
-              toY: 8,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              toY: 14,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 15,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      ];
 }

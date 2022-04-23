@@ -609,7 +609,7 @@ class DetailItemState extends State<DetailItem> {
                                                                     alignment: Alignment.centerRight,
                                                                     onPressed: () {
                                                                        setState(() {              
-                                                                          btnSelectVal = ""; //set value của dropdowm về ""
+                                                                          btnSelectValBottomSheet = ""; //set value của dropdowm về ""
                                                                        });
                                                                        Navigator.pop(context);
                                                                     },
@@ -719,7 +719,7 @@ class DetailItemState extends State<DetailItem> {
                                                                       width: 60,
                                                                       child: DropdownButton(
                                                                          items: createListBottomSheet(),
-                                                                         value: btnSelectVal, // giá trị khi select
+                                                                         value: btnSelectValBottomSheet, // giá trị khi select
                                                                          onChanged: (newValue) {
                                                                             if(newValue!=null){
                                                                                // lấy đơn giá của đơn vị
@@ -727,7 +727,7 @@ class DetailItemState extends State<DetailItem> {
                                                                                    if(newValue == unit['name']){
                                                                                        setState(() {
                                                                                           unitPrice = unit['agencyPrice'];
-                                                                                          btnSelectVal = newValue as String;
+                                                                                          btnSelectValBottomSheet = newValue as String;
                                                                                           unitId = unit['id'];
                                                                                        });
                                                                                    }
