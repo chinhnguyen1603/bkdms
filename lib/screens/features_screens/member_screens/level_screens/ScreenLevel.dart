@@ -1,5 +1,4 @@
 import 'package:bkdms/screens/features_screens/contact_screens/FeedBack.dart';
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtHistory.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -7,14 +6,14 @@ import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PolicyDebt.dart';
 
-class DebtScreen extends StatefulWidget {
-  const DebtScreen({ Key? key }) : super(key: key);
+class ScreenLevel extends StatefulWidget {
+  const ScreenLevel({ Key? key }) : super(key: key);
 
   @override
-  State<DebtScreen> createState() => _DebtScreenState();
+  State<ScreenLevel> createState() => _ScreenLevelState();
 }
 
-class _DebtScreenState extends State<DebtScreen> {
+class _ScreenLevelState extends State<ScreenLevel> {
   double myWidth = 90.w;
   static const greyBorder = Color(0xffe5efeb);
   static const bigTextColor = Color(0xff1d3a70);
@@ -29,7 +28,7 @@ class _DebtScreenState extends State<DebtScreen> {
     double widthInContainer = myWidth*0.9;
     //
     return Scaffold(
-      appBar: AppBarTransparent(Color(0xfffdfdfd), "Công nợ"),
+      appBar: AppBarTransparent(Color(0xfffdfdfd), "Hạn mức"),
       backgroundColor: Color(0xfffdfdfd),
       body: SingleChildScrollView(
         child: Column(
@@ -160,7 +159,7 @@ class _DebtScreenState extends State<DebtScreen> {
                   //lịch sử nợ
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DebtHistory()));
+
                     },
                     child: Column(
                       children: [

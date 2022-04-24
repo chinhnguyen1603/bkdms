@@ -30,7 +30,7 @@ class DebtHistoryState extends State<DebtHistory> {
            ),
            centerTitle: true,
            title: Text(
-              "Lịch sử đăng kí",
+              "Lịch sử nợ",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),
            )
         ) 

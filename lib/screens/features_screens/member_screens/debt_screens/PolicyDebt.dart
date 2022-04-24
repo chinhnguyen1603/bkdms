@@ -16,7 +16,7 @@ class PolicyDebt extends StatelessWidget {
            backgroundColor: Colors.white,
            leading: IconButton(
               icon: Icon(
-                Icons.arrow_back,
+                Icons.arrow_back_ios,
                 color: Color(0xff105480),
               ),
               onPressed: (){

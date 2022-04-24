@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -46,6 +48,7 @@ class ScreenCartState extends State<ScreenCart> {
   @override
   Widget build(BuildContext context) {
     double myWidth = 90.w;
+    double heightDevice =100.h;
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
@@ -254,7 +257,8 @@ class ScreenCartState extends State<ScreenCart> {
                                                      builder: (BuildContext context) {
                                                        return StatefulBuilder( builder: (BuildContext context, setState) =>
                                                         Container(
-                                                           height: 250,
+                                                           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                           height: heightDevice/2 + MediaQuery.of(context).viewInsets.bottom,                                                         
                                                            child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               mainAxisAlignment: MainAxisAlignment.start,

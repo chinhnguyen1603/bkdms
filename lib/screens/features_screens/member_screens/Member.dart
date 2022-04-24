@@ -1,9 +1,9 @@
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtScreen.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/ScreenLevel.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
-import 'package:bkdms/screens/features_screens/member_screens/ScreenLevel.dart';
 
 class Member extends StatelessWidget {
   static const blueText = Color(0xff105480);

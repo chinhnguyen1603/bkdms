@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+//lịch sử thanh toán bao gồm số tiền , thời gian, hình thức thanh toán
+
 class PayHistory extends StatefulWidget {
   const PayHistory({ Key? key }) : super(key: key);
 
@@ -30,7 +32,7 @@ class PayHistoryState extends State<PayHistory> {
            ),
            centerTitle: true,
            title: Text(
-              "Lịch sử đăng kí",
+              "Lịch sử thanh toán",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),
            )
         ) 
