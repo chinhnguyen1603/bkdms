@@ -28,7 +28,7 @@ class AppBarTransparentWithHome extends StatelessWidget with PreferredSizeWidget
         actions: [
           IconButton(
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(0)));
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(0)), (Route<dynamic> route) => false);
             }, 
             icon: Icon(
               Icons.home_filled,

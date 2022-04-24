@@ -44,7 +44,7 @@ class PolicyDebt extends StatelessWidget {
                                SizedBox(width: 100.w, height: 8,),
                                SizedBox(width: myWidth, child: Text("2. Phương thức trả nợ", style: TextStyle(fontWeight: FontWeight.w600, color: textColor),),),
                                SizedBox(width: 100.w, height: 3,),
-                               SizedBox(width: myWidth, child: Text("• Có 3 phương thức bao gồm trả tiền mặt, chuyển khoản ngân hàng và thanh toán qua ví điện tử Momo"),),
+                               SizedBox(width: myWidth, child: Text("• Có 3 phương thức bao gồm trả tiền mặt, chuyển khoản ngân hàng và thanh toán qua ví điện tử Momo. Hạn thanh toán từ ngày 1 đến ngày 5 hàng tháng."),),
                                SizedBox(width: 100.w, height: 3,),
                                SizedBox(width: myWidth, child: Text("• Số tiền trả nợ mỗi lần không thấp hơn 10% tổng nợ hiện tại. Chúng tôi khuyến khích sử dụng phương thức thanh toán qua ví điện tử."),),
                                //Xử lý thanh toán chậm

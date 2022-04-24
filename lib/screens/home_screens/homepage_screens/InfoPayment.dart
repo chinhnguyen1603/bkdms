@@ -315,10 +315,10 @@ class InfoPaymentState extends State<InfoPayment> {
                         SizedBox(
                           width: 90.w,
                           height: 40,
-                          //button tiến hành đặt hàng
+                          //button đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {  
-                                //check xem tổng tiền có bằng 0
+                                //check xem tổng tiền + nợ hiện tại có lớn hơn nợ tối đa
                                 if(Provider.of<OrderProvider>(context, listen: false).totalPayment == 0){
                                   //show dialog lỗi
                                   Alert(
@@ -342,8 +342,8 @@ class InfoPaymentState extends State<InfoPayment> {
                                      builder: (context)  =>
                                         FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
                                   );
-                                  //push xong xóa route tại đây
-                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SuccessOrder()), (Route<dynamic> route) => false);                   
+                                  //push to success order
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder()));                   
                                 }
                               },
                               style: ButtonStyle(

@@ -21,21 +21,24 @@ class ItemProvider with ChangeNotifier{
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Item> loadedCategories = [];
       extractedData['data']['listProduct'].forEach((itemData) {
-        loadedCategories.add(
-          Item(
-            id: itemData['id'],
-            name: itemData['name'],
-            type: itemData['type'],
-            countryProduce: itemData['countryProduce'],
-            dateManufacture: itemData['dateManufacture'],
-            expirationDate: itemData['expirationDate'],
-            linkImg: itemData['linkImg'],
-            description: itemData['description'],
-            categoryId: itemData['categoryId'],
-            productlineId: itemData['productlineId'],
-            units: itemData['units'],
-          ),
-        );
+        // nếu type = đang kinh donah mới được add
+        if(itemData['type'] =="Kinh Doanh") {
+          loadedCategories.add(
+            Item(
+              id: itemData['id'],
+              name: itemData['name'],
+              type: itemData['type'],
+              countryProduce: itemData['countryProduce'],
+              dateManufacture: itemData['dateManufacture'],
+              expirationDate: itemData['expirationDate'],
+              linkImg: itemData['linkImg'],
+              description: itemData['description'],
+              categoryId: itemData['categoryId'],
+              productlineId: itemData['productlineId'],
+              units: itemData['units'],
+            ),
+          );
+        }
       });
       this.lstItem = loadedCategories;
       notifyListeners();

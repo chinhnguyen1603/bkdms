@@ -1,8 +1,10 @@
+import 'package:bkdms/screens/features_screens/contact_screens/FeedBack.dart';
+import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PolicyDebt.dart';
-import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 class DebtScreen extends StatefulWidget {
   const DebtScreen({ Key? key }) : super(key: key);
@@ -16,6 +18,10 @@ class _DebtScreenState extends State<DebtScreen> {
   static const greyBorder = Color(0xffe5efeb);
   static const bigTextColor = Color(0xff1d3a70);
   static const smallTextColor = Color(0xff6b7280);
+
+  
+  static const blueText = Color(0xff105480);
+  static const textBottomSheet = Color(0xff7b2626);  
   
   @override
   Widget build(BuildContext context) {  
@@ -251,102 +257,156 @@ class _DebtScreenState extends State<DebtScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   //tiền mặt
-                  Container(
-                    height: 70,
-                    width: myWidth,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: greyBorder),
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),                        
-                    child: SizedBox(
-                      width: myWidth,
+                  GestureDetector(
+                    onTap: (){
+                        //aleart dialog gửi yêu cầu
+                        Alert(
+                           context: context,
+                           type: AlertType.none,
+                           style: AlertStyle(
+                             descTextAlign: TextAlign.start,
+                             descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Color(0xff544c4c)),
+                           ),
+                           desc: "Gửi một yêu cầu thanh toán tiền mặt. Nhân viên của chúng tôi sẽ hỗ trợ sớm nhất có thể.",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FeedBack())),
+                              width: 100,
+                             )
+                           ],
+                        ).show();
+                    },
+                    child: Container(
                       height: 70,
-                      child: Row(
-                        children: [
-                          //ảnh
-                          SizedBox(
-                            width: myWidth*0.3,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xfff9fafb),
-                                shape: BoxShape.circle,
-                              ),   
-                              child: SizedBox(height: 30,width: 30, child: Image.asset("assets/totalMoney.png", fit: BoxFit.cover,), )
-                            ),
-                          ),                         
-                          //text 
-                          SizedBox(
-                            height: 70,
-                            width: myWidth*0.6,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 12,),
-                                SizedBox(
-                                  width: myWidth*0.6,
-                                  child: Text("Tiền mặt", style: TextStyle(color: bigTextColor, fontSize: 16, fontWeight: FontWeight.w500),)
-                                ),
-                                SizedBox(height: 3,),
-                                SizedBox(
-                                  width: myWidth*0.6,
-                                  child: Text("Phổ biến", style: TextStyle(color: smallTextColor, fontSize: 12))
-                                )
-                              ],
-                            ),
-                          ) 
-                        ],
+                      width: myWidth,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: greyBorder),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),                        
+                      child: SizedBox(
+                        width: myWidth,
+                        height: 70,
+                        child: Row(
+                          children: [
+                            //ảnh
+                            SizedBox(
+                              width: myWidth*0.3,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xfff9fafb),
+                                  shape: BoxShape.circle,
+                                ),   
+                                child: SizedBox(height: 30,width: 30, child: Image.asset("assets/totalMoney.png", fit: BoxFit.cover,), )
+                              ),
+                            ),                         
+                            //text 
+                            SizedBox(
+                              height: 70,
+                              width: myWidth*0.6,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 12,),
+                                  SizedBox(
+                                    width: myWidth*0.6,
+                                    child: Text("Tiền mặt", style: TextStyle(color: bigTextColor, fontSize: 16, fontWeight: FontWeight.w500),)
+                                  ),
+                                  SizedBox(height: 3,),
+                                  SizedBox(
+                                    width: myWidth*0.6,
+                                    child: Text("Phổ biến", style: TextStyle(color: smallTextColor, fontSize: 12))
+                                  )
+                                ],
+                              ),
+                            ) 
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   //chuyển khoản
-                  Container(
-                    height: 70,
-                    width: myWidth,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: greyBorder),
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),                        
-                    child: SizedBox(
-                      width: myWidth,
+                  GestureDetector(
+                    onTap: (){
+                    showModalBottomSheet<void>(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                           height: 60.h,
+                           child: Column(
+                             children: <Widget>[
+                               SizedBox(width: 100.w , child: IconButton(
+                                 icon: Icon(Icons.cancel_presentation, size: 18,),
+                                 alignment: Alignment.centerRight,
+                                 onPressed: (){Navigator.pop(context);},
+                               ),),
+                               SizedBox(width: 100.w, child:Text('Thanh toán chuyển khoản ngân hàng', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffde7325)),),),
+                               SizedBox(width: 100.w, height: 10,),
+                               //mô tả
+                               SizedBox(width: myWidth, child: Text("• Quý đại lý vui lòng chuyển tiền vào số tài khoản sau:"),),
+                               SizedBox(width: myWidth, child: Text("31410002851469 - Ngân hàng BIDV - chi nhánh Đông Sài Gòn.\nChủ tài khoản: Nguyen Ngoc Chinh", style: TextStyle(fontWeight: FontWeight.w600, color: textBottomSheet),),),
+                               SizedBox(width: 100.w, height: 5,),
+                               SizedBox(width: myWidth, child: Text("• Nội dung chuyển khoản ghi rõ như sau:"),),
+                               SizedBox(width: myWidth, child: Text("Tên đại lý - tên đại diện - thanh toán công nợ", style: TextStyle(fontWeight: FontWeight.w600, color: blueText,),),)
+   
+                             ],
+                           ),
+                       );
+                     },
+                   );
+
+                    },
+                    child: Container(
                       height: 70,
-                      child: Row(
-                        children: [
-                          //ảnh
-                          SizedBox(
-                            width: myWidth*0.3,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xfff9fafb),
-                                shape: BoxShape.circle,
-                              ),   
-                              child: SizedBox(height: 30,width: 30, child: Image.asset("assets/banking.png", fit: BoxFit.cover,), )
-                            ),
-                          ),                         
-                          //text 
-                          SizedBox(
-                            height: 70,
-                            width: myWidth*0.6,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 12,),
-                                SizedBox(
-                                  width: myWidth*0.6,
-                                  child: Text("Chuyển khoản", style: TextStyle(color: bigTextColor, fontSize: 16, fontWeight: FontWeight.w500),)
-                                ),
-                                SizedBox(height: 3,),
-                                SizedBox(
-                                  width: myWidth*0.6,
-                                  child: Text("24/7", style: TextStyle(color: smallTextColor, fontSize: 12))
-                                )
-                              ],
-                            ),
-                          ) 
-                        ],
+                      width: myWidth,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: greyBorder),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),                        
+                      child: SizedBox(
+                        width: myWidth,
+                        height: 70,
+                        child: Row(
+                          children: [
+                            //ảnh
+                            SizedBox(
+                              width: myWidth*0.3,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xfff9fafb),
+                                  shape: BoxShape.circle,
+                                ),   
+                                child: SizedBox(height: 30,width: 30, child: Image.asset("assets/banking.png", fit: BoxFit.cover,), )
+                              ),
+                            ),                         
+                            //text 
+                            SizedBox(
+                              height: 70,
+                              width: myWidth*0.6,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 12,),
+                                  SizedBox(
+                                    width: myWidth*0.6,
+                                    child: Text("Chuyển khoản", style: TextStyle(color: bigTextColor, fontSize: 16, fontWeight: FontWeight.w500),)
+                                  ),
+                                  SizedBox(height: 3,),
+                                  SizedBox(
+                                    width: myWidth*0.6,
+                                    child: Text("24/7", style: TextStyle(color: smallTextColor, fontSize: 12))
+                                  )
+                                ],
+                              ),
+                            ) 
+                          ],
+                        ),
                       ),
                     ),
                   ),
