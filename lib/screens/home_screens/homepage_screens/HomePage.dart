@@ -397,7 +397,7 @@ class ScreenHomeState extends State<ScreenHome> {
                       TextButton(
                        onPressed: ()async {
                          //test get level
-                         Agency user = Provider.of<Agency>(context, listen: false);                
+                         Agency user = Provider.of<Agency>(context, listen: false);
                          await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace);                           
                        }, 
                        child: SizedBox(
