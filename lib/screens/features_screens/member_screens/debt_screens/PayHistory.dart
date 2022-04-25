@@ -1,3 +1,4 @@
+import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -14,52 +15,62 @@ class PayHistoryState extends State<PayHistory> {
  
   @override
   Widget build(BuildContext context) {
+    double myWidth = 90.w;
+    //
     return Scaffold(
-      backgroundColor: Color(0xfff3f5f6),
-      appBar: PreferredSize(       
-        preferredSize: Size.fromHeight(70), 
-        child: AppBar(
-           elevation: 0,
-           backgroundColor: Color(0xffe01e5a),
-           leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-              ),
-              onPressed: (){
-                Navigator.pop(context);
-              },
-           ),
-           centerTitle: true,
-           title: Text(
-              "Lịch sử thanh toán",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),
-           )
-        ) 
-      ),
+      backgroundColor: Colors.white,
+      appBar: AppBarTransparent(Colors.white, ""),
       //body
       body: SingleChildScrollView(
         child: Column(
           children: [
-             SizedBox(height: 50,),
+             SizedBox(width: 100.w, height: 1,),
+             //container card payment
+             Container(
+               width: 60.w,
+               height: 20.h,
+               color: Color(0xfff6f7fa),
+               alignment: Alignment.center,
+               child: Image.asset("assets/cardPay.png"),
+             ),
+             SizedBox(height: 24,),
+             
+             //text lịch sử thanh toán
+             SizedBox(
+               width: myWidth,
+               child: Text("Lịch sử thanh toán", textAlign: TextAlign.left, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+             ),
+             SizedBox(height: 12,),
+
+             //ô lịch sử
              ListView.builder(
-               itemCount: 10,              
+               itemCount: 4,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
                   return Column(
                     children: [
                       Container(
-                        width: 90.w,
-                        height: 80,
-                        color: Colors.white,
+                        width: myWidth,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(37, 79, 176, 0.3),
+                              blurRadius: 25,        
+                              offset: Offset(0,2), 
+                            )
+                          ]
+                        ),
                       ),
                       SizedBox(height: 12,)
                     ],
                   );
                }
              ),
-             SizedBox(height: 50,)
+             SizedBox(height: 20,)
           ]
         ),
       ),

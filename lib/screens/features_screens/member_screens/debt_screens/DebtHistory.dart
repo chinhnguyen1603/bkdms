@@ -29,6 +29,8 @@ class DebtHistoryState extends State<DebtHistory> {
 
   @override
   Widget build(BuildContext context) {
+    double widthInContainer = 90.w*0.9;
+    //
     return Scaffold(
       backgroundColor: Color(0xfff3f5f6),
       appBar: PreferredSize(       
@@ -109,12 +111,43 @@ class DebtHistoryState extends State<DebtHistory> {
                   return Column(
                     children: [
                       SizedBox(width: 100.w,height: 5),                     
-                      //container              
+                      //container ô lịch sử         
                       Container(
                         width: 90.w,
                         height: 80,
                         color: Colors.white,
-                        child: Text(lstSelectMonth[index]),
+                        child: Column(
+                          children: [
+                            SizedBox(width: 90.w, height: 10,),
+                            //đơn hàng + thời gian hoàn thành
+                            SizedBox(
+                              width: widthInContainer,
+                              height: 32,
+                              child: Row(
+                                children: [
+                                  //order code
+                                  SizedBox(
+                                    width: widthInContainer*0.65,
+                                    child: Text("Đơn hàng #162291828", maxLines: 1, textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
+                                  ),
+                                  //ngày hoàn thành
+                                  SizedBox(
+                                    width: widthInContainer*0.35,
+                                    child: Text("${lstSelectMonth[index]}", maxLines: 1, textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
+                                  )                                  
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 3,),
+                            //+ giá tiền
+                            SizedBox(
+                              width: widthInContainer,
+                              height: 20,
+                              child: Text("+ 50.000.000đ", textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+
+                            )
+                          ],
+                        ),
                       ),
                       SizedBox(height: 12,)
                     ],
@@ -131,12 +164,43 @@ class DebtHistoryState extends State<DebtHistory> {
                   return Column(
                     children: [
                       SizedBox(width: 100.w,height: 5),                     
-                      //container              
+                      //container ô lịch sử         
                       Container(
                         width: 90.w,
                         height: 80,
                         color: Colors.white,
-                        child: Text(lstDate[index]),
+                        child: Column(
+                          children: [
+                            SizedBox(width: 90.w, height: 10,),
+                            //đơn hàng + thời gian hoàn thành
+                            SizedBox(
+                              width: widthInContainer,
+                              height: 30,
+                              child: Row(
+                                children: [
+                                  //order code
+                                  SizedBox(
+                                    width: widthInContainer*0.65,
+                                    child: Text("Đơn hàng #162291828", textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
+                                  ),
+                                  //ngày hoàn thành
+                                  SizedBox(
+                                    width: widthInContainer*0.35,
+                                    child: Text("${lstDate[index]}", maxLines: 1,textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
+                                  )                                  
+                                ],
+                              ),
+                            ),
+                            SizedBox(height:3,),
+                            //+ giá tiền
+                            SizedBox(
+                              width: widthInContainer,
+                              height: 20,
+                              child: Text("+ 50.000.000đ", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+
+                            )
+                          ],
+                        ),
                       ),
                       SizedBox(height: 12,)
                     ],

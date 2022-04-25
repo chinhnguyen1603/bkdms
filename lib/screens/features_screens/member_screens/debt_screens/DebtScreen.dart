@@ -1,5 +1,6 @@
 import 'package:bkdms/screens/features_screens/contact_screens/FeedBack.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtHistory.dart';
+import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PayHistory.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -188,7 +189,7 @@ class _DebtScreenState extends State<DebtScreen> {
                   //lịch sử thanh toán
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PayHistory()));
                     },
                     child: Column(
                       children: [
