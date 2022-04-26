@@ -20,7 +20,6 @@ class DebtHistoryState extends State<DebtHistory> {
  
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     for( var time in getTimeApi) {
        this.lstDate.add(convertTime(time));

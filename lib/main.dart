@@ -1,7 +1,6 @@
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtHistory.dart';
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtScreen.dart';
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PayHistory.dart';
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PolicyDebt.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterHistory.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterLevel.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/ScreenLevel.dart';
 import 'package:bkdms/screens/features_screens/return_screens/MainPage.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/InfoPayment.dart';
 import 'package:bkdms/services/LevelProvider.dart';
@@ -77,7 +76,7 @@ class MyApp extends StatelessWidget {
            title: "BKDMS Mobile App",
            home: Scaffold(
              backgroundColor: Color(0xffF4F4F4),
-             body: DebtHistory()
+             body: ScreenLevel()
            ),
       );
       }

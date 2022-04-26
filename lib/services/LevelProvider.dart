@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:bkdms/models/Level.dart';
 
 
 class LevelProvider with ChangeNotifier{
+  List<Level> lstLevel =[];
+
+
   //get hạn mức
   Future<void> getLevel(String token, String workspace) async {
     print("bắt đầu get level");
@@ -17,7 +21,27 @@ class LevelProvider with ChangeNotifier{
           'Workspace' : "$workspace",
       }));
       print(response.statusCode);
-      print(response.body);
+      if (response.statusCode == 200){
+         final extractedData = json.decode(response.body) as Map<String, dynamic>;
+         final List<Level> loadListLevel = [];
+         extractedData['data']['listLevel'].forEach((levelData) {
+         loadListLevel.add(
+          Level(
+            id:  levelData['id'],
+            name: levelData['name'],
+            discountRange: levelData['discountRange'],
+            time: levelData['time'],
+            registrationConditions: levelData['registrationConditions'],
+            rewardConditions: levelData['rewardConditions'],
+            gifts: levelData['gifts'],  
+          ),
+        );
+      });
+      this.lstLevel = loadListLevel;
+      notifyListeners();
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
     }
     catch (error) {
       print(error);

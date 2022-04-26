@@ -12,7 +12,10 @@ class PayHistory extends StatefulWidget {
 }
 
 class PayHistoryState extends State<PayHistory> {
- 
+  List <String> lstImage = ["assets/momo.png", "assets/totalMoney.png", "assets/banking.png"];
+  List <String> lstType = ["momo", "banking", "momo", "money"];
+  static const darkGrey = Color(0xff544c4c);
+
   @override
   Widget build(BuildContext context) {
     double myWidth = 90.w;
@@ -44,10 +47,22 @@ class PayHistoryState extends State<PayHistory> {
 
              //ô lịch sử
              ListView.builder(
-               itemCount: 4,              
+               itemCount: lstType.length,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
+                  //xử lý hình ảnh tương ứng với phương thức thanh toán
+                  String image = "";
+                  if( lstType[index] == "momo") {
+                    image = lstImage[0];
+                  }
+                  if( lstType[index] == "money") {
+                    image = lstImage[1];
+                  } 
+                  if( lstType[index] == "banking") {
+                    image = lstImage[2];
+                  }                                     
+                  //
                   return Column(
                     children: [
                       Container(
@@ -64,6 +79,54 @@ class PayHistoryState extends State<PayHistory> {
                             )
                           ]
                         ),
+                        alignment: Alignment.center,
+                        //ảnh + text + số tiền tại đây
+                        child: SizedBox(
+                          width: myWidth,
+                          height: 60,
+                          child: Row(
+                            children: [
+                            //ảnh
+                            SizedBox(
+                              width: myWidth*0.2,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xfff9fafb),
+                                  shape: BoxShape.circle,
+                                ),   
+                                child: SizedBox(height: 30,width: 30, child: Image.asset(image, fit: BoxFit.cover,), )
+                              ),
+                            ),                         
+                            //text + time 
+                            SizedBox(
+                              height: 60,
+                              width: myWidth*0.5,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 12,),
+                                  SizedBox(
+                                    width: myWidth*0.5,
+                                    child: Text("Thanh toán ví Momo", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
+                                  ),
+                                  SizedBox(height: 3,),
+                                  SizedBox(
+                                    width: myWidth*0.5,
+                                    child: Text("21/12/2022", style: TextStyle(color: darkGrey, fontSize: 13))
+                                  )
+                                ],
+                              ),
+                            ), 
+                            //số tiền thanh toán
+                            SizedBox(
+                              height: 60,
+                              width: myWidth*0.5,
+                            )
+                          ],
+                        ),
+                      ),
+ 
                       ),
                       SizedBox(height: 12,)
                     ],
