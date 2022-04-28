@@ -57,7 +57,7 @@ class OrderProvider with ChangeNotifier{
   }
   
   //http create order
-  Future<void> createOrder(String? token, String? workspace, String? agencyId) async {
+  Future<void> createOrder(String token, String workspace, String agencyId, String paymentType) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-by-agency');
     print(" bắt đầu create order");
      try {
@@ -113,6 +113,7 @@ class OrderProvider with ChangeNotifier{
         }),
       );
       print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200){
          final extractedData = json.decode(response.body) as Map<String, dynamic>;
          final List<OrderInfo> loadListOrderInfo = [];
@@ -180,6 +181,44 @@ class OrderProvider with ChangeNotifier{
       print(response.statusCode);
       if (response.statusCode == 201){
          print(response.body);
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  //http receive order
+  Future<void> receiveOrder(String? token, String? workspace, String? agencyId) async {
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/complete-order');
+    print("xác nhận nhận đơn create order");
+     try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{           
+          'phone': this.phone,
+          'extraInfoOfAddress': this.extra,
+          'note': this.note,
+          'province': this.province,
+          'district': this.district,
+          'ward': this.ward, 
+          'totalPayment':this.totalPayment.toString(),
+          'listProduct': this.listProduct,
+          'agencyId': agencyId,
+          'type': purOrder,
+        }),
+      );
+      if (response.statusCode == 201){
+         print("thành công");
       } else{
         throw jsonDecode(response.body.toString());
       }

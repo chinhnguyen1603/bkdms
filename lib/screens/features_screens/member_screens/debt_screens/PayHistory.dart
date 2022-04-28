@@ -102,26 +102,35 @@ class PayHistoryState extends State<PayHistory> {
                             //text + time 
                             SizedBox(
                               height: 60,
-                              width: myWidth*0.5,
+                              width: myWidth*0.45,
                               child: Column(
                                 children: [
                                   SizedBox(height: 12,),
                                   SizedBox(
-                                    width: myWidth*0.5,
+                                    width: myWidth*0.45,
                                     child: Text("Thanh toán ví Momo", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
                                   ),
                                   SizedBox(height: 3,),
                                   SizedBox(
-                                    width: myWidth*0.5,
+                                    width: myWidth*0.45,
                                     child: Text("21/12/2022", style: TextStyle(color: darkGrey, fontSize: 13))
                                   )
                                 ],
                               ),
                             ), 
                             //số tiền thanh toán
-                            SizedBox(
+                            Container(
+                              alignment: Alignment.center,
                               height: 60,
-                              width: myWidth*0.3,
+                              width: myWidth*0.35,
+                              child: Text(
+                                "-" + "50.000.000đ",
+                                style: TextStyle(
+                                  color: Color(0xff7b2626),
+                                  fontSize: 14, 
+                                  fontWeight: FontWeight.w600
+                                ),
+                              ),
                             )
                           ],
                         ),

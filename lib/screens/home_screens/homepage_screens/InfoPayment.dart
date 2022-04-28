@@ -24,6 +24,7 @@ class InfoPaymentState extends State<InfoPayment> {
   static const textColor = Color(0xff27214d);
   //khởi tạo radio = nợ đơn hàng
   int valueRadio = 1;
+  String paymentType = "DEBT_PAYMENT";
   //
   @override
   Widget build(BuildContext context) {
@@ -114,7 +115,7 @@ class InfoPaymentState extends State<InfoPayment> {
                   SizedBox(
                     width: myWidth,
                     child: Text(
-                      "Có 2 hình thức là nợ đơn hàng(cộng dồn công nợ) và thanh toán COD(trả tiền mặt lúc nhận hàng). \nNếu nợ đơn hàng, giá trị đơn hàng mới cộng với nợ hiện tại không được vượt quá công nợ tối đa của bạn. Xem thêm chính sách hạn mức tại mục \'Thành viên\'.",
+                      "Có 2 hình thức là nợ đơn hàng(cộng dồn công nợ) và thanh toán COD(trả tiền mặt lúc nhận hàng). \nNếu nợ đơn hàng, giá trị đơn hàng mới cộng với nợ hiện tại không được vượt quá công nợ tối đa của bạn. Xem thêm chính sách tại mục \'Thành viên\'.",
                       maxLines: 5, 
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
                   ),                   
@@ -191,6 +192,7 @@ class InfoPaymentState extends State<InfoPayment> {
                           onChanged: (val) {
                             setState(() {
                               valueRadio = val as int ;
+                              this.paymentType = "COD_PAYMENT";
                             });
                           }
                         ),                        
@@ -303,7 +305,7 @@ class InfoPaymentState extends State<InfoPayment> {
                               width: 60.w,
                               height: 24,
                               child: Text(
-                                "\${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ",   
+                                "${Provider.of<OrderProvider>(context, listen: false).totalPayment.toString().replaceAllMapped(reg, mathFunc)}" + "đ",   
                                 maxLines: 1,
                                 textAlign: TextAlign.right, 
                                 style: TextStyle(fontSize: 20, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
@@ -341,9 +343,7 @@ class InfoPaymentState extends State<InfoPayment> {
                                      context: context,
                                      builder: (context)  =>
                                         FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
-                                  );
-                                  //push to success order
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder()));                   
+                                  );                  
                                 }
                               },
                               style: ButtonStyle(
@@ -365,7 +365,9 @@ class InfoPaymentState extends State<InfoPayment> {
   Future getFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
-      await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id)
+      print(user.id);
+      print(this.paymentType);
+      await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id, this.paymentType)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi future dialog");
@@ -375,7 +377,7 @@ class InfoPaymentState extends State<InfoPayment> {
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
                   content: Text("$onError"),
                   actions: [TextButton(
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment())),
+                      onPressed: () => Navigator.pop(context),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                   ),                      
                   ],                                      
@@ -383,6 +385,8 @@ class InfoPaymentState extends State<InfoPayment> {
             throw onError;          
       })
      .then((value) {
+        //push to success order
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
      });    
     });
   }

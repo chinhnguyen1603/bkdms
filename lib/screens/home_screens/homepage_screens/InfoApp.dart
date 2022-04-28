@@ -41,7 +41,7 @@ class InfoApp extends StatelessWidget {
                    ),
                    SizedBox(height: 5,),
                    Text(
-                     "Kích thước 30MB",
+                     "Kích thước 70MB",
                      style: TextStyle(
                        fontSize: 18,
                        color: Colors.white,
