@@ -16,7 +16,7 @@ import 'package:bkdms/screens/home_screens/stat_screen/ScreenStat.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/DetailItem.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
-
+import 'package:sizer/sizer.dart';
 import 'package:flutter/services.dart';
 
 
@@ -138,7 +138,9 @@ class ScreenHomeState extends State<ScreenHome> {
  
   @override
   Widget build(BuildContext context) {
-    double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
+    double widthDevice = 100.w;// chiều rộng thiết bị
+    double myWidth = widthDevice*0.9;
+    //
     return SingleChildScrollView( 
         child: Column(
           children: [
@@ -180,7 +182,7 @@ class ScreenHomeState extends State<ScreenHome> {
                        children: [
                        // Icon User
                        SizedBox(
-                         width: widthDevice*0.25,
+                         width: widthDevice*0.2,
                          height: 70,
                          child: IconButton(
                           hoverColor: Colors.white,
@@ -203,17 +205,25 @@ class ScreenHomeState extends State<ScreenHome> {
                           return Container(
                             margin: EdgeInsets.only(top: 15),
                             height: 70,
-                            width: widthDevice*0.5,
+                            width: widthDevice*0.6,
                             child: Column(
                             children:[
-                              Text(
-                               "Xin chào khách hàng ",
-                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white,),
+                              SizedBox(
+                                width: widthDevice*0.6,
+                                child: Text(
+                                 "Xin chào khách hàng ",
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white,),
+                                ),
                               ),
                               SizedBox(height: 3,),
-                              Text(
-                               "$userName",
-                               style: TextStyle( fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white,),
+                              SizedBox(
+                                width: widthDevice*0.6,
+                                child: Text(
+                                 "$userName",
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle( fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white,),
+                                ),
                               )
                             ]
                          )
@@ -376,23 +386,24 @@ class ScreenHomeState extends State<ScreenHome> {
                  ]
                )
             ),
-            SizedBox(height: 10,),
+            SizedBox(width: 100.w, height: 10,),
             
             //Text Khuyến mãi và xem thêm
             SizedBox(
               height: 30,
-              width: widthDevice*0.9,
+              width: myWidth,
               child: Row(
                 children:[
                   SizedBox(
-                    width: widthDevice*0.25,
+                    width: myWidth*0.5,
                     child: Text(  
                       "Khuyến mãi",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,),
                     )
                   ),
                   SizedBox(
-                    width: widthDevice*0.65,
+                    width: myWidth*0.5,
                     child:
                       TextButton(
                        onPressed: ()async {
@@ -401,7 +412,7 @@ class ScreenHomeState extends State<ScreenHome> {
                          await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace);                           
                        }, 
                        child: SizedBox(
-                         width: widthDevice*0.65,
+                         width: widthDevice*0.5,
                          child: Text(
                           "Xem thêm",
                           textAlign: TextAlign.right,
@@ -443,20 +454,21 @@ class ScreenHomeState extends State<ScreenHome> {
             //Text sản phẩm và xem thêm
             SizedBox(
               height: 30,
-              width: widthDevice*0.9,
+              width: myWidth,
               child: Row(
                 children:[
                   //text sản phẩm
                   SizedBox(
-                    width: widthDevice*0.25,
+                    width: myWidth*0.5,
                     child: Text(  
                       "Sản phẩm",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,),
                     )
                   ),
                   //text xem thêm
                   SizedBox(
-                    width: widthDevice*0.65,
+                    width: myWidth*0.5,
                     child:
                       TextButton(
                        onPressed: () async{
@@ -469,7 +481,7 @@ class ScreenHomeState extends State<ScreenHome> {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => ShowListItem()));
                        }, 
                        child: SizedBox(
-                         width: widthDevice*0.65,
+                         width: myWidth*0.5,
                          child: Text(
                           "Xem thêm",
                           textAlign: TextAlign.right,

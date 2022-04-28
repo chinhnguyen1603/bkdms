@@ -11,6 +11,7 @@ Future<Agency> postAPI(String phone, String password, String workspace) async {
      url,
      headers: <String, String>{
        'Content-Type': 'application/json; charset=UTF-8',
+       'Charset': 'utf-8'
      },
      body: jsonEncode(<String, String>{
        'phone': phone,
@@ -19,6 +20,7 @@ Future<Agency> postAPI(String phone, String password, String workspace) async {
      }),
    );
    print(response.statusCode);
+   print(response.body);
 
    if (response.statusCode == 200) {
      return Agency.fromJson(jsonDecode(response.body));

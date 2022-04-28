@@ -121,7 +121,7 @@ class PayHistoryState extends State<PayHistory> {
                             //số tiền thanh toán
                             SizedBox(
                               height: 60,
-                              width: myWidth*0.5,
+                              width: myWidth*0.3,
                             )
                           ],
                         ),
