@@ -7,6 +7,8 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/models/OrderInfo.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 
 
@@ -47,7 +49,7 @@ class DeliveredState extends State<Delivered> {
     //update lstWaiOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
     List<OrderInfo> lstDelivered = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "COMPLETED" ) && order.type == "PURCHASE_ORDER" ){
+        if((order.orderStatus == "COMPLETED" || order.orderStatus == "DELIVERED")  && order.type == "PURCHASE_ORDER" ){
           lstDelivered.add(order);
         }
     }  
@@ -109,10 +111,10 @@ class DeliveredState extends State<Delivered> {
                                         SizedBox(
                                           width: myWidth*0.6,
                                           child:  Text(
-                                            "Đơn hàng #" + "${lstDelivered[index].orderCode}",
+                                            "Mã #" + "${lstDelivered[index].orderCode}",
                                             style: TextStyle(
                                               color: textColor,
-                                              fontSize: 16,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
@@ -250,10 +252,10 @@ class DeliveredState extends State<Delivered> {
                                    ),
                                  ),
                                  Divider(),
-                                 //Button Hủy đơn hàng
+                                 //Button xác nhận nhận hàng
                                  SizedBox(
                                    height: 30,
-                                   width: myWidth*0.3,
+                                   width: myWidth*0.4,
                                    child: ElevatedButton(
                                       onPressed: (){
                                         //dialog xác nhận
@@ -269,14 +271,13 @@ class DeliveredState extends State<Delivered> {
                                           ),
                                           //post xác nhận tại đây
                                           DialogButton(
-                                            child: Text("Xác nhận", style: TextStyle(color: Colors.white, fontSize: 18),),
+                                            child: Text("Đồng ý", style: TextStyle(color: Colors.white, fontSize: 18),),
                                             onPressed: () async {
-                                              /*
                                               await showDialog (
                                                   context: context,
                                                   builder: (context) =>
-                                                    FutureProgressDialog(deleteThisOrder(lstDelivered[index].id), message: Text('Đang xóa...', style: TextStyle(color:Color(0xffe2dddd)))),
-                                              ); */
+                                                    FutureProgressDialog(receiveThisOrder(lstDelivered[index].id),),
+                                              ); 
                                               //ẩn pop-up
                                               Navigator.pop(context);
                                             },
@@ -285,10 +286,10 @@ class DeliveredState extends State<Delivered> {
                                           ],
                                         ).show();
                                       }, 
-                                      child: Text("Hủy đơn"),
+                                      child: Text("Xác nhận đơn"),
                                       style: ButtonStyle(
                                          elevation: MaterialStateProperty.all(0),
-                                         backgroundColor:  MaterialStateProperty.all<Color>(Color(0xffffa451)),
+                                         backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff7b2626)),
                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                             RoundedRectangleBorder( borderRadius: BorderRadius.circular(5.0),)
                                          )
@@ -332,6 +333,36 @@ class DeliveredState extends State<Delivered> {
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
         return transformedUrl;
   }    
+
+  // hàm xác nhận đơn
+  Future receiveThisOrder( String orderId) {
+    return Future(() async {
+    //gọi provide order delete sau đó get lại
+    Agency user = Provider.of<Agency>(context, listen: false);
+    await Provider.of<OrderProvider>(context, listen: false).receiveOrder(user.token, user.workspace, user.id, orderId)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi delete order future dialog");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+          //update lại màn hình đơn hàng
+          await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
+      });    
+    });
+  }   
+
 
 
 }

@@ -8,6 +8,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/models/OrderInfo.dart';
 
 class WaitConfirm extends StatefulWidget {
   const WaitConfirm({ Key? key }) : super(key: key);
@@ -46,7 +47,7 @@ class WaitConfirmState extends State<WaitConfirm> {
     //update lstWaiOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
     List<OrderInfo> lstWaitOrder = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "WAITING_FOR_APPROVED" || order.orderStatus == "PROCESSING" ) && order.type == "PURCHASE_ORDER" ){
+        if(order.orderStatus == "WAITING_FOR_APPROVED" && order.type == "PURCHASE_ORDER" ){
           lstWaitOrder.add(order);
         }
     }  
@@ -111,10 +112,10 @@ class WaitConfirmState extends State<WaitConfirm> {
                                         SizedBox(
                                           width: myWidth*0.6,
                                           child:  Text(
-                                            "Đơn hàng #" + "${lstWaitOrder[index].orderCode}",
+                                            "Mã #" + "${lstWaitOrder[index].orderCode}",
                                             style: TextStyle(
                                               color: textColor,
-                                              fontSize: 16,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),

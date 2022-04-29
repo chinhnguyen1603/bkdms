@@ -7,7 +7,7 @@ class Item {
   late String type;
   late String dateManufacture;
   late String expirationDate;
-  late String linkImg;
+  late String? linkImg;
   late String description;
   late String? categoryId; 
   late String? productlineId;

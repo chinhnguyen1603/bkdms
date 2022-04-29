@@ -8,6 +8,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/models/OrderInfo.dart';
 
 class OrderConfirm extends StatefulWidget {
   const OrderConfirm({ Key? key }) : super(key: key);

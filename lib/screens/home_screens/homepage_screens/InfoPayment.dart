@@ -343,7 +343,10 @@ class InfoPaymentState extends State<InfoPayment> {
                                      context: context,
                                      builder: (context)  =>
                                         FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
-                                  );                  
+                                  ).then((value) {
+                                    //push to success order
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
+                                  });                  
                                 }
                               },
                               style: ButtonStyle(
@@ -383,11 +386,7 @@ class InfoPaymentState extends State<InfoPayment> {
                   ],                                      
               ));    
             throw onError;          
-      })
-     .then((value) {
-        //push to success order
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
-     });    
+      });    
     });
   }
 

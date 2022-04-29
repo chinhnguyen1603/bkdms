@@ -7,6 +7,7 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/models/OrderInfo.dart';
 
 
 

@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/OrderInfo.dart';
+
 
 class Delivering extends StatefulWidget {
   const Delivering({ Key? key }) : super(key: key);
@@ -45,7 +47,7 @@ class DeliveringState extends State<Delivering> {
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
     List<OrderInfo> lstDelivering = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "APPROVED" ||order.orderStatus == "SHIPPING"  ) && order.type == "PURCHASE_ORDER" ){
+        if(order.orderStatus == "APPROVED"  && order.type == "PURCHASE_ORDER" ){
           lstDelivering.add(order);
         }
     }    
@@ -108,10 +110,10 @@ class DeliveringState extends State<Delivering> {
                                         SizedBox(
                                           width: myWidth*0.6,
                                           child:  Text(
-                                            "Đơn hàng #" + "${lstDelivering[index].orderCode}",
+                                            "Mã #" + "${lstDelivering[index].orderCode}",
                                             style: TextStyle(
                                               color: textColor,
-                                              fontSize: 16,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),

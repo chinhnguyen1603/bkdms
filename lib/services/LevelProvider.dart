@@ -25,20 +25,20 @@ class LevelProvider with ChangeNotifier{
          final extractedData = json.decode(response.body) as Map<String, dynamic>;
          final List<Level> loadListLevel = [];
          extractedData['data']['listLevel'].forEach((levelData) {
-         loadListLevel.add(
-          Level(
-            id:  levelData['id'],
-            name: levelData['name'],
-            discountRange: levelData['discountRange'],
-            time: levelData['time'],
-            registrationConditions: levelData['registrationConditions'],
-            rewardConditions: levelData['rewardConditions'],
-            gifts: levelData['gifts'],  
-          ),
-        );
-      });
-      this.lstLevel = loadListLevel;
-      notifyListeners();
+           loadListLevel.add(
+             Level(
+               id:  levelData['id'],
+               name: levelData['name'],
+               discountRange: levelData['discountRange'],
+               time: levelData['time'],
+               registrationConditions: levelData['registrationConditions'],
+               rewardConditions: levelData['rewardConditions'],
+               gifts: levelData['gifts'],  
+             ),
+           );
+         });
+         this.lstLevel = loadListLevel;
+         notifyListeners();
       } else{
         throw jsonDecode(response.body.toString());
       }

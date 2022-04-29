@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:bkdms/models/Cart.dart';
+import 'package:bkdms/models/OrderInfo.dart';
 
 //list product để create order
 class Product {
@@ -80,6 +81,7 @@ class OrderProvider with ChangeNotifier{
           'listProduct': this.listProduct,
           'agencyId': agencyId,
           'type': purOrder,
+          'paymentType': paymentType
         }),
       );
       if (response.statusCode == 201){
@@ -192,9 +194,9 @@ class OrderProvider with ChangeNotifier{
   }
 
   //http receive order
-  Future<void> receiveOrder(String? token, String? workspace, String? agencyId) async {
+  Future<void> receiveOrder(String? token, String? workspace, String? agencyId, String orderId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/complete-order');
-    print("xác nhận nhận đơn create order");
+    print("xác nhận nhận đơn");
      try {
       final response = await http.post(
         url, 
@@ -204,19 +206,13 @@ class OrderProvider with ChangeNotifier{
           'Authorization': 'Bearer $token',
           'Workspace' : "$workspace",
         }),
-        body: jsonEncode(<String, dynamic>{           
-          'phone': this.phone,
-          'extraInfoOfAddress': this.extra,
-          'note': this.note,
-          'province': this.province,
-          'district': this.district,
-          'ward': this.ward, 
-          'totalPayment':this.totalPayment.toString(),
-          'listProduct': this.listProduct,
-          'agencyId': agencyId,
-          'type': purOrder,
+        body: jsonEncode(<String, dynamic>{ 
+          'agencyId': agencyId,         
+          'orderId': orderId,
         }),
       );
+      print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 201){
          print("thành công");
       } else{
@@ -234,59 +230,3 @@ class OrderProvider with ChangeNotifier{
 
 
 
-// list order info để get order
-class OrderInfo {
-  late String id;
-  late String orderCode;
-  late String phone;
-  late String address;
-  late String createTime;
-  String? approvedTime;
-  String? shippingTime;
-  String? completedTime;
-  String? cancelledTimeByAgency;
-  String? cancelledTimeBySupplier;
-  String? returnReason;
-  String? waitingDeliveryTime;
-  String? deliveredTime;
-  String? deliveryFailed;
-  String? deliveryFailedReason;
-  String? deliveryStatus;
-  String? deliveryNote;
-  String? deliveryVoucherCode;
-  String? note;
-  late String orderStatus;
-  String? paymentStatus;
-  late String type;
-  late String totalPayment;
-  String? totalDiscount;
-  late List<dynamic> orderDetails;
-
-  OrderInfo({
-    required this.id,
-    required this.orderCode,
-    required this.phone,
-    required this.address,
-    required this.createTime,
-    this.approvedTime,
-    this.shippingTime,
-    this.completedTime,
-    this.cancelledTimeByAgency,
-    this.cancelledTimeBySupplier,
-    this.returnReason,
-    this.waitingDeliveryTime,
-    this.deliveredTime,
-    this.deliveryFailed,
-    this.deliveryFailedReason,
-    this.deliveryStatus,
-    this.deliveryNote,
-    this.deliveryVoucherCode,
-    this.note,
-    required this.orderStatus, 
-    this.paymentStatus,
-    required this.type,
-    required this.totalPayment,
-    required this.totalDiscount,
-    required this.orderDetails,  
-  });
-}
