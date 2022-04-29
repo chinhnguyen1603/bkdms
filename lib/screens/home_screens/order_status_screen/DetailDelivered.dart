@@ -1,15 +1,18 @@
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/OrderInfo.dart';
+
+
+//cần chỉnh sửa
 
 class DetailDelivered extends StatefulWidget {
-  //late OrderInfo orderDeliveringInfo ;
-  //DetailDelivering(this.orderDeliveringInfo);
+  late OrderInfo orderDeliveredInfo ;
+  DetailDelivered(this.orderDeliveredInfo);
   
   @override
   State<DetailDelivered> createState() => DetailDeliveredState();
@@ -21,10 +24,39 @@ class DetailDeliveredState extends State<DetailDelivered> {
 
   @override
   Widget build(BuildContext context) {
-    //OrderInfo thisOrderDelivering = widget.orderDeliveringInfo;
+    OrderInfo thisOrderDelivered = widget.orderDeliveredInfo;
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+    //lấy hình thức thanh toán của đơn
+    String paymentType = "Thanh toán nợ";
+    if(thisOrderDelivered.paymentType == "COD_PAYMENT") {
+      paymentType = "Thanh toán COD";
+    }
+    //list trạng thái đơn hàng 
+    List<Map> lstStatus = []; 
+      lstStatus.add({
+        "status": "Đặt đơn hàng và chờ xác nhận.",
+        "time": "${convertTime(thisOrderDelivered.createTime)}"
+      });     
+    if(thisOrderDelivered.approvedTime != null){
+      lstStatus.add({
+        "status": "Đơn hàng đã được xác nhận từ nhà cung cấp.",
+        "time": "${convertTime(thisOrderDelivered.approvedTime as String)}"
+      });     
+    } 
+    if(thisOrderDelivered.deliveredTime != null){
+      lstStatus.add({
+        "status": "Shipper thông báo đã giao đơn hàng.",
+        "time": "${convertTime(thisOrderDelivered.deliveredTime as String)}"
+      });     
+    }
+    if(thisOrderDelivered.completedTime != null){
+      lstStatus.add({
+        "status": "Người dùng xác nhận đã nhận đơn hàng.",
+        "time": "${convertTime(thisOrderDelivered.completedTime as String)}"
+      });     
+    }             
     //
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -49,7 +81,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                              width: myWidth*0.12,
                              child: Icon(Icons.assignment_outlined, color: darkBlue, ),
                            ),
-                           Text("Mã đơn hàng: " + "{thisOrderDelivering.orderCode}", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                           Text("Mã đơn hàng: " + "${thisOrderDelivered.orderCode}", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
                          ],
                        ),
                        SizedBox(height: 5,),
@@ -59,7 +91,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Thời gian đặt đơn: " + "{convertTime(thisOrderInfo.createTime)}")
+                           Text("Thời gian đặt đơn: " + "${convertTime(thisOrderDelivered.createTime)}")
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -108,7 +140,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Cửa hàng ${ Provider.of<Agency>(context, listen: false).name} - " + "{thisOrderDelivering.phone}")
+                           Text("Cửa hàng ${ Provider.of<Agency>(context, listen: false).name} - " + "${thisOrderDelivered.phone}")
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -122,7 +154,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                            SizedBox(
                              width: myWidth*0.85,
                              height: 50,
-                             child: Text("{thisOrderDelivering.address}", overflow: TextOverflow.ellipsis, maxLines: 2,)
+                             child: Text("${thisOrderDelivered.address}", overflow: TextOverflow.ellipsis, maxLines: 2,)
                            )
                          ],
                        )
@@ -154,7 +186,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                        SizedBox(height: 5,),
                        //List cart of order
                        ListView.builder(
-                          itemCount: 2, //thisOrderDelivering.orderDetails.length,              
+                          itemCount: thisOrderDelivered.orderDetails.length,              
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
@@ -173,7 +205,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                           height: 100,
                                           width: myWidth*0.3,
                                           child: Image.network(
-                                            getUrlFromLinkImg("{thisOrderDelivering.orderDetails[index]['unit']['product']['linkImg']}")
+                                            getUrlFromLinkImg("${thisOrderDelivered.orderDetails[index]['unit']['product']['linkImg']}")
                                           ),
                                         ),
                                         SizedBox(width: 10,),
@@ -188,7 +220,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                                  height: 24,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "{thisOrderDelivering.orderDetails[index]['unit']['product']['name']}", 
+                                                    "${thisOrderDelivered.orderDetails[index]['unit']['product']['name']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -201,7 +233,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Đơn vị: " + "{thisOrderDelivering.orderDetails[index]['unit']['name']}", 
+                                                    "Đơn vị: " + "${thisOrderDelivered.orderDetails[index]['unit']['name']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -214,7 +246,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Số lượng: " + "{thisOrderDelivering.orderDetails[index]['quantity']}", 
+                                                    "Số lượng: " + "${thisOrderDelivered.orderDetails[index]['quantity']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -227,7 +259,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Thành tiền: " + "{thisOrderDelivering.orderDetails[index]['totalPrice'].replaceAllMapped(reg, mathFunc)}đ", 
+                                                    "Thành tiền: " + "${thisOrderDelivered.orderDetails[index]['totalPrice'].replaceAllMapped(reg, mathFunc)}đ", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -281,7 +313,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Tổng tiền: " + "{thisOrderDelivering.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
+                           Text("Tổng tiền: " + "${thisOrderDelivered.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -291,7 +323,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Hình thức thanh toán: ")
+                           Text("Hình thức thanh toán: $paymentType")
                          ],
                        ),
                     ]
@@ -325,7 +357,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                        ),
                        //list view trạng thái
                        ListView.builder(
-                         itemCount: 5,              
+                         itemCount: lstStatus.length,              
                          shrinkWrap: true,
                          physics: NeverScrollableScrollPhysics(),
                          itemBuilder: (BuildContext context, int index) {
@@ -340,11 +372,11 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                     //text trạng thái 
                                     SizedBox(
                                       width: myWidth*0.7,
-                                      child: Text("Đơn hàng đã được xác nhận còn phòng nào chưa thanh toán thì chuyển giúp anh nha, để anh tổng ", style: TextStyle(color: Color(0xff40a292)),),
+                                      child: Text("${lstStatus[index]['status']}", style: TextStyle(color: Color(0xff40a292)),),
                                     ),
                                     //time
                                     SizedBox(
-                                      child: Text("12-04-2022 13:45", style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
+                                      child: Text("${lstStatus[index]['time']}", style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
                                     )
                                   ], 
                                 ),

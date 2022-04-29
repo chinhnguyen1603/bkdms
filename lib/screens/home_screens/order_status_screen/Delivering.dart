@@ -47,7 +47,7 @@ class DeliveringState extends State<Delivering> {
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
     List<OrderInfo> lstDelivering = [];
     for( var order in lstOrder) {
-        if(order.orderStatus == "APPROVED"  && order.type == "PURCHASE_ORDER" ){
+        if(order.orderStatus == "APPROVED" && order.type == "PURCHASE_ORDER" ){
           lstDelivering.add(order);
         }
     }    

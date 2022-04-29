@@ -27,6 +27,11 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+    //lấy hình thức thanh toán của đơn
+    String paymentType = "Thanh toán nợ";
+    if(thisOrderCancel.paymentType == "COD_PAYMENT") {
+      paymentType = "Thanh toán COD";
+    }  
     //
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -293,7 +298,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Hình thức thanh toán: ")
+                           Text("Hình thức thanh toán: $paymentType")
                          ],
                        ),
                     ]

@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/home_screens/order_status_screen/DetailDelivered.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +50,7 @@ class DeliveredState extends State<Delivered> {
     //update lstWaiOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
     List<OrderInfo> lstDelivered = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "COMPLETED" || order.orderStatus == "DELIVERED")  && order.type == "PURCHASE_ORDER" ){
+        if (order.deliveredTime != null || order.completedTime !=null){
           lstDelivered.add(order);
         }
     }  
@@ -77,13 +78,206 @@ class DeliveredState extends State<Delivered> {
                      //thêm dấu chấm vào giá sản phẩm
                      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                      String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                     //check đơn đã được xác nhận từ agency chưa tại đây. Mặc định là chưa
+                     bool isCompleted = false;
+                     if(lstDelivered[index].completedTime != null){
+                       isCompleted = true;
+                     }
                      //widget
-                     return Column(
+                     return isCompleted
+                      //dấu hỏi là đơn đã được xác nhận
+                      ?Column(
                        children: [   
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirm(lstDelivered[index])));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDelivered(lstDelivered[index])));
+                           },
+                           child: Container(
+                             width: 100.w,
+                             height: 245,
+                             color: Colors.white,
+                             child: Column(
+                               children: [
+                                 SizedBox(width: 100.w, height: 8,),
+                                 //Ordercode + time đặt
+                                 SizedBox(
+                                   width: myWidth,
+                                   height: 20,
+                                   child: Row(
+                                     children: [
+                                        //icon bookmark
+                                        SizedBox(
+                                          width: myWidth*0.1, 
+                                          child: Icon(
+                                            Icons.bookmark,
+                                            color: darkGrey,
+                                            size: 20,
+                                          ),
+                                        ),
+                                        //Order code
+                                        SizedBox(
+                                          width: myWidth*0.6,
+                                          child:  Text(
+                                            "Mã #" + "${lstDelivered[index].orderCode}",
+                                            style: TextStyle(
+                                              color: textColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                        //time đặt         
+                                        SizedBox(
+                                          width: myWidth*0.3,
+                                          child: Text(
+                                            "${convertTime(lstDelivered[index].createTime)}",
+                                            style: TextStyle(
+                                              color: textColor,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),                                                               
+                                     ],
+                                   ),
+                                 ),
+                                 Divider(),
+                                 //Ảnh + tên + đơn giá + số lượng + thành tiền list[0]
+                                 SizedBox(
+                                   width: myWidth,
+                                   height: 80,
+                                   child: Row(children: [
+                                      //Ảnh sản phẩm
+                                      SizedBox(
+                                        height: 100,
+                                        width: myWidth*0.3,
+                                        child: Image.network(
+                                          getUrlFromLinkImg("${lstDelivered[index].orderDetails[0]['unit']['product']['linkImg']}")
+                                        ),
+                                      ),
+                                      SizedBox(width: 10,),
+                                  //Tên, đơn vị + số lượng
+                                  SizedBox(
+                                    height: 100,
+                                    width: myWidth*0.5,
+                                    child: Column(
+                                      children: [
+                                        // tên sản phẩm
+                                        SizedBox(
+                                          height: 30,
+                                          width: myWidth*0.5,
+                                          child: Text(
+                                            "${lstDelivered[index].orderDetails[0]['unit']['product']['name']}", 
+                                             maxLines: 1,
+                                             overflow: TextOverflow.ellipsis,
+                                             softWrap: false,
+                                             textAlign: TextAlign.left,
+                                             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),                                        
+                                          )
+                                        ),
+                                        // Đơn vị
+                                        SizedBox(
+                                          height: 25,
+                                          width: myWidth*0.5,
+                                          child: Text(
+                                             "Đơn vị: " + "${lstDelivered[index].orderDetails[0]['unit']['name']}", 
+                                             maxLines: 1,
+                                             overflow: TextOverflow.ellipsis,
+                                             softWrap: false,
+                                             textAlign: TextAlign.left,
+                                             style: TextStyle(fontSize: 14, ),                                        
+                                          )
+                                        ),   
+                                        // Số lượng
+                                        SizedBox(
+                                          height: 25,
+                                          width: myWidth*0.5,
+                                          child: Text(
+                                             "Số lượng: " + "${lstDelivered[index].orderDetails[0]['quantity']}", 
+                                             maxLines: 1,
+                                             overflow: TextOverflow.ellipsis,
+                                             softWrap: false,
+                                             textAlign: TextAlign.left,
+                                             style: TextStyle(fontSize: 14,),                                        
+                                          )
+                                        ),                                                                                                       
+                                      ],
+                                     ),
+                                    )
+                                  ]),
+                                 ),
+                                 Divider(),
+                                 //Text xem thêm sản phẩm
+                                 Text("Xem thêm", style: TextStyle(color: darkGrey),),
+                                 Divider(),
+                                 //Số lượng sản phẩm + tổng tiền
+                                 SizedBox(
+                                   width: myWidth,
+                                   height: 20,
+                                   child: Row(
+                                     mainAxisAlignment: MainAxisAlignment.end,
+                                     children: [
+                                       //số lượng sản phẩm
+                                       SizedBox(
+                                         width: myWidth*0.4,
+                                         child: Row(
+                                           children: [
+                                             SizedBox(width: myWidth*0.05),
+                                             SizedBox(
+                                               width: myWidth*0.1,
+                                               height: 20,
+                                               child: Image.asset("assets/box.png",),
+                                             ),
+                                             SizedBox(width: 2,),
+                                             Text("${lstDelivered[index].orderDetails.length} sản phẩm", style: TextStyle(color: textColor),)
+                                           ],
+                                         ),
+                                       ),
+                                       SizedBox(width: myWidth*0.25,),
+                                       //tổng tiền
+                                       SizedBox(
+                                         width: myWidth*0.35,
+                                         child: Row(
+                                           children: [
+                                             SizedBox(
+                                               width: myWidth*0.08,
+                                               height: 20,
+                                               child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight, width: myWidth*0.1,),
+                                             ),
+                                             SizedBox(
+                                               width: myWidth*0.22,
+                                               child: Text(
+                                                 "${lstDelivered[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                                 textAlign: TextAlign.center,
+                                                 style: TextStyle(color: textColor),
+                                               )
+                                             )
+                                           ],
+                                         ),
+                                       ),
+                                     ],
+                                   ),
+                                 ),
+                                 Divider(),
+                                 //text Đã hoàn tất giao hàng
+                                 SizedBox(
+                                    width: myWidth*0.94,
+                                    child: Text("Đã hoàn tất giao hàng", textAlign: TextAlign.center ,style: TextStyle(color: textColor),),
+                                 )                               ],
+                             ),
+                           ),
+                         ),
+                         SizedBox(width: 100.w, height: 12,),   
+                      ])
+
+                      //dấu chấm là đơn chưa được xác nhận
+                      :Column(
+                       children: [   
+                         //container chứa chi tiết đơn                 
+                         GestureDetector(
+                           onTap: (){
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDelivered(lstDelivered[index])));
                            },
                            child: Container(
                              width: 100.w,
@@ -255,7 +449,7 @@ class DeliveredState extends State<Delivered> {
                                  //Button xác nhận nhận hàng
                                  SizedBox(
                                    height: 30,
-                                   width: myWidth*0.4,
+                                   width: myWidth*0.3,
                                    child: ElevatedButton(
                                       onPressed: (){
                                         //dialog xác nhận
@@ -302,6 +496,7 @@ class DeliveredState extends State<Delivered> {
                          ),
                          SizedBox(width: 100.w, height: 12,),   
                      ]);
+ 
                    }
                 )
              ])

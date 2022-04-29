@@ -128,18 +128,12 @@ class OrderProvider with ChangeNotifier{
             address: orderData['address'],
             createTime: orderData['createTime'],
             approvedTime: orderData['approvedTime'],
-            shippingTime: orderData['shippigTime'],
             completedTime: orderData['completedTime'],
             cancelledTimeByAgency: orderData['cancelledTimeByAgency'],
             cancelledTimeBySupplier: orderData['cancelledTimeBySupplier'],
             returnReason: orderData['returnReason'],
-            waitingDeliveryTime: orderData['configDeliveryTime'],
-            deliveryFailed: orderData['deliveryFailed'],
-            deliveryFailedReason: orderData['deliveryFailedReason'],
             deliveredTime: orderData['deliveredTime'],
-            deliveryStatus: orderData['deliveryStatus'],
-            deliveryNote: orderData['deliveryNote'],
-            deliveryVoucherCode: orderData['deliveryVoucherCode'],
+            paymentType: orderData['paymentType'],
             note: orderData['note'],
             orderStatus: orderData['orderStatus'],
             paymentStatus: orderData['paymentStatus'],
@@ -151,6 +145,7 @@ class OrderProvider with ChangeNotifier{
         );
       });
       this.lstOrderInfo = loadListOrderInfo;
+      print(lstOrderInfo.length);
       notifyListeners();
       } else{
         throw jsonDecode(response.body.toString());
@@ -193,7 +188,7 @@ class OrderProvider with ChangeNotifier{
     }
   }
 
-  //http receive order
+  //http receive order(để agency xác nhận đã nhận được hàng)
   Future<void> receiveOrder(String? token, String? workspace, String? agencyId, String orderId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/complete-order');
     print("xác nhận nhận đơn");
@@ -212,7 +207,6 @@ class OrderProvider with ChangeNotifier{
         }),
       );
       print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 201){
          print("thành công");
       } else{

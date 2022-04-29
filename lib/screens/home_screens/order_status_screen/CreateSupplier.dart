@@ -43,17 +43,21 @@ class CreateSupplierState extends State<CreateSupplier> {
   @override
   Widget build(BuildContext context) {
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
-    List<OrderInfo> lstWaitOrder = [];
+    List<OrderInfo> lstCreateSupplier = [];
     for( var order in lstOrder) {
         if(order.orderStatus == "CREATED_BY_SUPPLIER"  && order.type == "PURCHASE_ORDER" ){
-          lstWaitOrder.add(order);
+          if(order.deliveredTime != null || order.completedTime !=null || order.approvedTime !=null || order.cancelledTimeByAgency != null || order.cancelledTimeBySupplier != null){
+            //có 1 time khác null thì loại
+          } else{
+            lstCreateSupplier.add(order);
+          }
         }
     }  
     //width dùng trong container
     double myWidth = 95.w;
     //check if has or not order, mỗi lần update tự đặt isHasOrder = false, nếu có list thì về true
     bool isHasOrder = false;
-    if(lstWaitOrder.length !=0 ) {
+    if(lstCreateSupplier.length !=0 ) {
       isHasOrder = true;
     }
     //
@@ -69,7 +73,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                 //UI List Order
                 ListView.builder(
                    reverse: true,
-                   itemCount:lstWaitOrder.length,              
+                   itemCount:lstCreateSupplier.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),
                    itemBuilder: (BuildContext context, int index) {
@@ -82,7 +86,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCreateSupply(lstWaitOrder[index])));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCreateSupply(lstCreateSupplier[index])));
                            },
                            child: Container(
                              width: 100.w,
@@ -110,7 +114,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                         SizedBox(
                                           width: myWidth*0.6,
                                           child:  Text(
-                                            "Mã #" + "${lstWaitOrder[index].orderCode}",
+                                            "Mã #" + "${lstCreateSupplier[index].orderCode}",
                                             style: TextStyle(
                                               color: textColor,
                                               fontSize: 15,
@@ -122,7 +126,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                         SizedBox(
                                           width: myWidth*0.3,
                                           child: Text(
-                                            "${convertTime(lstWaitOrder[index].createTime)}",
+                                            "${convertTime(lstCreateSupplier[index].createTime)}",
                                             style: TextStyle(
                                               color: textColor,
                                               fontSize: 12,
@@ -144,7 +148,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                         height: 100,
                                         width: myWidth*0.3,
                                         child: Image.network(
-                                          getUrlFromLinkImg("${lstWaitOrder[index].orderDetails[0]['unit']['product']['linkImg']}")
+                                          getUrlFromLinkImg("${lstCreateSupplier[index].orderDetails[0]['unit']['product']['linkImg']}")
                                         ),
                                       ),
                                       SizedBox(width: 10,),
@@ -159,7 +163,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                           height: 30,
                                           width: myWidth*0.5,
                                           child: Text(
-                                            "${lstWaitOrder[index].orderDetails[0]['unit']['product']['name']}", 
+                                            "${lstCreateSupplier[index].orderDetails[0]['unit']['product']['name']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -172,7 +176,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                           height: 25,
                                           width: myWidth*0.5,
                                           child: Text(
-                                             "Đơn vị: " + "${lstWaitOrder[index].orderDetails[0]['unit']['name']}", 
+                                             "Đơn vị: " + "${lstCreateSupplier[index].orderDetails[0]['unit']['name']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -185,7 +189,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                           height: 25,
                                           width: myWidth*0.5,
                                           child: Text(
-                                             "Số lượng: " + "${lstWaitOrder[index].orderDetails[0]['quantity']}", 
+                                             "Số lượng: " + "${lstCreateSupplier[index].orderDetails[0]['quantity']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -221,7 +225,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                                child: Image.asset("assets/box.png",),
                                              ),
                                              SizedBox(width: 2,),
-                                             Text("${lstWaitOrder[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
+                                             Text("${lstCreateSupplier[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
                                            ],
                                          ),
                                        ),
@@ -239,7 +243,7 @@ class CreateSupplierState extends State<CreateSupplier> {
                                              SizedBox(
                                                width: myWidth*0.22,
                                                child: Text(
-                                                 "${lstWaitOrder[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                                 "${lstCreateSupplier[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
                                                  textAlign: TextAlign.center,
                                                  style: TextStyle(color: Color(0xff7b2626)),
                                                )

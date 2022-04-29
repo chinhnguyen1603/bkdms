@@ -79,7 +79,7 @@ class CancelOrderState extends State<CancelOrder> {
                      //thêm dấu chấm vào giá sản phẩm
                      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                      String Function(Match) mathFunc = (Match match) => '${match[1]}.';
-                     //logic hủy đơn bởi nhà cung cấp hay người dùng. mặc định là người dùng
+                     //logic hủy đơn bởi nhà cung cấp hay người dùng. mặc định là người dùng. Tính theo từng index trong listview
                      bool isCancelSupplier = false;
                      if(lstCancelOrder[index].orderStatus == "CANCELLED_FROM_SUPPLIER"){
                        isCancelSupplier = true;
@@ -261,7 +261,7 @@ class CancelOrderState extends State<CancelOrder> {
                                      ),
                                    ),
                                    Divider(),
-                                   //Button Hủy đơn hàng
+                                   //text hủy đơn bởi nhà cung cấp
                                    SizedBox(
                                      width: myWidth*0.94,
                                      child: Text("Hủy đơn bởi nhà cung cấp", textAlign: TextAlign.center ,style: TextStyle(color: textColor),),
@@ -306,7 +306,7 @@ class CancelOrderState extends State<CancelOrder> {
                                           SizedBox(
                                             width: myWidth*0.6,
                                             child:  Text(
-                                              "Đơn hàng #" + "${lstCancelOrder[index].orderCode}",
+                                              "Mã #" + "${lstCancelOrder[index].orderCode}",
                                               style: TextStyle(
                                                 color: textColor,
                                                 fontSize: 16,
@@ -447,7 +447,7 @@ class CancelOrderState extends State<CancelOrder> {
                                      ),
                                    ),
                                    Divider(),
-                                   //Button Hủy đơn hàng
+                                   //text hủy đơn bởi người dùng
                                    SizedBox(
                                      width: myWidth*0.94,
                                      child: Text("Hủy đơn bởi người dùng", textAlign: TextAlign.center ,style: TextStyle(color: textColor),),

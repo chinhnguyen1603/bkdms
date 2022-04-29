@@ -48,7 +48,11 @@ class WaitConfirmState extends State<WaitConfirm> {
     List<OrderInfo> lstWaitOrder = [];
     for( var order in lstOrder) {
         if(order.orderStatus == "WAITING_FOR_APPROVED" && order.type == "PURCHASE_ORDER" ){
-          lstWaitOrder.add(order);
+          if(order.deliveredTime != null || order.completedTime !=null || order.approvedTime !=null || order.cancelledTimeByAgency != null || order.cancelledTimeBySupplier != null){
+            //có 1 time khác null thì loại
+          } else{
+            lstWaitOrder.add(order);
+          }
         }
     }  
     //width dùng trong container
