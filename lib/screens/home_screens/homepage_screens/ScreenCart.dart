@@ -409,14 +409,30 @@ class ScreenCartState extends State<ScreenCart> {
                                                                               sumOfOrder = 0; //set tổng tiền về 0
                                                                           });
                                                                           //post api add cart tại đây
+                                                                           //validate số lượng có null không
                                                                            if (_formEnterAmountKey.currentState!.validate()){
-                                                                              await showDialog (
-                                                                                 context: context,
-                                                                                 builder: (context) =>
-                                                                                    FutureProgressDialog(changeCart(lstCart[index].unitId), message: Text('Đang cập nhật...', style: TextStyle(color:Color(0xff7d7d7d)))),
-                                                                              );
-                                                                              Navigator.pop(context);
-                                                                           }
+                                                                              //check só lượng có bị âm hoặc =0 không
+                                                                              if( int.parse(enternAmountController.text) <= 0 ) {
+                                                                                Alert(
+                                                                                  context: context,
+                                                                                  type: AlertType.warning,
+                                                                                  style: AlertStyle( titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+                                                                                  title: "Số lượng phải lớn hơn 0",
+                                                                                  buttons: [ DialogButton(
+                                                                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                                                                    onPressed: () => Navigator.pop(context),
+                                                                                    width: 100,
+                                                                                  )],
+                                                                                ).show();        
+                                                                              } else{                                                                             
+                                                                                  await showDialog (
+                                                                                    context: context,
+                                                                                    builder: (context) =>
+                                                                                      FutureProgressDialog(changeCart(lstCart[index].unitId), message: Text('Đang cập nhật...', style: TextStyle(color:Color(0xff7d7d7d)))),
+                                                                                  );
+                                                                                  Navigator.pop(context);
+                                                                              }
+                                                                            }
                                                                         },
                                                                         child: Text("Cập nhật", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(

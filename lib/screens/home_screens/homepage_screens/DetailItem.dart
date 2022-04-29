@@ -9,6 +9,7 @@ import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DetailItem extends StatefulWidget {
   late Item myItem;
@@ -802,20 +803,34 @@ class DetailItemState extends State<DetailItem> {
                                                                         
                                                                         onPressed: () async {
                                                                           //post api add cart tại đây
+                                                                           //validate form có null không
                                                                            if (_formEnterAmountKey.currentState!.validate())  {
-                                                                              //dialog loading chờ add rồi get cart
-                                                                              await showDialog (
-                                                                                 context: context,
-                                                                                 builder: (context) =>
-                                                                                    FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xff7d7d7d)))),
-                                                                              );
-                                                                              setState(() {              
-                                                                                  btnSelectVal = ""; //set value của dropdowm về ""
-                                                                              });
-                                                                              //update số lượng trên icon giỏ hàng
-
-                                                                              Navigator.pop(context);
-                                                                           }
+                                                                              //check só lượng có bị âm hoặc =0 không
+                                                                              if( int.parse(enternAmountController.text) <= 0 ) {
+                                                                                Alert(
+                                                                                  context: context,
+                                                                                  type: AlertType.warning,
+                                                                                  style: AlertStyle( titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+                                                                                  title: "Số lượng phải lớn hơn 0",
+                                                                                  buttons: [ DialogButton(
+                                                                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                                                                    onPressed: () => Navigator.pop(context),
+                                                                                    width: 100,
+                                                                                  )],
+                                                                                ).show();        
+                                                                              } else{                                                                           
+                                                                                  //dialog loading chờ add rồi get cart
+                                                                                  await showDialog (
+                                                                                    context: context,
+                                                                                    builder: (context) =>
+                                                                                      FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xff7d7d7d)))),
+                                                                                  );
+                                                                                  setState(() {              
+                                                                                    btnSelectVal = ""; //set value của dropdowm về ""
+                                                                                  });
+                                                                                  Navigator.pop(context);
+                                                                              }
+                                                                            }
                                                                         },
                                                                         child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(

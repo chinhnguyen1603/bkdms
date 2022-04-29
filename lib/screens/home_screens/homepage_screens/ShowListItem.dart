@@ -13,6 +13,7 @@ import 'package:bkdms/models/CountBadge.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/ScreenCart.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:sizer/sizer.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ShowListItem extends StatefulWidget {
   const ShowListItem({ Key? key }) : super(key: key);
@@ -456,17 +457,33 @@ class ShowListItemState extends State<ShowListItem> {
                                                                         
                                                                         onPressed: () async {
                                                                           //post api add cart tại đây
+                                                                           //check form số lượng có null không
                                                                            if (_formEnterAmountKey.currentState!.validate()){
-                                                                              await showDialog (
-                                                                                 context: context,
-                                                                                 builder: (context) =>
-                                                                                    FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xffe2dddd)))),
-                                                                              );
-                                                                              setState(() {              
-                                                                                  btnSelectVal = ""; //set value của dropdowm về ""
-                                                                              });
-                                                                              Navigator.pop(context);
-                                                                           }
+                                                                              //check só lượng có bị âm hoặc =0 không
+                                                                              if( int.parse(enternAmountController.text) <= 0 ) {
+                                                                                Alert(
+                                                                                  context: context,
+                                                                                  type: AlertType.warning,
+                                                                                  style: AlertStyle( titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+                                                                                  title: "Số lượng phải lớn hơn 0",
+                                                                                  buttons: [ DialogButton(
+                                                                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                                                                    onPressed: () => Navigator.pop(context),
+                                                                                    width: 100,
+                                                                                  )],
+                                                                                ).show();        
+                                                                              } else{
+                                                                                  await showDialog (
+                                                                                    context: context,
+                                                                                    builder: (context) =>
+                                                                                      FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xffe2dddd)))),
+                                                                                  );
+                                                                                  setState(() {              
+                                                                                    btnSelectVal = ""; //set value của dropdowm về ""
+                                                                                  });
+                                                                                  Navigator.pop(context);                                                                              
+                                                                              }
+                                                                            }
                                                                         },
                                                                         child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(
@@ -811,17 +828,33 @@ class ShowListItemState extends State<ShowListItem> {
                                                                         
                                                                         onPressed: () async {
                                                                           //post add cart, get cart và update CountBadge tại đây
+                                                                           //validate số lượng có null không
                                                                            if (_formEnterAmountKey.currentState!.validate()){
-                                                                              await showDialog (
-                                                                                 context: context,
-                                                                                 builder: (context)  =>
-                                                                                    FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color: Color(0xff7d7d7d)))),
-                                                                              );                                                                      
-                                                                              setState(() {              
-                                                                                  btnSelectVal = ""; //set value của dropdowm về ""
-                                                                              });
-                                                                              Navigator.pop(context);
-                                                                           }
+                                                                              //check số lượng có bị âm hoặc =0 không
+                                                                              if( int.parse(enternAmountController.text) <= 0 ) {
+                                                                                Alert(
+                                                                                  context: context,
+                                                                                  type: AlertType.warning,
+                                                                                  style: AlertStyle( titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+                                                                                  title: "Số lượng phải lớn hơn 0",
+                                                                                  buttons: [ DialogButton(
+                                                                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                                                                    onPressed: () => Navigator.pop(context),
+                                                                                    width: 100,
+                                                                                  )],
+                                                                                ).show();        
+                                                                              } else{
+                                                                                  await showDialog (
+                                                                                    context: context,
+                                                                                    builder: (context) =>
+                                                                                      FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xffe2dddd)))),
+                                                                                  );
+                                                                                  setState(() {              
+                                                                                    btnSelectVal = ""; //set value của dropdowm về ""
+                                                                                  });
+                                                                                  Navigator.pop(context);                                                                              
+                                                                              }
+                                                                            }
                                                                         },
                                                                         child: Text("Thêm vào giỏ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(

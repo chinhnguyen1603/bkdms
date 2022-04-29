@@ -33,7 +33,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
     if(thisOrderDelivered.paymentType == "COD_PAYMENT") {
       paymentType = "Thanh toán COD";
     }
-    //list trạng thái đơn hàng 
+    //list trạng thái đơn hàng + logic
     List<Map> lstStatus = []; 
       lstStatus.add({
         "status": "Đặt đơn hàng và chờ xác nhận.",
@@ -57,7 +57,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
         "time": "${convertTime(thisOrderDelivered.completedTime as String)}"
       });     
     }             
-    //
+    //widget
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
       body: SingleChildScrollView(

@@ -2,7 +2,6 @@ import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/services/ProvinceProvider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:sizer/sizer.dart';
