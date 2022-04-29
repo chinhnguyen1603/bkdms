@@ -49,7 +49,7 @@ class DeliveredState extends State<Delivered> {
     //update lstDelivered show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
     List<OrderInfo> lstDelivered = [];
     for( var order in lstOrder) {
-        if (order.deliveredTime != null || order.completedTime !=null){
+        if ((order.deliveredTime != null || order.completedTime !=null) && order.type == "PURCHASE_ORDER"){
           lstDelivered.add(order);
         }
     }  
