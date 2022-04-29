@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/models/OrderInfo.dart';
 
 class MainPageReturn extends StatefulWidget {
 
@@ -70,41 +71,49 @@ class MainPageReturnState extends State<MainPageReturn> {
         onPageChanged: onPageChanged,
         controller: _pageController,
       ),
- 
- 
     );
   }
 }
 
 
+//widget lịch sử đơn tại đây
 class HistoryDelivered extends StatefulWidget {
-
   @override
   State<HistoryDelivered> createState() => HistoryDeliveredState();
 }
 
 
-
 class HistoryDeliveredState extends State<HistoryDelivered> {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
-  List<String> lstDate = [];
-  List<String> lstSelectDate = [];
-  List<String> getTimeApi = ["2022-04-15T08:34:12.015Z", "2022-04-16T17:49:55.441Z", "2022-04-17T17:53:32.843Z", "2022-04-20T17:50:42.782Z"]; 
+  List<OrderInfo> lstOrder = [];
+  List<OrderInfo> lstSelectDelivered = [];
   bool _isSelecting = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    for( var time in getTimeApi) {
-       this.lstDate.add(convertTime(time));
-    }
+
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.lstOrder = Provider.of<OrderProvider>(context).lstOrderInfo;
+  }
+
 
  
   @override
   Widget build(BuildContext context) {
+    //update lstDelivered show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
+    List<OrderInfo> lstDelivered = [];
+    for( var order in lstOrder) {
+        if (order.completedTime !=null){
+          lstDelivered.add(order);
+        }
+    } 
+    //     
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -154,15 +163,15 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                         );
                         //build list mới từ date đã chọn
                         setState(() {
-                          lstSelectDate = lstDate
+                          lstSelectDelivered = lstDelivered
                             .where((element) =>
-                               element.contains(convertTime("$value")))
+                               convertTime(element.completedTime!).contains(convertTime("$value")))
                             .toList();  
                           _isSelecting = true;   
                         });         
                       } 
                   });
-                  print(lstSelectDate);
+                  print(lstSelectDelivered);
                 }, 
                 child: Text("Chọn ngày giao", style: TextStyle(color: Color(0xff7b2626)),)
               ),
@@ -172,7 +181,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
               _isSelecting
                 //khi select ngày thì chỉ ra đơn ngày đó
                 ?ListView.builder(
-                       itemCount: lstSelectDate.length,              
+                       itemCount: lstSelectDelivered.length,              
                        shrinkWrap: true,
                        physics: NeverScrollableScrollPhysics(),
                        itemBuilder: (BuildContext context, int index) {
@@ -195,7 +204,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                                     )
                                   ]
                                 ),
-                                child: Text(lstSelectDate[index]),
+                                child: Text(lstSelectDelivered[index].completedTime as String),
                              ),
                              SizedBox(height: 20,),
                            ],
@@ -204,7 +213,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                 )
                 //mặc định ban đầu là tất cả ngày
                 :ListView.builder(
-                       itemCount: lstDate.length,              
+                       itemCount: lstDelivered.length,              
                        shrinkWrap: true,
                        physics: NeverScrollableScrollPhysics(),
                        itemBuilder: (BuildContext context, int index) {
@@ -227,7 +236,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                                     )
                                   ]
                                 ),
-                                child: Text(lstDate[index]),
+                                child: Text(lstDelivered[index].completedTime as String),
                              ),
                              SizedBox(height: 20,),
                            ],

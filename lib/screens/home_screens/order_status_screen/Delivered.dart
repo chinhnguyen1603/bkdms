@@ -46,7 +46,7 @@ class DeliveredState extends State<Delivered> {
   //widget
   @override
   Widget build(BuildContext context) {
-    //update lstWaiOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
+    //update lstDelivered show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
     List<OrderInfo> lstDelivered = [];
     for( var order in lstOrder) {
         if (order.deliveredTime != null || order.completedTime !=null){
