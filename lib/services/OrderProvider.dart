@@ -13,7 +13,7 @@ class Product {
    late String totalPrice;
 }
 
-//service provider tại đây
+//service order provider tại đây
 class OrderProvider with ChangeNotifier{
    //biến dưới đây để create order
    static const purOrder ="PURCHASE_ORDER";
@@ -126,6 +126,10 @@ class OrderProvider with ChangeNotifier{
             orderCode: orderData['orderCode'],
             phone: orderData['phone'],
             address: orderData['address'],
+            extraInfoOfAddress: orderData['extraInfoOfAddress'],
+            ward: orderData['ward'],
+            district: orderData['district'],
+            province: orderData['province'],
             createTime: orderData['createTime'],
             approvedTime: orderData['approvedTime'],
             completedTime: orderData['completedTime'],

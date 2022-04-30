@@ -1,5 +1,7 @@
 import 'package:bkdms/components/AppBarGrey.dart';
+import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/InfoReturn.dart';
 import 'package:bkdms/services/AmountReturnProvider.dart';
+import 'package:bkdms/services/ReturnProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
@@ -261,7 +263,7 @@ class DetailOrderState extends State<DetailOrder> {
                                                        width: myWidth*0.1,
                                                        child: IconButton(
                                                           onPressed: () async {  
-                                                            //xóa phần tử index của list order detail & list số lượng trong provider                                          
+                                                            //xóa phần tử index của list order detail & list số lượng trong provider & list số lượng để check max                                          
                                                             setState(() {
                                                               lstOrderDetail.removeAt(index);
                                                               lstAmount.removeAt(index);
@@ -481,6 +483,8 @@ class DetailOrderState extends State<DetailOrder> {
                                                                                   )],
                                                                                 ).show();        
                                                                               } else{   
+                                                                                  //update giá trị số lượng trong lstOrderDetail
+                                                                                  lstOrderDetail[index]['quantity'] = enternAmountController.text; 
                                                                                   //update số lượng của chính index đó                                                                          
                                                                                   Provider.of<AmountReturnProvider>(context, listen: false).setNewAmount(index, enternAmountController.text); 
                                                                                   Navigator.pop(context);
@@ -636,7 +640,11 @@ class DetailOrderState extends State<DetailOrder> {
                           //button tiến hành trả hàng
                           child: ElevatedButton(
                               onPressed: () {
-                                
+                                  //set list product gửi lên trong return order
+                                  print(lstOrderDetail);
+                                  Provider.of<ReturnProvider>(context, listen: false).setListProduct(lstOrderDetail);
+                                  //move to điền thông tin
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => InfoReturn(thisOrderDelivered.id ,sumOfOrder, thisOrderDelivered.extraInfoOfAddress, thisOrderDelivered.ward, thisOrderDelivered.district, thisOrderDelivered.province)));
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),

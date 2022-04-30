@@ -21,6 +21,7 @@ class LevelProvider with ChangeNotifier{
           'Workspace' : "$workspace",
       }));
       print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200){
          final extractedData = json.decode(response.body) as Map<String, dynamic>;
          final List<Level> loadListLevel = [];

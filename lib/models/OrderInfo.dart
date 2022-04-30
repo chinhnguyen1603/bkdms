@@ -6,6 +6,10 @@ class OrderInfo {
   late String orderCode;
   late String phone;
   late String address;
+  late String extraInfoOfAddress;
+  late String ward;
+  late String district;
+  late String province;
   late String createTime;
   String? approvedTime;
   String? completedTime;
@@ -27,6 +31,10 @@ class OrderInfo {
     required this.orderCode,
     required this.phone,
     required this.address,
+    required this.extraInfoOfAddress,
+    required this.ward,
+    required this.district,
+    required this.province,
     required this.createTime,
     required this.approvedTime,
     required this.completedTime,
