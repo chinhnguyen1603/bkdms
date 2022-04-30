@@ -1,5 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
-import 'package:bkdms/services/ReturnProvider.dart';
+import 'package:bkdms/services/AmountReturnProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
@@ -32,6 +32,8 @@ class DetailOrderState extends State<DetailOrder> {
   int sumOfOrder = 0;
   //list số lượng mặt hàng gốc trong cart
   List<String> lstAmount = [];
+  //list số lượng provider
+  List<String> lstAmountProvider = [];
 
   @override
   void initState() {
@@ -49,6 +51,19 @@ class DetailOrderState extends State<DetailOrder> {
       i++;
     }
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    lstAmountProvider = Provider.of<AmountReturnProvider>(context).lstAmount;
+    // cập nhật tổng tiền của giỏ hàng
+    sumOfOrder = 0;
+    for (var index = 0; index < lstAmountProvider.length; index++) {
+      sumOfOrder = sumOfOrder + int.parse(widget.orderDeliveredInfo.orderDetails[index]['price'])*int.parse(lstAmountProvider[index]);
+    }
+  }
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -246,9 +261,11 @@ class DetailOrderState extends State<DetailOrder> {
                                                        width: myWidth*0.1,
                                                        child: IconButton(
                                                           onPressed: () async {  
-                                                            //xóa phần tử index của list order detail                                         
+                                                            //xóa phần tử index của list order detail & list số lượng trong provider                                          
                                                             setState(() {
                                                               lstOrderDetail.removeAt(index);
+                                                              lstAmount.removeAt(index);
+                                                              Provider.of<AmountReturnProvider>(context, listen: false).removeIndex(index);
                                                             });                                          
                                                           }, 
                                                           icon: Icon(Icons.cancel_presentation_sharp, size: 17,),
@@ -468,7 +485,10 @@ class DetailOrderState extends State<DetailOrder> {
                                                                                   Provider.of<AmountReturnProvider>(context, listen: false).setNewAmount(index, enternAmountController.text); 
                                                                                   Navigator.pop(context);
                                                                               }
-                                                                            }
+                                                                           }
+                                                                           // cập nhật tổng tiền tại đây
+                                                                           
+                                                                           
                                                                         },
                                                                         child: Text("Cập nhật", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
                                                                         style: ButtonStyle(
