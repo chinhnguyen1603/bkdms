@@ -1,4 +1,5 @@
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/services/ReturnProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -12,8 +13,19 @@ import 'package:bkdms/screens/home_screens/homepage_screens/InfoPayment.dart';
 
 
 class InfoReturn extends StatefulWidget {
+  
+  //id + tổng tiền
+  late String orderId;
   late int totalPayment;
-  InfoReturn(this.totalPayment);
+
+  //địa chỉ nhận hàng
+  late String extra;
+  late String ward;
+  late String district;
+  late String province;  
+
+  //biến lấy khi Detail Order truyền vào
+  InfoReturn(this.orderId, this.totalPayment, this.extra, this.ward, this.district, this.province);
   @override
   State<InfoReturn> createState() => _InfoReturnState();
 }
@@ -22,10 +34,6 @@ class _InfoReturnState extends State<InfoReturn> {
   static const darkGrey = Color(0xff544C4C);
   late String name;
   late String phone;
-  late String extra;
-  late String ward;
-  late String district;
-  late String province;
 
   final noteController = TextEditingController();  
 
@@ -52,18 +60,12 @@ class _InfoReturnState extends State<InfoReturn> {
     name = user.nameOwn;
     phone = user.phone;
     //khởi tạo InfoOfOrder address bằng agency
-    Provider.of<OrderProvider>(context, listen: false).setAddress(user.province , user.district, user.ward , user.extraInfoOfAddress);
+    Provider.of<ReturnProvider>(context, listen: false).setAddress(widget.province , widget.district, widget.ward , widget.extra);
   }
   
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    //khởi tạo address UI bằng addressInfoReturn, update liên tục
-    OrderProvider myInfo = Provider.of<OrderProvider>(context);
-    extra = myInfo.extra;
-    ward = myInfo.ward;
-    district = myInfo.district;
-    province = myInfo.province;
   }
 
   @override
@@ -83,67 +85,14 @@ class _InfoReturnState extends State<InfoReturn> {
             Container(
                width: 100.w,
                color: Colors.white,
-               height: 70,
+               height: 50,
                child: Column(children: [ 
                  SizedBox(height: 10,),
-                 //Row chứa 3 icon đầu
-                 Row(children: [
-                 SizedBox(
-                  width: 20.w,
-                 ),
-                 Container(
-                   width: 13.w,
-                   height: 25,
-                   decoration: new BoxDecoration(
-                     shape: BoxShape.circle,
-                     border: Border.all(color: Colors.blueAccent)
-                   ),
-                   child: Icon(
-                     Icons.check,
-                     size: 18,
-                     color: Colors.blueAccent,
-                   ),
-                 ),
-                 SizedBox(
-                   width: 10.w,
-                   child: Text("-----------------", maxLines: 1, style: TextStyle(color: Color(0xff7b2626)),),
-                 ),
-                 Container(
-                   width: 13.w,
-                   height: 25,
-                   decoration: new BoxDecoration(
-                     shape: BoxShape.circle,
-                     border: Border.all(color: Colors.grey)
-                   ),
-                   child: Icon(
-                     Icons.create_sharp ,
-                     size: 18,
-                     color: darkGrey, 
-                   ),
-                 ),
-                 SizedBox(
-                   width: 10.w,
-                   child: Text("--------------------", maxLines: 1, style: TextStyle(color: Color(0xff7b2626)),),
-                 ),
-                 Container(
-                   width: 13.w,
-                   height: 25,
-                   decoration: new BoxDecoration(
-                     shape: BoxShape.circle,
-                     border: Border.all(color: Colors.grey)
-                   ),
-                   child: Icon(
-                     Icons.credit_card,
-                     size: 18,
-                     color: darkGrey, 
-                   ),                   
-                 ),    
-                 ]),
-                 // text Mặc định là thông tin khi đăng kí của đại lý
+                // text Mặc định là thông tin khi đăng kí của đại lý
                  SizedBox(
                    height: 30,
                    child: Center(
-                       child:  Text("Mặc định là thông tin khi đăng kí của đại lý"),     
+                       child:  Text("Mặc định là thông tin khi nhận hàng của đại lý"),     
                    ),
                  )
                ],)
@@ -303,7 +252,7 @@ class _InfoReturnState extends State<InfoReturn> {
                    )
                 ),
                 SizedBox(height: 15,),
-                // text địa chỉ + thay đổi
+                // text địa chỉ 
                 SizedBox(
                    width: myWidth,
                    height: 30,
@@ -318,22 +267,8 @@ class _InfoReturnState extends State<InfoReturn> {
                        SizedBox(
                          width: myWidth*0.8,
                          height: 40,
-                         child: Text("$extra," +" $ward," +" $district,"+" $province", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
+                         child: Text("${widget.extra}," +" ${widget.ward}," +" ${widget.district},"+" ${widget.province}", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: darkGrey),),
                        ),
-                       //text button thay đổi
-                       SizedBox(
-                         width: myWidth*0.2,
-                         height: 40,
-                         child: GestureDetector(
-                           onTap: () async {
-                            await showDialog (
-                               context: context,
-                               builder: (context) => FutureProgressDialog(getAddress()),
-                            );
-                          },
-                           child: Text("Thay đổi", textAlign: TextAlign.right ,style: TextStyle(color: Color(0xff105480), fontSize: 15,),),
-                         ),
-                       )
                      ],
                    )
                 ),
@@ -342,7 +277,7 @@ class _InfoReturnState extends State<InfoReturn> {
             ), 
             SizedBox(height: 12,),
             
-            //FormField ghi chú
+            //FormField Lý do trả
             Container(
               width: 100.w,
               height: 220,
@@ -353,7 +288,7 @@ class _InfoReturnState extends State<InfoReturn> {
                 SizedBox(
                    width: myWidth,
                    height: 30,
-                   child: Text("Ghi chú (nếu có)", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+                   child: Text("Lý do trả hàng", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
                 ),
                 SizedBox(
                    width: myWidth,
@@ -429,10 +364,9 @@ class _InfoReturnState extends State<InfoReturn> {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {                          
-                                 //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment()));
                                  //set phone và note để tạo đơn hàng
                                  Provider.of<OrderProvider>(context, listen: false).setPhoneAndNote(phone, noteController.text);
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>  InfoPayment()));
+                                 //post trả hàng tại đây
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
@@ -440,14 +374,12 @@ class _InfoReturnState extends State<InfoReturn> {
                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), )
                                   )
                               ),
-                              child: Text("Tiếp tục", style: TextStyle(fontWeight: FontWeight.w700), )
+                              child: Text("Trả hàng", style: TextStyle(fontWeight: FontWeight.w700), )
                           )  
                         ),
                         SizedBox(height: 7,),
                       ])
               )          
-
-        
 
       );  
   }
