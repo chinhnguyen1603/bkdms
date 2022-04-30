@@ -1,5 +1,5 @@
 import 'package:bkdms/main.dart';
-import 'package:bkdms/screens/features_screens/return_screens/ReturnOrder.dart';
+import 'package:bkdms/services/ReturnProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:bkdms/models/OrderInfo.dart';
+import 'package:bkdms/screens/features_screens/return_screens/ReturnOrder.dart';
+import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/DetailOrder.dart';
 
 class MainPageReturn extends StatefulWidget {
 
@@ -195,8 +197,10 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                            children: [
                              //thông tin đơn hàng đã giao
                              GestureDetector(
-                               onTap: (){
-
+                               onTap: () {
+                                  //clear list số lượng tại đây
+                                  Provider.of<AmountReturnProvider>(context, listen: false).clearList();
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrder(lstSelectDelivered[index])));
                                },
                                //chi tiết đơn
                                child: Container(
@@ -357,7 +361,9 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                              //thông tin đơn hàng đã giao
                              GestureDetector(
                                onTap: (){
-
+                                  //clear list số lượng tại đây
+                                  Provider.of<AmountReturnProvider>(context, listen: false).clearList();
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrder(lstDelivered[index])));
                                },
                                //chi tiết đơn
                                child: Container(
@@ -510,6 +516,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
             ]
           )
       ),
+ 
     );
   }
 

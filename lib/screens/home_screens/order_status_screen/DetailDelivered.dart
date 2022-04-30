@@ -8,8 +8,6 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/OrderInfo.dart';
 
 
-//cần chỉnh sửa
-
 class DetailDelivered extends StatefulWidget {
   late OrderInfo orderDeliveredInfo ;
   DetailDelivered(this.orderDeliveredInfo);

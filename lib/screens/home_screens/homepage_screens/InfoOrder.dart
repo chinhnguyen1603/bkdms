@@ -49,10 +49,10 @@ class _InfoOrderState extends State<InfoOrder> {
   void initState() {
     super.initState();
     Agency user = Provider.of<Agency>(context, listen: false);
-    name = user.nameOwn as String;
-    phone = user.phone as String;
-    //khởi tạo InfoOfOrder address bằng agency
-    Provider.of<OrderProvider>(context, listen: false).setAddress(user.province as String, user.district as String, user.ward as String, user.extraInfoOfAddress as String);
+    name = user.nameOwn;
+    phone = user.phone;
+    //khởi tạo ReturnOrder address bằng agency
+    Provider.of<OrderProvider>(context, listen: false).setAddress(user.province, user.district, user.ward, user.extraInfoOfAddress);
   }
   
   @override
