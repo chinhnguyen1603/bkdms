@@ -5,7 +5,13 @@ import 'package:sizer/sizer.dart';
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 
-class Member extends StatelessWidget {
+class Member extends StatefulWidget {
+
+  @override
+  State<Member> createState() => _MemberState();
+}
+
+class _MemberState extends State<Member> {
   static const blueText = Color(0xff105480);
   static const textColor = Color(0xff27214d);
  
