@@ -1,10 +1,8 @@
-import 'package:bkdms/screens/features_screens/contact_screens/FeedBack.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterHistory.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterLevel.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PolicyDebt.dart';
 
 class ScreenLevel extends StatefulWidget {
   const ScreenLevel({ Key? key }) : super(key: key);
@@ -34,132 +32,142 @@ class _ScreenLevelState extends State<ScreenLevel> {
             SizedBox(height: 20,),
 
             //đăng kí mới
-            Container(
-              width: widthContainer,
-              height: 70,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(37, 79, 176, 0.3),
-                    blurRadius: 25,        
-                    offset: Offset(0,2), 
-                  )
-                ]
-              ),
-              alignment: Alignment.center,
-              //icon + text + tại đây
-              child: SizedBox(
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterLevel()));
+              },
+              child: Container(
                 width: widthContainer,
                 height: 70,
-                child: Row(
-                  children: [
-                    //icon
-                    SizedBox(
-                      width: widthContainer*0.2,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Color(0xfff9fafb),
-                            shape: BoxShape.circle,
-                          ),   
-                          child: SizedBox(height: 30,width: 30, child: Icon(Icons.edit_calendar_outlined, color: Color(0xff5677ff),), )
-                      ),
-                    ),                         
-                    //text + mô tả 
-                    SizedBox(
-                      height: 60,
-                      width: myWidth*0.5,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 12,),
-                          SizedBox(
-                            width: widthContainer*0.6,
-                            child: Text("Đăng kí mới", textAlign: TextAlign.left, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                          ),
-                          SizedBox(height: 3,),
-                          SizedBox(
-                            width: widthContainer*0.6,
-                            child: Text("Tham gia để tận hưởng ưu đãi", textAlign: TextAlign.left, maxLines: 1, style: TextStyle(color: darkGrey, fontSize: 13))
-                          )
-                        ],
-                      ),
-                    ), 
-                    //icon mũi tên
-                    SizedBox(
-                      height: 60,
-                      width: myWidth*0.2,
-                      child: Icon(Icons.arrow_forward_ios,)
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(37, 79, 176, 0.3),
+                      blurRadius: 25,        
+                      offset: Offset(0,2), 
                     )
-                  ],
+                  ]
+                ),
+                alignment: Alignment.center,
+                //icon + text + tại đây
+                child: SizedBox(
+                  width: widthContainer,
+                  height: 70,
+                  child: Row(
+                    children: [
+                      //icon
+                      SizedBox(
+                        width: widthContainer*0.2,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Color(0xfff9fafb),
+                              shape: BoxShape.circle,
+                            ),   
+                            child: SizedBox(height: 30,width: 30, child: Icon(Icons.edit_calendar_outlined, color: Color(0xff5677ff),), )
+                        ),
+                      ),                         
+                      //text + mô tả 
+                      SizedBox(
+                        height: 60,
+                        width: myWidth*0.5,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 12,),
+                            SizedBox(
+                              width: widthContainer*0.6,
+                              child: Text("Đăng kí mới", textAlign: TextAlign.left, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
+                            ),
+                            SizedBox(height: 3,),
+                            SizedBox(
+                              width: widthContainer*0.6,
+                              child: Text("Tham gia để tận hưởng ưu đãi", textAlign: TextAlign.left, maxLines: 1, style: TextStyle(color: darkGrey, fontSize: 13))
+                            )
+                          ],
+                        ),
+                      ), 
+                      //icon mũi tên
+                      SizedBox(
+                        height: 60,
+                        width: myWidth*0.2,
+                        child: Icon(Icons.arrow_forward_ios,)
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
             SizedBox(height: 20,),
 
             //xem lịch sử
-            Container(
-              width: widthContainer,
-              height: 70,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(37, 79, 176, 0.3),
-                    blurRadius: 25,        
-                    offset: Offset(0,2), 
-                  )
-                ]
-              ),
-              alignment: Alignment.center,
-              //icon + text + tại đây
-              child: SizedBox(
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterHistory()));
+              },
+              child: Container(
                 width: widthContainer,
                 height: 70,
-                child: Row(
-                  children: [
-                    //icon
-                    SizedBox(
-                      width: widthContainer*0.2,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Color(0xfff9fafb),
-                            shape: BoxShape.circle,
-                          ),   
-                          child: SizedBox(height: 30,width: 30, child: Icon(Icons.edit_calendar_outlined, color: Color(0xff5677ff),), )
-                      ),
-                    ),                         
-                    //text + mô tả 
-                    SizedBox(
-                      height: 60,
-                      width: myWidth*0.5,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 12,),
-                          SizedBox(
-                            width: widthContainer*0.6,
-                            child: Text("Xem lịch sử", textAlign: TextAlign.left, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
-                          ),
-                          SizedBox(height: 3,),
-                          SizedBox(
-                            width: widthContainer*0.6,
-                            child: Text("Lịch sử đăng kí hạn mức", textAlign: TextAlign.left, maxLines: 1, style: TextStyle(color: darkGrey, fontSize: 13))
-                          )
-                        ],
-                      ),
-                    ), 
-                    //icon mũi tên
-                    SizedBox(
-                      height: 60,
-                      width: myWidth*0.2,
-                      child: Icon(Icons.arrow_forward_ios,)
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(37, 79, 176, 0.3),
+                      blurRadius: 25,        
+                      offset: Offset(0,2), 
                     )
-                  ],
+                  ]
+                ),
+                alignment: Alignment.center,
+                //icon + text + tại đây
+                child: SizedBox(
+                  width: widthContainer,
+                  height: 70,
+                  child: Row(
+                    children: [
+                      //icon
+                      SizedBox(
+                        width: widthContainer*0.2,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Color(0xfff9fafb),
+                              shape: BoxShape.circle,
+                            ),   
+                            child: SizedBox(height: 30,width: 30, child: Icon(Icons.difference_outlined, color: Color(0xff5677ff),), )
+                        ),
+                      ),                         
+                      //text + mô tả 
+                      SizedBox(
+                        height: 60,
+                        width: myWidth*0.5,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 12,),
+                            SizedBox(
+                              width: widthContainer*0.6,
+                              child: Text("Xem lịch sử", textAlign: TextAlign.left, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
+                            ),
+                            SizedBox(height: 3,),
+                            SizedBox(
+                              width: widthContainer*0.6,
+                              child: Text("Lịch sử đăng kí hạn mức", textAlign: TextAlign.left, maxLines: 1, style: TextStyle(color: darkGrey, fontSize: 13))
+                            )
+                          ],
+                        ),
+                      ), 
+                      //icon mũi tên
+                      SizedBox(
+                        height: 60,
+                        width: myWidth*0.2,
+                        child: Icon(Icons.arrow_forward_ios,)
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

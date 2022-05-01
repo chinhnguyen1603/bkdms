@@ -33,6 +33,8 @@ class ShowListItemState extends State<ShowListItem> {
   bool _isSearching = false;
   
   //biến dưới đây được dùng trong bottom sheet
+  //nước sản xuất
+  String countryProduce ="";
   //giá từng đơn vị
   String unitPrice ="";
   //dropdown tên đơn vị
@@ -246,6 +248,11 @@ class ShowListItemState extends State<ShowListItem> {
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
                                                      context: ctxGridview,
                                                      builder: (BuildContext context) {
+                                                       //xử lý nếu xuât xứ null
+                                                       if(itemProvider.lstItem[index].countryProduce != null ){
+                                                         countryProduce = itemProvider.lstItem[index].countryProduce as String;
+                                                       }
+                                                       //
                                                        return StatefulBuilder( builder: (BuildContext context, setState) => SingleChildScrollView( child:
                                                         Container(
                                                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -312,7 +319,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                                     height: 24,
                                                                                     width: myWidth*0.6,
                                                                                     child: Text(
-                                                                                      "Xuất xứ: " + "${itemProvider.lstItem[index].countryProduce}", 
+                                                                                      "Xuất xứ: " + "$countryProduce", 
                                                                                       maxLines: 1,
                                                                                       overflow: TextOverflow.ellipsis,
                                                                                       softWrap: false,
@@ -618,6 +625,11 @@ class ShowListItemState extends State<ShowListItem> {
                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft:  Radius.circular(10), topRight:  Radius.circular(10)),),
                                                      context: ctxGridview,
                                                      builder: (BuildContext context) {
+                                                       //xử lý nếu xuât xứ null
+                                                       if(itemProvider.lstItem[index].countryProduce != null ){
+                                                         countryProduce = itemProvider.lstItem[index].countryProduce as String;
+                                                       }
+                                                       //                                                       
                                                        return StatefulBuilder( builder: (BuildContext context, setState) => SingleChildScrollView( child:
                                                         Container(
                                                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -683,7 +695,7 @@ class ShowListItemState extends State<ShowListItem> {
                                                                                     height: 24,
                                                                                     width: myWidth*0.6,
                                                                                     child: Text(
-                                                                                      "Xuất xứ: " + "${itemProvider.lstItem[index].countryProduce}", 
+                                                                                      "Xuất xứ: " + "$countryProduce", 
                                                                                       maxLines: 1,
                                                                                       overflow: TextOverflow.ellipsis,
                                                                                       softWrap: false,

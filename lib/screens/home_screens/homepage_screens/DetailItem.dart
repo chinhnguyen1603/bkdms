@@ -45,7 +45,9 @@ class DetailItemState extends State<DetailItem> {
   //form nhập số lượng sản phẩm
   final _formEnterAmountKey = GlobalKey<FormState>();
   final enternAmountController = TextEditingController();
-  
+  //xuất xứ + ngày sản xuất
+  String countryProduce ="";
+  String dateManufacture ="";
   
   
   @override
@@ -64,6 +66,13 @@ class DetailItemState extends State<DetailItem> {
   Widget build(BuildContext context) {
     double widthDevice = MediaQuery.of(context).size.width;// chiều rộng thiết bị
     double myWidth = widthDevice*0.9; // chiều rộng hàng ngoài cùng(tê, giá sp, thông tin chi tiết,...)
+    //lấy giá trị xuất xứ  + ngày sản xuất
+    if(widget.myItem.countryProduce != null) {
+      countryProduce = widget.myItem.countryProduce as String;
+    }
+    if(widget.myItem.dateManufacture != null) {
+      dateManufacture = widget.myItem.dateManufacture as String;
+    }    
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
@@ -406,7 +415,7 @@ class DetailItemState extends State<DetailItem> {
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("${widget.myItem.countryProduce}"),
+                                child: Text("$countryProduce"),
                               )                              
                             ],
                           )  
@@ -425,7 +434,7 @@ class DetailItemState extends State<DetailItem> {
                               ),
                               SizedBox(
                                 width: myWidth*0.5,
-                                child: Text("${widget.myItem.dateManufacture}"),
+                                child: Text("$dateManufacture"),
                               )
                             ],
                           )  
@@ -445,7 +454,7 @@ class DetailItemState extends State<DetailItem> {
                                 width: myWidth*0.5,
                                 child: GestureDetector(
                                   onTap: (){
-                                     Navigator.push(context, MaterialPageRoute(builder: (context) => DescribeItem(widget.myItem.description)));
+                                     Navigator.push(context, MaterialPageRoute(builder: (context) => DescribeItem(widget.myItem.description as String)));
                                   }, 
                                   child: Text("xem ở đây", style: TextStyle(color: Colors.blue),),
                                 ),
@@ -658,7 +667,7 @@ class DetailItemState extends State<DetailItem> {
                                                                                     height: 24,
                                                                                     width: myWidth*0.6,
                                                                                     child: Text(
-                                                                                      "Xuất xứ: " + "${widget.myItem.countryProduce}", 
+                                                                                      "Xuất xứ: " + "$countryProduce", 
                                                                                       maxLines: 1,
                                                                                       overflow: TextOverflow.ellipsis,
                                                                                       softWrap: false,

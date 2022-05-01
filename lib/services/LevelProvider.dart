@@ -51,8 +51,8 @@ class LevelProvider with ChangeNotifier{
   }
 
   //đăng kí hạn mức, dùng levelId + agencyId
-  Future<void> registerLevel(String? token, String? workspace, String levelId, String agencyId) async {
-    print("bắt đầu get level");
+  Future<void> registerLevel(String? token, String? workspace, String agencyId, String levelId) async {
+    print("bắt đầu đăng kí level");
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/level/register');
     try {
       final response = await http.post(
