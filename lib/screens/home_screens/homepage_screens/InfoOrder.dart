@@ -51,7 +51,7 @@ class _InfoOrderState extends State<InfoOrder> {
     Agency user = Provider.of<Agency>(context, listen: false);
     name = user.nameOwn;
     phone = user.phone;
-    //khởi tạo ReturnOrder address bằng agency
+    //khởi tạo Create Order address bằng agency
     Provider.of<OrderProvider>(context, listen: false).setAddress(user.province, user.district, user.ward, user.extraInfoOfAddress);
   }
   

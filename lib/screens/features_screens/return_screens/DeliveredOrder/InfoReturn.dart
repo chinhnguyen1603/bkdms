@@ -59,8 +59,9 @@ class _InfoReturnState extends State<InfoReturn> {
     Agency user = Provider.of<Agency>(context, listen: false);
     name = user.nameOwn;
     phone = user.phone;
-    //khởi tạo InfoOfOrder address bằng agency
+    //khởi tạo InfoOfOrder address &totalPayment
     Provider.of<ReturnProvider>(context, listen: false).setAddress(widget.province , widget.district, widget.ward , widget.extra);
+    Provider.of<ReturnProvider>(context, listen: false).setTotalPayment(widget.totalPayment);
   }
   
   @override
@@ -313,7 +314,7 @@ class _InfoReturnState extends State<InfoReturn> {
         )
       ),
      
-      //bottombar Tiếp tục
+      //bottombar Trả hàng
       bottomNavigationBar: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -365,8 +366,10 @@ class _InfoReturnState extends State<InfoReturn> {
                           child: ElevatedButton(
                               onPressed: () async {                          
                                  //set phone và note để tạo đơn hàng
-                                 Provider.of<OrderProvider>(context, listen: false).setPhoneAndNote(phone, noteController.text);
+                                 Provider.of<ReturnProvider>(context, listen: false).setPhoneAndNote(phone, noteController.text);
                                  //post trả hàng tại đây
+                                 Agency user = Provider.of<Agency>(context, listen: false);
+                                 Provider.of<ReturnProvider>(context, listen: false).createReturnOrder(user.token, user.workspace, user.id, widget.orderId);
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),

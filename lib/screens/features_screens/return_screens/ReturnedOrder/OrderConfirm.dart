@@ -1,3 +1,5 @@
+import 'package:bkdms/screens/features_screens/return_screens/ReturnedOrder/DetailConfirmReturn.dart';
+import 'package:bkdms/services/ReturnProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -6,7 +8,6 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/DetailConfirm.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:bkdms/models/OrderInfo.dart';
 
@@ -47,8 +48,12 @@ class OrderConfirmState extends State<OrderConfirm> {
     //update lstWaiOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
     List<OrderInfo> lstWaitOrder = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "WAITING_FOR_APPROVED" || order.orderStatus == "PROCESSING" ) && order.type == "RETURN_ORDER" ){
-          lstWaitOrder.add(order);
+        if(order.orderStatus == "WAITING_FOR_APPROVED" && order.type == "RETURN_ORDER" ){
+          if(order.deliveredTime != null || order.completedTime !=null || order.approvedTime !=null || order.cancelledTimeByAgency != null || order.cancelledTimeBySupplier != null){
+            //có 1 time khác null thì loại
+          } else{
+            lstWaitOrder.add(order);
+          }
         }
     }  
     //width dùng trong container
@@ -84,7 +89,7 @@ class OrderConfirmState extends State<OrderConfirm> {
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirm(lstWaitOrder[index])));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailConfirmReturn(lstWaitOrder[index])));
                            },
                            child: Container(
                              width: 100.w,
@@ -112,10 +117,10 @@ class OrderConfirmState extends State<OrderConfirm> {
                                         SizedBox(
                                           width: myWidth*0.6,
                                           child:  Text(
-                                            "Đơn hàng #" + "${lstWaitOrder[index].orderCode}",
+                                            "Mã #" + "${lstWaitOrder[index].orderCode}",
                                             style: TextStyle(
                                               color: textColor,
-                                              fontSize: 16,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
@@ -330,7 +335,6 @@ class OrderConfirmState extends State<OrderConfirm> {
   }
   //hàm lấy ảnh cloudinary
   String getUrlFromLinkImg(String linkImg) {
-        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
         //linkImg receive from server as Public Id
         final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
@@ -343,7 +347,7 @@ class OrderConfirmState extends State<OrderConfirm> {
     return Future(() async {
     //gọi provide order delete sau đó get lại
     Agency user = Provider.of<Agency>(context, listen: false);
-    await Provider.of<OrderProvider>(context, listen: false).deleteOrder(user.token, user.workspace, user.id, orderId)
+    await Provider.of<ReturnProvider>(context, listen: false).deleteOrder(user.token, user.workspace, user.id, orderId)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi delete order future dialog");

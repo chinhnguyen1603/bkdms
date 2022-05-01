@@ -16,7 +16,7 @@ class Product {
 
 class ReturnProvider with ChangeNotifier{
    //biến dưới đây để create retrun order
-   static const purOrder ="RETURN_ORDER";
+   static const reOrder ="RETURN_ORDER";
    late int totalPayment;
    late var listProduct;
    late String province;
@@ -59,6 +59,7 @@ class ReturnProvider with ChangeNotifier{
   Future<void> createReturnOrder(String token, String workspace, String agencyId, String orderId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-by-agency');
     print(" bắt đầu create return order");
+        print(this.listProduct);
      try {
       final response = await http.post(
         url, 
@@ -78,8 +79,9 @@ class ReturnProvider with ChangeNotifier{
           'totalPayment':this.totalPayment.toString(),
           'listProduct': this.listProduct,
           'agencyId': agencyId,
-          'type': purOrder,
+          'type': reOrder,
           'orderId': orderId,
+          'paymentType': "COD_PAYMENT"
         }),
       );
       print(response.statusCode);
@@ -95,4 +97,35 @@ class ReturnProvider with ChangeNotifier{
       throw error;
     }
   }
+
+  //http delete order
+  Future<void> deleteOrder(String? token, String? workspace, String? agencyId, String orderId) async {
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/cancel-order-by-agency');
+    print(" bắt đầu delete order");
+     try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{     
+          'orderId': orderId,
+        }),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 201){
+         print(response.body);
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
 }

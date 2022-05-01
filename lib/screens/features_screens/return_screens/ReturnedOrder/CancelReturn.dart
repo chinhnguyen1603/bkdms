@@ -1,4 +1,5 @@
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancelAgency.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancelSupplier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -44,17 +45,17 @@ class CancelReturnState extends State<CancelReturn> {
   @override
   Widget build(BuildContext context) {
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
-    List<OrderInfo> lstCancelReturn = [];
+    List<OrderInfo> lstCancelOrder = [];
     for( var order in lstOrder) {
-        if(order.orderStatus == "CANCELLED_FROM_AGENCY" && order.type == "RETURN_ORDER"){
-          lstCancelReturn.add(order);
+        if((order.orderStatus == "CANCELLED_FROM_AGENCY" || order.orderStatus == "CANCELLED_FROM_SUPPLIER") && order.type == "RETURN_ORDER"){
+          lstCancelOrder.add(order);
         }
     }
     //width dùng trong container
     double myWidth = 95.w;
     //check if has or not order, mỗi lần update tự đặt isHasOrder = false, nếu có list thì về true
     bool isHasOrder = false;
-    if(lstCancelReturn.length !=0 ) {
+    if(lstCancelOrder.length !=0 ) {
       isHasOrder = true;
     }
     //
@@ -71,199 +72,394 @@ class CancelReturnState extends State<CancelReturn> {
                 ListView.builder(
                    //đảo ngược cho hợp với thời gian
                    reverse: true,
-                   itemCount:lstCancelReturn.length,              
+                   itemCount:lstCancelOrder.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),
                    itemBuilder: (BuildContext context, int index) {
                      //thêm dấu chấm vào giá sản phẩm
                      RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
                      String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+                     //logic hủy đơn bởi nhà cung cấp hay người dùng. mặc định là người dùng. Tính theo từng index trong listview
+                     bool isCancelSupplier = false;
+                     if(lstCancelOrder[index].orderStatus == "CANCELLED_FROM_SUPPLIER"){
+                       isCancelSupplier = true;
+                     }
                      //widget
-                     return Column(
-                       children: [   
-                         //container chứa chi tiết đơn                 
-                         GestureDetector(
-                           onTap: (){
-                        //     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancel(lstCancelReturn[index])));
-                           },
-                           child: Container(
-                             width: 100.w,
-                             height: 245,
-                             color: Colors.white,
-                             child: Column(
-                               children: [
-                                 SizedBox(width: 100.w, height: 8,),
-                                 //Ordercode + time đặt
-                                 SizedBox(
-                                   width: myWidth,
-                                   height: 20,
-                                   child: Row(
-                                     children: [
-                                        //icon bookmark
-                                        SizedBox(
-                                          width: myWidth*0.1, 
-                                          child: Icon(
-                                            Icons.bookmark,
-                                            color: darkGrey,
-                                            size: 20,
-                                          ),
-                                        ),
-                                        //Order code
-                                        SizedBox(
-                                          width: myWidth*0.6,
-                                          child:  Text(
-                                            "Đơn hàng #" + "${lstCancelReturn[index].orderCode}",
-                                            style: TextStyle(
-                                              color: textColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
+                     return isCancelSupplier
+                       //dấu hỏi là hủy bởi nhà cung cấp
+                       ?Column(
+                         children: [   
+                           //container chứa chi tiết đơn                 
+                           GestureDetector(
+                             onTap: (){
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancelSupplier(lstCancelOrder[index])));
+                             },
+                             child: Container(
+                               width: 100.w,
+                               height: 245,
+                               color: Colors.white,
+                               child: Column(
+                                 children: [
+                                   SizedBox(width: 100.w, height: 8,),
+                                   //Ordercode + time đặt
+                                   SizedBox(
+                                     width: myWidth,
+                                     height: 20,
+                                     child: Row(
+                                       children: [
+                                          //icon bookmark
+                                          SizedBox(
+                                            width: myWidth*0.1, 
+                                            child: Icon(
+                                              Icons.bookmark,
+                                              color: darkGrey,
+                                              size: 20,
                                             ),
                                           ),
-                                        ),
-                                        //time đặt         
-                                        SizedBox(
-                                          width: myWidth*0.3,
-                                          child: Text(
-                                            "${convertTime(lstCancelReturn[index].cancelledTimeByAgency as String)}",
-                                            style: TextStyle(
-                                              color: textColor,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
+                                          //Order code
+                                          SizedBox(
+                                            width: myWidth*0.6,
+                                            child:  Text(
+                                              "Mã #" + "${lstCancelOrder[index].orderCode}",
+                                              style: TextStyle(
+                                                color: textColor,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
                                           ),
-                                        ),                                                               
-                                     ],
-                                   ),
-                                 ),
-                                 Divider(),
-                                 //Ảnh + tên + đơn giá + số lượng + thành tiền list[0]
-                                 SizedBox(
-                                   width: myWidth,
-                                   height: 80,
-                                   child: Row(children: [
-                                      //Ảnh sản phẩm
-                                      SizedBox(
-                                        height: 100,
-                                        width: myWidth*0.3,
-                                        child: Image.network(
-                                          getUrlFromLinkImg("${lstCancelReturn[index].orderDetails[0]['unit']['product']['linkImg']}")
-                                        ),
-                                      ),
-                                      SizedBox(width: 10,),
-                                  //Tên, đơn vị + số lượng
-                                  SizedBox(
-                                    height: 100,
-                                    width: myWidth*0.5,
-                                    child: Column(
-                                      children: [
-                                        // tên sản phẩm
-                                        SizedBox(
-                                          height: 30,
-                                          width: myWidth*0.5,
-                                          child: Text(
-                                            "${lstCancelReturn[index].orderDetails[0]['unit']['product']['name']}", 
-                                             maxLines: 1,
-                                             overflow: TextOverflow.ellipsis,
-                                             softWrap: false,
-                                             textAlign: TextAlign.left,
-                                             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),                                        
-                                          )
-                                        ),
-                                        // Đơn vị
-                                        SizedBox(
-                                          height: 25,
-                                          width: myWidth*0.5,
-                                          child: Text(
-                                             "Đơn vị: " + "${lstCancelReturn[index].orderDetails[0]['unit']['name']}", 
-                                             maxLines: 1,
-                                             overflow: TextOverflow.ellipsis,
-                                             softWrap: false,
-                                             textAlign: TextAlign.left,
-                                             style: TextStyle(fontSize: 14, ),                                        
-                                          )
-                                        ),   
-                                        // Số lượng
-                                        SizedBox(
-                                          height: 25,
-                                          width: myWidth*0.5,
-                                          child: Text(
-                                             "Số lượng: " + "${lstCancelReturn[index].orderDetails[0]['quantity']}", 
-                                             maxLines: 1,
-                                             overflow: TextOverflow.ellipsis,
-                                             softWrap: false,
-                                             textAlign: TextAlign.left,
-                                             style: TextStyle(fontSize: 14,),                                        
-                                          )
-                                        ),                                                                                                       
-                                      ],
+                                          //time đặt         
+                                          SizedBox(
+                                            width: myWidth*0.3,
+                                            child: Text(
+                                              "${convertTime(lstCancelOrder[index].cancelledTimeBySupplier as String)}",
+                                              style: TextStyle(
+                                                color: textColor,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),                                                               
+                                       ],
                                      ),
-                                    )
-                                  ]),
-                                 ),
-                                 Divider(),
-                                 //Text xem thêm sản phẩm
-                                 Text("Xem thêm", style: TextStyle(color: darkGrey),),
-                                 Divider(),
-                                 //Số lượng sản phẩm + tổng tiền
-                                 SizedBox(
-                                   width: myWidth,
-                                   height: 20,
-                                   child: Row(
-                                     mainAxisAlignment: MainAxisAlignment.end,
-                                     children: [
-                                       //số lượng sản phẩm
-                                       SizedBox(
-                                         width: myWidth*0.4,
-                                         child: Row(
-                                           children: [
-                                             SizedBox(width: myWidth*0.05),
-                                             SizedBox(
-                                               width: myWidth*0.08,
-                                               height: 20,
-                                               child: Image.asset("assets/box.png",),
-                                             ),
-                                             SizedBox(width: 3,),
-                                             Text("${lstCancelReturn[index].orderDetails.length} sản phẩm", style: TextStyle(color: textColor),)
-                                           ],
-                                         ),
-                                       ),
-                                       SizedBox(width: myWidth*0.25,),
-                                       //tổng tiền
-                                       SizedBox(
-                                         width: myWidth*0.35,
-                                         child: Row(
-                                           children: [
-                                             SizedBox(
-                                               width: myWidth*0.1,
-                                               height: 20,
-                                               child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight, width: myWidth*0.1,),
-                                             ),
-                                             SizedBox(
-                                               width: myWidth*0.22,
-                                               child: Text(
-                                                 "${lstCancelReturn[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
-                                                 textAlign: TextAlign.center,
-                                                 style: TextStyle(color: textColor),
-                                               )
-                                             )
-                                           ],
-                                         ),
-                                       ),
-                                     ],
                                    ),
-                                 ),
-                                 Divider(),
-                                 //Button Hủy đơn hàng
-                                 SizedBox(
-                                   width: myWidth*0.94,
-                                   child: Text("Hủy đơn bởi người dùng", textAlign: TextAlign.center ,style: TextStyle(color: textColor),),
-                                 )
-                               ],
+                                   Divider(),
+                                   //Ảnh + tên + đơn giá + số lượng + thành tiền list[0]
+                                   SizedBox(
+                                     width: myWidth,
+                                     height: 80,
+                                     child: Row(children: [
+                                        //Ảnh sản phẩm
+                                        SizedBox(
+                                          height: 100,
+                                          width: myWidth*0.3,
+                                          child: Image.network(
+                                            getUrlFromLinkImg("${lstCancelOrder[index].orderDetails[0]['unit']['product']['linkImg']}")
+                                          ),
+                                        ),
+                                        SizedBox(width: 10,),
+                                    //Tên, đơn vị + số lượng
+                                    SizedBox(
+                                      height: 100,
+                                      width: myWidth*0.5,
+                                      child: Column(
+                                        children: [
+                                          // tên sản phẩm
+                                          SizedBox(
+                                            height: 30,
+                                            width: myWidth*0.5,
+                                            child: Text(
+                                              "${lstCancelOrder[index].orderDetails[0]['unit']['product']['name']}", 
+                                               maxLines: 1,
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),                                        
+                                            )
+                                          ),
+                                          // Đơn vị
+                                          SizedBox(
+                                            height: 25,
+                                            width: myWidth*0.5,
+                                            child: Text(
+                                               "Đơn vị: " + "${lstCancelOrder[index].orderDetails[0]['unit']['name']}", 
+                                               maxLines: 1,
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 14, ),                                        
+                                            )
+                                          ),   
+                                          // Số lượng
+                                          SizedBox(
+                                            height: 25,
+                                            width: myWidth*0.5,
+                                            child: Text(
+                                               "Số lượng: " + "${lstCancelOrder[index].orderDetails[0]['quantity']}", 
+                                               maxLines: 1,
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 14,),                                        
+                                            )
+                                          ),                                                                                                       
+                                        ],
+                                       ),
+                                      )
+                                    ]),
+                                   ),
+                                   Divider(),
+                                   //Text xem thêm sản phẩm
+                                   Text("Xem thêm", style: TextStyle(color: darkGrey),),
+                                   Divider(),
+                                   //Số lượng sản phẩm + tổng tiền
+                                   SizedBox(
+                                     width: myWidth,
+                                     height: 20,
+                                     child: Row(
+                                       mainAxisAlignment: MainAxisAlignment.end,
+                                       children: [
+                                         //số lượng sản phẩm
+                                         SizedBox(
+                                           width: myWidth*0.4,
+                                           child: Row(
+                                             children: [
+                                               SizedBox(width: myWidth*0.05),
+                                               SizedBox(
+                                                 width: myWidth*0.08,
+                                                 height: 20,
+                                                 child: Image.asset("assets/box.png",),
+                                               ),
+                                               SizedBox(width: 3,),
+                                               Text("${lstCancelOrder[index].orderDetails.length} sản phẩm", style: TextStyle(color: textColor),)
+                                             ],
+                                           ),
+                                         ),
+                                         SizedBox(width: myWidth*0.25,),
+                                         //tổng tiền
+                                         SizedBox(
+                                           width: myWidth*0.35,
+                                           child: Row(
+                                             children: [
+                                               SizedBox(
+                                                 width: myWidth*0.1,
+                                                 height: 20,
+                                                 child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight, width: myWidth*0.1,),
+                                               ),
+                                               SizedBox(
+                                                 width: myWidth*0.22,
+                                                 child: Text(
+                                                   "${lstCancelOrder[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                                   textAlign: TextAlign.center,
+                                                   style: TextStyle(color: textColor),
+                                                 )
+                                               )
+                                             ],
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ),
+                                   Divider(),
+                                   //text hủy đơn bởi nhà cung cấp
+                                   SizedBox(
+                                     width: myWidth*0.94,
+                                     child: Text("Hủy đơn bởi nhà cung cấp", textAlign: TextAlign.center ,style: TextStyle(color: textColor),),
+                                   )
+                                 ],
+                               ),
                              ),
                            ),
-                         ),
-                         SizedBox(width: 100.w, height: 12,),   
-                     ]);
+                           SizedBox(width: 100.w, height: 12,),   
+                       ])
+                       //dấu chấm là hủy bởi người dùng
+                       :Column(
+                         children: [   
+                           //container chứa chi tiết đơn                 
+                           GestureDetector(
+                             onTap: (){
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancelAgency(lstCancelOrder[index])));
+                             },
+                             child: Container(
+                               width: 100.w,
+                               height: 245,
+                               color: Colors.white,
+                               child: Column(
+                                 children: [
+                                   SizedBox(width: 100.w, height: 8,),
+                                   //Ordercode + time đặt
+                                   SizedBox(
+                                     width: myWidth,
+                                     height: 20,
+                                     child: Row(
+                                       children: [
+                                          //icon bookmark
+                                          SizedBox(
+                                            width: myWidth*0.1, 
+                                            child: Icon(
+                                              Icons.bookmark,
+                                              color: darkGrey,
+                                              size: 20,
+                                            ),
+                                          ),
+                                          //Order code
+                                          SizedBox(
+                                            width: myWidth*0.6,
+                                            child:  Text(
+                                              "Mã #" + "${lstCancelOrder[index].orderCode}",
+                                              style: TextStyle(
+                                                color: textColor,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                          //time đặt         
+                                          SizedBox(
+                                            width: myWidth*0.3,
+                                            child: Text(
+                                              "${convertTime(lstCancelOrder[index].cancelledTimeByAgency as String)}",
+                                              style: TextStyle(
+                                                color: textColor,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),                                                               
+                                       ],
+                                     ),
+                                   ),
+                                   Divider(),
+                                   //Ảnh + tên + đơn giá + số lượng + thành tiền list[0]
+                                   SizedBox(
+                                     width: myWidth,
+                                     height: 80,
+                                     child: Row(children: [
+                                        //Ảnh sản phẩm
+                                        SizedBox(
+                                          height: 100,
+                                          width: myWidth*0.3,
+                                          child: Image.network(
+                                            getUrlFromLinkImg("${lstCancelOrder[index].orderDetails[0]['unit']['product']['linkImg']}")
+                                          ),
+                                        ),
+                                        SizedBox(width: 10,),
+                                    //Tên, đơn vị + số lượng
+                                    SizedBox(
+                                      height: 100,
+                                      width: myWidth*0.5,
+                                      child: Column(
+                                        children: [
+                                          // tên sản phẩm
+                                          SizedBox(
+                                            height: 30,
+                                            width: myWidth*0.5,
+                                            child: Text(
+                                              "${lstCancelOrder[index].orderDetails[0]['unit']['product']['name']}", 
+                                               maxLines: 1,
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),                                        
+                                            )
+                                          ),
+                                          // Đơn vị
+                                          SizedBox(
+                                            height: 25,
+                                            width: myWidth*0.5,
+                                            child: Text(
+                                               "Đơn vị: " + "${lstCancelOrder[index].orderDetails[0]['unit']['name']}", 
+                                               maxLines: 1,
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 14, ),                                        
+                                            )
+                                          ),   
+                                          // Số lượng
+                                          SizedBox(
+                                            height: 25,
+                                            width: myWidth*0.5,
+                                            child: Text(
+                                               "Số lượng: " + "${lstCancelOrder[index].orderDetails[0]['quantity']}", 
+                                               maxLines: 1,
+                                               overflow: TextOverflow.ellipsis,
+                                               softWrap: false,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 14,),                                        
+                                            )
+                                          ),                                                                                                       
+                                        ],
+                                       ),
+                                      )
+                                    ]),
+                                   ),
+                                   Divider(),
+                                   //Text xem thêm sản phẩm
+                                   Text("Xem thêm", style: TextStyle(color: darkGrey),),
+                                   Divider(),
+                                   //Số lượng sản phẩm + tổng tiền
+                                   SizedBox(
+                                     width: myWidth,
+                                     height: 20,
+                                     child: Row(
+                                       mainAxisAlignment: MainAxisAlignment.end,
+                                       children: [
+                                         //số lượng sản phẩm
+                                         SizedBox(
+                                           width: myWidth*0.4,
+                                           child: Row(
+                                             children: [
+                                               SizedBox(width: myWidth*0.05),
+                                               SizedBox(
+                                                 width: myWidth*0.08,
+                                                 height: 20,
+                                                 child: Image.asset("assets/box.png",),
+                                               ),
+                                               SizedBox(width: 3,),
+                                               Text("${lstCancelOrder[index].orderDetails.length} sản phẩm", style: TextStyle(color: textColor),)
+                                             ],
+                                           ),
+                                         ),
+                                         SizedBox(width: myWidth*0.25,),
+                                         //tổng tiền
+                                         SizedBox(
+                                           width: myWidth*0.35,
+                                           child: Row(
+                                             children: [
+                                               SizedBox(
+                                                 width: myWidth*0.1,
+                                                 height: 20,
+                                                 child: Image.asset("assets/totalMoney.png", alignment: Alignment.centerRight, width: myWidth*0.1,),
+                                               ),
+                                               SizedBox(
+                                                 width: myWidth*0.22,
+                                                 child: Text(
+                                                   "${lstCancelOrder[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                                   textAlign: TextAlign.center,
+                                                   style: TextStyle(color: textColor),
+                                                 )
+                                               )
+                                             ],
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ),
+                                   Divider(),
+                                   //text hủy đơn bởi người dùng
+                                   SizedBox(
+                                     width: myWidth*0.94,
+                                     child: Text("Hủy đơn bởi người dùng", textAlign: TextAlign.center ,style: TextStyle(color: textColor),),
+                                   )
+                                 ],
+                               ),
+                             ),
+                           ),
+                           SizedBox(width: 100.w, height: 12,),   
+                       ]);
+                     
+
                    }
                 )
              ])

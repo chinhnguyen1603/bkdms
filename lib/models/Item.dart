@@ -3,11 +3,11 @@
 class Item {
   late String id;
   late String name;
-  late String countryProduce;
+  late String? countryProduce;
   late String type;
-  late String dateManufacture;
-  late String expirationDate;
-  late String? linkImg;
+  late String? dateManufacture;
+  late String? expirationDate;
+  late String linkImg;
   late String description;
   late String? categoryId; 
   late String? productlineId;

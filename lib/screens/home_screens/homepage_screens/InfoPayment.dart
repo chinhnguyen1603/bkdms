@@ -368,8 +368,6 @@ class InfoPaymentState extends State<InfoPayment> {
   Future getFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
-      print(user.id);
-      print(this.paymentType);
       await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id, this.paymentType)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
