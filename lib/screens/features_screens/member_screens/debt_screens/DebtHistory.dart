@@ -1,8 +1,11 @@
+import 'package:bkdms/models/OrderInfo.dart';
+import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:provider/provider.dart';
 
 class DebtHistory extends StatefulWidget {
   const DebtHistory({ Key? key }) : super(key: key);
@@ -12,23 +15,34 @@ class DebtHistory extends StatefulWidget {
 }
 
 class DebtHistoryState extends State<DebtHistory> {
+  List<OrderInfo> lstOrder = [];
+  List<OrderInfo> lstSelectDelivered = [];
 
-  List<String> lstDate = [];
-  List<String> lstSelectMonth = [];
-  List<String> getTimeApi = ["2021-12-15T08:34:12.015Z", "2022-01-20T17:49:55.441Z", "2022-04-17T17:53:32.843Z", "2022-04-20T17:50:42.782Z"]; 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.lstOrder = Provider.of<OrderProvider>(context).lstOrderInfo;
+  }
+
   bool _isSelecting = false;
  
-  @override
-  void initState() {
-    super.initState();
-    for( var time in getTimeApi) {
-       this.lstDate.add(convertTime(time));
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    //update lstDelivered show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstWaitOrder change
+    List<OrderInfo> lstDelivered = [];
+    // get lstDelivered 
+    for( var order in lstOrder) {
+        if ((order.completedTime !=null) && order.type == "PURCHASE_ORDER"){
+          lstDelivered.add(order);
+        }
+    }     
+    //
     double widthInContainer = 90.w*0.9;
+    //thêm dấu chấm vào giá sản phẩm
+    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
     //
     return Scaffold(
       backgroundColor: Color(0xfff3f5f6),
@@ -84,13 +98,13 @@ class DebtHistoryState extends State<DebtHistory> {
                         );
                         //build list mới từ tháng đã chọn đã chọn
                         setState(() {
-                          lstSelectMonth = lstDate
+                          lstSelectDelivered = lstDelivered
                             .where((element) =>
-                               element.contains("$month"))
+                               convertTime(element.completedTime!).contains(convertTime("$value")))
                             .toList();  
                           _isSelecting = true;   
                         });
-                        print(lstSelectMonth);       
+                        print(lstSelectDelivered);       
                       } 
                   });
                 }, 
@@ -103,7 +117,7 @@ class DebtHistoryState extends State<DebtHistory> {
             //listview khi select
             ?ListView.builder(
                reverse: true,
-               itemCount: lstSelectMonth.length,              
+               itemCount: lstSelectDelivered.length,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
@@ -127,12 +141,12 @@ class DebtHistoryState extends State<DebtHistory> {
                                   //order code
                                   SizedBox(
                                     width: widthInContainer*0.65,
-                                    child: Text("Đơn hàng #162291828", maxLines: 1, textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
+                                    child: Text("Đơn hàng #${lstSelectDelivered[index].orderCode}", maxLines: 1, textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
                                   ),
                                   //ngày hoàn thành
                                   SizedBox(
                                     width: widthInContainer*0.35,
-                                    child: Text("${lstSelectMonth[index]}", maxLines: 1, textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
+                                    child: Text("${convertTime(lstSelectDelivered[index].completedTime as String)}", maxLines: 1, textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
                                   )                                  
                                 ],
                               ),
@@ -142,8 +156,7 @@ class DebtHistoryState extends State<DebtHistory> {
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("+ 50.000.000đ", textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
-
+                              child: Text("+ ${lstSelectDelivered[index].totalPayment.replaceAllMapped(reg, mathFunc)}đ", textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
                             )
                           ],
                         ),
@@ -153,10 +166,10 @@ class DebtHistoryState extends State<DebtHistory> {
                   );
                }
              )
-             //listview khi select
+             //listview ban đàu
             :ListView.builder(
                reverse: true,
-               itemCount: lstDate.length,              
+               itemCount: lstDelivered.length,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
@@ -180,12 +193,12 @@ class DebtHistoryState extends State<DebtHistory> {
                                   //order code
                                   SizedBox(
                                     width: widthInContainer*0.65,
-                                    child: Text("Đơn hàng #162291828", textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
+                                    child: Text("Đơn hàng #${lstDelivered[index].orderCode}", textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
                                   ),
                                   //ngày hoàn thành
                                   SizedBox(
                                     width: widthInContainer*0.35,
-                                    child: Text("${lstDate[index]}", maxLines: 1,textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
+                                    child: Text("${convertTime(lstDelivered[index].completedTime as String)}", maxLines: 1,textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
                                   )                                  
                                 ],
                               ),
@@ -195,7 +208,7 @@ class DebtHistoryState extends State<DebtHistory> {
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("+ 50.000.000đ", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                              child: Text("+ ${lstDelivered[index].totalPayment.replaceAllMapped(reg, mathFunc)}đ", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
 
                             )
                           ],

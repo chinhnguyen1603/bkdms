@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/home_screens/order_status_screen/DetailDelivering.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -6,6 +7,7 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/OrderInfo.dart';
+
 
 class OrderReturning extends StatefulWidget {
   const OrderReturning({ Key? key }) : super(key: key);
@@ -42,15 +44,15 @@ class OrderReturningState extends State<OrderReturning> {
     //width dùng trong container
     double myWidth = 95.w;    
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
-    List<OrderInfo> lstOrderReturning = [];
+    List<OrderInfo> lstDelivering = [];
     for( var order in lstOrder) {
-        if((order.orderStatus == "APPROVED" ||order.orderStatus == "SHIPPING"  ) && order.type == "RETURN_ORDER" ){
-          lstOrderReturning.add(order);
+        if(order.orderStatus == "APPROVED" && order.type == "RETURN_ORDER" ){
+          lstDelivering.add(order);
         }
     }    
     //check if has or not order, phải để trong widget để build lại khi list change
     bool isHasOrder = false;
-    if(lstOrderReturning.length !=0 ) {
+    if(lstDelivering.length !=0 ) {
       isHasOrder = true;
     }
     //
@@ -66,7 +68,7 @@ class OrderReturningState extends State<OrderReturning> {
                 //UI List Order
                 ListView.builder(
                    reverse: true,
-                   itemCount:lstOrderReturning.length,              
+                   itemCount:lstDelivering.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),
                    itemBuilder: (BuildContext context, int index) {
@@ -79,7 +81,7 @@ class OrderReturningState extends State<OrderReturning> {
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                           // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrderReturning(lstOrderReturning[index])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDelivering(lstDelivering[index])));
                            },
                            child: Container(
                              width: 100.w,
@@ -107,10 +109,10 @@ class OrderReturningState extends State<OrderReturning> {
                                         SizedBox(
                                           width: myWidth*0.6,
                                           child:  Text(
-                                            "Đơn hàng #" + "${lstOrderReturning[index].orderCode}",
+                                            "Mã #" + "${lstDelivering[index].orderCode}",
                                             style: TextStyle(
                                               color: textColor,
-                                              fontSize: 16,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
@@ -119,7 +121,7 @@ class OrderReturningState extends State<OrderReturning> {
                                         SizedBox(
                                           width: myWidth*0.3,
                                           child: Text(
-                                            "${convertTime(lstOrderReturning[index].createTime)}",
+                                            "${convertTime(lstDelivering[index].createTime)}",
                                             style: TextStyle(
                                               color: textColor,
                                               fontSize: 12,
@@ -141,7 +143,7 @@ class OrderReturningState extends State<OrderReturning> {
                                         height: 100,
                                         width: myWidth*0.3,
                                         child: Image.network(
-                                          getUrlFromLinkImg("${lstOrderReturning[index].orderDetails[0]['unit']['product']['linkImg']}")
+                                          getUrlFromLinkImg("${lstDelivering[index].orderDetails[0]['unit']['product']['linkImg']}")
                                         ),
                                       ),
                                       SizedBox(width: 10,),
@@ -156,7 +158,7 @@ class OrderReturningState extends State<OrderReturning> {
                                           height: 30,
                                           width: myWidth*0.5,
                                           child: Text(
-                                            "${lstOrderReturning[index].orderDetails[0]['unit']['product']['name']}", 
+                                            "${lstDelivering[index].orderDetails[0]['unit']['product']['name']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -169,7 +171,7 @@ class OrderReturningState extends State<OrderReturning> {
                                           height: 25,
                                           width: myWidth*0.5,
                                           child: Text(
-                                             "Đơn vị: " + "${lstOrderReturning[index].orderDetails[0]['unit']['name']}", 
+                                             "Đơn vị: " + "${lstDelivering[index].orderDetails[0]['unit']['name']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -182,7 +184,7 @@ class OrderReturningState extends State<OrderReturning> {
                                           height: 25,
                                           width: myWidth*0.5,
                                           child: Text(
-                                             "Số lượng: " + "${lstOrderReturning[index].orderDetails[0]['quantity']}", 
+                                             "Số lượng: " + "${lstDelivering[index].orderDetails[0]['quantity']}", 
                                              maxLines: 1,
                                              overflow: TextOverflow.ellipsis,
                                              softWrap: false,
@@ -218,7 +220,7 @@ class OrderReturningState extends State<OrderReturning> {
                                                child: Image.asset("assets/box.png",),
                                              ),
                                              SizedBox(width: 2,),
-                                             Text("${lstOrderReturning[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
+                                             Text("${lstDelivering[index].orderDetails.length} sản phẩm", style: TextStyle(color: Color(0xff7b2626)),)
                                            ],
                                          ),
                                        ),
@@ -236,7 +238,7 @@ class OrderReturningState extends State<OrderReturning> {
                                              SizedBox(
                                                width: myWidth*0.22,
                                                child: Text(
-                                                 "${lstOrderReturning[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
+                                                 "${lstDelivering[index].totalPayment.replaceAllMapped(reg, mathFunc)}", 
                                                  textAlign: TextAlign.center,
                                                  style: TextStyle(color: Color(0xff7b2626)),
                                                )

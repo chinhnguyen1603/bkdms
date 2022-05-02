@@ -144,7 +144,8 @@ class OrderProvider with ChangeNotifier{
             type: orderData['type'],
             totalPayment: orderData['totalPayment'],
             totalDiscount: orderData['totalDiscount'],
-            orderDetails: orderData['orderDetails']        
+            orderDetails: orderData['orderDetails'],
+            wayBills: orderData['wayBills'],        
           ),
         );
       });

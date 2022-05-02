@@ -301,8 +301,12 @@ class ScreenHomeState extends State<ScreenHome> {
                            height: 54,
                            child: InkWell(
                            splashColor: Colors.deepOrange,
-                           onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
+                           onTap: () async {
+                              //get level
+                              Agency user = Provider.of<Agency>(context, listen: false);
+                              await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace); 
+                              //move to member
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
                            },
                            child: Container( 
                            margin: EdgeInsets.only(top:5) ,
@@ -406,10 +410,7 @@ class ScreenHomeState extends State<ScreenHome> {
                     width: myWidth*0.5,
                     child:
                       TextButton(
-                       onPressed: ()async {
-                         //test get level
-                         Agency user = Provider.of<Agency>(context, listen: false);
-                         await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace);                           
+                       onPressed: ()async {                          
                        }, 
                        child: SizedBox(
                          width: widthDevice*0.5,

@@ -25,6 +25,7 @@ class OrderInfo {
   late String totalPayment;
   String? totalDiscount;
   late List<dynamic> orderDetails;
+  late List<dynamic>? wayBills;
 
   OrderInfo({
     required this.id,
@@ -50,5 +51,6 @@ class OrderInfo {
     required this.totalPayment,
     required this.totalDiscount,
     required this.orderDetails,  
+    required this.wayBills,
   });
 }

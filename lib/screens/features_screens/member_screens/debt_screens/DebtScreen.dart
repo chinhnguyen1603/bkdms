@@ -95,7 +95,7 @@ class _DebtScreenState extends State<DebtScreen> {
                     child: Text("900.000.000đ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
                   ),
                   
-                  //dư nợ hiện tại + ngày thanh toán
+                  //dư nợ hiện tại + hạn thanh toán
                   SizedBox(height: 20,),
                   SizedBox(
                     width: widthInContainer,
@@ -133,8 +133,8 @@ class _DebtScreenState extends State<DebtScreen> {
                             Column(
                               children: [
                                 SizedBox(height: 8,),
-                                SizedBox(width:widthInContainer*0.4-8, child: Text("Ngày thanh toán", textAlign: TextAlign.left ,style: TextStyle(color: Color(0xff544c4c)))),
-                                SizedBox(width:widthInContainer*0.4-8 ,child: Text("Ngày 5", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)))
+                                SizedBox(width:widthInContainer*0.4-8, child: Text("Hạn thanh toán", textAlign: TextAlign.left ,style: TextStyle(color: Color(0xff544c4c)))),
+                                SizedBox(width:widthInContainer*0.4-8 ,child: Text("05/06", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)))
                               ],
                             ),
                           ],
