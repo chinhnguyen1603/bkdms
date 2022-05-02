@@ -8,15 +8,15 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/OrderInfo.dart';
 
 
-class DetailCancelAgency extends StatefulWidget {
+class CancelReturnAgency extends StatefulWidget {
   late OrderInfo orderCancelInfo ;
-  DetailCancelAgency(this.orderCancelInfo);
+  CancelReturnAgency(this.orderCancelInfo);
   
   @override
-  State<DetailCancelAgency> createState() => DetailCancelAgencyState();
+  State<CancelReturnAgency> createState() => CancelReturnAgencyState();
 }
 
-class DetailCancelAgencyState extends State<DetailCancelAgency> {
+class CancelReturnAgencyState extends State<CancelReturnAgency> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 

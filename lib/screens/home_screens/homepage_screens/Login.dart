@@ -270,34 +270,6 @@ class LoginState extends State<Login> {
                             }),
                           print("test kết quả lstItem"),
                           print(Provider.of<ItemProvider>(context, listen: false).lstItem), 
-                          //get Order trong HomePage   
-                          await Provider.of<OrderProvider>(context, listen: false).getOrder(user?.token, user?.workspace, user?.id)                     
-                            .catchError((onError){
-                              // phụ trợ xử lí String
-                              String fault = onError.toString().replaceAll("{", ""); // remove {
-                              String outputError = fault.replaceAll("}", ""); //remove }  
-                              // Alert Dialog khi lỗi xảy ra
-                              Alert(
-                                context: context,
-                                type: AlertType.error,
-                                style: AlertStyle(
-                                  titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                                  descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: darkGrey),
-                                ),
-                                title: "Oops! Có lỗi xảy ra",
-                                desc: outputError,
-                                buttons: [ 
-                                  DialogButton(
-                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
-                                    onPressed: () => Navigator.pop(context),
-                                    width: 100,
-                                  )
-                                ],
-                              ).show();
-                              setState(() {
-                                _isLoading = false;
-                              });
-                            }),
                           setState(() {
                             _isLoading = false;
                           }),

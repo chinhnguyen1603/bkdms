@@ -70,8 +70,6 @@ class CancelOrderState extends State<CancelOrder> {
                 SizedBox(width: 100.w, height: 12,),
                 //UI List Order
                 ListView.builder(
-                   //đảo ngược cho hợp với thời gian
-                   reverse: true,
                    itemCount:lstCancelOrder.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),

@@ -1,3 +1,5 @@
+import 'package:bkdms/screens/features_screens/return_screens/ReturnedOrder/CancelReturnAgency.dart';
+import 'package:bkdms/screens/features_screens/return_screens/ReturnedOrder/CancelReturnSupplier.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancelAgency.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancelSupplier.dart';
 import 'package:flutter/material.dart';
@@ -70,8 +72,6 @@ class CancelReturnState extends State<CancelReturn> {
                 SizedBox(width: 100.w, height: 12,),
                 //UI List Order
                 ListView.builder(
-                   //đảo ngược cho hợp với thời gian
-                   reverse: true,
                    itemCount:lstCancelOrder.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),
@@ -92,7 +92,7 @@ class CancelReturnState extends State<CancelReturn> {
                            //container chứa chi tiết đơn                 
                            GestureDetector(
                              onTap: (){
-                               Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancelSupplier(lstCancelOrder[index])));
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => CancelReturnSupplier(lstCancelOrder[index])));
                              },
                              child: Container(
                                width: 100.w,
@@ -278,7 +278,7 @@ class CancelReturnState extends State<CancelReturn> {
                            //container chứa chi tiết đơn                 
                            GestureDetector(
                              onTap: (){
-                               Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCancelAgency(lstCancelOrder[index])));
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => CancelReturnAgency(lstCancelOrder[index])));
                              },
                              child: Container(
                                width: 100.w,

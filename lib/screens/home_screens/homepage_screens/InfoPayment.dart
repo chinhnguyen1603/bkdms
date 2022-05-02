@@ -381,7 +381,6 @@ class InfoPaymentState extends State<InfoPayment> {
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)

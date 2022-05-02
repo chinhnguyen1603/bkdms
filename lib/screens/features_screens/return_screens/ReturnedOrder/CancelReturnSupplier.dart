@@ -7,16 +7,15 @@ import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/OrderInfo.dart';
 
-
-class DetailCancelAgency extends StatefulWidget {
+class CancelReturnSupplier extends StatefulWidget {
   late OrderInfo orderCancelInfo ;
-  DetailCancelAgency(this.orderCancelInfo);
+  CancelReturnSupplier(this.orderCancelInfo);
   
   @override
-  State<DetailCancelAgency> createState() => DetailCancelAgencyState();
+  State<CancelReturnSupplier> createState() => CancelReturnSupplierState();
 }
 
-class DetailCancelAgencyState extends State<DetailCancelAgency> {
+class CancelReturnSupplierState extends State<CancelReturnSupplier> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 
@@ -30,7 +29,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
     String paymentType = "Thanh toán nợ";
     if(thisOrderCancel.paymentType == "COD_PAYMENT") {
       paymentType = "Thanh toán COD";
-    }  
+    }   
     //
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -75,7 +74,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Thời gian hủy đơn: " + "${convertTime(thisOrderCancel.cancelledTimeByAgency as String)}", style: TextStyle(fontWeight: FontWeight.w300), )
+                           Text("Thời gian hủy đơn: " + "${convertTime(thisOrderCancel.cancelledTimeBySupplier as String)}", style: TextStyle(fontWeight: FontWeight.w300), )
                          ],
                        ),
                        SizedBox(height: 7,),

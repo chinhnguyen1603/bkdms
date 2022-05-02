@@ -8,30 +8,54 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/OrderInfo.dart';
 
 
-class DetailCancelAgency extends StatefulWidget {
-  late OrderInfo orderCancelInfo ;
-  DetailCancelAgency(this.orderCancelInfo);
+class DetailReturned extends StatefulWidget {
+  late OrderInfo orderDeliveredInfo ;
+  DetailReturned(this.orderDeliveredInfo);
   
   @override
-  State<DetailCancelAgency> createState() => DetailCancelAgencyState();
+  State<DetailReturned> createState() => DetailReturnedState();
 }
 
-class DetailCancelAgencyState extends State<DetailCancelAgency> {
+class DetailReturnedState extends State<DetailReturned> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 
   @override
   Widget build(BuildContext context) {
-    OrderInfo thisOrderCancel = widget.orderCancelInfo;
+    OrderInfo thisOrderDelivered = widget.orderDeliveredInfo;
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
     //lấy hình thức thanh toán của đơn
     String paymentType = "Thanh toán nợ";
-    if(thisOrderCancel.paymentType == "COD_PAYMENT") {
+    if(thisOrderDelivered.paymentType == "COD_PAYMENT") {
       paymentType = "Thanh toán COD";
-    }  
-    //
+    }
+    //list trạng thái đơn hàng + logic
+    List<Map> lstStatus = []; 
+      lstStatus.add({
+        "status": "Đặt đơn hàng và chờ xác nhận.",
+        "time": "${convertTime(thisOrderDelivered.createTime)}"
+      });     
+    if(thisOrderDelivered.approvedTime != null){
+      lstStatus.add({
+        "status": "Đơn hàng đã được xác nhận từ nhà cung cấp.",
+        "time": "${convertTime(thisOrderDelivered.approvedTime as String)}"
+      });     
+    } 
+    if(thisOrderDelivered.deliveredTime != null){
+      lstStatus.add({
+        "status": "Shipper thông báo đã giao đơn hàng.",
+        "time": "${convertTime(thisOrderDelivered.deliveredTime as String)}"
+      });     
+    }
+    if(thisOrderDelivered.completedTime != null){
+      lstStatus.add({
+        "status": "Người dùng xác nhận đã nhận đơn hàng.",
+        "time": "${convertTime(thisOrderDelivered.completedTime as String)}"
+      });     
+    }             
+    //widget
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
       body: SingleChildScrollView(
@@ -55,7 +79,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                              width: myWidth*0.12,
                              child: Icon(Icons.assignment_outlined, color: darkBlue, ),
                            ),
-                           Text("Mã đơn hàng: " + "${thisOrderCancel.orderCode}", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                           Text("Mã đơn hàng: " + "${thisOrderDelivered.orderCode}", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
                          ],
                        ),
                        SizedBox(height: 5,),
@@ -65,17 +89,17 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Thời gian đặt đơn: " + "${convertTime(thisOrderCancel.createTime)}", style: TextStyle(fontWeight: FontWeight.w300), )
+                           Text("Thời gian đặt đơn: " + "${convertTime(thisOrderDelivered.createTime)}")
                          ],
                        ),
                        SizedBox(height: 7,),
-                       //ngày đặt hàng
+                       //text đã giao hàng
                        Row(
                          children: [
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Thời gian hủy đơn: " + "${convertTime(thisOrderCancel.cancelledTimeByAgency as String)}", style: TextStyle(fontWeight: FontWeight.w300), )
+                           Text("Đã giao hàng", style: TextStyle(fontWeight: FontWeight.w300), )
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -114,7 +138,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Cửa hàng ${ Provider.of<Agency>(context, listen: false).name} - " + "${thisOrderCancel.phone}")
+                           Text("Cửa hàng ${ Provider.of<Agency>(context, listen: false).name} - " + "${thisOrderDelivered.phone}")
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -128,7 +152,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                            SizedBox(
                              width: myWidth*0.85,
                              height: 50,
-                             child: Text("${thisOrderCancel.address}", overflow: TextOverflow.ellipsis, maxLines: 2,)
+                             child: Text("${thisOrderDelivered.address}", overflow: TextOverflow.ellipsis, maxLines: 2,)
                            )
                          ],
                        )
@@ -160,7 +184,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                        SizedBox(height: 5,),
                        //List cart of order
                        ListView.builder(
-                          itemCount: thisOrderCancel.orderDetails.length,              
+                          itemCount: thisOrderDelivered.orderDetails.length,              
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
@@ -179,7 +203,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                                           height: 100,
                                           width: myWidth*0.3,
                                           child: Image.network(
-                                            getUrlFromLinkImg("${thisOrderCancel.orderDetails[index]['unit']['product']['linkImg']}")
+                                            getUrlFromLinkImg("${thisOrderDelivered.orderDetails[index]['unit']['product']['linkImg']}")
                                           ),
                                         ),
                                         SizedBox(width: 10,),
@@ -194,7 +218,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                                                  height: 24,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "${thisOrderCancel.orderDetails[index]['unit']['product']['name']}", 
+                                                    "${thisOrderDelivered.orderDetails[index]['unit']['product']['name']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -207,7 +231,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Đơn vị: " + "${thisOrderCancel.orderDetails[index]['unit']['name']}", 
+                                                    "Đơn vị: " + "${thisOrderDelivered.orderDetails[index]['unit']['name']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -220,7 +244,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Số lượng: " + "${thisOrderCancel.orderDetails[index]['quantity']}", 
+                                                    "Số lượng: " + "${thisOrderDelivered.orderDetails[index]['quantity']}", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -233,7 +257,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                                                  height: 22,
                                                  width: myWidth*0.52,
                                                  child: Text(
-                                                    "Thành tiền: " + "${thisOrderCancel.orderDetails[index]['totalPrice'].replaceAllMapped(reg, mathFunc)}đ", 
+                                                    "Thành tiền: " + "${thisOrderDelivered.orderDetails[index]['totalPrice'].replaceAllMapped(reg, mathFunc)}đ", 
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
@@ -287,7 +311,7 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Tổng tiền: " + "${thisOrderCancel.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
+                           Text("Tổng tiền: " + "${thisOrderDelivered.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
                          ],
                        ),
                        SizedBox(height: 7,),
@@ -306,17 +330,84 @@ class DetailCancelAgencyState extends State<DetailCancelAgency> {
               ),
               SizedBox(height: 12,),
 
+              //Trạng thái đơn hàng
+              Container(
+                width: 100.w,
+                color: Colors.white,
+                child: SizedBox(
+                  width: myWidth,
+                  child: Column(
+                    children: [
+                       SizedBox(height: 10,),
+                       //icon và text trạng thái đơn hàng
+                       Row(
+                         children: [
+                           SizedBox(
+                             width: myWidth*0.12,
+                             child: Icon(Icons.flag_outlined, color: darkBlue, size: 24,),
+                           ),
+                           Text("Trạng thái đơn hàng", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                         ],
+                       ),
+                       SizedBox(
+                          width: myWidth,
+                          child: Divider(),
+                       ),
+                       //list view trạng thái
+                       ListView.builder(
+                         itemCount: lstStatus.length,              
+                         shrinkWrap: true,
+                         physics: NeverScrollableScrollPhysics(),
+                         itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: myWidth*0.12,
+                                      child: Icon(Icons.arrow_right_rounded, color: darkBlue, size: 18,),
+                                    ),
+                                    //text trạng thái 
+                                    SizedBox(
+                                      width: myWidth*0.7,
+                                      child: Text("${lstStatus[index]['status']}", style: TextStyle(color: Color(0xff40a292)),),
+                                    ),
+                                    //time
+                                    SizedBox(
+                                      child: Text("${lstStatus[index]['time']}", style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
+                                    )
+                                  ], 
+                                ),
+                                SizedBox(
+                                  width: myWidth,
+                                  child: Divider(),
+                                )
+                              ],
+                            );
+                         }
+                       )
+                   ]
+                  ),
+                ),
+              ),
+              SizedBox(height: 12,),
+
           ]),
       ),
     );
   }
 
 
-  // Hàm convert thời gian
+  // Hàm convert thời gian ở mã đơn hàng
   String convertTime(String time){
     var timeConvert = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }
+  // Hàm convert thời gian ở trạng thái đơn
+  String convertTimeState(String time){
+    var timeConvert = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(time).toLocal());
+    return timeConvert;
+  }  
   //hàm lấy ảnh cloudinary
   String getUrlFromLinkImg(String linkImg) {
         //linkImg receive from server as Public Id
