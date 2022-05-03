@@ -354,16 +354,15 @@ class DetailDeliveredState extends State<DetailDelivered> {
                              child: Icon(Icons.local_shipping_outlined, color: darkBlue, size: 24,),
                            ),
                            SizedBox(
-                             width: myWidth*0.68,
+                             width: myWidth*0.66,
                              child: Text("Thông tin vận chuyển", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
                            ),
                            SizedBox(
-                             width: myWidth*0.2,
                              child: TextButton(
                                 onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => InfoShipDelivered(lstWayBills)));
                                 },
-                                child: Text("Xem thêm", style: TextStyle(color: Color(0xff44690ff)),)                   
+                                child: Text("Xem thêm", textAlign: TextAlign.right ,style: TextStyle(color: Color(0xff44690ff)),)                   
                              ),
                            )
                          ],

@@ -320,7 +320,7 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
                   child: Column(
                     children: [
                        SizedBox(height: 10,),
-                       //icon visa và text Thanh toán
+                       //icon đính kèm + lý do hủy
                        Row(
                          children: [
                            SizedBox(
@@ -363,23 +363,29 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
                                 SizedBox(height: 3,),
                                 SizedBox(
                                   width: 100.w,
+                                  height: 32,
                                   child: Row(
                                     children: [
                                       //text trạng thái 
                                       SizedBox(
-                                        width: myWidth*0.7,
+                                        width: myWidth*0.8,
+                                        height: 32,
                                         child: Row(
                                           children: [
                                             SizedBox(width:myWidth*0.12),
-                                            Text("${lstStatus[index]['status']}", style: TextStyle(color: Color(0xff40a292)),),
+                                            SizedBox(
+                                              width: myWidth*0.68,
+                                              child: Text("${lstStatus[index]['status']}", maxLines: 2, style: TextStyle(color: Color(0xff40a292)),)
+                                            ),
                                           ],
                                         ),
                                       ),
                                       //time
                                       SizedBox(
+                                        height: 32,
                                         child: Row(
                                           children: [
-                                            SizedBox(width:myWidth*0.12),
+                                            SizedBox(width:myWidth*0.05),
                                             Text("${lstStatus[index]['time']}", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
                                           ],
                                         ),

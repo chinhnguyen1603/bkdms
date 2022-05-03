@@ -147,7 +147,7 @@ class _InfoShipDeliveringState extends State<InfoShipDelivering> {
                       SizedBox(height: 3,),                         
                       SizedBox(
                         width: myWidth,
-                        child: Divider(thickness: 3,),
+                        child: Divider(thickness: 2,),
                       ),
                       SizedBox(height: 3,),                      
                       //tình trạng vận đơn
