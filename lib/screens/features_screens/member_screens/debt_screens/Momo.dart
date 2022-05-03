@@ -34,16 +34,24 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
   final _formMoneyKey = GlobalKey<FormState>();
   final moneyController = TextEditingController();
   late int amout;
-  
+  //id giao dịch tự tạo
+  String partnerReId = "";
+  //id request confirm
+  String requestId = "";
+
   @override
   void initState() {
     super.initState();
+    //khởi tạo id giao dịch momo
+    partnerReId = (int.parse(convertTime(DateTime.now().toString()))/100).round().toString();
+    //khởi tạo id request confirm
+    requestId = (int.parse(convertTimeRequest(DateTime.now().toString()))/100).round().toString();
+    //biến momo    
     _momoPay = MomoVn();
     _momoPay.on(MomoVn.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _momoPay.on(MomoVn.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _paymentStatus = "";
     initPlatformState();
-  
   }
   Future<void> initPlatformState() async {
     if (!mounted) return;
@@ -186,19 +194,22 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
                     var pubkey = CryptoUtils.rsaPublicKeyFromPem(pem);
                     final dataEncode = jsonEncode(<String, dynamic>{
                       "partnerCode": 'MOMOAWA120220330',
-                      "partnerRefId": (int.parse(convertTime(DateTime.now().toString()))/100).round().toString(),
+                      "partnerRefId": this.partnerReId,
                       "amount": this.amout,
                     });   
                     //hash dữ liệu gửi đi                     
                     final rsaEncrypt = Encrypter(RSA(publicKey: pubkey, encoding: RSAEncoding.PKCS1));
                     var hash = rsaEncrypt.encrypt("$dataEncode").base64;
-                    //call api
+                    //call api post giao dịch
                     await showDialog (
                       context: context,
                       builder: (context) =>
                         FutureProgressDialog(
-                          postMomoCallback(_momoPaymentResult.phoneNumber as String, _momoPaymentResult.token as String, hash)
-                          .then((value) => Navigator.pop(context))
+                          postMomoCallback(_momoPaymentResult.phoneNumber as String, _momoPaymentResult.token as String, this.partnerReId, hash)
+                          .then((value) {
+                            //tiếp tục confirm giao dịch lúc nãy tại đây, value là body momo trả về
+                            postConfirmMomo(this.partnerReId, this.requestId, value['transid'], "signature");
+                          })
                         ),
                     );                   
                   },
@@ -228,7 +239,7 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
       _paymentStatus += "\nMã lỗi: " + _momoPaymentResult.status.toString();
     }
   }
-  //xử lí khi xác nhận thành công 
+  //xử lí show toast khi xác nhận thành công 
   void _handlePaymentSuccess(PaymentResponse response) {
     setState(() {
       _momoPaymentResult = response;
@@ -236,7 +247,7 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
     });
     Fluttertoast.showToast(msg: "Xác nhận thành công: " + response.phoneNumber.toString(), toastLength: Toast.LENGTH_SHORT);
   }
-  //xử lí khi xác nhận thất bại
+  //xử lí showw toast khi xác nhận thất bại
   void _handlePaymentError(PaymentResponse response) {
     setState(() {
       _momoPaymentResult = response;
@@ -246,9 +257,9 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
   }
 
   //post pay momo
-  Future<void> postMomoCallback(String phone, String token, String hash) async {
+  Future<Map> postMomoCallback(String phone, String token, String partnerRefId, String hash) async {
     var url = Uri.parse('https://test-payment.momo.vn' +'/pay/app');
-    print(" bắt đầu post momo");
+    print(" bắt đầu post pay momo");
      try {
       final response = await http.post(
         url, 
@@ -258,7 +269,7 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
         }),
         body: jsonEncode(<String, dynamic>{
           "partnerCode": 'MOMOAWA120220330',
-          "partnerRefId": "123",
+          "partnerRefId": "$partnerRefId",
           "customerNumber": phone,
           "appData": token,
           "hash": hash,
@@ -270,7 +281,7 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
       print(response.body);
       if (response.statusCode == 200){
          print("kêt quả pay momo");
-         print(response.statusCode);
+         return json.decode(response.body) as Map<String, dynamic>;
       } else{
         throw jsonDecode(response.body.toString());
       }
@@ -280,10 +291,52 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
       throw error;
     }
   }
-  
+
+  //post confirm momo
+  Future<Map> postConfirmMomo(String partnerRefId, String requestId, String transId, String signature) async {
+    var url = Uri.parse('https://test-payment.momo.vn' +'/pay/confirm');
+    print("bắt đầu post confirm momo");
+     try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+        }),
+        body: jsonEncode(<String, dynamic>{
+          "partnerCode": 'MOMOAWA120220330',
+          "partnerRefId": "$partnerReId",
+          "requestType": "capture",
+          "requestId": "$requestId",
+          "momoTransId": transId,
+          "signature": signature,
+        }),
+      );
+      print("kêt quả confirm momo");
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200){
+         return json.decode(response.body) as Map<String, dynamic>;
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+ 
+
   // Hàm convert thời gian tạo id giao dịch
   String convertTime(String time){
     var timeConvert = DateFormat('MMddHHmmss').format(DateTime.parse(time).toLocal());
+    return timeConvert;
+  }
+
+  // Hàm convert thời gian tạo id request Confirm
+  String convertTimeRequest(String time){
+    var timeConvert = DateFormat('ddHHmmss').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }
  

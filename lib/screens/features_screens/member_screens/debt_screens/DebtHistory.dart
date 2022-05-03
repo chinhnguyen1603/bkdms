@@ -140,12 +140,12 @@ class DebtHistoryState extends State<DebtHistory> {
                                 children: [
                                   //order code
                                   SizedBox(
-                                    width: widthInContainer*0.65,
-                                    child: Text("Đơn hàng #${lstSelectDelivered[index].orderCode}", maxLines: 1, textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
+                                    width: widthInContainer*0.75,
+                                    child: Text("Đơn hàng #${lstSelectDelivered[index].orderCode}", textAlign: TextAlign.left, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),),
                                   ),
                                   //ngày hoàn thành
                                   SizedBox(
-                                    width: widthInContainer*0.35,
+                                    width: widthInContainer*0.25,
                                     child: Text("${convertTime(lstSelectDelivered[index].completedTime as String)}", maxLines: 1, textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
                                   )                                  
                                 ],
@@ -156,7 +156,7 @@ class DebtHistoryState extends State<DebtHistory> {
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("+ ${lstSelectDelivered[index].totalPayment.replaceAllMapped(reg, mathFunc)}đ", textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                              child: Text("+ ${lstSelectDelivered[index].totalPayment.replaceAllMapped(reg, mathFunc)}đ", textAlign: TextAlign.left, style: TextStyle(color: Color(0xff7b2626), fontSize: 15, fontWeight: FontWeight.w500),),
                             )
                           ],
                         ),
@@ -192,12 +192,12 @@ class DebtHistoryState extends State<DebtHistory> {
                                 children: [
                                   //order code
                                   SizedBox(
-                                    width: widthInContainer*0.65,
-                                    child: Text("Đơn hàng #${lstDelivered[index].orderCode}", textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
+                                    width: widthInContainer*0.75,
+                                    child: Text("Đơn hàng #${lstDelivered[index].orderCode}", textAlign: TextAlign.left, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),),
                                   ),
                                   //ngày hoàn thành
                                   SizedBox(
-                                    width: widthInContainer*0.35,
+                                    width: widthInContainer*0.25,
                                     child: Text("${convertTime(lstDelivered[index].completedTime as String)}", maxLines: 1,textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
                                   )                                  
                                 ],
@@ -208,7 +208,7 @@ class DebtHistoryState extends State<DebtHistory> {
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("+ ${lstDelivered[index].totalPayment.replaceAllMapped(reg, mathFunc)}đ", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                              child: Text("+ ${lstDelivered[index].totalPayment.replaceAllMapped(reg, mathFunc)}đ", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(color: Color(0xff7b2626), fontSize: 15, fontWeight: FontWeight.w500),),
 
                             )
                           ],
