@@ -11,6 +11,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:crypto/crypto.dart';
 
 class TestMomo extends StatefulWidget {
 
@@ -38,6 +39,7 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
   String partnerReId = "";
   //id request confirm
   String requestId = "";
+  String secretKey= "edhBlVIaGUFzaneb6f4gHvc1MPsFHvMr";
 
   @override
   void initState() {
@@ -207,8 +209,15 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
                         FutureProgressDialog(
                           postMomoCallback(_momoPaymentResult.phoneNumber as String, _momoPaymentResult.token as String, this.partnerReId, hash)
                           .then((value) {
+                            String momoTransId = value['transid'];
                             //tiếp tục confirm giao dịch lúc nãy tại đây, value là body momo trả về
-                            postConfirmMomo(this.partnerReId, this.requestId, value['transid'], "signature");
+                            var key = utf8.encode(this.secretKey);
+                            var data = utf8.encode("partnerCode=MOMOAWA120220330&partnerRefId=${this.partnerReId}&requestType=capture&requestId=${this.requestId}&momoTransId=$momoTransId");
+                            //var data = utf8.encode("partnerCode=MOMOAWA120220330&partnerRefId=12345567&requestType=capture&requestId=123282846&momoTransId=206163921");
+                            var hmacSha256 = Hmac(sha256, key); 
+                            var signature = hmacSha256.convert(data);
+                            print("$signature");
+                            postConfirmMomo(this.partnerReId, this.requestId, value['transid'], "$signature");
                           })
                         ),
                     );                   
