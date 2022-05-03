@@ -314,7 +314,6 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
               //Lý do hủy
               Container(
                 width: 100.w,
-                height: 120,
                 color: Colors.white,
                 child: SizedBox(
                   width: myWidth,
@@ -344,7 +343,7 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
                             if(lstWayBills[index]['deliveryFailedTime'] != null){
                               lstStatus.add({
                                 "status": "Vận đơn bị lỗi trong quá trình vận chuyển",
-                                "time": "${convertTime(lstWayBills[index]['deliveryFailedTime'])}"
+                                "time": "${convertTimeState(lstWayBills[index]['deliveryFailedTime'])}"
                               });
                             }
                             if(lstWayBills[index]['reason'] != null) {
@@ -354,22 +353,37 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
                             return Column(
                               children: [
                                 SizedBox(
-                                  width: myWidth,
-                                  child: Text("Mã vận đơn: ${lstWayBills[index]['receiptCode']}")
+                                  width: 100.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width:myWidth*0.12),
+                                      Text("Mã vận đơn: ${lstWayBills[index]['receiptCode']}"),
+                                    ],
+                                  )
                                 ),
                                 SizedBox(height: 3,),
                                 SizedBox(
-                                  width: myWidth,
+                                  width: 100.w,
                                   child: Row(
                                     children: [
                                       //text trạng thái 
                                       SizedBox(
                                         width: myWidth*0.7,
-                                        child: Text("${lstStatus[index]['status']}", style: TextStyle(color: Color(0xff40a292)),),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width:myWidth*0.12),
+                                            Text("${lstStatus[index]['status']}", style: TextStyle(color: Color(0xff40a292)),),
+                                          ],
+                                        ),
                                       ),
                                       //time
                                       SizedBox(
-                                        child: Text("${lstStatus[index]['time']}", style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width:myWidth*0.12),
+                                            Text("${lstStatus[index]['time']}", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
+                                          ],
+                                        ),
                                       )
                                     ], 
                                   ),
@@ -377,8 +391,13 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
                                 SizedBox(height: 3,),
                                 //chi tiết(reason)
                                 SizedBox(
-                                  width: myWidth,
-                                  child: Text("Chi tiết: $reason", style: TextStyle(color: Color(0xff40a292)),),
+                                  width: 100.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width:myWidth*0.12),
+                                      Text("Chi tiết: $reason", style: TextStyle(color: Color(0xff40a292)),),
+                                    ],
+                                  ),
                                 ),                               
                                 SizedBox(
                                   width: myWidth,
@@ -404,6 +423,11 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
   // Hàm convert thời gian
   String convertTime(String time){
     var timeConvert = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(time).toLocal());
+    return timeConvert;
+  }
+ // Hàm convert thời gian trạng thái
+  String convertTimeState(String time){
+    var timeConvert = DateFormat('dd/MM/yyyy \n HH:mm').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }
   //hàm lấy ảnh cloudinary

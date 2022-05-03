@@ -20,6 +20,8 @@ class DetailDelivered extends StatefulWidget {
 class DetailDeliveredState extends State<DetailDelivered> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
+  //list thông tin vận chuyển 
+  List<dynamic> lstWayBills = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,11 @@ class DetailDeliveredState extends State<DetailDelivered> {
         "status": "Người dùng xác nhận đã nhận đơn hàng.",
         "time": "${convertTimeState(thisOrderDelivered.completedTime as String)}"
       });     
-    }             
+    }
+    //lấy thông tin vận chuyển
+    if(widget.orderDeliveredInfo.wayBills != null){
+      lstWayBills = widget.orderDeliveredInfo.wayBills as List<dynamic>;
+    }                 
     //widget
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -334,15 +340,13 @@ class DetailDeliveredState extends State<DetailDelivered> {
               //Thông tin vận chuyển
               Container(
                 width: 100.w,
-                height: 120,
                 color: Colors.white,
                 child: SizedBox(
                   width: myWidth,
-                  height: 100,
                   child: Column(
                     children: [
                        SizedBox(height: 10,),
-                       //icon xe tải
+                       //icon xe tải và text Thông tin vận chuyển
                        Row(
                          children: [
                            SizedBox(
@@ -359,34 +363,63 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                 onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => InfoShipDelivered()));
                                 },
-                                child: Text("Xem thêm", style: TextStyle(color: Color(0xff40a292)),)
-                                
+                                child: Text("Xem thêm", style: TextStyle(color: Color(0xff44690ff)),)                   
                              ),
                            )
-
                          ],
                        ),
                        SizedBox(height: 5,),
-                       //Tổng tiên
-                       Row(
-                         children: [
-                           SizedBox(
-                             width: myWidth*0.12,
-                           ),
-                           Text("Tổng tiền: " + "${thisOrderDelivered.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
-                         ],
-                       ),
-                       SizedBox(height: 7,),
-                       //Hình thức thanh toán
-                       Row(
-                         children: [
-                           SizedBox(
-                             width: myWidth*0.12,
-                           ),
-                           Text("Hình thức thanh toán: $paymentType")
-                         ],
-                       ),
-                    ]
+                       ListView.builder(
+                          itemCount: lstWayBills.length,              
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            //tình trạng vận đơn
+                            String statusBill ="";
+                            if(lstWayBills[index]['status'] != null ){
+                              if(lstWayBills[index]['status'] == "SHIPPED") {
+                                 statusBill = "Đã vận chuyển";
+                              }
+                              if(lstWayBills[index]['status'] == "SHIPPING") {
+                                 statusBill = "Đang vận chuyển";
+                              }    
+                              if(lstWayBills[index]['status'] == "SHIPPING_PROBLEM") {
+                                 statusBill = "Vận chuyển lỗi";
+                              }                                                          
+                            }
+                            //
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  width: 100.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: myWidth*0.12),
+                                      Text("Mã vận đơn: ${lstWayBills[index]['receiptCode']}"),
+                                    ],
+                                  )
+                                ),
+                                SizedBox(height: 3,),
+                                //tình trạng vận đơn
+                                SizedBox(
+                                  width: 100.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: myWidth*0.12,),
+                                      Text("Tình trạng: $statusBill", style: TextStyle(color: Color(0xff40a292)),),
+                                    ],
+                                  ),
+                                ),                               
+                                SizedBox(
+                                  width: myWidth,
+                                  child: Divider(),
+                                )                                
+                              ],
+                              
+                            );
+                          }
+                       )
+                   ]
                   ),
                 ),
               ),
