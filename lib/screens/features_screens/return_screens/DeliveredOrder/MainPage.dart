@@ -240,7 +240,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                                           children: [
                                             //tổng tiền
                                             SizedBox(
-                                              width: myWidth*0.3,
+                                              width: myWidth*0.4,
                                               height: 20,
                                               child: Row(
                                                 children: [
@@ -257,7 +257,7 @@ class HistoryDeliveredState extends State<HistoryDelivered> {
                                                 ]
                                               )
                                             ),
-                                            SizedBox(width: myWidth*0.3,),
+                                            SizedBox(width: myWidth*0.4,),
                                             //thời gian hoàn thành
                                             SizedBox(
                                               width: myWidth*0.3,

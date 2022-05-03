@@ -1,4 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/InfoShipDelivering.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -20,7 +21,9 @@ class DetailDeliveringState extends State<DetailDelivering> {
   //width trong detail = 90. width ở ngoài screen là 95
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
-
+  //list thông tin vận chuyển 
+  List<dynamic> lstWayBills = [];
+  
   @override
   Widget build(BuildContext context) {
     OrderInfo thisOrderDelivering = widget.orderDeliveringInfo;
@@ -32,6 +35,34 @@ class DetailDeliveringState extends State<DetailDelivering> {
     if(thisOrderDelivering.paymentType == "COD_PAYMENT") {
       paymentType = "Thanh toán COD";
     }
+    //list trạng thái đơn hàng + logic
+    List<Map> lstStatus = []; 
+      lstStatus.add({
+        "status": "Đặt đơn hàng và chờ xác nhận.",
+        "time": "${convertTimeState(thisOrderDelivering.createTime)}"
+      });     
+    if(thisOrderDelivering.approvedTime != null){
+      lstStatus.add({
+        "status": "Đơn hàng đã được xác nhận từ nhà cung cấp.",
+        "time": "${convertTimeState(thisOrderDelivering.approvedTime as String)}"
+      });     
+    } 
+    if(thisOrderDelivering.deliveredTime != null){
+      lstStatus.add({
+        "status": "Shipper thông báo đã giao đơn hàng.",
+        "time": "${convertTimeState(thisOrderDelivering.deliveredTime as String)}"
+      });     
+    }
+    if(thisOrderDelivering.completedTime != null){
+      lstStatus.add({
+        "status": "Người dùng xác nhận đã nhận đơn hàng.",
+        "time": "${convertTimeState(thisOrderDelivering.completedTime as String)}"
+      });     
+    } 
+    //lấy thông tin vận chuyển
+    if(widget.orderDeliveringInfo.wayBills != null){
+      lstWayBills = widget.orderDeliveringInfo.wayBills as List<dynamic>;
+    }        
     //
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -307,6 +338,95 @@ class DetailDeliveringState extends State<DetailDelivering> {
               ),
               SizedBox(height: 12,),
 
+              //Thông tin vận chuyển
+              Container(
+                width: 100.w,
+                color: Colors.white,
+                child: SizedBox(
+                  width: myWidth,
+                  child: Column(
+                    children: [
+                       SizedBox(height: 10,),
+                       //icon xe tải và text Thông tin vận chuyển
+                       Row(
+                         children: [
+                           SizedBox(
+                             width: myWidth*0.12,
+                             child: Icon(Icons.local_shipping_outlined, color: darkBlue, size: 24,),
+                           ),
+                           SizedBox(
+                             width: myWidth*0.68,
+                             child: Text("Thông tin vận chuyển", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                           ),
+                           SizedBox(
+                             width: myWidth*0.2,
+                             child: TextButton(
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => InfoShipDelivering(lstWayBills)));
+                                },
+                                child: Text("Xem thêm", style: TextStyle(color: Color(0xff44690ff)),)                   
+                             ),
+                           )
+                         ],
+                       ),
+                       SizedBox(height: 5,),
+                       ListView.builder(
+                          itemCount: lstWayBills.length,              
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            //tình trạng vận đơn
+                            String statusBill ="";
+                            if(lstWayBills[index]['status'] != null ){
+                              if(lstWayBills[index]['status'] == "SHIPPED") {
+                                 statusBill = "Đã vận chuyển";
+                              }
+                              if(lstWayBills[index]['status'] == "SHIPPING") {
+                                 statusBill = "Đang vận chuyển";
+                              }    
+                              if(lstWayBills[index]['status'] == "SHIPPING_PROBLEM") {
+                                 statusBill = "Vận chuyển lỗi";
+                              }                                                          
+                            }
+                            //
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  width: 100.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: myWidth*0.12),
+                                      Text("Mã vận đơn: ${lstWayBills[index]['receiptCode']}"),
+                                    ],
+                                  )
+                                ),
+                                SizedBox(height: 3,),
+                                //tình trạng vận đơn
+                                SizedBox(
+                                  width: 100.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: myWidth*0.12,),
+                                      Text("Tình trạng: $statusBill", style: TextStyle(color: Color(0xfff53838)),),
+                                    ],
+                                  ),
+                                ),                               
+                                SizedBox(
+                                  width: myWidth,
+                                  child: Divider(),
+                                )                                
+                              ],
+                              
+                            );
+                          }
+                       )
+                   ]
+                  ),
+                ),
+              ),
+              SizedBox(height: 12,),
+
+
               //Trạng thái đơn hàng
               Container(
                 width: 100.w,
@@ -332,7 +452,7 @@ class DetailDeliveringState extends State<DetailDelivering> {
                        ),
                        //list view trạng thái
                        ListView.builder(
-                         itemCount: 1,              
+                         itemCount: lstStatus.length,              
                          shrinkWrap: true,
                          physics: NeverScrollableScrollPhysics(),
                          itemBuilder: (BuildContext context, int index) {
@@ -346,13 +466,12 @@ class DetailDeliveringState extends State<DetailDelivering> {
                                     ),
                                     //text trạng thái 
                                     SizedBox(
-                                      width: myWidth*0.72,
-                                      child: Text("Đơn hàng đã được xác nhận", style: TextStyle(color: Color(0xff40a292)),),
+                                      width: myWidth*0.7,
+                                      child: Text("${lstStatus[index]['status']}", style: TextStyle(color: Color(0xff40a292)),),
                                     ),
-                                    SizedBox(width: 5,),
                                     //time
                                     SizedBox(
-                                      child: Text("18-04-2022 \n 12:55", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
+                                      child: Text("${lstStatus[index]['time']}",textAlign: TextAlign.center ,style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
                                     )
                                   ], 
                                 ),

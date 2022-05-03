@@ -361,7 +361,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                              width: myWidth*0.2,
                              child: TextButton(
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => InfoShipDelivered()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => InfoShipDelivered(lstWayBills)));
                                 },
                                 child: Text("Xem thêm", style: TextStyle(color: Color(0xff44690ff)),)                   
                              ),
@@ -406,7 +406,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                   child: Row(
                                     children: [
                                       SizedBox(width: myWidth*0.12,),
-                                      Text("Tình trạng: $statusBill", style: TextStyle(color: Color(0xff40a292)),),
+                                      Text("Tình trạng: $statusBill", style: TextStyle(color: Color(0xfff53838)),),
                                     ],
                                   ),
                                 ),                               

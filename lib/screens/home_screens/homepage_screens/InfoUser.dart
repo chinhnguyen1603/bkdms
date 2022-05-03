@@ -37,6 +37,7 @@ class InfoUser extends StatelessWidget {
         String? district = user?.district;
         String? province = user?.province;
         String? dateJoin = user?.dateJoin;
+        String? workspace = user?.workspace;
 
         
         return Column(
@@ -181,26 +182,26 @@ class InfoUser extends StatelessWidget {
                     ],             
                     ),
                   ),     
-                 // Container Hạng mức
+                 // Container Nhà cung cấp
                  Container(
                   height: 50,
                   width: myWidth,
                   child: Row(  
                     children: [
                       SizedBox(width:5,),
-                      SizedBox(width:myWidth*0.3, child: Text("Hạng mức"),),
+                      SizedBox(width:myWidth*0.3, child: Text("Nhà cung cấp"),),
                       SizedBox(width:myWidth*0.15),
                       SizedBox(
                        width: myWidth*0.5,
                        child: 
                         Text(                       
-                           "Cơ bản"
+                           "$workspace"
                         ),
                        )
                     ]
                    )
                   ),
-                  // COntainer điểm thưởng
+                  // Container điểm thưởng
                  Container(
                   height: 50,
                   width: myWidth,

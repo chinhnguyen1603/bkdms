@@ -317,7 +317,6 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
                 color: Colors.white,
                 child: SizedBox(
                   width: myWidth,
-                  height: 100,
                   child: Column(
                     children: [
                        SizedBox(height: 10,),
