@@ -19,6 +19,7 @@ class DetailCancelSupplier extends StatefulWidget {
 class DetailCancelSupplierState extends State<DetailCancelSupplier> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
+  List<dynamic> lstWayBills = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,10 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
     if(thisOrderCancel.paymentType == "COD_PAYMENT") {
       paymentType = "Thanh toán COD";
     }   
+    //lấy lí do
+    if(widget.orderCancelInfo.wayBills != null){
+      lstWayBills = widget.orderCancelInfo.wayBills as List<dynamic>;
+    }
     //
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -301,6 +306,90 @@ class DetailCancelSupplierState extends State<DetailCancelSupplier> {
                          ],
                        ),
                     ]
+                  ),
+                ),
+              ),
+              SizedBox(height: 12,),
+
+              //Lý do hủy
+              Container(
+                width: 100.w,
+                height: 120,
+                color: Colors.white,
+                child: SizedBox(
+                  width: myWidth,
+                  height: 100,
+                  child: Column(
+                    children: [
+                       SizedBox(height: 10,),
+                       //icon visa và text Thanh toán
+                       Row(
+                         children: [
+                           SizedBox(
+                             width: myWidth*0.12,
+                             child: Icon(Icons.attachment, color: darkBlue, size: 24,),
+                           ),
+                           Text("Lý do hủy", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                         ],
+                       ),
+                       SizedBox(height: 5,),
+                       ListView.builder(
+                          itemCount: lstWayBills.length,              
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            List<Map> lstStatus =[];
+                            String reason ="";
+                            //
+                            if(lstWayBills[index]['deliveryFailedTime'] != null){
+                              lstStatus.add({
+                                "status": "Vận đơn bị lỗi trong quá trình vận chuyển",
+                                "time": "${convertTime(lstWayBills[index]['deliveryFailedTime'])}"
+                              });
+                            }
+                            if(lstWayBills[index]['reason'] != null) {
+                              reason = lstWayBills[index]['reason'];
+                            }
+                            //
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  width: myWidth,
+                                  child: Text("Mã vận đơn: ${lstWayBills[index]['receiptCode']}")
+                                ),
+                                SizedBox(height: 3,),
+                                SizedBox(
+                                  width: myWidth,
+                                  child: Row(
+                                    children: [
+                                      //text trạng thái 
+                                      SizedBox(
+                                        width: myWidth*0.7,
+                                        child: Text("${lstStatus[index]['status']}", style: TextStyle(color: Color(0xff40a292)),),
+                                      ),
+                                      //time
+                                      SizedBox(
+                                        child: Text("${lstStatus[index]['time']}", style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
+                                      )
+                                    ], 
+                                  ),
+                                ),
+                                SizedBox(height: 3,),
+                                //chi tiết(reason)
+                                SizedBox(
+                                  width: myWidth,
+                                  child: Text("Chi tiết: $reason", style: TextStyle(color: Color(0xff40a292)),),
+                                ),                               
+                                SizedBox(
+                                  width: myWidth,
+                                  child: Divider(),
+                                )                                
+                              ],
+                              
+                            );
+                          }
+                       )
+                   ]
                   ),
                 ),
               ),

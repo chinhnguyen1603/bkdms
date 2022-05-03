@@ -383,7 +383,7 @@ class DetailDeliveringState extends State<DetailDelivering> {
   }
   // Hàm convert thời gian ở trạng thái đơn
   String convertTimeState(String time){
-    var timeConvert = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(time).toLocal());
+    var timeConvert = DateFormat('dd-MM-yyyy \n HH:mm').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }  
   //hàm lấy ảnh cloudinary

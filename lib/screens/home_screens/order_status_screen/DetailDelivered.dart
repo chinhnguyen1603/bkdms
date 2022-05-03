@@ -1,4 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
+import 'package:bkdms/screens/home_screens/order_status_screen/InfoShipDelivered.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
@@ -35,24 +36,24 @@ class DetailDeliveredState extends State<DetailDelivered> {
     List<Map> lstStatus = []; 
       lstStatus.add({
         "status": "Đặt đơn hàng và chờ xác nhận.",
-        "time": "${convertTime(thisOrderDelivered.createTime)}"
+        "time": "${convertTimeState(thisOrderDelivered.createTime)}"
       });     
     if(thisOrderDelivered.approvedTime != null){
       lstStatus.add({
         "status": "Đơn hàng đã được xác nhận từ nhà cung cấp.",
-        "time": "${convertTime(thisOrderDelivered.approvedTime as String)}"
+        "time": "${convertTimeState(thisOrderDelivered.approvedTime as String)}"
       });     
     } 
     if(thisOrderDelivered.deliveredTime != null){
       lstStatus.add({
         "status": "Shipper thông báo đã giao đơn hàng.",
-        "time": "${convertTime(thisOrderDelivered.deliveredTime as String)}"
+        "time": "${convertTimeState(thisOrderDelivered.deliveredTime as String)}"
       });     
     }
     if(thisOrderDelivered.completedTime != null){
       lstStatus.add({
         "status": "Người dùng xác nhận đã nhận đơn hàng.",
-        "time": "${convertTime(thisOrderDelivered.completedTime as String)}"
+        "time": "${convertTimeState(thisOrderDelivered.completedTime as String)}"
       });     
     }             
     //widget
@@ -330,6 +331,68 @@ class DetailDeliveredState extends State<DetailDelivered> {
               ),
               SizedBox(height: 12,),
 
+              //Thông tin vận chuyển
+              Container(
+                width: 100.w,
+                height: 120,
+                color: Colors.white,
+                child: SizedBox(
+                  width: myWidth,
+                  height: 100,
+                  child: Column(
+                    children: [
+                       SizedBox(height: 10,),
+                       //icon xe tải
+                       Row(
+                         children: [
+                           SizedBox(
+                             width: myWidth*0.12,
+                             child: Icon(Icons.local_shipping_outlined, color: darkBlue, size: 24,),
+                           ),
+                           SizedBox(
+                             width: myWidth*0.68,
+                             child: Text("Thông tin vận chuyển", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),)
+                           ),
+                           SizedBox(
+                             width: myWidth*0.2,
+                             child: TextButton(
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => InfoShipDelivered()));
+                                },
+                                child: Text("Xem thêm", style: TextStyle(color: Color(0xff40a292)),)
+                                
+                             ),
+                           )
+
+                         ],
+                       ),
+                       SizedBox(height: 5,),
+                       //Tổng tiên
+                       Row(
+                         children: [
+                           SizedBox(
+                             width: myWidth*0.12,
+                           ),
+                           Text("Tổng tiền: " + "${thisOrderDelivered.totalPayment.replaceAllMapped(reg, mathFunc)}đ")
+                         ],
+                       ),
+                       SizedBox(height: 7,),
+                       //Hình thức thanh toán
+                       Row(
+                         children: [
+                           SizedBox(
+                             width: myWidth*0.12,
+                           ),
+                           Text("Hình thức thanh toán: $paymentType")
+                         ],
+                       ),
+                    ]
+                  ),
+                ),
+              ),
+              SizedBox(height: 12,),
+
+
               //Trạng thái đơn hàng
               Container(
                 width: 100.w,
@@ -374,7 +437,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
                                     ),
                                     //time
                                     SizedBox(
-                                      child: Text("${lstStatus[index]['time']}", style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
+                                      child: Text("${lstStatus[index]['time']}",textAlign: TextAlign.center ,style: TextStyle(fontSize: 12, color: Color(0xff544c4c)),),
                                     )
                                   ], 
                                 ),
@@ -405,7 +468,7 @@ class DetailDeliveredState extends State<DetailDelivered> {
   }
   // Hàm convert thời gian ở trạng thái đơn
   String convertTimeState(String time){
-    var timeConvert = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(time).toLocal());
+    var timeConvert = DateFormat('dd-MM-yyyy \n HH:mm').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }  
   //hàm lấy ảnh cloudinary
