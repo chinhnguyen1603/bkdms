@@ -1,3 +1,4 @@
+import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/features_screens/contact_screens/FeedBack.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtHistory.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PayHistory.dart';
@@ -7,6 +8,10 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PolicyDebt.dart';
+import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 class DebtScreen extends StatefulWidget {
   const DebtScreen({ Key? key }) : super(key: key);
@@ -19,15 +24,25 @@ class _DebtScreenState extends State<DebtScreen> {
   double myWidth = 90.w;
   static const greyBorder = Color(0xffe5efeb);
   static const bigTextColor = Color(0xff1d3a70);
-  static const smallTextColor = Color(0xff6b7280);
-
-  
+  static const smallTextColor = Color(0xff6b7280);  
   static const blueText = Color(0xff105480);
-  static const textBottomSheet = Color(0xff7b2626);  
+  static const textBottomSheet = Color(0xff7b2626);
+  //biến Agency để lấy dư nọ hiện tại + tối đa + ngày cho phép nợ  
+  late Agency user;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    user = Provider.of<Agency>(context, listen: false);
+  }
   
   @override
   Widget build(BuildContext context) {  
     double widthInContainer = myWidth*0.9;
+    //thêm dấu chấm vào giá sản phẩm
+    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
+    //   
     //
     return Scaffold(
       appBar: AppBarTransparent(Color(0xfffdfdfd), "Công nợ"),
@@ -114,7 +129,7 @@ class _DebtScreenState extends State<DebtScreen> {
                               children: [
                                 SizedBox(height: 8,),
                                 SizedBox(width:widthInContainer*0.4-8, child: Text("Dư nợ hiện tại", textAlign: TextAlign.left ,style: TextStyle(color: Color(0xff544c4c)))),
-                                SizedBox(width:widthInContainer*0.4-8 ,child: Text("300.000.000đ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)))
+                                SizedBox(width:widthInContainer*0.4-8 ,child: Text("${user.currentTotalDebt.replaceAllMapped(reg, mathFunc)}đ", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)))
                               ],
                             ),
                           ],
@@ -161,7 +176,7 @@ class _DebtScreenState extends State<DebtScreen> {
                   //lịch sử nợ
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DebtHistory()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DebtHistory()));
                     },
                     child: Column(
                       children: [
@@ -261,6 +276,22 @@ class _DebtScreenState extends State<DebtScreen> {
                   //tiền mặt
                   GestureDetector(
                     onTap: (){
+                      if(int.parse(user.currentTotalDebt) <= 0){
+                        //thông báo hiện tại không có nợ
+                        Alert(
+                           context: context,
+                           type: AlertType.info,
+                           desc: "Không có nợ hiện tại.",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.pop(context),
+                              width: 100,
+                             )
+                           ],
+                        ).show();
+                      }
+                      else{
                         //aleart dialog gửi yêu cầu
                         Alert(
                            context: context,
@@ -278,6 +309,7 @@ class _DebtScreenState extends State<DebtScreen> {
                              )
                            ],
                         ).show();
+                      }
                     },
                     child: Container(
                       height: 70,
@@ -332,35 +364,50 @@ class _DebtScreenState extends State<DebtScreen> {
                   //chuyển khoản
                   GestureDetector(
                     onTap: (){
-                    showModalBottomSheet<void>(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Container(
-                           height: 60.h,
-                           child: Column(
-                             children: <Widget>[
-                               SizedBox(width: 100.w , child: IconButton(
-                                 icon: Icon(Icons.cancel_presentation, size: 18,),
-                                 alignment: Alignment.centerRight,
-                                 onPressed: (){Navigator.pop(context);},
-                               ),),
-                               SizedBox(width: 100.w, child:Text('Thanh toán chuyển khoản ngân hàng', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffde7325)),),),
-                               SizedBox(width: 100.w, height: 10,),
-                               //mô tả
-                               SizedBox(width: myWidth, child: Text("• Quý đại lý vui lòng chuyển tiền vào số tài khoản sau:"),),
-                               SizedBox(width: myWidth, child: Text("31410002851469 - Ngân hàng BIDV - chi nhánh Đông Sài Gòn.\nChủ tài khoản: Nguyen Ngoc Chinh", style: TextStyle(fontWeight: FontWeight.w600, color: textBottomSheet),),),
-                               SizedBox(width: 100.w, height: 5,),
-                               SizedBox(width: myWidth, child: Text("• Nội dung chuyển khoản ghi rõ như sau:"),),
-                               SizedBox(width: myWidth, child: Text("Tên đại lý - tên đại diện - thanh toán công nợ", style: TextStyle(fontWeight: FontWeight.w600, color: blueText,),),)
-   
-                             ],
-                           ),
-                       );
-                     },
-                   );
-
+                      if(int.parse(user.currentTotalDebt) <= 0){
+                        //thông báo hiện tại không có nợ
+                        Alert(
+                           context: context,
+                           type: AlertType.info,
+                           desc: "Không có nợ hiện tại.",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.pop(context),
+                              width: 100,
+                             )
+                           ],
+                        ).show();
+                      }
+                      else{                      
+                        showModalBottomSheet<void>(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 60.h,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(width: 100.w , child: IconButton(
+                                    icon: Icon(Icons.cancel_presentation, size: 18,),
+                                    alignment: Alignment.centerRight,
+                                    onPressed: (){Navigator.pop(context);},
+                                  ),),
+                                  SizedBox(width: 100.w, child:Text('Thanh toán chuyển khoản ngân hàng', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffde7325)),),),
+                                  SizedBox(width: 100.w, height: 10,),
+                                  //mô tả
+                                  SizedBox(width: myWidth, child: Text("• Quý đại lý vui lòng chuyển tiền vào số tài khoản sau:"),),
+                                  SizedBox(width: myWidth, child: Text("31410002851469 - Ngân hàng BIDV - chi nhánh Đông Sài Gòn.\nChủ tài khoản: Nguyen Ngoc Chinh", style: TextStyle(fontWeight: FontWeight.w600, color: textBottomSheet),),),
+                                  SizedBox(width: 100.w, height: 5,),
+                                  SizedBox(width: myWidth, child: Text("• Nội dung chuyển khoản ghi rõ như sau:"),),
+                                  SizedBox(width: myWidth, child: Text("Tên đại lý - tên đại diện - thanh toán công nợ", style: TextStyle(fontWeight: FontWeight.w600, color: blueText,),),)
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }
                     },
                     child: Container(
                       height: 70,
@@ -415,7 +462,24 @@ class _DebtScreenState extends State<DebtScreen> {
                   //Ví momo
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TestMomo()));
+                      if(int.parse(user.currentTotalDebt) <= 0){
+                        //thông báo hiện tại không có nợ
+                        Alert(
+                           context: context,
+                           type: AlertType.info,
+                           desc: "Không có nợ hiện tại.",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.pop(context),
+                              width: 100,
+                             )
+                           ],
+                        ).show();
+                      }
+                      else{                        
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => TestMomo()));
+                      }
                     },
                     child: Container(
                       height: 70,

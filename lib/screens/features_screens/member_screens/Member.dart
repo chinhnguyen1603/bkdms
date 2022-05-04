@@ -1,9 +1,13 @@
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtScreen.dart';
-import 'package:bkdms/screens/features_screens/member_screens/level_screens/ScreenLevel.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtScreen.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/ScreenLevel.dart';
+import 'package:bkdms/services/LevelProvider.dart';
 
 class Member extends StatefulWidget {
 
@@ -80,7 +84,13 @@ class _MemberState extends State<Member> {
                      children: [
                        //Hạn mức
                        GestureDetector(
-                         onTap: (){
+                         onTap: () async{
+                            //show dialog chờ get level
+                            await showDialog (
+                              context: context,
+                              builder: (context) =>
+                                FutureProgressDialog(getLevelFuture()),
+                            ); 
                             Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenLevel()));
                          },
                          child: SizedBox( 
@@ -233,4 +243,32 @@ class _MemberState extends State<Member> {
       ),
     );
   }
+
+  // hàm get order
+  Future getLevelFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete all cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+      });    
+    });
+  }      
+ 
+
 }
