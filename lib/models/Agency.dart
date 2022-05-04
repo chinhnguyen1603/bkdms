@@ -11,13 +11,13 @@ class Agency with ChangeNotifier{
   late String district;
   late String ward;
   late String extraInfoOfAddress;
-  late String password; 
   late String workspace;
-  late String paymentType;
   late String? maxDebt;
   late String? maxDebtPeriod;
   late String currentTotalDebt;
+  late String? debtStartTime;
   late String token;
+
   Agency();
   Agency.getApi({
      required this.id,
@@ -29,12 +29,11 @@ class Agency with ChangeNotifier{
      required this.district,
      required this.ward,
      required this.extraInfoOfAddress,
-     required this.password,
      required this.workspace,
-     required this.paymentType,
      this.maxDebt,
      this.maxDebtPeriod,
      required this.currentTotalDebt,
+     required this.debtStartTime,
      required this.token,
   });
   
@@ -48,12 +47,11 @@ class Agency with ChangeNotifier{
      this.district = newAgency.district;
      this.ward = newAgency.ward;
      this.extraInfoOfAddress = newAgency.extraInfoOfAddress;
-     this.password = newAgency.password;
      this.workspace = newAgency.workspace;
-     this.paymentType = newAgency.paymentType;
      this.maxDebt = newAgency.maxDebt;
      this.maxDebtPeriod = newAgency.maxDebtPeriod;
      this.currentTotalDebt = newAgency.currentTotalDebt;
+     this.debtStartTime = newAgency.debtStartTime;
      this.token = newAgency.token;
     notifyListeners();
 
@@ -61,22 +59,21 @@ class Agency with ChangeNotifier{
 
   factory Agency.fromJson(Map<String, dynamic> json) {
     return Agency.getApi(
-      id: json['data']['user']['id'] as String,
-      name: json['data']['user']['name'] as String,
-      nameOwn: json['data']['user']['nameOwn'] as String,
-      phone: json['data']['user']['phone'] as String,
-      dateJoin: json['data']['user']['dateJoin'] as String,
-      province:  json['data']['user']['province'] as String,
-      district:  json['data']['user']['district'] as String,
-      ward:  json['data']['user']['ward'] as String,
-      extraInfoOfAddress:  json['data']['user']['extraInfoOfAddress'] as String,
-      password: json['data']['user']['password'] as String,
-      workspace: json['data']['user']['workspace'] as String,
-      paymentType:  json['data']['user']['paymentType'] as String,
+      id: json['data']['user']['id'],
+      name: json['data']['user']['name'],
+      nameOwn: json['data']['user']['nameOwn'],
+      phone: json['data']['user']['phone'],
+      dateJoin: json['data']['user']['dateJoin'],
+      province:  json['data']['user']['province'],
+      district:  json['data']['user']['district'],
+      ward:  json['data']['user']['ward'],
+      extraInfoOfAddress:  json['data']['user']['extraInfoOfAddress'],
+      workspace: json['data']['user']['workspace'],
       maxDebt:  json['data']['user']['maxDebt'],
       maxDebtPeriod:  json['data']['user']['maxDebtPeriod'],
-      currentTotalDebt: json['data']['user']['currentTotalDebt'] as String,
-      token: json['data']['jwtToken'] as String,    
+      currentTotalDebt: json['data']['user']['currentTotalDebt'],
+      debtStartTime: json['data']['user']['debtStartTime'],
+      token: json['data']['jwtToken'],    
     );
     
   }

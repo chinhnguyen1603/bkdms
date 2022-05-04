@@ -429,9 +429,14 @@ class _InfoOrderState extends State<InfoOrder> {
                           //button tiến hành đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {                          
-                                 //Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPayment()));
                                  //set phone và note để tạo đơn hàng
                                  Provider.of<OrderProvider>(context, listen: false).setPhoneAndNote(phone, noteController.text);
+                                 //show dialog chờ get order
+                                 await showDialog (
+                                  context: context,
+                                  builder: (context) =>
+                                    FutureProgressDialog(getOrderFuture()),
+                                 );                                 
                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  InfoPayment()));
                               },
                               style: ButtonStyle(
@@ -451,6 +456,33 @@ class _InfoOrderState extends State<InfoOrder> {
 
       );  
   }
+
+  // hàm get order
+  Future getOrderFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete all cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+      });    
+    });
+  }      
+    
 
   // get api tỉnh thành giao hàng nhanh
   Future getAddress() {

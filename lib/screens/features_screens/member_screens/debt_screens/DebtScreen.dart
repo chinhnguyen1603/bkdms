@@ -42,7 +42,17 @@ class _DebtScreenState extends State<DebtScreen> {
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
-    //   
+    //lấy tổng nợ cho phép + số ngày nợ + ngày bắt đầu
+    String maxDebt ="", maxDebtPeriod ="", debtStartTime ="";
+    if(user.maxDebt != null){
+      maxDebt = user.maxDebt as String;
+    } 
+    if(user.maxDebtPeriod != null){
+      maxDebtPeriod = user.maxDebtPeriod as String;
+    }  
+    if(user.debtStartTime != null){
+      debtStartTime = user.debtStartTime as String;
+    }          
     //
     return Scaffold(
       appBar: AppBarTransparent(Color(0xfffdfdfd), "Công nợ"),
@@ -107,7 +117,7 @@ class _DebtScreenState extends State<DebtScreen> {
                   SizedBox(height: 3,),
                   SizedBox(
                     width: widthInContainer,
-                    child: Text("900.000.000đ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
+                    child: Text("${maxDebt.replaceAllMapped(reg, mathFunc)}đ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
                   ),
                   
                   //dư nợ hiện tại + hạn thanh toán

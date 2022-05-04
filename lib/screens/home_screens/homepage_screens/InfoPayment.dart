@@ -1,3 +1,4 @@
+import 'package:bkdms/models/OrderInfo.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/SuccessOrder.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:flutter/material.dart';
@@ -20,18 +21,48 @@ class InfoPayment extends StatefulWidget {
 
 
 class InfoPaymentState extends State<InfoPayment> {
+  
   static const darkGrey = Color(0xff544C4C);
   static const textColor = Color(0xff27214d);
+  //biến Agency để lấy dư nọ hiện tại + dư nợ tối đa
+  late Agency user;
   //khởi tạo radio = nợ đơn hàng
   int valueRadio = 1;
   String paymentType = "DEBT_PAYMENT";
+  //lấy list order
+  List<OrderInfo> lstOrder = [];
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    user = Provider.of<Agency>(context);
+    lstOrder = Provider.of<OrderProvider>(context).lstOrderInfo;
+  }
   //
   @override
   Widget build(BuildContext context) {
+    String maxDebt ="";
+    if(user.maxDebt != null){
+      maxDebt = user.maxDebt as String;
+    }    
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';
     double myWidth = 90.w;
+    //biến tổng tiền các đơn đang đặt
+    int sumOfOrder = 0;
+    //lấy tổng tiền từ các đơn đang xử lý
+    for(var order in lstOrder){
+      if(order.type == "PURCHASE_ORDER" && order.paymentType == 'DEBT_PAYMENT') {
+        if (order.deliveredTime != null || order.cancelledTimeByAgency != null || order.cancelledTimeBySupplier != null){
+          //loại những đơn này
+        } 
+        else{
+          sumOfOrder = sumOfOrder + int.parse(order.totalPayment);
+        }
+      }
+    }
     //
     return Scaffold(
       appBar: AppBarGrey("Thanh toán"),
@@ -120,7 +151,7 @@ class InfoPaymentState extends State<InfoPayment> {
                   SizedBox(
                     width: myWidth,
                     child: Text(
-                      "Có 2 hình thức là nợ đơn hàng(cộng dồn công nợ) và thanh toán COD(trả tiền mặt lúc nhận hàng). \nNếu nợ đơn hàng, giá trị đơn hàng mới cộng với nợ hiện tại không được vượt quá công nợ tối đa của bạn. Xem thêm chính sách tại mục \'Thành viên\'.",
+                      "Có 2 hình thức là nợ đơn hàng(công nợ) và thanh toán COD(tiền mặt). \nNếu nợ đơn hàng, giá trị đơn hàng mới cộng với nợ hiện tại(bao gồm cả những đơn đang giao) không được vượt quá công nợ tối đa của bạn. Xem thêm chính sách tại mục \'Thành viên\'.",
                       maxLines: 5, 
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
                   ),                   
@@ -131,7 +162,7 @@ class InfoPaymentState extends State<InfoPayment> {
             //Hạn mức
             Container(
               width: 100.w,
-              height: 100,
+              height: 140,
               color: Colors.white,
               child: Column(
                 children: [
@@ -147,13 +178,18 @@ class InfoPaymentState extends State<InfoPayment> {
                   SizedBox(
                     width: myWidth,
                     height: 24,
-                    child: Text("Mức nợ tối đa của bạn:", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                    child: Text("Mức nợ tối đa của bạn: ${maxDebt.replaceAllMapped(reg, mathFunc)}đ", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
                   ), 
                   SizedBox(
                     width: myWidth,
                     height: 24,
-                    child: Text("Nợ hiện tại của bạn:", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
-                  ),                   
+                    child: Text("Nợ hiện tại của bạn: ${user.currentTotalDebt.replaceAllMapped(reg, mathFunc)}đ", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                  ),    
+                  SizedBox(
+                    width: myWidth,
+                    height: 24,
+                    child: Text("Tổng tiền đơn hàng đang giao: ${sumOfOrder.toString().replaceAllMapped(reg, mathFunc)}đ", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
+                  ),                                  
                 ],
               ),
             ),
@@ -325,33 +361,49 @@ class InfoPaymentState extends State<InfoPayment> {
                           //button đặt hàng
                           child: ElevatedButton(
                               onPressed: () async {  
-                                //check xem tổng tiền + nợ hiện tại có lớn hơn nợ tối đa
-                                if(Provider.of<OrderProvider>(context, listen: false).totalPayment == 0){
-                                  //show dialog lỗi
-                                  Alert(
-                                     context: context,
-                                     type: AlertType.warning,
-                                     style: AlertStyle( titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
-                                     title: "Vượt hạn mức nợ cho phép",
-                                     buttons: [ DialogButton(
+                                //hình thức thanh toán là nợ mới check
+                                if(paymentType == "DEBT_PAYMENT"){
+                                  //check xem tổng tiền + nợ hiện tại + đơn đang giao có lớn hơn nợ tối đa
+                                  if( Provider.of<OrderProvider>(context, listen: false).totalPayment + int.parse(user.currentTotalDebt) + sumOfOrder > int.parse(maxDebt)){
+                                    //show dialog lỗi
+                                    Alert(
+                                      context: context,
+                                      type: AlertType.warning,
+                                      style: AlertStyle( titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                                      title: "Vượt hạn mức nợ cho phép",
+                                      buttons: [ DialogButton(
                                         child: Text("Quay lại", style: TextStyle(color: Colors.white, fontSize: 20),),
                                         onPressed: () => Navigator.pop(context),
                                         width: 100,
                                         )
-                                     ],
-                                  ).show();
-                                } else {
-                                  //cập nhật list product
-                                  Provider.of<OrderProvider>(context, listen: false).setListProduct(Provider.of<CartProvider>(context, listen: false).lstCart);
-                                  //đặt hàng             
-                                  await showDialog (
-                                     context: context,
-                                     builder: (context)  =>
+                                      ],
+                                    ).show();
+                                  } else {
+                                      //cập nhật list product
+                                      Provider.of<OrderProvider>(context, listen: false).setListProduct(Provider.of<CartProvider>(context, listen: false).lstCart);
+                                      //đặt hàng             
+                                      await showDialog (
+                                        context: context,
+                                        builder: (context)  =>
+                                          FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
+                                      ).then((value) {
+                                          //push to success order
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
+                                      });                  
+                                  }
+                                //hình thức thanh toán là COD thì post đơn hàng
+                                } else{
+                                    //cập nhật list product
+                                    Provider.of<OrderProvider>(context, listen: false).setListProduct(Provider.of<CartProvider>(context, listen: false).lstCart);
+                                    //đặt hàng             
+                                    await showDialog (
+                                      context: context,
+                                      builder: (context)  =>
                                         FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
-                                  ).then((value) {
-                                    //push to success order
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
-                                  });                  
+                                    ).then((value) {
+                                        //push to success order
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
+                                    });   
                                 }
                               },
                               style: ButtonStyle(
