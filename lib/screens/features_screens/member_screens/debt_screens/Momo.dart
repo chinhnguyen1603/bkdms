@@ -1,4 +1,5 @@
 import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/screens/features_screens/member_screens/debt_screens/SuccessMomo.dart';
 import 'package:flutter/material.dart';
 import 'package:momo_vn/momo_vn.dart';
 import 'package:sizer/sizer.dart';
@@ -192,6 +193,8 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
               isConfirm
                 ?ElevatedButton(
                   onPressed: () async{
+                    //biến kết quả giao dịch
+                    Map payInfo = {};
                     //biến để encrypt
                     var pubkey = CryptoUtils.rsaPublicKeyFromPem(pem);
                     final dataEncode = jsonEncode(<String, dynamic>{
@@ -209,18 +212,21 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
                         FutureProgressDialog(
                           postMomoCallback(_momoPaymentResult.phoneNumber as String, _momoPaymentResult.token as String, this.partnerReId, hash)
                           .then((value) {
-                            String momoTransId = value['transid'];
-                            //tiếp tục confirm giao dịch lúc nãy tại đây, value là body momo trả về
-                            var key = utf8.encode(this.secretKey);
-                            var data = utf8.encode("partnerCode=MOMOAWA120220330&partnerRefId=${this.partnerReId}&requestType=capture&requestId=${this.requestId}&momoTransId=$momoTransId");
-                            //var data = utf8.encode("partnerCode=MOMOAWA120220330&partnerRefId=12345567&requestType=capture&requestId=123282846&momoTransId=206163921");
-                            var hmacSha256 = Hmac(sha256, key); 
-                            var signature = hmacSha256.convert(data);
-                            print("$signature");
-                            postConfirmMomo(this.partnerReId, this.requestId, value['transid'], "$signature");
-                          })
+                             payInfo = value;
+                             String momoTransId = value['transid'];
+                             //tiếp tục confirm giao dịch lúc nãy tại đây, value là body momo trả về
+                             var key = utf8.encode(this.secretKey);
+                             var data = utf8.encode("partnerCode=MOMOAWA120220330&partnerRefId=${this.partnerReId}&requestType=capture&requestId=${this.requestId}&momoTransId=$momoTransId");
+                             //var data = utf8.encode("partnerCode=MOMOAWA120220330&partnerRefId=12345567&requestType=capture&requestId=123282846&momoTransId=206163921");
+                             var hmacSha256 = Hmac(sha256, key); 
+                             var signature = hmacSha256.convert(data);
+                             print("$signature");
+                             postConfirmMomo(this.partnerReId, this.requestId, value['transid'], "$signature");
+                          }),
                         ),
-                    );                   
+                    );
+                    //move to successMomo
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessMomo(payInfo, this.amout)));                   
                   },
                   child: Text("Hoàn tất giao dịch")
                  )
