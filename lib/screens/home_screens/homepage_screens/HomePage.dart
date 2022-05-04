@@ -1,5 +1,5 @@
 import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
-import 'package:bkdms/services/LevelProvider.dart';
+import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -253,7 +253,13 @@ class ScreenHomeState extends State<ScreenHome> {
                            height: 54,
                            child: InkWell(
                            splashColor: Colors.deepOrange,
-                           onTap: (){
+                           onTap: () async{
+                             //show dialog chờ get order
+                             await showDialog (
+                               context: context,
+                               builder: (context) =>
+                                 FutureProgressDialog(getOrderFuture()),
+                             ); 
                              Navigator.push(context, MaterialPageRoute(builder: (context) => MainPageReturn()));
                            },
                            child: Container( 
@@ -302,9 +308,12 @@ class ScreenHomeState extends State<ScreenHome> {
                            child: InkWell(
                            splashColor: Colors.deepOrange,
                            onTap: () async {
-                              //get level
-                              Agency user = Provider.of<Agency>(context, listen: false);
-                              await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace); 
+                              //show dialog chờ get order
+                              await showDialog (
+                                context: context,
+                                builder: (context) =>
+                                  FutureProgressDialog(getOrderFuture()),
+                              );
                               //move to member
                               Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
                            },
@@ -477,7 +486,7 @@ class ScreenHomeState extends State<ScreenHome> {
                           await showDialog (
                              context: context,
                              builder: (context) =>
-                             FutureProgressDialog(getFuture()),
+                             FutureProgressDialog(getCartFuture()),
                           ); 
                           Navigator.push(context, MaterialPageRoute(builder: (context) => ShowListItem()));
                        }, 
@@ -587,16 +596,40 @@ class ScreenHomeState extends State<ScreenHome> {
  
   }
 
-  // hàm gt cart
-  Future getFuture() {
+  // hàm get cart
+  Future getCartFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
       Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
-     
     });
   }   
 
+  // hàm get order
+  Future getOrderFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete all cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+      });    
+    });
+  }      
   
   // hàm lấy ảnh từ cloudinary
   String getUrlFromLinkImg(String linkImg) {
