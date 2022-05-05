@@ -527,10 +527,10 @@ class OrderReturnedState extends State<OrderReturned> {
   }
   //hàm lấy ảnh cloudinary
   String getUrlFromLinkImg(String linkImg) {
-        //linkImg receive from server as Public Id
-        final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
-        String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
-        return transformedUrl;
+      //linkImg receive from server as Public Id
+      final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
+      String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
+      return transformedUrl;
   }    
 
   // hàm xác nhận đơn
