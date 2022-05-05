@@ -9,11 +9,11 @@ class ScreenOrder extends StatefulWidget {
   const ScreenOrder({ Key? key }) : super(key: key);
 
   @override
-  State<ScreenOrder> createState() => ScreenOrderState();
+  State<ScreenOrder> createState() => _ScreenOrderState();
 }
 
 
-class ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
+class _ScreenOrderState extends State<ScreenOrder> with TickerProviderStateMixin{
   late TabController _tabController;
   @override
   void initState() {

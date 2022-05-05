@@ -13,11 +13,11 @@ class Delivering extends StatefulWidget {
   const Delivering({ Key? key }) : super(key: key);
 
   @override
-  State<Delivering> createState() => DeliveringState();
+  State<Delivering> createState() => _DeliveringState();
 }
 
 
-class DeliveringState extends State<Delivering> {
+class _DeliveringState extends State<Delivering> {
   List<OrderInfo> lstOrder = [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);
@@ -25,7 +25,6 @@ class DeliveringState extends State<Delivering> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //mỗi lần click vào tab là gọi order
     Agency user = Provider.of<Agency>(context, listen: false);

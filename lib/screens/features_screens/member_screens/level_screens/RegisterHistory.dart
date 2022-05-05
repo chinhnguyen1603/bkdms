@@ -6,10 +6,10 @@ class RegisterHistory extends StatefulWidget {
   const RegisterHistory({ Key? key }) : super(key: key);
 
   @override
-  State<RegisterHistory> createState() => RegisterHistoryState();
+  State<RegisterHistory> createState() => _RegisterHistoryState();
 }
 
-class RegisterHistoryState extends State<RegisterHistory> {
+class _RegisterHistoryState extends State<RegisterHistory> {
 
   //Gọi Provider lịch sử tại đây
   @override

@@ -1,6 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -12,10 +11,10 @@ class DetailCreateSupply extends StatefulWidget {
   late OrderInfo orderInfo ;
   DetailCreateSupply(this.orderInfo);
   @override
-  State<DetailCreateSupply> createState() => DetailCreateSupplyState();
+  State<DetailCreateSupply> createState() => _DetailCreateSupplyState();
 }
 
-class DetailCreateSupplyState extends State<DetailCreateSupply> {
+class _DetailCreateSupplyState extends State<DetailCreateSupply> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 

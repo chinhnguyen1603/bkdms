@@ -1,5 +1,3 @@
-// list order info để get order
-import 'package:flutter/rendering.dart';
 
 class OrderInfo {
   late String id;

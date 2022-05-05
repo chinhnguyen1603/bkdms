@@ -114,7 +114,7 @@ class ResetPassword extends StatelessWidget {
                       ],                  
                     ),
                   );
-                 };
+                 }
                },
                style: ButtonStyle(
                  elevation: MaterialStateProperty.all(0),

@@ -19,11 +19,11 @@ class DetailItem extends StatefulWidget {
   DetailItem(this.myItem, this.baseUnit, this.switchUnit, this.listUnit);
 
   @override
-  State<DetailItem> createState() => DetailItemState();
+  State<DetailItem> createState() => _DetailItemState();
 }
 
 
-class DetailItemState extends State<DetailItem> {
+class _DetailItemState extends State<DetailItem> {
 
   static const darkGrey = Color(0xff544C4C); 
   static const lightGrey = Color(0xfffafafa);

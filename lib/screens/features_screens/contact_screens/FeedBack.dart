@@ -6,12 +6,12 @@ class FeedBack extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState(){
-    return FeedBackState();
+    return _FeedBackState();
   }
 }
 
 
-class  FeedBackState extends State<FeedBack> {
+class _FeedBackState extends State<FeedBack> {
   static const blueText = Color(0xff105480);  
   var darkGrey = Color(0xff544C4C); // màu xám
   //key form

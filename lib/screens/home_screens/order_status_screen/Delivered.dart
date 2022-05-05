@@ -16,11 +16,11 @@ class Delivered extends StatefulWidget {
   const Delivered({ Key? key }) : super(key: key);
 
   @override
-  State<Delivered> createState() => DeliveredState();
+  State<Delivered> createState() => _DeliveredState();
 }
 
 
-class DeliveredState extends State<Delivered> {  
+class _DeliveredState extends State<Delivered> {  
   List<OrderInfo> lstOrder = [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);

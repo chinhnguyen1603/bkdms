@@ -15,13 +15,13 @@ class ResultBarcode extends StatefulWidget {
   ResultBarcode(this.receiveItem, this.receiveUnit);
 
   @override
-  State<ResultBarcode> createState() => ResultBarcodeState();
+  State<ResultBarcode> createState() => _ResultBarcodeState();
 }
 
 
 
 
-class ResultBarcodeState extends State<ResultBarcode> {
+class _ResultBarcodeState extends State<ResultBarcode> {
   List<Item> resultItems = [];
   List<dynamic> resultUnits = [];
   String _scanBarcode = '';
@@ -386,10 +386,9 @@ class ResultBarcodeState extends State<ResultBarcode> {
     }
   // hàm lấy ảnh từ cloudinary
   String getUrlFromLinkImg(String linkImg) {
-        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
-        //linkImg receive from server as Public Id
-        final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
-        String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
-        return transformedUrl;
+      //linkImg receive from server as Public Id
+      final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
+      String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
+      return transformedUrl;
   }    
 }

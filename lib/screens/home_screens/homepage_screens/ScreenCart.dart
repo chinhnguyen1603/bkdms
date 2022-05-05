@@ -18,11 +18,11 @@ class ScreenCart extends StatefulWidget {
   const ScreenCart({ Key? key }) : super(key: key);
 
   @override
-  State<ScreenCart> createState() => ScreenCartState();
+  State<ScreenCart> createState() => _ScreenCartState();
 }
 
 
-class ScreenCartState extends State<ScreenCart> {
+class _ScreenCartState extends State<ScreenCart> {
   static const darkGrey = Color(0xff544C4C);
   static const dialogColor = Color(0xff4690FF);
   //list cart

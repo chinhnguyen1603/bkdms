@@ -1,6 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/InfoShipDelivering.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
@@ -14,10 +13,10 @@ class DetailDelivering extends StatefulWidget {
   DetailDelivering(this.orderDeliveringInfo);
   
   @override
-  State<DetailDelivering> createState() => DetailDeliveringState();
+  State<DetailDelivering> createState() => _DetailDeliveringState();
 }
 
-class DetailDeliveringState extends State<DetailDelivering> {
+class _DetailDeliveringState extends State<DetailDelivering> {
   //width trong detail = 90. width ở ngoài screen là 95
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);

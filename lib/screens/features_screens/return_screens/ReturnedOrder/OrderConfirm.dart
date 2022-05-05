@@ -15,12 +15,12 @@ class OrderConfirm extends StatefulWidget {
   const OrderConfirm({ Key? key }) : super(key: key);
 
   @override
-  State<OrderConfirm> createState() => OrderConfirmState();
+  State<OrderConfirm> createState() => _OrderConfirmState();
 }
 
 
 
-class OrderConfirmState extends State<OrderConfirm> {
+class _OrderConfirmState extends State<OrderConfirm> {
   List<OrderInfo> lstOrder = [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);
@@ -29,7 +29,6 @@ class OrderConfirmState extends State<OrderConfirm> {
 
  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //mỗi lần click vào tab là get order
     Agency user = Provider.of<Agency>(context, listen: false);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
-import 'package:bkdms/screens/home_screens/homepage_screens/DetailItem.dart';
 
 
 class DescribeItem extends StatelessWidget {

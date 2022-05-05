@@ -11,10 +11,10 @@ class DebtHistory extends StatefulWidget {
   const DebtHistory({ Key? key }) : super(key: key);
 
   @override
-  State<DebtHistory> createState() => DebtHistoryState();
+  State<DebtHistory> createState() => _DebtHistoryState();
 }
 
-class DebtHistoryState extends State<DebtHistory> {
+class _DebtHistoryState extends State<DebtHistory> {
   List<OrderInfo> lstOrder = [];
   List<OrderInfo> lstSelectDelivered = [];
 

@@ -13,10 +13,10 @@ class DetailCancelAgency extends StatefulWidget {
   DetailCancelAgency(this.orderCancelInfo);
   
   @override
-  State<DetailCancelAgency> createState() => DetailCancelAgencyState();
+  State<DetailCancelAgency> createState() => _DetailCancelAgencyState();
 }
 
-class DetailCancelAgencyState extends State<DetailCancelAgency> {
+class _DetailCancelAgencyState extends State<DetailCancelAgency> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 

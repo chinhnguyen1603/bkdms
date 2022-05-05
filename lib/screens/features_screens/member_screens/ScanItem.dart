@@ -11,11 +11,11 @@ class ScanItem extends StatefulWidget {
   const ScanItem ({ Key? key }) : super(key: key);
 
   @override
-  State<ScanItem > createState() => ScanItemState();
+  State<ScanItem > createState() => _ScanItemState();
 }
 
 
-class ScanItemState  extends State<ScanItem> {
+class _ScanItemState  extends State<ScanItem> {
   String _scanBarcode = '';
   bool isShowDialog = false;
   int needShowDialog = 1;

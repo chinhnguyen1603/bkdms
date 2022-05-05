@@ -16,11 +16,11 @@ class CancelReturn extends StatefulWidget {
   const CancelReturn({ Key? key }) : super(key: key);
 
   @override
-  State<CancelReturn> createState() => CancelReturnState();
+  State<CancelReturn> createState() => _CancelReturnState();
 }
 
 
-class CancelReturnState extends State<CancelReturn> {  
+class _CancelReturnState extends State<CancelReturn> {  
   List<OrderInfo> lstOrder= [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);

@@ -15,15 +15,14 @@ class InfoPayment extends StatefulWidget {
   const InfoPayment({ Key? key }) : super(key: key);
 
   @override
-  State<InfoPayment> createState() => InfoPaymentState();
+  State<InfoPayment> createState() => _InfoPaymentState();
 }
 
 
 
-class InfoPaymentState extends State<InfoPayment> {
+class _InfoPaymentState extends State<InfoPayment> {
   
   static const darkGrey = Color(0xff544C4C);
-  static const textColor = Color(0xff27214d);
   //biến Agency để lấy dư nọ hiện tại + dư nợ tối đa
   late Agency user;
   //khởi tạo radio = nợ đơn hàng

@@ -10,12 +10,11 @@ class TestProvince extends StatefulWidget {
   const TestProvince({ Key? key }) : super(key: key);
 
   @override
-  State<TestProvince> createState() => TestProvinceState();
+  State<TestProvince> createState() => _TestProvinceState();
 }
 
 
-class TestProvinceState extends State<TestProvince> {
-  static const darkGrey = Color(0xff544C4C);
+class _TestProvinceState extends State<TestProvince> {
   //list tỉnh
   List<Province> lstProvince = [];
   //Value select tỉnh 

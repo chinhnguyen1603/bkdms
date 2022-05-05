@@ -14,10 +14,10 @@ class DetailDelivered extends StatefulWidget {
   DetailDelivered(this.orderDeliveredInfo);
   
   @override
-  State<DetailDelivered> createState() => DetailDeliveredState();
+  State<DetailDelivered> createState() => _DetailDeliveredState();
 }
 
-class DetailDeliveredState extends State<DetailDelivered> {
+class _DetailDeliveredState extends State<DetailDelivered> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
   //list thông tin vận chuyển 

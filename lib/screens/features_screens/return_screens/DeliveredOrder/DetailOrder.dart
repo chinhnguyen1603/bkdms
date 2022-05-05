@@ -17,10 +17,10 @@ class DetailOrder extends StatefulWidget {
   DetailOrder(this.orderDeliveredInfo);
   
   @override
-  State<DetailOrder> createState() => DetailOrderState();
+  State<DetailOrder> createState() => _DetailOrderState();
 }
 
-class DetailOrderState extends State<DetailOrder> {
+class _DetailOrderState extends State<DetailOrder> {
   double heightDevice =100.h;
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);

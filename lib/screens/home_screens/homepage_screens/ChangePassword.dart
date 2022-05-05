@@ -9,11 +9,11 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 class ChangePassword extends StatefulWidget {
 
   @override
-  State<StatefulWidget> createState() => ChangePasswordState();
+  State<StatefulWidget> createState() => _ChangePasswordState();
 }
 
 
-class ChangePasswordState extends State<ChangePassword>{
+class _ChangePasswordState extends State<ChangePassword>{
   static const darkBlue = Color(0xff2033e0); 
   bool _obscureText = true;
   bool _obscureTextNewPass = true;

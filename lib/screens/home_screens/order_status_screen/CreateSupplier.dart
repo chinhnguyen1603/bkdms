@@ -12,21 +12,19 @@ class CreateSupplier extends StatefulWidget {
   const CreateSupplier({ Key? key }) : super(key: key);
 
   @override
-  State<CreateSupplier> createState() => CreateSupplierState();
+  State<CreateSupplier> createState() => _CreateSupplierState();
 }
 
 
 
-class CreateSupplierState extends State<CreateSupplier> {
+class _CreateSupplierState extends State<CreateSupplier> {
   List<OrderInfo> lstOrder = [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);
-  static const dialogColor = Color(0xff4690FF);
   late Future _myFuture;
   
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //mỗi lần click vào tab là gọi order
     Agency user = Provider.of<Agency>(context, listen: false);
@@ -293,11 +291,10 @@ class CreateSupplierState extends State<CreateSupplier> {
   }
   //hàm lấy ảnh cloudinary
   String getUrlFromLinkImg(String linkImg) {
-        final cloudinary = Cloudinary("975745475279556", "S9YIG_sABPRTmZKb0mGNTiJsAkg", "di6dsngnr");
-        //linkImg receive from server as Public Id
-        final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
-        String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
-        return transformedUrl;
+      //linkImg receive from server as Public Id
+      final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
+      String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
+      return transformedUrl;
   }    
 
   

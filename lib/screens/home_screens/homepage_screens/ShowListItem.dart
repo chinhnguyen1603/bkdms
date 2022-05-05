@@ -19,12 +19,12 @@ class ShowListItem extends StatefulWidget {
   const ShowListItem({ Key? key }) : super(key: key);
 
   @override
-  State<ShowListItem> createState() => ShowListItemState();
+  State<ShowListItem> createState() => _ShowListItemState();
 }
 
 
 
-class ShowListItemState extends State<ShowListItem> {
+class _ShowListItemState extends State<ShowListItem> {
  
   static const darkGrey = Color(0xff544C4C); 
   //search bar

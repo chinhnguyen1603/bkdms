@@ -1,6 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';

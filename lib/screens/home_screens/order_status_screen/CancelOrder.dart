@@ -14,20 +14,18 @@ class CancelOrder extends StatefulWidget {
   const CancelOrder({ Key? key }) : super(key: key);
 
   @override
-  State<CancelOrder> createState() => CancelOrderState();
+  State<CancelOrder> createState() => _CancelOrderState();
 }
 
 
-class CancelOrderState extends State<CancelOrder> {  
+class _CancelOrderState extends State<CancelOrder> {  
   List<OrderInfo> lstOrder= [];
   static const darkGrey = Color(0xff544c4c);
   static const textColor = Color(0xff27214d);
-  static const dialogColor = Color(0xff4690FF);
   late Future _myFuture;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //mỗi lần click vào tab là gọi order
     Agency user = Provider.of<Agency>(context, listen: false);

@@ -1,6 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -13,10 +12,10 @@ class DetailCancelSupplier extends StatefulWidget {
   DetailCancelSupplier(this.orderCancelInfo);
   
   @override
-  State<DetailCancelSupplier> createState() => DetailCancelSupplierState();
+  State<DetailCancelSupplier> createState() => _DetailCancelSupplierState();
 }
 
-class DetailCancelSupplierState extends State<DetailCancelSupplier> {
+class _DetailCancelSupplierState extends State<DetailCancelSupplier> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
   List<dynamic> lstWayBills = [];

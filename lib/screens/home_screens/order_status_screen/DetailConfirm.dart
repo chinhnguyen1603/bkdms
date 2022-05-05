@@ -1,6 +1,5 @@
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -15,10 +14,10 @@ class DetailConfirm extends StatefulWidget {
   late OrderInfo orderInfo ;
   DetailConfirm(this.orderInfo);
   @override
-  State<DetailConfirm> createState() => DetailConfirmState();
+  State<DetailConfirm> createState() => _DetailConfirmState();
 }
 
-class DetailConfirmState extends State<DetailConfirm> {
+class _DetailConfirmState extends State<DetailConfirm> {
   double myWidth = 90.w;
   static const darkBlue = Color(0xff27214d);
 

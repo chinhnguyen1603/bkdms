@@ -7,10 +7,10 @@ class EnterCustomer extends StatefulWidget {
   const EnterCustomer({ Key? key }) : super(key: key);
 
   @override
-  State<EnterCustomer> createState() => EnterCustomerState();
+  State<EnterCustomer> createState() => _EnterCustomerState();
 }
 
-class EnterCustomerState extends State<EnterCustomer> {
+class _EnterCustomerState extends State<EnterCustomer> {
   
   bool isShowBottom = false;
   bool isPressIcon = false;

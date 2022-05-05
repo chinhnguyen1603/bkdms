@@ -1,4 +1,3 @@
-import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:bkdms/services/ToLogin.dart';
@@ -18,12 +17,12 @@ class Login extends StatefulWidget {
                           
   @override
   State<StatefulWidget> createState(){
-    return LoginState();
+    return _LoginState();
   }
 }
 
 
-class LoginState extends State<Login> {
+class _LoginState extends State<Login> {
   Future<Agency>? _login;
 
   bool _obscureText = true; // con mắt để hiện mật khẩu

@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:bkdms/models/Cart.dart';
-import 'package:bkdms/models/OrderInfo.dart';
 
 //list product để create return order
 class Product {
