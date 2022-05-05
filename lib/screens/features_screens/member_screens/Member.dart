@@ -1,3 +1,4 @@
+import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
@@ -134,8 +135,14 @@ class _MemberState extends State<Member> {
                        ),
                        // Công nợ
                        GestureDetector(
-                         onTap: (){
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => DebtScreen()));
+                         onTap: () async{
+                             //show dialog chờ get debt
+                             await showDialog (
+                               context: context,
+                               builder: (context) =>
+                                 FutureProgressDialog(getDebtFuture()),
+                             );                            
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => DebtScreen()));
                          },
                          child: SizedBox( 
                            height: 100,
@@ -269,6 +276,33 @@ class _MemberState extends State<Member> {
       });    
     });
   }      
- 
+
+  // hàm get debt
+  Future getDebtFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<PaymentProvider>(context, listen: false).getDebt(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete all cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      }).then((value) {
+        //update agency tại đây
+        Provider.of<Agency>(context, listen: false).updateValue(value);
+      });   
+    });
+  }      
+  
 
 }

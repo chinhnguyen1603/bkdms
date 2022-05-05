@@ -1,5 +1,6 @@
 import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -419,7 +420,9 @@ class ScreenHomeState extends State<ScreenHome> {
                     width: myWidth*0.5,
                     child:
                       TextButton(
-                       onPressed: ()async {                          
+                       onPressed: () async{
+                         Agency user = Provider.of<Agency>(context, listen: false);      
+                         Provider.of<PaymentProvider>(context, listen: false).postOnlinePay(user.token, user.workspace, user.id, "1000000");             
                        }, 
                        child: SizedBox(
                          width: widthDevice*0.5,

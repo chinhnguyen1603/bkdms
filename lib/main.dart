@@ -1,6 +1,7 @@
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/SuccessMomo.dart';
 import 'package:bkdms/services/LevelProvider.dart';
 import 'package:bkdms/services/AmountReturnProvider.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:bkdms/services/ReturnProvider.dart';
 import 'package:bkdms/testTime.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LevelProvider()),
         ChangeNotifierProvider(create: (context) => AmountReturnProvider()),
         ChangeNotifierProvider(create: (context) => ReturnProvider()),
+        ChangeNotifierProvider(create: (context) => PaymentProvider()),
     ],
     child: Sizer(
       builder: (context, orientation, deviceType) {

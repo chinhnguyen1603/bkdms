@@ -13,6 +13,9 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:crypto/crypto.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class TestMomo extends StatefulWidget {
 
@@ -23,6 +26,8 @@ class TestMomo extends StatefulWidget {
 
 class _TestMomoState extends State<TestMomo> {
   double myWidth = 90.w;
+  //biến Agency để lấy dư nọ hiện tại + tối đa + ngày cho phép nợ  
+  late Agency user;  
   //biến momo
   late MomoVn _momoPay;
   late PaymentResponse _momoPaymentResult;
@@ -45,6 +50,8 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
   @override
   void initState() {
     super.initState();
+    //khởi tạo biến agency 
+    user = Provider.of<Agency>(context, listen: false);
     //khởi tạo id giao dịch momo
     partnerReId = (int.parse(convertTime(DateTime.now().toString()))/100).round().toString();
     //khởi tạo id request confirm
@@ -65,7 +72,11 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
 
   @override
   Widget build(BuildContext context) {
-
+    String currentTotalDebt ="";
+    //lấy dư nợ hiện tại để check
+    if(user.currentTotalDebt != null){
+      currentTotalDebt = user.currentTotalDebt;
+    } 
     //
     return  Scaffold(
         appBar: AppBarTransparent(Colors.white, "Thanh toán Momo"),
@@ -140,33 +151,67 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
                 onTap: () async{
                   //check form không null thì mở app Momo
                   if (_formMoneyKey.currentState!.validate()){
-                    //update amout
-                    setState(() {
-                      this.amout = int.parse(moneyController.text);
-                      print(amout);
-                    });
-                    //biến momo
-                    MomoPaymentInfo options = MomoPaymentInfo(
-                      merchantName: "Nhà cung cấp BKDMS",
-                      appScheme: "momoawa120220330",
-                      merchantCode: 'MOMOAWA120220330',
-                      partnerCode: 'MOMOAWA120220330',
-                      amount: this.amout, // đặt giá trị tiền vào đây
-                      orderId: (int.parse(convertTime(DateTime.now().toString()))/100).round().toString(), // đặt id của giao dịch nợ
-                      orderLabel: 'Nợ', 
-                      merchantNameLabel: "Hệ thống quản lý phân phối BKDMS",
-                      fee: 0,
-                      description: 'Thanh toán nợ',
-                      username: 'Cửa hàng #', // đặt tên cửa hàng agency ở đây
-                      partner: 'merchant',
-                      extra: "{\"key1\":\"value1\",\"key2\":\"value2\"}",
-                      isTestMode: true
-                    );   
-                    try {
-                      _momoPay.open(options);   
-                    } catch (e) {
-                      debugPrint(e.toString());
-                    } 
+                    //check số tiền vượt quá số nợ thì ko được
+                    if(int.parse(moneyController.text) > int.parse(currentTotalDebt)){
+                        //thông báo lỗi
+                        Alert(
+                           context: context,
+                           type: AlertType.warning,
+                           desc: "Số tiền không được lớn hơn nợ hiện tại.",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.pop(context),
+                              width: 100,
+                             )
+                           ],
+                        ).show();
+                    } else{
+                      //check số tiền không được nhỏ hơn 10%
+                      if(int.parse(moneyController.text) < int.parse(currentTotalDebt)*10/100){
+                        //thông báo lỗi
+                        Alert(
+                           context: context,
+                           type: AlertType.warning,
+                           desc: "Số tiền mỗi lần trả không nhỏ hơn 10% tổng nợ.",                
+                           buttons: [ 
+                             DialogButton(
+                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                              onPressed: () => Navigator.pop(context),
+                              width: 100,
+                             )
+                           ],
+                        ).show();
+                      } else{
+                          //update amout
+                          setState(() {
+                            this.amout = int.parse(moneyController.text);
+                            print(amout);
+                          });
+                          //biến momo
+                          MomoPaymentInfo options = MomoPaymentInfo(
+                              merchantName: "Nhà cung cấp BKDMS",
+                              appScheme: "momoawa120220330",
+                              merchantCode: 'MOMOAWA120220330',
+                              partnerCode: 'MOMOAWA120220330',
+                              amount: this.amout, // đặt giá trị tiền vào đây
+                              orderId: (int.parse(convertTime(DateTime.now().toString()))/100).round().toString(), // đặt id của giao dịch nợ
+                              orderLabel: 'Nợ', 
+                              merchantNameLabel: "Hệ thống quản lý phân phối BKDMS",
+                              fee: 0,
+                              description: 'Thanh toán công nợ',
+                              username: 'Cửa hàng ${user.name}', // đặt tên cửa hàng agency ở đây
+                              partner: 'merchant',
+                              extra: "{\"key1\":\"value1\",\"key2\":\"value2\"}",
+                              isTestMode: true
+                          );   
+                          try {
+                            _momoPay.open(options);   
+                          } catch (e) {
+                            debugPrint(e.toString());
+                          } 
+                      }
+                    }
                   }               
                 },
                 child: Container(
