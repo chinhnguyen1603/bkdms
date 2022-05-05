@@ -2,6 +2,7 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/features_screens/contact_screens/FeedBack.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtHistory.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PayHistory.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -212,7 +213,14 @@ class _DebtScreenState extends State<DebtScreen> {
                   ),
                   //lịch sử thanh toán
                   GestureDetector(
-                    onTap: (){
+                    onTap: () async{
+                      //show dialog chờ get pay history
+                      await showDialog (
+                        context: context,
+                        builder: (context) =>
+                          FutureProgressDialog(getPayHistory()),
+                      );
+                      //move to pay history                   
                       Navigator.push(context, MaterialPageRoute(builder: (context) => PayHistory()));
                     },
                     child: Column(
@@ -546,8 +554,36 @@ class _DebtScreenState extends State<DebtScreen> {
             )
           ]
         ),
-
       ),
     );
   }
+
+  // hàm get lịch sử thanh toán
+  Future getPayHistory() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);      
+      await Provider.of<PaymentProvider>(context, listen: false).getPayHistory(user.token, user.workspace, user.id)
+      .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+
+      });    
+    });
+  }     
+
+
 }

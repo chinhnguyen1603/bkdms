@@ -1,6 +1,10 @@
 import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/models/PayHistoryInfo.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 //lịch sử thanh toán bao gồm số tiền , thời gian, hình thức thanh toán
 
@@ -8,17 +12,27 @@ class PayHistory extends StatefulWidget {
   const PayHistory({ Key? key }) : super(key: key);
 
   @override
-  State<PayHistory> createState() => PayHistoryState();
+  State<PayHistory> createState() => _PayHistoryState();
 }
 
-class PayHistoryState extends State<PayHistory> {
+class _PayHistoryState extends State<PayHistory> {
   List <String> lstImage = ["assets/momo.png", "assets/totalMoney.png", "assets/banking.png"];
-  List <String> lstType = ["momo", "banking", "momo", "money"];
   static const darkGrey = Color(0xff544c4c);
+  List<PayHistoryInfo> lstPayHistory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    lstPayHistory = Provider.of<PaymentProvider>(context, listen: false).lstPayHistory;
+    print(lstPayHistory.length);
+  }
 
   @override
   Widget build(BuildContext context) {
     double myWidth = 90.w;
+    //thêm dấu chấm vào giá sản phẩm
+    RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    String Function(Match) mathFunc = (Match match) => '${match[1]}.';
     //
     return Scaffold(
       backgroundColor: Colors.white,
@@ -47,21 +61,20 @@ class PayHistoryState extends State<PayHistory> {
 
              //ô lịch sử
              ListView.builder(
-               itemCount: lstType.length,              
+               reverse: true,
+               itemCount: lstPayHistory.length,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
-                  //xử lý hình ảnh tương ứng với phương thức thanh toán
-                  String image = "";
-                  if( lstType[index] == "momo") {
+                  //xử lý hình ảnh + text tương ứng với phương thức thanh toán
+                  String image = "", type ="";
+                  if( lstPayHistory[index].type == "ONLINE_PAYMENT") {
                     image = lstImage[0];
-                  }
-                  if( lstType[index] == "money") {
+                    type = "Thanh toán ví Momo";
+                  } else {
                     image = lstImage[1];
-                  } 
-                  if( lstType[index] == "banking") {
-                    image = lstImage[2];
-                  }                                     
+                    type = "Thanh toán tiền mặt";
+                  }                                   
                   //
                   return Column(
                     children: [
@@ -108,12 +121,12 @@ class PayHistoryState extends State<PayHistory> {
                                   SizedBox(height: 12,),
                                   SizedBox(
                                     width: myWidth*0.45,
-                                    child: Text("Thanh toán ví Momo", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
+                                    child: Text("$type", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
                                   ),
                                   SizedBox(height: 3,),
                                   SizedBox(
                                     width: myWidth*0.45,
-                                    child: Text("21/12/2022", style: TextStyle(color: darkGrey, fontSize: 13))
+                                    child: Text("${convertTime(lstPayHistory[index].time)}", style: TextStyle(color: darkGrey, fontSize: 13))
                                   )
                                 ],
                               ),
@@ -124,7 +137,7 @@ class PayHistoryState extends State<PayHistory> {
                               height: 60,
                               width: myWidth*0.35,
                               child: Text(
-                                "-" + "50.000.000đ",
+                                "-" + "${lstPayHistory[index].amount.replaceAllMapped(reg, mathFunc)}đ",
                                 style: TextStyle(
                                   color: Color(0xff7b2626),
                                   fontSize: 14, 
@@ -148,4 +161,11 @@ class PayHistoryState extends State<PayHistory> {
       ),
     );
   }
+
+  // Hàm convert thời gian
+  String convertTime(String time){
+    var timeConvert = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.parse(time).toLocal());
+    return timeConvert;
+  }
+
 }

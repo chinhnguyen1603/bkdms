@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:bkdms/models/Level.dart';
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/PayHistoryInfo.dart';
 
 
 class PaymentProvider with ChangeNotifier{
+  List<PayHistoryInfo> lstPayHistory = [];
 
   //post update nợ agency
   Future<Agency> getDebt(String token, String workspace, String agencyId) async {
@@ -86,5 +87,54 @@ class PaymentProvider with ChangeNotifier{
     }  
   }
 
+  //lấy lịch sử thanh toán
+  Future<void> getPayHistory(String token, String workspace, String agencyId) async {
+    print("bắt đầu get Pay History");
+
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/payment/get-all-payment-agency');
+    try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{
+          'agencyId': agencyId,
+        }),
+      );
+      //test kết quả
+      print(response.statusCode);
+      if (response.statusCode == 200){
+         final extractedData = json.decode(response.body) as Map<String, dynamic>;
+         final List<PayHistoryInfo> loadListPayHistory = [];
+         extractedData['data']['listPayment'].forEach((payHistory) {
+         loadListPayHistory.add(
+          PayHistoryInfo(
+            id:  payHistory['id'],
+            amount: payHistory['amount'],
+            time: payHistory['time'],
+            type: payHistory['type'],       
+          ),
+        );
+      });
+      this.lstPayHistory = loadListPayHistory;
+      print(lstPayHistory);
+      notifyListeners();
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
+
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }  
+  }
+
 
 }
+
+

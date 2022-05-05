@@ -421,8 +421,7 @@ class ScreenHomeState extends State<ScreenHome> {
                     child:
                       TextButton(
                        onPressed: () async{
-             
-                       }, 
+                      }, 
                        child: SizedBox(
                          width: widthDevice*0.5,
                          child: Text(
