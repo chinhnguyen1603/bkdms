@@ -1,6 +1,10 @@
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 class SuccessMomo extends StatefulWidget {
@@ -130,8 +134,15 @@ class _SuccessMomoState extends State<SuccessMomo> {
                         width: myWidth*0.8,
                         height: 45,
                         child: ElevatedButton(
-                          onPressed: (){
-
+                          onPressed: () async{
+                            //post giao dịch mới thanh toán
+                            await showDialog (
+                              context: context,
+                              builder: (context) =>
+                                FutureProgressDialog(postOnlinePay(widget.amount.toString())),
+                            );
+                            //move to Homepage
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(0)), (Route<dynamic> route) => false);
                           },
                           child: Text("Về trang chủ"),
                           style: ButtonStyle(
@@ -158,5 +169,32 @@ class _SuccessMomoState extends State<SuccessMomo> {
     var timeConvert = DateFormat('dd/MM/yyyy').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }
+
+  // hàm post giao dịch mới thanh toán xong
+  Future postOnlinePay(String amount) {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);      
+      Provider.of<PaymentProvider>(context, listen: false).postOnlinePay(user.token, user.workspace, user.id, amount)
+      .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      })
+      .then((value) async {
+
+      });    
+    });
+  }     
 
 }

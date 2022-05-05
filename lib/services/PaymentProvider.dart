@@ -79,29 +79,6 @@ class PaymentProvider with ChangeNotifier{
       //test kết quả
       print(response.statusCode);
       print(response.body);
-      /*
-      if(response.statusCode ==200){
-        final extractedData = json.decode(response.body) as Map<String, dynamic>;
-         return Agency.getApi(
-           id: extractedData['agency']['id'], 
-           name: extractedData['agency']['name'], 
-           nameOwn: extractedData['agency']['nameOwn'],
-           phone: extractedData['agency']['phone'],
-           dateJoin: extractedData['agency']['dateJoin'],
-           province: extractedData['agency']['province'],
-           district: extractedData['agency']['district'],
-           ward: extractedData['agency']['ward'],
-           extraInfoOfAddress: extractedData['agency']['extraInfoOfAddress'],
-           workspace: extractedData['agency']['workspace'], 
-           maxDebt: extractedData['agency']['maxDebt'],
-           maxDebtPeriod: extractedData['agency']['maxDebtPeriod'],
-           currentTotalDebt: extractedData['agency']['currentTotalDebt'],
-           debtStartTime: extractedData['agency']['debtStartTime'],
-           token: token,
-         );
-      } else{
-        throw jsonDecode(response.body.toString());
-      }*/
     }
     catch (error) {
       print(error);

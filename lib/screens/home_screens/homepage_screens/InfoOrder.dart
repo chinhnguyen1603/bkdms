@@ -1,4 +1,5 @@
 import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -436,7 +437,13 @@ class _InfoOrderState extends State<InfoOrder> {
                                   context: context,
                                   builder: (context) =>
                                     FutureProgressDialog(getOrderFuture()),
-                                 );                                 
+                                 );    
+                                 //show dialog chờ get debt
+                                 await showDialog (
+                                  context: context,
+                                  builder: (context) =>
+                                    FutureProgressDialog(getDebtFuture()),
+                                 );                                                               
                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  InfoPayment()));
                               },
                               style: ButtonStyle(
@@ -482,7 +489,34 @@ class _InfoOrderState extends State<InfoOrder> {
       });    
     });
   }      
-    
+
+  //hàm get debt
+  Future getDebtFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<PaymentProvider>(context, listen: false).getDebt(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog delete all cart");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      }).then((value) {
+        //update agency tại đây
+        Provider.of<Agency>(context, listen: false).updateValue(value);
+      });   
+    });
+  }      
+
 
   // get api tỉnh thành giao hàng nhanh
   Future getAddress() {

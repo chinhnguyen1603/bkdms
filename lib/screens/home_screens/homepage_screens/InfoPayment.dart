@@ -151,7 +151,7 @@ class InfoPaymentState extends State<InfoPayment> {
                   SizedBox(
                     width: myWidth,
                     child: Text(
-                      "Có 2 hình thức là nợ đơn hàng(công nợ) và thanh toán COD(tiền mặt). \nNếu nợ đơn hàng, giá trị đơn hàng mới cộng với nợ hiện tại(bao gồm cả những đơn đang giao) không được vượt quá công nợ tối đa của bạn. Xem thêm chính sách tại mục \'Thành viên\'.",
+                      "Có 2 hình thức là nợ đơn hàng(công nợ) và thanh toán COD(tiền mặt). \nNếu nợ đơn hàng, giá trị đơn hàng mới cộng với nợ hiện tại(bao gồm cả những đơn đang giao) không được vượt quá công nợ tối đa của bạn.",
                       maxLines: 5, 
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: darkGrey),),
                   ),                   
@@ -443,6 +443,8 @@ class InfoPaymentState extends State<InfoPayment> {
       });    
     });
   }
+
+
 
 
 }

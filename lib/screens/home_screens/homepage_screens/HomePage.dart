@@ -421,8 +421,7 @@ class ScreenHomeState extends State<ScreenHome> {
                     child:
                       TextButton(
                        onPressed: () async{
-                         Agency user = Provider.of<Agency>(context, listen: false);      
-                         Provider.of<PaymentProvider>(context, listen: false).postOnlinePay(user.token, user.workspace, user.id, "1000000");             
+             
                        }, 
                        child: SizedBox(
                          width: widthDevice*0.5,

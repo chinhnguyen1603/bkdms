@@ -835,7 +835,7 @@ class DetailItemState extends State<DetailItem> {
                                                                                       FutureProgressDialog(getFuture(), message: Text('Thêm vào giỏ...', style: TextStyle(color:Color(0xff7d7d7d)))),
                                                                                   );
                                                                                   setState(() {              
-                                                                                    btnSelectVal = ""; //set value của dropdowm về ""
+                                                                                    btnSelectValBottomSheet = ""; //set value của dropdowm về ""
                                                                                   });
                                                                                   Navigator.pop(context);
                                                                               }
