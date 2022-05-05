@@ -1,6 +1,7 @@
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/Level.dart';
+import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
 import 'package:bkdms/services/LevelProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -202,13 +203,33 @@ class _RegisterLevelState extends State<RegisterLevel> {
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
                   content: Text("$onError"),
-                  actions: [TextButton(
+                  actions: [
+                    TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                  ),                      
-                  ],                                      
-              ));    
-            throw onError;          
+                    ),                      
+                  ],
+              )
+          );    
+          throw onError;          
+      }).then((value) {
+          //aleart dialog thành công
+          Alert(
+            context: context,
+            type: AlertType.success,
+            style: AlertStyle(
+              descTextAlign: TextAlign.start,
+              descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Color(0xff544c4c)),
+            ),
+            desc: "Đăng kí thành công",                
+            buttons: [ 
+              DialogButton(
+                child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(0)), (Route<dynamic> route) => false),
+                width: 100,
+              )
+            ],
+          ).show();        
       });  
     });
   }   
