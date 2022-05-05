@@ -25,11 +25,11 @@ class HomePage extends StatefulWidget {
   late int index;
   HomePage(this.index);
   @override
-  State<HomePage> createState() => HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 
-class HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
 
   late int _pageIndex;
   late PageController _pageController;
@@ -261,7 +261,7 @@ class ScreenHomeState extends State<ScreenHome> {
                                builder: (context) =>
                                  FutureProgressDialog(getOrderFuture()),
                              ); 
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => MainPageReturn()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => MainPageReturn(0)));
                            },
                            child: Container( 
                            margin: EdgeInsets.only(top:5) ,

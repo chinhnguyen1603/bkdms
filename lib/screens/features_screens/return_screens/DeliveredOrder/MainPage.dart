@@ -12,15 +12,16 @@ import 'package:bkdms/screens/features_screens/return_screens/ReturnOrder.dart';
 import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/DetailOrder.dart';
 
 class MainPageReturn extends StatefulWidget {
-
+  late int index;
+  MainPageReturn(this.index);
   @override
-  State<MainPageReturn> createState() => MainPageReturnState();
+  State<MainPageReturn> createState() => _MainPageReturnState();
 }
 
 
-class MainPageReturnState extends State<MainPageReturn> {
+class _MainPageReturnState extends State<MainPageReturn> {
 
-  int _pageIndex = 0;
+  late int _pageIndex;
   late PageController _pageController;
   
   //thêm dấu chấm vào giá tiền
@@ -35,7 +36,8 @@ class MainPageReturnState extends State<MainPageReturn> {
   @override
   void initState(){
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    _pageController = PageController(initialPage: widget.index);
+    _pageIndex = widget.index;
   }
 
   @override
@@ -82,11 +84,11 @@ class MainPageReturnState extends State<MainPageReturn> {
 //widget lịch sử đơn tại đây
 class HistoryDelivered extends StatefulWidget {
   @override
-  State<HistoryDelivered> createState() => HistoryDeliveredState();
+  State<HistoryDelivered> createState() => _HistoryDeliveredState();
 }
 
 
-class HistoryDeliveredState extends State<HistoryDelivered> {
+class _HistoryDeliveredState extends State<HistoryDelivered> {
   static const heavyBlue = Color(0xff242266);
   static const darkGrey = Color(0xff544c4c);
   List<OrderInfo> lstOrder = [];

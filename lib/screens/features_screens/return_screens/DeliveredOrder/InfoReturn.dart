@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:bkdms/services/ReturnProvider.dart';
 import 'package:flutter/material.dart';
@@ -369,7 +370,28 @@ class _InfoReturnState extends State<InfoReturn> {
                                  Provider.of<ReturnProvider>(context, listen: false).setPhoneAndNote(phone, noteController.text);
                                  //post trả hàng tại đây
                                  Agency user = Provider.of<Agency>(context, listen: false);
-                                 Provider.of<ReturnProvider>(context, listen: false).createReturnOrder(user.token, user.workspace, user.id, widget.orderId);
+                                 await Provider.of<ReturnProvider>(context, listen: false).createReturnOrder(user.token, user.workspace, user.id, widget.orderId)
+                                    .catchError((onError) async {
+                                      // Alert Dialog khi lỗi xảy ra
+                                      print("Bắt lỗi tạo đơn trả");
+                                      await showDialog(
+                                        context: context, 
+                                        builder: (ctx1) => AlertDialog(
+                                          title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                                          content: Text("$onError"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(ctx1),
+                                              child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                                            ),                      
+                                          ],                                      
+                                      ));    
+                                      throw onError;          
+                                    })
+                                   .then((value) {
+                                      //move to MainPagereturn(1) là trạng thái đơn trả
+                                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPageReturn(1)), (Route<dynamic> route) => false);
+                                   });   
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all < Color > (Color(0xff4690FF)),
