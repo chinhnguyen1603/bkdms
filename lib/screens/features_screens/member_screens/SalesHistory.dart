@@ -1,93 +1,21 @@
-import 'package:bkdms/services/AmountReturnProvider.dart';
+import 'package:bkdms/models/OrderInfo.dart';
+import 'package:bkdms/services/OrderProvider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:bkdms/services/OrderProvider.dart';
-import 'package:bkdms/models/OrderInfo.dart';
-import 'package:bkdms/screens/features_screens/return_screens/ReturnOrder.dart';
-import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/DetailOrder.dart';
-
-class MainPageReturn extends StatefulWidget {
-  late int index;
-  MainPageReturn(this.index);
-  @override
-  State<MainPageReturn> createState() => _MainPageReturnState();
-}
-
-
-class _MainPageReturnState extends State<MainPageReturn> {
-
-  late int _pageIndex;
-  late PageController _pageController;
-  
-  //thêm dấu chấm vào giá tiền
-  RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-  String Function(Match) mathFunc = (Match match) => '${match[1]}.';
-
-  List<Widget> tabPages = [
-      HistoryDelivered(),
-      ReturnOrder()
-  ];
-
-  @override
-  void initState(){
-    super.initState();
-    _pageController = PageController(initialPage: widget.index);
-    _pageIndex = widget.index;
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void onPageChanged(int page) {
-    setState(() {
-      this._pageIndex = page;
-    });
-  }
-
-  void onTabTapped(int index) {
-    this._pageController.animateToPage(index,duration: const Duration(milliseconds: 500),curve: Curves.easeInOut);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      //bottombar ở đây
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _pageIndex,
-        onTap: onTabTapped,
-        backgroundColor: Colors.white,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem( icon: Icon(Icons.history), label: "Lịch sử đơn"),
-          BottomNavigationBarItem(icon: Icon(Icons.local_shipping), label: "Đơn trả"),
-        ],
-        selectedItemColor: Color(0xff105480),
-      ),
-      body: PageView(
-        children: tabPages,
-        onPageChanged: onPageChanged,
-        controller: _pageController,
-      ),
-    );
-  }
-}
+import 'package:bkdms/components/AppBarTransparent.dart';
 
 
 //widget lịch sử đơn tại đây
-class HistoryDelivered extends StatefulWidget {
+class SalesHisstory extends StatefulWidget {
   @override
-  State<HistoryDelivered> createState() => _HistoryDeliveredState();
+  State<SalesHisstory> createState() => _SalesHisstoryState();
 }
 
 
-class _HistoryDeliveredState extends State<HistoryDelivered> {
-  static const heavyBlue = Color(0xff242266);
+class _SalesHisstoryState extends State<SalesHisstory> {
   static const darkGrey = Color(0xff544c4c);
   List<OrderInfo> lstOrder = [];
   List<OrderInfo> lstSelectDelivered = [];
@@ -123,24 +51,8 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';    
     //     
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: heavyBlue,
-          ),
-          onPressed: (){
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        title: Text(
-            "Trả hàng",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: heavyBlue,),
-        )
-      ),
-      backgroundColor: Color(0xfffafafa),
+      appBar: AppBarTransparent(Colors.white, "Lịch sử đơn"),
+      backgroundColor: Colors.white,
 
       //widget body 
       body: SingleChildScrollView( 
@@ -181,9 +93,9 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                   });
                   print(lstSelectDelivered);
                 }, 
-                child: Text("Chọn ngày giao", style: TextStyle(color: Color(0xff7b2626)),)
+                child: Text("Xem theo ngày", style: TextStyle(color: Color(0xff7b2626)),)
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 20),
              
               //Listview lịch sử đơn
               _isSelecting
@@ -198,9 +110,6 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                              //thông tin đơn hàng đã giao
                              GestureDetector(
                                onTap: () {
-                                  //clear list số lượng tại đây
-                                  Provider.of<AmountReturnProvider>(context, listen: false).clearList();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrder(lstSelectDelivered[index])));
                                },
                                //chi tiết đơn
                                child: Container(
@@ -283,8 +192,7 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                       ),
                                       SizedBox(height: 5,),
                                       Divider(),
-
-                                      //List view mặt hàng trong đơn
+                                    //List view mặt hàng trong đơn
                                       ListView.builder(
                                         itemCount: lstSelectDelivered[index].orderDetails.length,              
                                         shrinkWrap: true,
@@ -358,12 +266,9 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                        itemBuilder: (BuildContext context, int index) {
                          return Column(
                            children: [
-                             //thông tin đơn hàng đã giao
+                             //thông tin đơn hàng đã bán
                              GestureDetector(
                                onTap: (){
-                                  //clear list số lượng tại đây
-                                  Provider.of<AmountReturnProvider>(context, listen: false).clearList();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrder(lstDelivered[index])));
                                },
                                //chi tiết đơn
                                child: Container(
@@ -393,7 +298,7 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                         ), 
                                       ),
                                       SizedBox(width: 100.w, height: 5,),
-                                      //Row đơn hàng + tổng tiền
+                                      //Row tông tiền + thời gian
                                       SizedBox(
                                         height: 20,
                                         width: myWidth,
@@ -517,15 +422,14 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
           )
       ),
  
-    );
+    );    
   }
-
- 
 
   // Hàm convert thời gian
   String convertTime(String time){
     var timeConvert = DateFormat('dd/MM/yyyy').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }
+
 
 }

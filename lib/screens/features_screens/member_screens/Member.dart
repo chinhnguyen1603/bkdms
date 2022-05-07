@@ -1,9 +1,10 @@
+import 'package:bkdms/screens/features_screens/member_screens/SalesHistory.dart';
+import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
 import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtScreen.dart';
@@ -223,7 +224,7 @@ class _MemberState extends State<Member> {
               SizedBox(
                 child: TextButton(
                   onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => EnterCustomer()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ScanItem()));
                   }, 
                   child: Text(
                     "TẠO ĐƠN BÁN LẺ",
@@ -235,7 +236,7 @@ class _MemberState extends State<Member> {
               SizedBox(
                 child: TextButton(
                   onPressed: (){
-
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SalesHisstory()));
                   }, 
                   child: Text(
                     "LỊCH SỬ BÁN HÀNG",
