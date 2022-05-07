@@ -10,8 +10,17 @@ import 'package:bkdms/services/ItemProvider.dart';
 import 'ResetPassword.dart';
 import 'Register.dart';
 import 'HomePage.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+    playSound: true
+);
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 class Login extends StatefulWidget {
                           
@@ -313,7 +322,26 @@ class _LoginState extends State<Login> {
               // Text Button đăng kí đại lý mới
               TextButton(
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
+                  //đưa về định dạng này để so sánh,
+                  String timeAPI1 = "2022-04-13";
+                  //nếu d2 nhỏ hơn d1 thì trả về true. Lấy mốc trước mốc phải trả 5 ngày để so
+                  var d1 = DateTime.now().toLocal();     
+                  var d2 =  DateTime.parse(timeAPI1).add(Duration(days: 30)).subtract(Duration(days: 5));
+                  var d3 =  DateTime.parse(timeAPI1).add(Duration(days: 31));
+                  print(d2);    
+                  // && công nợ > 0
+                  if(d2.compareTo(d1) < 0){
+                    print('true');
+                    if(d3.compareTo(d1) < 0){
+
+                    } else{
+                       showNotification(convertPeriodTime(timeAPI1, 30));
+                    }
+                  } else{
+                    print('false');
+                  }
+                  //showNotification();
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
                 }, 
                 child: Text(
                   "Đăng kí đại lý mới?",
@@ -332,5 +360,30 @@ class _LoginState extends State<Login> {
       )),
     );
       
+  }
+
+  void showNotification(String date) {
+
+    flutterLocalNotificationsPlugin.show(
+        0,
+        "Nhắc thanh toán công nợ",
+        "Ngày $date là hạn đóng công nợ, bạn hãy vào BKDMS để thanh toán ngay nhé",
+        NotificationDetails(
+            android: AndroidNotificationDetails(channel.id, channel.name, 
+                importance: Importance.high,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher')
+        )
+    );
+  }
+
+  // Hàm show UI mốc phải trả nợ
+  String convertPeriodTime(String inputTime, int inputMaxDebtPeriod){
+    var debtStartTime = DateTime.parse(inputTime).toLocal();  
+    var endTime = debtStartTime.add( Duration(days: inputMaxDebtPeriod));
+    //mốc nợ sau cùng
+    var timeConvert = DateFormat('dd/MM').format(endTime);
+    return timeConvert;
   }
 }

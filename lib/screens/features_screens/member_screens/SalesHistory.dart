@@ -58,7 +58,7 @@ class _SalesHisstoryState extends State<SalesHisstory> {
       body: SingleChildScrollView( 
           child: Column(
             children: [
-              SizedBox(width: 100.w,height: 10),
+              SizedBox(width: 100.w,height: 5),
               //textbutton chọn ngày
               TextButton(
                 onPressed: () async{
@@ -95,7 +95,7 @@ class _SalesHisstoryState extends State<SalesHisstory> {
                 }, 
                 child: Text("Xem theo ngày", style: TextStyle(color: Color(0xff7b2626)),)
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 5),
              
               //Listview lịch sử đơn
               _isSelecting
