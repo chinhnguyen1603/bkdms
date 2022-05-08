@@ -1,6 +1,5 @@
 import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
 import 'package:bkdms/services/OrderProvider.dart';
-import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -19,6 +18,19 @@ import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/CountBadge.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+
+//local notification nhắc thanh toán nợ
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+    playSound: true
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 
 
 class HomePage extends StatefulWidget {
@@ -133,8 +145,14 @@ class ScreenHomeState extends State<ScreenHome> {
   static const heavyBlue = Color(0xff242266);
   static const textGrey = Color(0xff282323);
 
+  //biến Agency để lấy dư nọ hiện tại + dư nợ tối đa
+  late Agency user;
 
-   
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    user = Provider.of<Agency>(context);  
+  } 
 
  
   @override
@@ -201,36 +219,32 @@ class ScreenHomeState extends State<ScreenHome> {
                        // 2 dòng text
                        Center(
                          // Gọi object từ Provider Agency
-                        child: Consumer<Agency?>( builder: (ctx, user, child) { 
-                          String? userName = user?.nameOwn; 
-                          return Container(
+                        child:  Container(
                             margin: EdgeInsets.only(top: 15),
                             height: 70,
                             width: widthDevice*0.6,
                             child: Column(
-                            children:[
-                              SizedBox(
-                                width: widthDevice*0.6,
-                                child: Text(
-                                 "Xin chào khách hàng ",
-                                 textAlign: TextAlign.center,
-                                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white,),
+                              children:[
+                                SizedBox(
+                                  width: widthDevice*0.6,
+                                  child: Text(
+                                    "Xin chào khách hàng ",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white,),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 3,),
-                              SizedBox(
-                                width: widthDevice*0.6,
-                                child: Text(
-                                 "$userName",
-                                 textAlign: TextAlign.center,
-                                 style: TextStyle( fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white,),
-                                ),
-                              )
-                            ]
-                         )
-                        );
-                        // builder
-                        })                    
+                                SizedBox(height: 3,),
+                                SizedBox(
+                                  width: widthDevice*0.6,
+                                  child: Text(
+                                    "${user.nameOwn}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle( fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white,),
+                                  ),
+                                )
+                              ]
+                            )
+                        )             
                        )],
                     ),),
                   
@@ -309,6 +323,24 @@ class ScreenHomeState extends State<ScreenHome> {
                            child: InkWell(
                            splashColor: Colors.deepOrange,
                            onTap: () async {
+                              //nhắc thanh toán công nợ
+                              // if công nợ > 0 thì mới tính
+                              if(user.currentTotalDebt != "0"){
+                                if(user.debtStartTime != null && user.maxDebtPeriod != null) {
+                                  //nếu d2 nhỏ hơn d1 thì trả về true. Lấy mốc trước mốc phải trả 5 ngày để so
+                                  var today = DateTime.now().toLocal();     
+                                  var beforeDay =  DateTime.parse(user.debtStartTime as String).add(Duration(days: int.parse(user.maxDebtPeriod as String))).subtract(Duration(days: 5));
+                                  var afterDay =  DateTime.parse(user.debtStartTime as String).add(Duration(days: int.parse(user.maxDebtPeriod as String)+1));
+                                  if(beforeDay.compareTo(today) < 0){
+                                    if(afterDay.compareTo(today) < 0){
+                                      //nếu hôm nay lớn hơn afterDay thì loại
+                                    }else{
+                                      //show thông báo tại đây
+                                      showNotification(convertPeriodTime(user.debtStartTime as String, int.parse(user.maxDebtPeriod as String)));
+                                    }
+                                  }  
+                                } 
+                              }                           
                               //show dialog chờ get order
                               await showDialog (
                                 context: context,
@@ -639,4 +671,29 @@ class ScreenHomeState extends State<ScreenHome> {
         String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
         return transformedUrl;
   }
+
+  void showNotification(String date) {
+    flutterLocalNotificationsPlugin.show(
+        0,
+        "Nhắc thanh toán công nợ",
+        "Ngày $date là hạn đóng công nợ, bạn hãy vào BKDMS để thanh toán ngay nhé",
+        NotificationDetails(
+            android: AndroidNotificationDetails(channel.id, channel.name, 
+                importance: Importance.high,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher')
+        )
+    );
+  }
+
+  // Hàm show UI mốc phải trả nợ
+  String convertPeriodTime(String inputTime, int inputMaxDebtPeriod){
+    var debtStartTime = DateTime.parse(inputTime).toLocal();  
+    var endTime = debtStartTime.add( Duration(days: inputMaxDebtPeriod));
+    //mốc nợ sau cùng
+    var timeConvert = DateFormat('dd/MM').format(endTime);
+    return timeConvert;
+  }
+
 }
