@@ -23,6 +23,7 @@ class DetailOrder extends StatefulWidget {
 class _DetailOrderState extends State<DetailOrder> {
   double heightDevice =100.h;
   double myWidth = 90.w;
+  static const heavyBlue = Color(0xff242266);
   static const darkBlue = Color(0xff27214d);
   static const darkGrey = Color(0xff544c4c);
 
@@ -82,7 +83,23 @@ class _DetailOrderState extends State<DetailOrder> {
     List<dynamic> lstOrderDetail = widget.orderDeliveredInfo.orderDetails;     
     //widget
     return Scaffold(
-      appBar: AppBarGrey("Chi tiết đơn"),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: heavyBlue,
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: Text(
+            "Chi tiết đơn",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: heavyBlue,),
+        )
+      ),
       body: SingleChildScrollView(
           child: Column(
             children: [

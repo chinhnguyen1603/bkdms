@@ -29,6 +29,7 @@ class InfoReturn extends StatefulWidget {
 }
 
 class _InfoReturnState extends State<InfoReturn> {
+  static const heavyBlue = Color(0xff242266);
   static const darkGrey = Color(0xff544C4C);
   late String name;
   late String phone;
@@ -75,7 +76,23 @@ class _InfoReturnState extends State<InfoReturn> {
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';    
 
     return Scaffold(
-      appBar: AppBarGrey("Điền thông tin"),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: heavyBlue,
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title: Text(
+            "Điền thông tin",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: heavyBlue,),
+        )
+      ),
      
       body: SingleChildScrollView(
         child: Column(
