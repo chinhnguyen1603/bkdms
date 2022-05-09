@@ -149,10 +149,10 @@ class ScreenHomeState extends State<ScreenHome> {
   late Agency user;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    user = Provider.of<Agency>(context);  
-  } 
+  void initState() {
+    super.initState();
+    user = Provider.of<Agency>(context, listen: false);
+  }
 
  
   @override
@@ -162,6 +162,7 @@ class ScreenHomeState extends State<ScreenHome> {
     //
     return SingleChildScrollView( 
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Container chứa gradient
             Container(

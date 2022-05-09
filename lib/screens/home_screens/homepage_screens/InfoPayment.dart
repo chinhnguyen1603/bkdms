@@ -41,7 +41,7 @@ class _InfoPaymentState extends State<InfoPayment> {
   //
   @override
   Widget build(BuildContext context) {
-    String maxDebt ="";
+    String maxDebt ="0";
     if(user.maxDebt != null){
       maxDebt = user.maxDebt as String;
     }    
