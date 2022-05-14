@@ -1,4 +1,3 @@
-import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/InfoReturn.dart';
 import 'package:bkdms/services/AmountReturnProvider.dart';
 import 'package:bkdms/services/ReturnProvider.dart';
@@ -507,8 +506,6 @@ class _DetailOrderState extends State<DetailOrder> {
                                                                                   Navigator.pop(context);
                                                                               }
                                                                            }
-                                                                           // cập nhật tổng tiền tại đây
-                                                                           
                                                                            
                                                                         },
                                                                         child: Text("Cập nhật", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),

@@ -1,311 +1,365 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 
 class PurchaseMoney extends StatefulWidget {
-  const PurchaseMoney({ Key? key }) : super(key: key);
+  const PurchaseMoney({Key? key}) : super(key: key);
 
   @override
-  State<PurchaseMoney> createState() => _PurchaseMoneyState();
+  State<StatefulWidget> createState() => _PurchaseMoneyState();
 }
 
 class _PurchaseMoneyState extends State<PurchaseMoney> {
-  List<Color> gradientColors = [
-    const Color(0xff23b6e6),
-    const Color(0xff02d39a),
-  ];
+  final Color leftBarColor = const Color(0xff53fdd7);
+  final double width = 12;
 
-  bool showAvg = false;
+  late List<BarChartGroupData> rawBarGroups;
+  late List<BarChartGroupData> showingBarGroups;
 
+  // xử lý khi chạm vào thanh
+  int touchedGroupIndex = -1;
 
+  @override
+  void initState() {
+    super.initState();
+    //gán giá trị tổng tiền tại đây
+    final barGroup1 = makeGroupData(0, 5,); //giá trị tổng tiền nằm ở cột y, cột x là 0 -> 11 [đại diện cho tháng 1-12]
+    final barGroup2 = makeGroupData(1, 16);
+    final barGroup3 = makeGroupData(2, 18);
+    final barGroup4 = makeGroupData(3, 20);
+    final barGroup5 = makeGroupData(4, 17);
+    final barGroup6 = makeGroupData(5, 19);
+    final barGroup7 = makeGroupData(6, 0);
+    final barGroup8 = makeGroupData(7, 2);
+    final barGroup9 = makeGroupData(8, 3);
+    final barGroup10 = makeGroupData(9, 19);
+    final barGroup11 = makeGroupData(10, 12); 
+    final barGroup12 = makeGroupData(11, 9);             
+    final items = [
+      barGroup1,
+      barGroup2,
+      barGroup3,
+      barGroup4,
+      barGroup5,
+      barGroup6,
+      barGroup7,
+      barGroup8,
+      barGroup9,
+      barGroup10,
+      barGroup11,
+      barGroup12,      
+    ];
+
+    rawBarGroups = items;
+
+    showingBarGroups = items;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: 50,),
-          Stack(
-          children: <Widget>[
-            AspectRatio(
-              aspectRatio: 1.70,
-              child: Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        color: const Color(0xff2c4260),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              //chứa hiệu ứng + chữ VND
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  makeTransactionsIcon(),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  const Text(
+                    'VND',
+                    style: TextStyle(color: Colors.white, fontSize: 22),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+               ],
+              ),
+              
+              //
+              const SizedBox(
+                height: 38,
+              ),
+
+              //widget biểu đồ tại đây
+              Expanded(
+                child: BarChart(
+                  BarChartData(
+                    maxY: 20,
+                    //xử lý khi người dùng chạm vào thanh biểu đồ
+                    barTouchData: BarTouchData(
+                      enabled: true,
+                      handleBuiltInTouches: true,
+                      touchTooltipData: BarTouchTooltipData(
+                        tooltipBgColor: Colors.transparent,
+                        tooltipMargin: 0,
+                        getTooltipItem: (
+                          BarChartGroupData group,
+                          int groupIndex,
+                          BarChartRodData rod,
+                          int rodIndex,
+                        ) {
+                          return BarTooltipItem(
+                            rod.toY.toString(),
+                            TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: rod.color!,
+                                fontSize: 18,
+                                shadows: const [
+                                  Shadow(
+                                    color: Colors.black26,
+                                    blurRadius: 12,
+                                  )
+                                ]),
+                          );
+                        }),
+                        touchCallback: (event, response) {
+                          if (event.isInterestedForInteractions && response != null && response.spot != null) {
+                            setState(() {
+                              touchedGroupIndex = response.spot!.touchedBarGroupIndex;
+                            });
+                          } else {
+                            setState(() {
+                              touchedGroupIndex = -1;
+                            });
+                          }
+                        },
+                    ),                    
+                    //wiget thanh diễn dãi trái, phải, trên, dưới -> [số tiền + tên tháng]
+                    titlesData: FlTitlesData(
+                      show: true,
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: bottomTitles,
+                          interval: 1,
+                          reservedSize: 42,
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 26,
+                          interval: 1,
+                          getTitlesWidget: leftTitles,
+                        ),
+                      ),
                     ),
-                    color: Color(0xff232d37)),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      right: 18.0, left: 12.0, top: 24, bottom: 12),
-                  child: LineChart(
-                    showAvg ? avgData() : mainData(),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    //dữ liệu
+                    barGroups: showingBarGroups,
+                    gridData: FlGridData(show: false),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: 60,
-              height: 34,
-              child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    showAvg = !showAvg;
-                  });
-                },
-                child: Text(
-                  'Triệu',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color:
-                          showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
-                ),
+              const SizedBox(
+                height: 12,
               ),
-            ),
-          ],
-    ),
-        ],
-      )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+
+  //thao tác cột bên trái chứa mốc triệu VND
+  Widget leftTitles(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Color(0xff68737d),
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
+      color: Color(0xfffdfdfd),
+      fontWeight: FontWeight.w500,
+      fontSize: 12,
+    );
+    String text;
+    if (value == 1) {
+      text = '1M';
+    } 
+    else if (value == 5) {
+      text = '5M';
+    }
+    else if (value == 10) {
+      text = '10M';
+    } 
+    else if (value == 20) {
+      text = '20M';
+    } 
+    else {
+      return Container();
+    }
+    return Text(text, style: style);
+  }
+
+  //thao tác cột nằm dưới chứa mốc thời gian [tháng]
+  Widget bottomTitles(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Color(0xfffdfdfd),
+      fontWeight: FontWeight.w600,
+      fontSize: 12,
     );
     Widget text;
     switch (value.toInt()) {
-      case 2:
-        text = const Text('MAR', style: style);
+      case 0:
+        text = const Text(
+          'Jan',
+          style: style,
+        );
         break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
-
-    return Padding(child: text, padding: const EdgeInsets.only(top: 8.0));
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff67727d),
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
-    String text;
-    switch (value.toInt()) {
       case 1:
-        text = '5';
+        text = const Text(
+          'Feb',
+          style: style,
+        );
         break;
       case 2:
-        text = '10';
+        text = const Text(
+          'Mar',
+          style: style,
+        );
         break;
       case 3:
-        text = '30k';
+        text = const Text(
+          'Apr',
+          style: style,
+        );
+        break;
+      case 4:
+        text = const Text(
+          'May',
+          style: style,
+        );
         break;
       case 5:
-        text = '50k';
+        text = const Text(
+          'Jun',
+          style: style,
+        );
         break;
+      case 6:
+        text = const Text(
+          'Jul',
+          style: style,
+        );
+        break;
+      case 7:
+        text = const Text(
+          'Aug',
+          style: style,
+        );
+        break;     
+      case 8:
+        text = const Text(
+          'Sep',
+          style: style,
+        );
+        break;   
+      case 9:
+        text = const Text(
+          'Oct',
+          style: style,
+        );
+        break;   
+      case 10:
+        text = const Text(
+          'Nov',
+          style: style,
+        );
+        break;  
+      case 11:
+        text = const Text(
+          'Dec',
+          style: style,
+        );
+        break;                                                
       default:
-        return Container();
+        text = const Text(
+          '',
+          style: style,
+        );
+        break;
     }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
+    return Padding(padding: const EdgeInsets.only(top: 20), child: text);
   }
 
-  LineChartData mainData() {
-    return LineChartData(
-      gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
+  //hàm lấy dữ liệu của thanh, x là mốc thời gian, y là số tiền
+  BarChartGroupData makeGroupData(int x, double y) {
+    return BarChartGroupData(barsSpace: 4, x: x, showingTooltipIndicators: touchedGroupIndex == x ? [0] : [], barRods: [
+      BarChartRodData(
+        toY: y,
+        color: leftBarColor,
+        width: width,
       ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+   ]);
+  }
+
+  //widget tạo hiệu ứng bên trái chữ VND
+  Widget makeTransactionsIcon() {
+    const width = 4.5;
+    const space = 3.5;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: width,
+          height: 10,
+          color: Colors.white.withOpacity(0.4),
         ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+        const SizedBox(
+          width: space,
         ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
-          ),
+        Container(
+          width: width,
+          height: 28,
+          color: Colors.white.withOpacity(0.8),
         ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: 1,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-          ),
+        const SizedBox(
+          width: space,
         ),
-      ),
-      borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(1, 1),
-            FlSpot(2, 2),
-            FlSpot(3, 3),
-            FlSpot(4, 4),
-            FlSpot(5, 5),
-            FlSpot(6, 3),
-            FlSpot(7, 4),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: gradientColors,
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          barWidth: 2,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: gradientColors
-                  .map((color) => color.withOpacity(0.3))
-                  .toList(),
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
+        Container(
+          width: width,
+          height: 42,
+          color: Colors.white.withOpacity(1),
+        ),
+        const SizedBox(
+          width: space,
+        ),
+        Container(
+          width: width,
+          height: 28,
+          color: Colors.white.withOpacity(0.8),
+        ),
+        const SizedBox(
+          width: space,
+        ),
+        Container(
+          width: width,
+          height: 10,
+          color: Colors.white.withOpacity(0.4),
         ),
       ],
     );
   }
 
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        verticalInterval: 1,
-        horizontalInterval: 1,
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: bottomTitleWidgets,
-            interval: 1,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-            interval: 1,
-          ),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      ),
-      borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: [
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: [
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-        ),
-      ],
-    );
-  }  
+
 }

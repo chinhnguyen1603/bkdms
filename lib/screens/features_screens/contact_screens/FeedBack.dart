@@ -12,7 +12,6 @@ class FeedBack extends StatefulWidget {
 
 
 class _FeedBackState extends State<FeedBack> {
-  static const blueText = Color(0xff105480);  
   var darkGrey = Color(0xff544C4C); // màu xám
   //key form
   final _formFeedBackKey = GlobalKey<FormState>();
@@ -26,7 +25,7 @@ class _FeedBackState extends State<FeedBack> {
     double myWidth = widthDevice*0.9;  
     return Scaffold(
       backgroundColor: Color(0xfffdfdfd),    
-      appBar: AppBarTransparentWithHome(Colors.white,"Gửi phản hồi"),
+      appBar: AppBarTransparentWithHome(Color(0xfffdfdfd), "Gửi phản hồi"),
       body: Form(
         key: _formFeedBackKey,
         child: Center(
