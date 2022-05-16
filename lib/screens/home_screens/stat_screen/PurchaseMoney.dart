@@ -11,8 +11,6 @@ class PurchaseMoney extends StatefulWidget {
 class _PurchaseMoneyState extends State<PurchaseMoney> {
   final Color leftBarColor = const Color(0xff53fdd7);
   final double width = 12;
-
-  late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
 
   // xử lý khi chạm vào thanh
@@ -48,8 +46,6 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
       barGroup11,
       barGroup12,      
     ];
-
-    rawBarGroups = items;
 
     showingBarGroups = items;
   }

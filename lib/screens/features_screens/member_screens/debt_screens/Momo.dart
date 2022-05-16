@@ -319,7 +319,6 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
   //post pay momo
   Future<Map> postMomoCallback(String phone, String token, String partnerRefId, String hash) async {
     var url = Uri.parse('https://test-payment.momo.vn' +'/pay/app');
-    print(" bắt đầu post pay momo");
      try {
       final response = await http.post(
         url, 

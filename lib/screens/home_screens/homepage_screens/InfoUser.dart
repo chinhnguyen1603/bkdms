@@ -6,7 +6,6 @@ import 'package:bkdms/screens/home_screens/homepage_screens/InfoApp.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:bkdms/services/CartProvider.dart';
 
 
 

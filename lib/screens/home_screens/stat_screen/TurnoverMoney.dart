@@ -11,8 +11,6 @@ class TurnoverMoney extends StatefulWidget {
 class _TurnoverMoneyState extends State<TurnoverMoney> {
   final Color leftBarColor = const Color(0xffff5182);
   final double width = 12;
-
-  late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
 
   // xử lý khi chạm vào thanh
@@ -48,8 +46,6 @@ class _TurnoverMoneyState extends State<TurnoverMoney> {
       barGroup11,
       barGroup12,      
     ];
-
-    rawBarGroups = items;
 
     showingBarGroups = items;
   }

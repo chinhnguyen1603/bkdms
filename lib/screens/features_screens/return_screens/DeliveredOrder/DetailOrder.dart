@@ -47,28 +47,26 @@ class _DetailOrderState extends State<DetailOrder> {
       lstAmount.add(order['quantity']);
     }
     //khởi tạo list provider
-    int i=0;
     for (var order in widget.orderDeliveredInfo.orderDetails){
-      Provider.of<AmountReturnProvider>(context, listen: false).initList(i, order['quantity']);
-      i++;
-    }
+      Provider.of<AmountReturnProvider>(context, listen: false).lstAmount.add(order['quantity']);
+    } 
   }
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    super.didChangeDependencies();     
     lstAmountProvider = Provider.of<AmountReturnProvider>(context).lstAmount;
     // cập nhật tổng tiền của giỏ hàng
     sumOfOrder = 0;
     for (var index = 0; index < lstAmountProvider.length; index++) {
       sumOfOrder = sumOfOrder + int.parse(widget.orderDeliveredInfo.orderDetails[index]['price'])*int.parse(lstAmountProvider[index]);
-    }
+    }        
   }
   
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     OrderInfo thisOrderDelivered = widget.orderDeliveredInfo;
     //thêm dấu chấm vào giá sản phẩm
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
@@ -90,6 +88,7 @@ class _DetailOrderState extends State<DetailOrder> {
             color: heavyBlue,
           ),
           onPressed: (){
+            //clear list rồi mới về
             Navigator.pop(context);
           },
         ),

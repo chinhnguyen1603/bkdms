@@ -54,12 +54,10 @@ class SplashScreenState extends State<SplashScreen>{
                    return AlertDialog(
                       title: Text("Thông báo"),
                       content: Text("${notification.body}. Kiểm tra ngay tại mục đơn hàng.", style: TextStyle(color: Color(0xff544c4c)),),
-              );
-            });
-
+                   );
+                 });
             });
       }
-    
     });
     
     //background
