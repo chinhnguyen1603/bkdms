@@ -450,7 +450,7 @@ class _DeliveredState extends State<Delivered> {
                                      //Button xác nhận nhận hàng
                                      SizedBox(
                                        height: 30,
-                                       width: myWidth*0.3,
+                                       width: myWidth*0.4,
                                        child: ElevatedButton(
                                           onPressed: (){
                                             //dialog xác nhận

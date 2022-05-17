@@ -235,12 +235,12 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                         height: 20,
                                         width: myWidth,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             //tổng tiền
                                             SizedBox(
-                                              width: myWidth*0.3,
+                                              width: myWidth*0.33,
                                               height: 20,
                                               child: Row(
                                                 children: [
@@ -257,10 +257,10 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                                 ]
                                               )
                                             ),
-                                            SizedBox(width: myWidth*0.3,),
+                                            SizedBox(width: myWidth*0.26,),
                                             //thời gian hoàn thành
                                             SizedBox(
-                                              width: myWidth*0.3,
+                                              width: myWidth*0.33,
                                               height: 20,
                                               child: Row(
                                                 children: [
@@ -294,7 +294,6 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                             children: [
                                               //info từng mặt hàng
                                               Container(
-                                                height: 50,
                                                 width: myWidth*0.9,
                                                 alignment: Alignment.center,
                                                 child: Row(
@@ -398,12 +397,12 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                         height: 20,
                                         width: myWidth,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             //tổng tiền
                                             SizedBox(
-                                              width: myWidth*0.3,
+                                              width: myWidth*0.33,
                                               height: 20,
                                               child: Row(
                                                 children: [
@@ -420,10 +419,10 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                                 ]
                                               )
                                             ),
-                                            SizedBox(width: myWidth*0.3,),
+                                            SizedBox(width: myWidth*0.26,),
                                             //thời gian hoàn thành
                                             SizedBox(
-                                              width: myWidth*0.3,
+                                              width: myWidth*0.33,
                                               height: 20,
                                               child: Row(
                                                 children: [
@@ -457,7 +456,6 @@ class _HistoryDeliveredState extends State<HistoryDelivered> {
                                             children: [
                                               //info từng mặt hàng
                                               Container(
-                                                height: 50,
                                                 width: myWidth*0.9,
                                                 alignment: Alignment.center,
                                                 child: Row(

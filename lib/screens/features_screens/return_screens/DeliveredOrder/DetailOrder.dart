@@ -251,18 +251,18 @@ class _DetailOrderState extends State<DetailOrder> {
                                         //Tên, đơn vị + số lượng
                                         SizedBox(
                                           height: 100,
-                                          width: myWidth*0.52,
+                                          width: myWidth*0.6,
                                           child: Column(
                                               children: [
                                               // tên sản phẩm + icon xóa cart
                                               SizedBox(
                                                  height: 30,
-                                                 width: myWidth*0.52,
+                                                 width: myWidth*0.6,
                                                  child: Row(
                                                    children: [
                                                      //tên sản phẩm
                                                      SizedBox(
-                                                       width: myWidth*0.4,
+                                                       width: myWidth*0.5,
                                                        child: Text(
                                                           "${lstOrderDetail[index]['unit']['product']['name']}", 
                                                           maxLines: 1,
@@ -296,7 +296,7 @@ class _DetailOrderState extends State<DetailOrder> {
                                               // Đơn vị
                                               SizedBox(
                                                  height: 18,
-                                                 width: myWidth*0.52,
+                                                 width: myWidth*0.6,
                                                  child: Text(
                                                     "Đơn vị: " + "${lstOrderDetail[index]['unit']['name']}", 
                                                     maxLines: 1,
@@ -309,7 +309,7 @@ class _DetailOrderState extends State<DetailOrder> {
                                               // Số lượng
                                               SizedBox(
                                                  height: 30,
-                                                 width: myWidth*0.52,
+                                                 width: myWidth*0.6,
                                                  child: Row(
                                                    children: [
                                                      //text số lượng
