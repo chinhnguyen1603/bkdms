@@ -3,7 +3,6 @@ import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Succe
 import 'package:flutter/material.dart';
 import 'package:momo_vn/momo_vn.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -16,12 +15,18 @@ import 'package:crypto/crypto.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class TestMomo extends StatefulWidget {
 
   @override
   State<TestMomo> createState() => _TestMomoState();
 }
+
+final moneyController = MoneyMaskedTextController(
+  thousandSeparator: ',',
+  decimalSeparator: '.',
+); 
 
 
 class _TestMomoState extends State<TestMomo> {
@@ -39,7 +44,6 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
 -----END RSA PUBLIC KEY-----""";
   //biến nhập tiền
   final _formMoneyKey = GlobalKey<FormState>();
-  final moneyController = TextEditingController();
   late int amout;
   //id giao dịch tự tạo
   String partnerReId = "";
@@ -149,10 +153,13 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
               //button open Momo app
               GestureDetector(
                 onTap: () async{
+                  int result = moneyController.numberValue.toInt();
                   //check form không null thì mở app Momo
                   if (_formMoneyKey.currentState!.validate()){
-                    //check số tiền vượt quá số nợ thì ko được
-                    if(int.parse(moneyController.text) > int.parse(currentTotalDebt)){
+                    //nợ hiện tại không được null
+                    if(currentTotalDebt != ""){
+                      //check số tiền vượt quá số nợ thì ko được
+                      if(result > int.parse(currentTotalDebt)){
                         //thông báo lỗi
                         Alert(
                            context: context,
@@ -167,29 +174,29 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
                            ],
                         ).show();
                     } else{
-                      //check số tiền không được nhỏ hơn 10%
-                      if(int.parse(moneyController.text) < int.parse(currentTotalDebt)*10/100){
-                        //thông báo lỗi
-                        Alert(
-                           context: context,
-                           type: AlertType.warning,
-                           desc: "Số tiền mỗi lần trả không nhỏ hơn 10% tổng nợ.",                
-                           buttons: [ 
-                             DialogButton(
-                              child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
-                              onPressed: () => Navigator.pop(context),
-                              width: 100,
+                        //check số tiền không được nhỏ hơn 10%
+                        if(result < int.parse(currentTotalDebt)*10/100){
+                          //thông báo lỗi
+                          Alert(
+                            context: context,
+                            type: AlertType.warning,
+                            desc: "Số tiền mỗi lần trả không nhỏ hơn 10% tổng nợ.",                
+                            buttons: [ 
+                              DialogButton(
+                                child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                onPressed: () => Navigator.pop(context),
+                                width: 100,
                              )
-                           ],
-                        ).show();
-                      } else{
-                          //update amout
-                          setState(() {
-                            this.amout = int.parse(moneyController.text);
-                            print(amout);
-                          });
-                          //biến momo
-                          MomoPaymentInfo options = MomoPaymentInfo(
+                            ],
+                          ).show();
+                        } else{
+                            //update amout
+                            setState(() {
+                              this.amout = result;
+                              print(amout);
+                            });
+                            //biến momo
+                            MomoPaymentInfo options = MomoPaymentInfo(
                               merchantName: "Nhà cung cấp BKDMS",
                               appScheme: "momoawa120220330",
                               merchantCode: 'MOMOAWA120220330',
@@ -204,12 +211,13 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoKsUUeWCPlJA+SUQOuie59vDkTMZKXIIDdOv
                               partner: 'merchant',
                               extra: "{\"key1\":\"value1\",\"key2\":\"value2\"}",
                               isTestMode: true
-                          );   
-                          try {
-                            _momoPay.open(options);   
-                          } catch (e) {
-                            debugPrint(e.toString());
-                          } 
+                            );   
+                            try {
+                              _momoPay.open(options);   
+                            } catch (e) {
+                              debugPrint(e.toString());
+                            } 
+                        }
                       }
                     }
                   }               

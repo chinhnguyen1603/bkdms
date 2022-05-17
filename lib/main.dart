@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
 import 'package:bkdms/screens/home_screens/stat_screen/PurchaseMoney.dart';
 import 'package:bkdms/services/LevelProvider.dart';
 import 'package:bkdms/services/AmountReturnProvider.dart';
@@ -27,16 +28,15 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-/*
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('A cloud message just showed up :  ${message.messageId}');
-}*/
+}
 
 Future<void> main() async {
-  /*WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
@@ -47,7 +47,7 @@ Future<void> main() async {
     alert: true,
     badge: true,
     sound: true,
-  );*/
+  );
   runApp(MyApp());
 }
 

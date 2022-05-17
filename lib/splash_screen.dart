@@ -86,9 +86,9 @@ class SplashScreenState extends State<SplashScreen>{
     Timer(Duration(seconds: 4), () {
         Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
     }); 
-    /*FirebaseMessaging.instance.getToken().then((token){
+    FirebaseMessaging.instance.getToken().then((token){
       print(token);
-    });*/
+    });
     return Scaffold(
         backgroundColor: Color(0xffF4F4F4),
         body: SingleChildScrollView( 

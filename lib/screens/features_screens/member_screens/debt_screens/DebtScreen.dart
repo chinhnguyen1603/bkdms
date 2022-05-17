@@ -53,7 +53,12 @@ class _DebtScreenState extends State<DebtScreen> {
     }  
     if(user.debtStartTime != null){
       debtStartTime = user.debtStartTime as String;
-    }          
+    } 
+    //xử lí lấy ngày thanh toán
+    String deadlinePayDay = "";
+    if (debtStartTime != "" && maxDebtPeriod != ""){
+      deadlinePayDay = convertTime(debtStartTime, int.parse(maxDebtPeriod));
+    }         
     //
     return Scaffold(
       appBar: AppBarTransparent(Color(0xfffdfdfd), "Công nợ"),
@@ -160,7 +165,7 @@ class _DebtScreenState extends State<DebtScreen> {
                               children: [
                                 SizedBox(height: 8,),
                                 SizedBox(width:widthInContainer*0.4-8, child: Text("Hạn thanh toán", textAlign: TextAlign.left ,style: TextStyle(color: Color(0xff544c4c)))),
-                                SizedBox(width:widthInContainer*0.4-8 ,child: Text("${convertTime(debtStartTime, int.parse(maxDebtPeriod))}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)))
+                                SizedBox(width:widthInContainer*0.4-8 ,child: Text("$deadlinePayDay", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)))
                               ],
                             ),
                           ],
