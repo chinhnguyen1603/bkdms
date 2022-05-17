@@ -60,11 +60,10 @@ class _InfoOrderState extends State<InfoOrder> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     //khởi tạo address UI bằng addressInfoOrder, update liên tục
-    OrderProvider myInfo = Provider.of<OrderProvider>(context);
-    extra = myInfo.extra;
-    ward = myInfo.ward;
-    district = myInfo.district;
-    province = myInfo.province;
+    extra = Provider.of<OrderProvider>(context).extra;
+    ward = Provider.of<OrderProvider>(context).ward;
+    district = Provider.of<OrderProvider>(context).district;
+    province = Provider.of<OrderProvider>(context).province;
   }
 
   @override
