@@ -94,7 +94,7 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
               Expanded(
                 child: BarChart(
                   BarChartData(
-                    maxY: 20,
+                    maxY: 50,
                     //xử lý khi người dùng chạm vào thanh biểu đồ
                     barTouchData: BarTouchData(
                       enabled: true,
@@ -200,6 +200,9 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
     else if (value == 20) {
       text = '20M';
     } 
+    else if (value == 50) {
+      text = '50M';
+    }     
     else {
       return Container();
     }

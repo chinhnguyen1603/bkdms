@@ -76,9 +76,6 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                       resultUnits.add(unit);
                       break;
                     } 
-                    else{
-                      needShowDialog = 1;
-                    }  
                   }     
                 }
                 if(needShowDialog == 0) {

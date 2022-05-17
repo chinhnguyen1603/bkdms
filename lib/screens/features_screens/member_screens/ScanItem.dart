@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bkdms/models/Item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,19 @@ class _ScanItemState  extends State<ScanItem> {
   String _scanBarcode = '';
   bool isShowDialog = false;
   int needShowDialog = 1;
+  
+ //khởi tạo list item = []
+  List<Item> lstItem = [];
+
+  @override
+  void initState() {
+    super.initState();
+    //lấy list item từ itemprovider
+    lstItem = Provider.of<ItemProvider>(context, listen: false).lstItem;
+  
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +56,7 @@ class _ScanItemState  extends State<ScanItem> {
               // xử lý logic tại đây
               onTap: () async {
                 await scanBarcodeNormal();
-                for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
+                for (var item in lstItem){
                   for(var unit in item.units) {
                     if(_scanBarcode == unit['barcode']){
                       setState(() {
@@ -51,9 +65,6 @@ class _ScanItemState  extends State<ScanItem> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(item, unit)));
                       break;
                     } 
-                    else{
-                      needShowDialog = 1;
-                    }       
                   }  
                 }
                 if(needShowDialog == 0) {
