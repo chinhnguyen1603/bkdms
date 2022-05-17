@@ -52,8 +52,11 @@ class _InfoOrderState extends State<InfoOrder> {
     Agency user = Provider.of<Agency>(context, listen: false);
     name = user.nameOwn;
     phone = user.phone;
-    //khởi tạo Create Order address bằng agency
-    Provider.of<OrderProvider>(context, listen: false).setAddress(user.province, user.district, user.ward, user.extraInfoOfAddress);
+    //khởi tạo address trước
+    extra = user.extraInfoOfAddress;
+    ward = user.ward;
+    district = user.district;
+    province = user.province;
   }
   
   @override
@@ -73,9 +76,9 @@ class _InfoOrderState extends State<InfoOrder> {
     RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     String Function(Match) mathFunc = (Match match) => '${match[1]}.';    
 
+    //
     return Scaffold(
       appBar: AppBarGrey("Điền thông tin"),
-     
       body: SingleChildScrollView(
         child: Column(
           children: [

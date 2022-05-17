@@ -597,6 +597,9 @@ class _ScreenCartState extends State<ScreenCart> {
                                       ],
                                     ).show();
                                   } else{
+                                      //khởi tạo address của order provider 
+                                      Agency user = Provider.of<Agency>(context, listen: false);
+                                      Provider.of<OrderProvider>(context, listen: false).setAddress(user.province, user.district, user.ward, user.extraInfoOfAddress);
                                       Navigator.push(context, MaterialPageRoute(builder: (context) => InfoOrder(sumOfOrder)));
                                   }
                               },
