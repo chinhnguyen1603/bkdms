@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/CartBarcode.dart';
+import 'package:bkdms/screens/features_screens/member_screens/SuccessSale.dart';
 import 'package:bkdms/services/ConsumerProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -98,9 +99,7 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                       break;
                     } 
                   }     
-                }
-                print(resultCart); 
-                Provider.of<ConsumerProvider>(context, listen: false).setListProduct(resultCart);               
+                }             
                 if(needShowDialog == 0) {
                     setState(() {
                        isShowDialog = false;
@@ -364,12 +363,18 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                            width: myWidth*0.45,
                            child: ElevatedButton(
                               onPressed: () async {
+                                //tạo list product để post
+                                print(resultCart); 
+                                Provider.of<ConsumerProvider>(context, listen: false).setListProduct(resultCart);  
                                 //show dialog chờ tạo đơn bán lẻ
-                                await showDialog (
+                                await showDialog(
                                   context: context,
                                   builder: (context) =>
                                     FutureProgressDialog(createSaleOrder()),
-                                );             
+                                ).then((_) {         
+                                    //move to success
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessSale())); 
+                                });
                               },
                               style: ButtonStyle(
                                  elevation: MaterialStateProperty.all(0),
@@ -436,9 +441,9 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                   ),                      
                   ],                                      
-              ));    
-            throw onError;          
-      }).then((value) {
+              ));  
+          //không được để throw onError ở đây mới chạy lệnh then được          
+      }).then((_) {
       });   
     });
   }      

@@ -197,7 +197,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
     await Provider.of<LevelProvider>(context, listen: false).registerLevel(user.token, user.workspace, user.id, levelId)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi delete order future dialog");
+          print("Bắt lỗi register future dialog");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
@@ -210,8 +210,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
                     ),                      
                   ],
               )
-          );    
-          throw onError;          
+          );            
       }).then((value) {
           //aleart dialog thành công
           Alert(

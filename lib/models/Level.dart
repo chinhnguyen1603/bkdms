@@ -2,18 +2,16 @@
 class Level {
   late String id;
   late String name;
-  late String discountRange;
   late Map time;
   late List<dynamic> registrationConditions;
   late List<dynamic> rewardConditions;
-  late List<dynamic> gifts;
+  late List<dynamic>? gifts;
 
 
 
   Level({
     required this.id,
     required this.name,
-    required this.discountRange,
     required this.time,
     required this.registrationConditions,
     required this.rewardConditions,

@@ -9,7 +9,7 @@ class LevelProvider with ChangeNotifier{
   List<Level> lstLevel =[];
 
 
-  //get hạn mức
+  //get các loại hạn mức
   Future<void> getLevel(String token, String workspace) async {
     print("bắt đầu get level");
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/level');
@@ -30,7 +30,6 @@ class LevelProvider with ChangeNotifier{
              Level(
                id:  levelData['id'],
                name: levelData['name'],
-               discountRange: levelData['discountRange'],
                time: levelData['time'],
                registrationConditions: levelData['registrationConditions'],
                rewardConditions: levelData['rewardConditions'],
@@ -51,7 +50,7 @@ class LevelProvider with ChangeNotifier{
   }
 
   //đăng kí hạn mức, dùng levelId + agencyId
-  Future<void> registerLevel(String? token, String? workspace, String agencyId, String levelId) async {
+  Future<void> registerLevel(String token, String workspace, String agencyId, String levelId) async {
     print("bắt đầu đăng kí level");
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/level/register');
     try {
@@ -70,6 +69,12 @@ class LevelProvider with ChangeNotifier{
       );
       print(response.statusCode);
       print(response.body);
+      if(response.statusCode == 201){
+        print("Đăng kí thành công");
+      }
+      else{
+        throw jsonDecode(response.body.toString());
+      }
     }
     catch (error) {
       print(error);
@@ -77,5 +82,36 @@ class LevelProvider with ChangeNotifier{
     }
   }
 
+  //lấy level hiện tại + lịch sử level
+  Future<void> getHistoryLevel(String token, String workspace, String agencyId) async {
+    print("bắt đầu get lịch sử level");
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/level/get-all-level-of-agency');
+    try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{
+          'agencyId': agencyId,
+        }),
+      );
+      print(response.statusCode);
+      print(response.body);
+      if(response.statusCode == 200){
+        print("Trả về lịch sử thành công");
+      }
+      else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
 
 }
