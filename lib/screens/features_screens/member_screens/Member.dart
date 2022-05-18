@@ -1,6 +1,5 @@
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/screens/features_screens/member_screens/SalesHistory.dart';
-import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
 import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';

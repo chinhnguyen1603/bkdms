@@ -1,4 +1,5 @@
 import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/CartBarcode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,7 +11,6 @@ class Product {
    late String quantity;
    late String price;
    late String unitId;
-   late String totalPrice;
 }
 
 class ConsumerProvider with ChangeNotifier{
@@ -23,10 +23,10 @@ class ConsumerProvider with ChangeNotifier{
      notifyListeners();
   }
   //
-  void setListProduct(List<Cart> lstCart){
-     this.listProduct = lstCart.map((eachCart) => ({
+  void setListProduct(List<CartBarcode> lstCart){
+    this.listProduct = lstCart.map((eachCart) => ({
        'quantity': eachCart.quantity,
-       'price': eachCart.unit['retailPrice'],
+       'price': eachCart.price,
        'unitId': eachCart.unitId,
     })).toList();
   }
@@ -82,8 +82,8 @@ class ConsumerProvider with ChangeNotifier{
   }
 
   //http create order
-  Future<void> createSale(String token, String workspace, String agencyId, String paymentType) async {
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-by-agency');
+  Future<void> createSale(String token, String workspace, String agencyId) async {
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-for-end-consumer');
     print(" bắt đầu create Sale");
     print(this.name);
     print(this.listProduct);

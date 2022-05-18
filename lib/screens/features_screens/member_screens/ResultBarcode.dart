@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/CartBarcode.dart';
+import 'package:bkdms/services/ConsumerProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +11,7 @@ import 'package:sizer/sizer.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 class ResultBarcode extends StatefulWidget {
   late Item receiveItem;
@@ -23,6 +27,7 @@ class ResultBarcode extends StatefulWidget {
 
 class _ResultBarcodeState extends State<ResultBarcode> {
   List<Item> resultItems = [];
+  List<CartBarcode> resultCart = [];
   List<dynamic> resultUnits = [];
   String _scanBarcode = '';
   bool isShowDialog = true;
@@ -33,8 +38,10 @@ class _ResultBarcodeState extends State<ResultBarcode> {
   @override
   void initState() {
     super.initState();
+    //khởi tạo các list từ item đc scan ở widget trước
     resultItems.add(widget.receiveItem);
     resultUnits.add(widget.receiveUnit);
+    resultCart.add(CartBarcode(quantity: 1, unitId: widget.receiveUnit['id'], price: widget.receiveUnit['retailPrice']));
     // tổng tiền của đơn hàng
     sumOfOrder = int.parse(widget.receiveUnit['retailPrice']);
   }
@@ -66,6 +73,7 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                 await scanBarcodeNormal();
                 for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
                   for(var unit in item.units){
+                    //nếu trùng barcode trong unit thì xử lý
                     if(_scanBarcode == unit['barcode']){
                       setState(() {
                         needShowDialog = 0;
@@ -74,10 +82,25 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                       });
                       resultItems.add(item);
                       resultUnits.add(unit);
+                      //tạo list cart để post đơn bán ra
+                      bool needAddCart = false;
+                      for(int index =0; index < resultCart.length; index++){
+                        if(resultCart[index].unitId == unit['id']){
+                          resultCart[index].quantity++;
+                          needAddCart = false;
+                          break;
+                        } 
+                        needAddCart = true;
+                      }
+                      if(needAddCart == true){
+                        resultCart.add(CartBarcode(quantity: 1, unitId: unit['id'], price: unit['retailPrice']));
+                      }
                       break;
                     } 
                   }     
                 }
+                print(resultCart); 
+                Provider.of<ConsumerProvider>(context, listen: false).setListProduct(resultCart);               
                 if(needShowDialog == 0) {
                     setState(() {
                        isShowDialog = false;
@@ -340,8 +363,13 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                            height: 40,
                            width: myWidth*0.45,
                            child: ElevatedButton(
-                              onPressed: (){
-         
+                              onPressed: () async {
+                                //show dialog chờ tạo đơn bán lẻ
+                                await showDialog (
+                                  context: context,
+                                  builder: (context) =>
+                                    FutureProgressDialog(createSaleOrder()),
+                                );             
                               },
                               style: ButtonStyle(
                                  elevation: MaterialStateProperty.all(0),
@@ -360,7 +388,7 @@ class _ResultBarcodeState extends State<ResultBarcode> {
 
 
   // Hàm scan barcode
-    Future<void> scanBarcodeNormal() async {
+  Future<void> scanBarcodeNormal() async {
         String barcodeScanResponse;
         // Platform messages may fail, so we use a try/catch PlatformException.
         try {
@@ -381,11 +409,39 @@ class _ResultBarcodeState extends State<ResultBarcode> {
         });
   
     }
+ 
   // hàm lấy ảnh từ cloudinary
   String getUrlFromLinkImg(String linkImg) {
       //linkImg receive from server as Public Id
       final cloudinaryImage = CloudinaryImage.fromPublicId("di6dsngnr", linkImg);
       String transformedUrl = cloudinaryImage.transform().width(256).thumb().generate()!;
       return transformedUrl;
-  }    
+  }
+
+  // hàm post đơn bán lẻ
+  Future createSaleOrder() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<ConsumerProvider>(context, listen: false).createSale(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog create Sale");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));    
+            throw onError;          
+      }).then((value) {
+      });   
+    });
+  }      
+  
+
 }
