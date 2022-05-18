@@ -5,15 +5,25 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'ResetPassword.dart';
 import 'Register.dart';
 import 'HomePage.dart';
 
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    importance: Importance.high,
+    playSound: true
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 class Login extends StatefulWidget {
-                          
+                 
   @override
   State<StatefulWidget> createState(){
     return _LoginState();
@@ -32,7 +42,62 @@ class _LoginState extends State<Login> {
   final workspaceController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
-  
+
+  @override
+  void initState() {
+    super.initState();
+
+    //foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification notification = message.notification as RemoteNotification;
+      AndroidNotification android = message.notification?.android as AndroidNotification;
+      if (notification != null && android != null)  {
+        await flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ))
+           .then((value)  async {
+              await showDialog(
+                 context: context,
+                 builder: (_) {
+                   return AlertDialog(
+                      title: Text("Thông báo"),
+                      content: Text("${notification.body}. Kiểm tra ngay tại mục đơn hàng.", style: TextStyle(color: Color(0xff544c4c)),),
+                   );
+                 });
+            });
+      }
+    });
+    
+    //background
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification as RemoteNotification;
+      AndroidNotification android = message.notification?.android as AndroidNotification;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text("Thông báo"),
+                content: Text("${notification.body}. Kiểm tra ngay tại mục đơn hàng.", style: TextStyle(color: Color(0xff544c4c)),),
+              );
+            });
+      }
+    }); 
+  }
+
+
+
   @override
   void dispose(){
      workspaceController.dispose();
@@ -44,7 +109,16 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
+    //
+    String fcmToken ="";
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+       fcmToken = newToken;
+    });
+    FirebaseMessaging.instance.getToken().then((token){
+      fcmToken = token as String;
+      print(fcmToken);
+    });
+    //
     return  WillPopScope(
       onWillPop: () async {
         return false;
@@ -203,7 +277,7 @@ class _LoginState extends State<Login> {
                       }
                       // có mạng thì post api
                       else{
-                        _login = postAPI(phoneController.text,passwordController.text,workspaceController.text);
+                        _login = postAPI(phoneController.text,passwordController.text,workspaceController.text, fcmToken);
                         _login?.catchError((onError){
                            // phụ trợ xử lí String
                            String fault = onError.toString().replaceAll("{", ""); // remove {

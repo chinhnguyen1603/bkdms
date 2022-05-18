@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:bkdms/models/Agency.dart';
 
-Future<Agency> postAPI(String phone, String password, String workspace) async {
+Future<Agency> postAPI(String phone, String password, String workspace, String fcmToken) async {
   print("bắt đầu Login");
   try{
    var url = Uri.parse('https://bkdms.herokuapp.com' + '/api/v1/auth/login-agency');
@@ -17,6 +17,7 @@ Future<Agency> postAPI(String phone, String password, String workspace) async {
        'phone': phone,
        'password': password,
        'workspace': workspace,
+       'fcmToken': fcmToken,
      }),
    );
    print(response.statusCode);
