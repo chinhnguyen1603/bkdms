@@ -1,17 +1,40 @@
+import 'package:bkdms/models/Agency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/models/PayHistoryInfo.dart';
+import 'package:bkdms/models/Cart.dart';
+
+//list product để create order
+class Product {
+   late String quantity;
+   late String price;
+   late String unitId;
+   late String totalPrice;
+}
+
+class ConsumerProvider with ChangeNotifier{
+  late String name;
+  late String phone;
+  late var listProduct;
+  void setNameAndPhone (String newName, String newPhone){
+     this.name = newName;
+     this.phone = newPhone;
+     notifyListeners();
+  }
+  //
+  void setListProduct(List<Cart> lstCart){
+     this.listProduct = lstCart.map((eachCart) => ({
+       'quantity': eachCart.quantity,
+       'price': eachCart.unit['retailPrice'],
+       'unitId': eachCart.unitId,
+    })).toList();
+  }
 
 
-class PaymentProvider with ChangeNotifier{
-  List<PayHistoryInfo> lstPayHistory = [];
-
-  //post update nợ agency
-  Future<Agency> getDebt(String token, String workspace, String agencyId) async {
-    print("bắt đầu update Debt");
+  //post update doanh thu agency
+  Future<Agency> getRevenue(String token, String workspace, String agencyId) async {
+    print("bắt đầu update Revenue");
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/agency');
     try {
       final response = await http.post(
@@ -58,11 +81,13 @@ class PaymentProvider with ChangeNotifier{
     }  
   }
 
-  //post thanh toán online
-  Future<void> postOnlinePay(String token, String workspace, String agencyId, String amout) async {
-    print("bắt đầu post thanh toán");
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/payment');
-    try {
+  //http create order
+  Future<void> createSale(String token, String workspace, String agencyId, String paymentType) async {
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-by-agency');
+    print(" bắt đầu create Sale");
+    print(this.name);
+    print(this.listProduct);
+     try {
       final response = await http.post(
         url, 
         headers: ({
@@ -71,69 +96,25 @@ class PaymentProvider with ChangeNotifier{
           'Authorization': 'Bearer $token',
           'Workspace' : "$workspace",
         }),
-        body: jsonEncode(<String, dynamic>{
+        body: jsonEncode(<String, dynamic>{   
+          'name': this.name,        
+          'phone': this.phone, 
+          'listProduct': this.listProduct,
           'agencyId': agencyId,
-          'type': 'ONLINE_PAYMENT',
-          'amount': amout,
         }),
       );
-      //test kết quả
       print(response.statusCode);
       print(response.body);
-    }
-    catch (error) {
-      print(error);
-      throw error;
-    }  
-  }
-
-  //lấy lịch sử thanh toán
-  Future<void> getPayHistory(String token, String workspace, String agencyId) async {
-    print("bắt đầu get Pay History");
-
-    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/payment/get-all-payment-agency');
-    try {
-      final response = await http.post(
-        url, 
-        headers: ({
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-          'Workspace' : "$workspace",
-        }),
-        body: jsonEncode(<String, dynamic>{
-          'agencyId': agencyId,
-        }),
-      );
-      //test kết quả
-      print(response.statusCode);
-      if (response.statusCode == 200){
-         final extractedData = json.decode(response.body) as Map<String, dynamic>;
-         final List<PayHistoryInfo> loadListPayHistory = [];
-         extractedData['data']['listPayment'].forEach((payHistory) {
-         loadListPayHistory.add(
-          PayHistoryInfo(
-            id:  payHistory['id'],
-            amount: payHistory['amount'],
-            time: payHistory['time'],
-            type: payHistory['type'],       
-          ),
-        );
-      });
-      this.lstPayHistory = loadListPayHistory;
-      notifyListeners();
+      if (response.statusCode == 201){
+         print("thành công");
       } else{
         throw jsonDecode(response.body.toString());
       }
-
     }
     catch (error) {
       print(error);
       throw error;
-    }  
+    }
   }
 
-
 }
-
-

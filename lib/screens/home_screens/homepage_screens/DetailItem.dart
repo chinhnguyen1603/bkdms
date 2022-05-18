@@ -211,6 +211,7 @@ class _DetailItemState extends State<DetailItem> {
                                          for( var unit in widget.listUnit){
                                            if(newValue == unit['name']){
                                               unitPrice = unit['agencyPrice'];
+                                              retailPrice = unit['retailPrice'];
                                            }
                                          }
                                        });

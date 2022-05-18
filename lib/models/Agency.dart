@@ -16,6 +16,7 @@ class Agency with ChangeNotifier{
   late String? maxDebtPeriod;
   late String currentTotalDebt;
   late String? debtStartTime;
+  late String revenue;
   late String token;
 
   Agency();
@@ -34,6 +35,7 @@ class Agency with ChangeNotifier{
      this.maxDebtPeriod,
      required this.currentTotalDebt,
      required this.debtStartTime,
+     required this.revenue,
      required this.token,
   });
   
@@ -73,6 +75,7 @@ class Agency with ChangeNotifier{
       maxDebtPeriod:  json['data']['user']['maxDebtPeriod'],
       currentTotalDebt: json['data']['user']['currentTotalDebt'],
       debtStartTime: json['data']['user']['debtStartTime'],
+      revenue: json['data']['user']['revenue'],
       token: json['data']['jwtToken'],    
     );
     

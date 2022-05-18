@@ -1,5 +1,4 @@
-import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
-import 'package:bkdms/screens/home_screens/stat_screen/PurchaseMoney.dart';
+import 'package:bkdms/services/ConsumerProvider.dart';
 import 'package:bkdms/services/LevelProvider.dart';
 import 'package:bkdms/services/AmountReturnProvider.dart';
 import 'package:bkdms/services/PaymentProvider.dart';
@@ -71,6 +70,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AmountReturnProvider()),
         ChangeNotifierProvider(create: (context) => ReturnProvider()),
         ChangeNotifierProvider(create: (context) => PaymentProvider()),
+        ChangeNotifierProvider(create: (context) => ConsumerProvider()),
     ],
     child: Sizer(
       builder: (context, orientation, deviceType) {

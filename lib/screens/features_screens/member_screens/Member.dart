@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/screens/features_screens/member_screens/SalesHistory.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
 import 'package:bkdms/services/PaymentProvider.dart';
@@ -177,7 +178,7 @@ class _MemberState extends State<Member> {
               SizedBox(
                 child: TextButton(
                   onPressed: (){
-                   showModalBottomSheet<void>(
+                    showModalBottomSheet<void>(
                      backgroundColor: Colors.white,
                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0),),
                      context: context,
@@ -224,7 +225,7 @@ class _MemberState extends State<Member> {
               SizedBox(
                 child: TextButton(
                   onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ScanItem()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EnterCustomer()));
                   }, 
                   child: Text(
                     "TẠO ĐƠN BÁN LẺ",
