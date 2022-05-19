@@ -1,5 +1,6 @@
 import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
 import 'package:bkdms/screens/features_screens/member_screens/SalesHistory.dart';
+import 'package:bkdms/services/ConsumerProvider.dart';
 import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -235,8 +236,16 @@ class _MemberState extends State<Member> {
               // lịch sử bán hàng
               SizedBox(
                 child: TextButton(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SalesHisstory()));
+                  onPressed: () async {
+                    //show dialog chờ get sale
+                    await showDialog (
+                      context: context,
+                      builder: (context) =>
+                        FutureProgressDialog(getSalesHistory()),
+                    ).then((_) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SalesHistory()));
+                    });                      
+                    
                   }, 
                   child: Text(
                     "LỊCH SỬ BÁN HÀNG",
@@ -305,5 +314,29 @@ class _MemberState extends State<Member> {
     });
   }      
   
+  // hàm get sale history
+  Future getSalesHistory() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<ConsumerProvider>(context, listen: false).saleHistory(user.token, user.workspace, user.id)
+     .catchError((onError) async {
+          // Alert Dialog khi lỗi xảy ra
+          print("Bắt lỗi future dialog get sale history");
+          await showDialog(
+              context: context, 
+              builder: (ctx1) => AlertDialog(
+                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  content: Text("$onError"),
+                  actions: [TextButton(
+                      onPressed: () => Navigator.pop(ctx1),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                  ),                      
+                  ],                                      
+              ));  
+          //không được để throw onError ở đây mới chạy lệnh then được          
+      }).then((_) {
+      });   
+    });
+  }      
 
 }

@@ -71,7 +71,6 @@ class _DeliveredState extends State<Delivered> {
                     SizedBox(width: 100.w, height: 12,),
                     //UI List Order
                     ListView.builder(
-                       reverse: true,
                        itemCount:lstDelivered.length,              
                        shrinkWrap: true,
                        physics: NeverScrollableScrollPhysics(),

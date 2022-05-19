@@ -9,13 +9,13 @@ import 'package:bkdms/components/AppBarTransparent.dart';
 
 
 //widget lịch sử đơn tại đây
-class SalesHisstory extends StatefulWidget {
+class SalesHistory extends StatefulWidget {
   @override
-  State<SalesHisstory> createState() => _SalesHisstoryState();
+  State<SalesHistory> createState() => _SalesHistoryState();
 }
 
 
-class _SalesHisstoryState extends State<SalesHisstory> {
+class _SalesHistoryState extends State<SalesHistory> {
   static const darkGrey = Color(0xff544c4c);
   List<OrderInfo> lstOrder = [];
   List<OrderInfo> lstSelectDelivered = [];

@@ -18,7 +18,7 @@ class ItemProvider with ChangeNotifier{
           'Authorization': 'Bearer $token',
           'Workspace' : "$workspace",
       }));
-      print(response.body);    
+      print(response.statusCode);    
       if(response.statusCode == 200){
         final extractedData = json.decode(response.body) as Map<String, dynamic>;
         final List<Item> loadedCategories = [];

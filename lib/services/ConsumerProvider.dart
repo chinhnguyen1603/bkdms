@@ -81,7 +81,7 @@ class ConsumerProvider with ChangeNotifier{
     }  
   }
 
-  //http create order
+  //http create sale order
   Future<void> createSale(String token, String workspace, String agencyId) async {
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/create-for-end-consumer');
     print(" bắt đầu create Sale");
@@ -104,6 +104,37 @@ class ConsumerProvider with ChangeNotifier{
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 201){
+         print("thành công");
+      } else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  //http get lịch sử đơn bán
+  Future<void> saleHistory(String token, String workspace, String agencyId) async {
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/order/get-order-for-end-consumer');
+    print(" bắt đầu get lịch sử sale");
+     try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{   
+          'agencyId': agencyId,
+        }),
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200){
          print("thành công");
       } else{
         throw jsonDecode(response.body.toString());
