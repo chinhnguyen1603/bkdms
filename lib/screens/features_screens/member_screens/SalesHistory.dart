@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/models/SaleOrder.dart';
 import 'package:bkdms/services/ConsumerProvider.dart';
-
+import 'package:bkdms/screens/features_screens/member_screens/DetailSale.dart';
 
 //widget lịch sử đơn tại đây
 class SalesHistory extends StatefulWidget {
@@ -93,11 +93,23 @@ class _SalesHistoryState extends State<SalesHistory> {
                        shrinkWrap: true,
                        physics: NeverScrollableScrollPhysics(),
                        itemBuilder: (BuildContext context, int index) {
+                         //lấy tên + sdt
+                         String name ="";
+                         String phone ="";
+                         if(lstSelectSaleOrder[index].name != null){
+                           name = lstSelectSaleOrder[index].name as String;
+                         }
+                         if(lstSelectSaleOrder[index].phone != null){
+                           phone = lstSelectSaleOrder[index].phone as String;
+                         }                         
+                         //
                          return Column(
                            children: [
                              //thông tin đơn hàng đã bán
                              GestureDetector(
                                onTap: (){
+                                  //move to Detail Sale
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSale(lstSaleOrder[index])));
                                },
                                //chi tiết đơn
                                child: Container(
@@ -185,7 +197,7 @@ class _SalesHistoryState extends State<SalesHistory> {
                                         width: myWidth,
                                         height: 30,
                                         child: Text(
-                                          "Khách hàng: ${lstSelectSaleOrder[index].name}",
+                                          "Khách hàng: $name",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(fontSize:16)
                                         )
@@ -194,7 +206,7 @@ class _SalesHistoryState extends State<SalesHistory> {
                                         width: myWidth,
                                         height: 30,
                                         child: Text(
-                                          "SDT: ${lstSelectSaleOrder[index].phone}",
+                                          "SDT: $phone",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(fontSize:16)
                                         )
@@ -216,11 +228,22 @@ class _SalesHistoryState extends State<SalesHistory> {
                        shrinkWrap: true,
                        physics: NeverScrollableScrollPhysics(),
                        itemBuilder: (BuildContext context, int index) {
+                         //lấy tên + sdt
+                         String name ="";
+                         String phone ="";
+                         if(lstSaleOrder[index].name != null){
+                           name = lstSaleOrder[index].name as String;
+                         }
+                         if(lstSaleOrder[index].phone != null){
+                           phone = lstSaleOrder[index].phone as String;
+                         }                            
                          return Column(
                            children: [
                              //thông tin đơn hàng đã bán
                              GestureDetector(
                                onTap: (){
+                                  //move to detail sale
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSale(lstSaleOrder[index])));
                                },
                                //chi tiết đơn
                                child: Container(
@@ -305,19 +328,19 @@ class _SalesHistoryState extends State<SalesHistory> {
                                       Divider(),
                                       //tên + sdt khách hàng
                                       SizedBox(
-                                        width: myWidth,
+                                        width: myWidth*0.8,
                                         height: 30,
                                         child: Text(
-                                          "Khách hàng: ${lstSaleOrder[index].name}",
+                                          "Khách hàng: $name",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(fontSize:16)
                                         )
                                       ),
                                       SizedBox(
-                                        width: myWidth,
+                                        width: myWidth*0.8,
                                         height: 30,
                                         child: Text(
-                                          "SDT: ${lstSaleOrder[index].phone}",
+                                          "SDT: $phone",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(fontSize:16)
                                         )
