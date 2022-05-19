@@ -428,14 +428,17 @@ class _ResultBarcodeState extends State<ResultBarcode> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<ConsumerProvider>(context, listen: false).createSale(user.token, user.workspace, user.id)
-     .catchError((onError) async {
+        .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String outputError = fault.replaceAll("}", ""); //remove }  
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi future dialog create Sale");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
+                  content: Text("$outputError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
@@ -443,8 +446,8 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                   ],                                      
               ));  
           //không được để throw onError ở đây mới chạy lệnh then được          
-      }).then((_) {
-      });   
+        }).then((_) {
+        });   
     });
   }      
   

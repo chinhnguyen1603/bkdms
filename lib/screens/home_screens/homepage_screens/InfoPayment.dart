@@ -427,7 +427,7 @@ class _InfoPaymentState extends State<InfoPayment> {
       await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id, this.paymentType)
      .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog");
+          print("Bắt lỗi future dialog tạo đơn");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
@@ -437,8 +437,7 @@ class _InfoPaymentState extends State<InfoPayment> {
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                   ),                      
                   ],                                      
-              ));    
-            throw onError;          
+              ));             
       });    
     });
   }

@@ -151,11 +151,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
                                     DialogButton(
                                       child: Text("Xác nhận", style: TextStyle(color: Colors.white, fontSize: 18),),
                                       onPressed: () async {
-                                        await showDialog (
-                                            context: context,
-                                            builder: (context) =>
-                                              FutureProgressDialog(registerThisLevel(lstLevel[index].id)),
-                                        );
+                                        await registerThisLevel(lstLevel[index].id);
                                         //ẩn pop-up
                                         Navigator.pop(context);
                                       },
@@ -178,7 +174,6 @@ class _RegisterLevelState extends State<RegisterLevel> {
                       height: 30,
                     )
                   ],
-
                 );             
               }
             )
@@ -191,44 +186,43 @@ class _RegisterLevelState extends State<RegisterLevel> {
   // hàm đăng kí hạn mức
   Future registerThisLevel( String levelId) {
     return Future(() async {
-    //gọi provide order delete sau đó get lại
-    Agency user = Provider.of<Agency>(context, listen: false);
-    await Provider.of<LevelProvider>(context, listen: false).registerLevel(user.token, user.workspace, user.id, levelId)
-     .catchError((onError) async {
+      //gọi provide order delete sau đó get lại
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<LevelProvider>(context, listen: false).registerLevel(user.token, user.workspace, user.id, levelId)
+        .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String outputError = fault.replaceAll("}", ""); //remove }  
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi register future dialog");
           await showDialog(
               context: context, 
-              builder: (ctx1) => AlertDialog(
+              builder: (ctx) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
+                  content: Text("$outputError"),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.pop(ctx1),
+                      onPressed: () => Navigator.pop(ctx),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                     ),                      
                   ],
               )
           );            
-      }).then((value) {
+        }).then((_) async{
           //aleart dialog thành công
-          Alert(
-            context: context,
-            type: AlertType.success,
-            style: AlertStyle(
-              descTextAlign: TextAlign.start,
-              descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Color(0xff544c4c)),
-            ),
-            desc: "Đăng kí thành công",                
-            buttons: [ 
-              DialogButton(
-                child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
-                onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(0)), (Route<dynamic> route) => false),
-                width: 100,
+          await showDialog(
+              context: context, 
+              builder: (ctx) => AlertDialog(
+                  title: Text("Đăng kí thành công", style: TextStyle(fontSize: 24),),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                    ),                      
+                  ],
               )
-            ],
-          ).show();        
-      });  
+          );      
+        });  
     });
   }   
 

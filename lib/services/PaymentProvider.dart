@@ -28,6 +28,7 @@ class PaymentProvider with ChangeNotifier{
       );
       //test kết quả
       print(response.statusCode);
+      print(response.body);
       if(response.statusCode ==200){
         final extractedData = json.decode(response.body) as Map<String, dynamic>;
          return Agency.getApi(

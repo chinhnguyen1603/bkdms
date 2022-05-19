@@ -1,4 +1,5 @@
 import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
+import 'package:bkdms/services/LevelProvider.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -477,8 +478,9 @@ class ScreenHomeState extends State<ScreenHome> {
                 itemBuilder:  (context, index) => Padding(
                   padding: EdgeInsets.all(4.0),
                   child: GestureDetector(
-                   onTap: (){
-                     print("Click khuyến mãi");
+                   onTap: ()async{
+                      Agency user = Provider.of<Agency>(context, listen: false);
+                      await Provider.of<LevelProvider>(context, listen: false).getHistoryLevel(user.token, user.workspace, user.id);
                    },
                    child: Container(
                     decoration: BoxDecoration(

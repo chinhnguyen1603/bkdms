@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:bkdms/services/ProvinceProvider.dart';
-import 'package:bkdms/screens/home_screens/homepage_screens/TestProvince.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
 import 'package:bkdms/services/ReturnProvider.dart';
@@ -384,13 +382,16 @@ class _InfoReturnState extends State<InfoReturn> {
                                  Agency user = Provider.of<Agency>(context, listen: false);
                                  await Provider.of<ReturnProvider>(context, listen: false).createReturnOrder(user.token, user.workspace, user.id, widget.orderId)
                                     .catchError((onError) async {
+                                      // phụ trợ xử lí String
+                                      String fault = onError.toString().replaceAll("{", ""); // remove {
+                                      String outputError = fault.replaceAll("}", ""); //remove }  
                                       // Alert Dialog khi lỗi xảy ra
                                       print("Bắt lỗi tạo đơn trả");
                                       await showDialog(
                                         context: context, 
                                         builder: (ctx1) => AlertDialog(
                                           title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                                          content: Text("$onError"),
+                                          content: Text("$outputError"),
                                           actions: [
                                             TextButton(
                                               onPressed: () => Navigator.pop(ctx1),
@@ -417,18 +418,7 @@ class _InfoReturnState extends State<InfoReturn> {
                         SizedBox(height: 7,),
                       ])
               )          
-
       );  
   }
 
-  // get api tỉnh thành giao hàng nhanh
-  Future getAddress() {
-    return Future(() async {
-      await Provider.of<ProvinceProvider>(context, listen: false).getProvince()
-      .catchError((onError){
-         throw onError;
-      })
-      .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => TestProvince())), );
-    });
-  }
 }
