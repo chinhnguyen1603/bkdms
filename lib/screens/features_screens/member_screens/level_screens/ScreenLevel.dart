@@ -1,9 +1,8 @@
-
-import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterHistory.dart';
-import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterLevel.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterHistory.dart';
+import 'package:bkdms/screens/features_screens/member_screens/level_screens/RegisterLevel.dart';
 
 class ScreenLevel extends StatefulWidget {
   const ScreenLevel({ Key? key }) : super(key: key);

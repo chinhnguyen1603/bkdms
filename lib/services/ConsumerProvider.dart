@@ -1,5 +1,6 @@
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/CartBarcode.dart';
+import 'package:bkdms/models/SaleOrder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,9 +14,13 @@ class Product {
 }
 
 class ConsumerProvider with ChangeNotifier{
+  //biến lấy lịch sử bán lẻ
+  List<SaleOrder> lstSaleOrder = [];
+  //biến để tạo đơn bán lẻ 
   late String name;
   late String phone;
   late var listProduct;
+  //
   void setNameAndPhone (String newName, String newPhone){
      this.name = newName;
      this.phone = newPhone;
@@ -134,9 +139,26 @@ class ConsumerProvider with ChangeNotifier{
       );
       print(response.statusCode);
       print(response.body);
-      if (response.statusCode == 200){
-         print("thành công");
-      } else{
+      if(response.statusCode == 200){
+        final extractedData = json.decode(response.body) as Map<String, dynamic>;
+        final List<SaleOrder> loadedSaleOrder = [];
+        extractedData['data']['listOrder'].forEach((orderData) {
+            loadedSaleOrder.add(
+              SaleOrder(
+                id: orderData['id'],
+                orderCode: orderData['orderCode'],
+                totalPrice: orderData['totalPrice'],
+                name: orderData['name'],
+                phone: orderData['phone'],
+                createTime: orderData['createTime'],
+                detailOrderEndConsumers: orderData['detailOrderEndConsumers'],
+              ),
+            );
+        });
+        this.lstSaleOrder = loadedSaleOrder;
+        notifyListeners();
+      } 
+      else{
         throw jsonDecode(response.body.toString());
       }
     }

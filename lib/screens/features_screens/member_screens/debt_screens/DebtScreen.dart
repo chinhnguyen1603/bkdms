@@ -1,18 +1,17 @@
+import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:intl/intl.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/features_screens/contact_screens/FeedBack.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtHistory.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PayHistory.dart';
 import 'package:bkdms/services/PaymentProvider.dart';
-import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/Momo.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/PolicyDebt.dart';
-import 'package:provider/provider.dart';
-import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:intl/intl.dart';
-
 
 class DebtScreen extends StatefulWidget {
   const DebtScreen({ Key? key }) : super(key: key);

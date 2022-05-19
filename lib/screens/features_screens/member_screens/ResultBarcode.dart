@@ -1,18 +1,18 @@
 import 'dart:async';
-import 'package:bkdms/models/Agency.dart';
-import 'package:bkdms/models/CartBarcode.dart';
-import 'package:bkdms/screens/features_screens/member_screens/SuccessSale.dart';
-import 'package:bkdms/services/ConsumerProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:sizer/sizer.dart';
-import 'package:bkdms/services/ItemProvider.dart';
-import 'package:bkdms/models/Item.dart';
-import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:sizer/sizer.dart';
+import 'package:bkdms/models/Item.dart';
+import 'package:bkdms/services/ItemProvider.dart';
+import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/CartBarcode.dart';
+import 'package:bkdms/screens/features_screens/member_screens/SuccessSale.dart';
+import 'package:bkdms/services/ConsumerProvider.dart';
 
 class ResultBarcode extends StatefulWidget {
   late Item receiveItem;

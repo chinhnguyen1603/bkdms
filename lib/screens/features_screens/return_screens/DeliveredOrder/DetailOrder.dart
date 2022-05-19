@@ -1,6 +1,3 @@
-import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/InfoReturn.dart';
-import 'package:bkdms/services/AmountReturnProvider.dart';
-import 'package:bkdms/services/ReturnProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/OrderInfo.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/InfoReturn.dart';
+import 'package:bkdms/services/AmountReturnProvider.dart';
+import 'package:bkdms/services/ReturnProvider.dart';
 
 class DetailOrder extends StatefulWidget {
   late OrderInfo orderDeliveredInfo ;

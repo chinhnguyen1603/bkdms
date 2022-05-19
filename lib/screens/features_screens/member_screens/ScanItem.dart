@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'package:bkdms/models/Item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:bkdms/models/Item.dart';
+import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
-import 'package:bkdms/services/ItemProvider.dart';
+
 
 class ScanItem extends StatefulWidget {
   const ScanItem ({ Key? key }) : super(key: key);

@@ -1,11 +1,10 @@
-import 'package:bkdms/components/AppBarTransparent.dart';
-import 'package:bkdms/models/PayHistoryInfo.dart';
-import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-
+import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/models/PayHistoryInfo.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 //lịch sử thanh toán bao gồm số tiền , thời gian, hình thức thanh toán
 
 class PayHistory extends StatefulWidget {

@@ -1,6 +1,8 @@
 import 'package:bkdms/screens/home_screens/homepage_screens/DescribeItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:bkdms/components/AppBarGrey.dart';
 import 'package:bkdms/services/ItemProvider.dart';
@@ -8,8 +10,6 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/CartProvider.dart';
 import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/models/CountBadge.dart';
-import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DetailItem extends StatefulWidget {
   late Item myItem;

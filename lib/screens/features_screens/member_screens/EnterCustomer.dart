@@ -1,9 +1,9 @@
-import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
-import 'package:bkdms/services/ConsumerProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
+import 'package:bkdms/components/AppBarTransparent.dart';
+import 'package:bkdms/screens/features_screens/member_screens/ScanItem.dart';
+import 'package:bkdms/services/ConsumerProvider.dart';
 
 
 class EnterCustomer extends StatefulWidget {

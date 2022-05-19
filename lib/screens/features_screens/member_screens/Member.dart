@@ -1,7 +1,3 @@
-import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
-import 'package:bkdms/screens/features_screens/member_screens/SalesHistory.dart';
-import 'package:bkdms/services/ConsumerProvider.dart';
-import 'package:bkdms/services/PaymentProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +7,10 @@ import 'package:bkdms/models/Agency.dart';
 import 'package:bkdms/screens/features_screens/member_screens/debt_screens/DebtScreen.dart';
 import 'package:bkdms/screens/features_screens/member_screens/level_screens/ScreenLevel.dart';
 import 'package:bkdms/services/LevelProvider.dart';
+import 'package:bkdms/screens/features_screens/member_screens/EnterCustomer.dart';
+import 'package:bkdms/screens/features_screens/member_screens/SalesHistory.dart';
+import 'package:bkdms/services/ConsumerProvider.dart';
+import 'package:bkdms/services/PaymentProvider.dart';
 
 class Member extends StatefulWidget {
 
