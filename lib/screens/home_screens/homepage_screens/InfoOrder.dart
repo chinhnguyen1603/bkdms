@@ -471,25 +471,27 @@ class _InfoOrderState extends State<InfoOrder> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id)
-     .catchError((onError) async {
+        .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String outputError = fault.replaceAll("}", ""); //remove }            
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog delete all cart");
+          print("Bắt lỗi future dialog get order");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
+                  content: Text("$outputError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                   ),                      
                   ],                                      
-              ));    
-            throw onError;          
-      })
-      .then((value) async {
-      });    
-    });
+              ));            
+         })
+        .then((value) async {
+        });    
+     });
   }      
 
   //hàm get debt

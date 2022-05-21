@@ -436,11 +436,11 @@ class _ResultBarcodeState extends State<ResultBarcode> {
           print("Bắt lỗi future dialog create Sale");
           await showDialog(
               context: context, 
-              builder: (ctx1) => AlertDialog(
+              builder: (ctx) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
                   content: Text("$outputError"),
                   actions: [TextButton(
-                      onPressed: () => Navigator.pop(ctx1),
+                      onPressed: () => Navigator.pop(ctx),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
                   ),                      
                   ],                                      

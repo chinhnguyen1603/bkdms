@@ -261,19 +261,22 @@ class _MemberState extends State<Member> {
     );
   }
 
-  // hàm get order
+  // hàm get level
   Future getLevelFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<LevelProvider>(context, listen: false).getLevel(user.token, user.workspace)
-     .catchError((onError) async {
+        .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String outputError = fault.replaceAll("}", ""); //remove }         
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog delete all cart");
+          print("Bắt lỗi future dialog get các hạn mức");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
+                  content: Text("$outputError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
@@ -281,10 +284,10 @@ class _MemberState extends State<Member> {
                   ],                                      
               ));    
             throw onError;          
-      })
-      .then((value) async {
-      });    
-    });
+        })
+        .then((value) async {
+        });    
+      });
   }      
 
   // hàm get debt
@@ -293,13 +296,16 @@ class _MemberState extends State<Member> {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<PaymentProvider>(context, listen: false).getDebt(user.token, user.workspace, user.id)
         .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String outputError = fault.replaceAll("}", ""); //remove }            
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog delete all cart");
+          print("Bắt lỗi future dialog get debt");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
+                  content: Text("$outputError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
@@ -319,14 +325,17 @@ class _MemberState extends State<Member> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<ConsumerProvider>(context, listen: false).saleHistory(user.token, user.workspace, user.id)
-     .catchError((onError) async {
+        .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String outputError = fault.replaceAll("}", ""); //remove }         
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi future dialog get sale history");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
+                  content: Text("$outputError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
@@ -334,9 +343,9 @@ class _MemberState extends State<Member> {
                   ],                                      
               ));  
           //không được để throw onError ở đây mới chạy lệnh then được          
-      }).then((_) {
-      });   
-    });
+        }).then((_) {
+        });   
+      });
   }      
 
 }

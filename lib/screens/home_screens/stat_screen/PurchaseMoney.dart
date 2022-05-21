@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 class PurchaseMoney extends StatefulWidget {
@@ -358,6 +359,12 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
         ),
       ],
     );
+  }
+
+  // Hàm convert thời gian
+  String convertTime(String time){
+    var timeConvert = DateFormat('dd/MM/yyyy').format(DateTime.parse(time).toLocal());
+    return timeConvert;
   }
 
 
