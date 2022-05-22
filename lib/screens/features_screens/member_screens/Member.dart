@@ -1,3 +1,4 @@
+import 'package:bkdms/models/Level.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
@@ -21,11 +22,32 @@ class Member extends StatefulWidget {
 class _MemberState extends State<Member> {
   static const blueText = Color(0xff105480);
   static const textColor = Color(0xff27214d);
- 
+  //
+  List<HistoryRegister> lstHistoryRegister = []; 
+
+  //Gọi Provider lịch sử tại đây
+  @override
+  void initState() {
+    super.initState();
+    lstHistoryRegister = Provider.of<LevelProvider>(context, listen: false).lstHistoryRegister;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double heightDevice = 100.h;// chiều cao thiết bị
     double myWidth = 90.w;
+    //lấy tên hạn mức hiện tại
+    String levelName ="";
+    String statusLevel = "";
+    for (var historyRegister in lstHistoryRegister) {
+      if (historyRegister.isRegistering == true) {
+         levelName = historyRegister.levelName;
+         statusLevel = "chưa đạt";
+      }
+    }
+
+    //
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBarTransparent(Colors.white,"Thành viên"),
@@ -53,25 +75,25 @@ class _MemberState extends State<Member> {
                         height: 50,
                         width: myWidth*0.33,
                         child: Center( child: Text(
-                          "Cơ bản",
+                          "$levelName",
                           style: TextStyle(
-                            color: Color(0xff544c4c),
+                            color: Color(0xffcf0606),
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),),
                       SizedBox(width: myWidth*0.33,),
-                      // Text Point
+                      // Text trạng thái hạn mức
                       SizedBox(
                         height: 50,
                         width: myWidth*0.33,
                         child: Center( child: Text(
-                          "250",
+                          "$statusLevel",
                           style: TextStyle(
-                            color: Color(0xffcf0606),
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                            color: Color(0xff544c4c),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),),

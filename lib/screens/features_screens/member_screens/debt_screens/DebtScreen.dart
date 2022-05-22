@@ -92,7 +92,7 @@ class _DebtScreenState extends State<DebtScreen> {
                       children: [
                         SizedBox(
                           width: widthInContainer*0.65,
-                          child: Text("Cửa hàng Trung Việt", textAlign: TextAlign.left, style: TextStyle(color: Color(0xff7b2626), fontSize: 18, fontWeight: FontWeight.w500)),
+                          child: Text("${user.name}", textAlign: TextAlign.left, style: TextStyle(color: Color(0xff7b2626), fontSize: 18, fontWeight: FontWeight.w500)),
                         ),
                         //container đang hoạt động
                         Container(

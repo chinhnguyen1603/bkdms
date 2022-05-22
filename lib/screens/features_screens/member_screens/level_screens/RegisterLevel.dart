@@ -18,7 +18,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
   double myWidth = 90.w;
   static const dialogColor = Color(0xff4690FF);
   static const darkGrey = Color(0xff544c4c);
-  List <Color> lstColor = [Color(0xffdeaa23), Color(0xff7b2626), Color(0xff254fb0), Color(0xff23bb86), Color(0xfffa620c)  ]; 
+  List <Color> lstColor = [Color(0xffdeaa23), Color(0xff7b2626), Color(0xff254fb0), Color(0xff23bb86), Color(0xfffa620c), Colors.grey, Colors.black  ]; 
   //List level
   List<Level> lstLevel = [];
   //list điều kiện đăng kí
