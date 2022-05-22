@@ -333,7 +333,7 @@ class _SalesHistoryState extends State<SalesHistory> {
                                         child: Text(
                                           "Khách hàng: $name",
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(fontSize:16)
+                                          style: TextStyle(fontSize:14)
                                         )
                                       ),
                                       SizedBox(
@@ -342,7 +342,7 @@ class _SalesHistoryState extends State<SalesHistory> {
                                         child: Text(
                                           "SDT: $phone",
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(fontSize:16)
+                                          style: TextStyle(fontSize:14)
                                         )
                                       ),                                      
                                    ],

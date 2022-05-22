@@ -1,7 +1,5 @@
 import 'package:bkdms/screens/features_screens/return_screens/ReturnedOrder/CancelReturnAgency.dart';
 import 'package:bkdms/screens/features_screens/return_screens/ReturnedOrder/CancelReturnSupplier.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancelAgency.dart';
-import 'package:bkdms/screens/home_screens/order_status_screen/DetailCancelSupplier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';

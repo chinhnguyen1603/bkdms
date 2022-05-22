@@ -1,3 +1,4 @@
+import 'package:bkdms/screens/features_screens/return_screens/ReturnedOrder/DetailReturning.dart';
 import 'package:bkdms/screens/home_screens/order_status_screen/DetailDelivering.dart';
 import 'package:bkdms/services/OrderProvider.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,7 @@ class OrderReturningState extends State<OrderReturning> {
                          //container chứa chi tiết đơn                 
                          GestureDetector(
                            onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDelivering(lstDelivering[index])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailReturning(lstDelivering[index])));
                            },
                            child: Container(
                              width: 100.w,

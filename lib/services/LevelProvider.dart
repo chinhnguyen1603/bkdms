@@ -70,7 +70,7 @@ class LevelProvider with ChangeNotifier{
       print(response.statusCode);
       print(response.body);
       if(response.statusCode == 201){
-        print("Đăng kí thành công");
+         throw jsonDecode(response.body.toString());
       }
       else{
         throw jsonDecode(response.body.toString());

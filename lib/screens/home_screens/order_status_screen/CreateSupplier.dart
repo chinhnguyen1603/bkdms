@@ -70,7 +70,6 @@ class _CreateSupplierState extends State<CreateSupplier> {
                 SizedBox(width: 100.w, height: 12,),
                 //UI List Order
                 ListView.builder(
-                   reverse: true,
                    itemCount:lstCreateSupplier.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),

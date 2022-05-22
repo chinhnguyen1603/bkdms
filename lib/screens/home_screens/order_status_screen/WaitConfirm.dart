@@ -73,7 +73,6 @@ class _WaitConfirmState extends State<WaitConfirm> {
                 SizedBox(width: 100.w, height: 12,),
                 //UI List Order
                 ListView.builder(
-                   reverse: true,
                    itemCount:lstWaitOrder.length,              
                    shrinkWrap: true,
                    physics: NeverScrollableScrollPhysics(),

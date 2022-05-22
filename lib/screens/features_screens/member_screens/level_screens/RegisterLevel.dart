@@ -147,7 +147,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
                                       onPressed: () => Navigator.pop(context),
                                       color: Colors.white,
                                     ),
-                                    //delete order tại đây
+                                    //đăng kí hạn mức tại đây
                                     DialogButton(
                                       child: Text("Xác nhận", style: TextStyle(color: Colors.white, fontSize: 18),),
                                       onPressed: () async {
@@ -198,7 +198,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
           await showDialog(
               context: context, 
               builder: (ctx) => AlertDialog(
-                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
+                  title: Text("Thông báo", style: TextStyle(fontSize: 24),),
                   content: Text("$outputError"),
                   actions: [
                     TextButton(
@@ -208,20 +208,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
                   ],
               )
           );            
-        }).then((_) async{
-          //aleart dialog thành công
-          await showDialog(
-              context: context, 
-              builder: (ctx) => AlertDialog(
-                  title: Text("Đăng kí thành công", style: TextStyle(fontSize: 24),),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(ctx),
-                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                    ),                      
-                  ],
-              )
-          );      
+        }).then((value) async{
         });  
     });
   }   
