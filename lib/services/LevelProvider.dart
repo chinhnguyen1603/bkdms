@@ -7,6 +7,7 @@ import 'package:bkdms/models/Level.dart';
 
 class LevelProvider with ChangeNotifier{
   List<Level> lstLevel =[];
+  List<HistoryRegister> lstHistoryRegister =[];
 
 
   //get các loại hạn mức
@@ -68,7 +69,6 @@ class LevelProvider with ChangeNotifier{
         }),
       );
       print(response.statusCode);
-      print(response.body);
       if(response.statusCode == 201){
          throw jsonDecode(response.body.toString());
       }
@@ -84,7 +84,7 @@ class LevelProvider with ChangeNotifier{
 
   //lấy level hiện tại + lịch sử level
   Future<void> getHistoryLevel(String token, String workspace, String agencyId) async {
-    print("bắt đầu get lịch sử level");
+    print("bắt đầu lấy lịch sử đăng kí level");
     var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/level/get-all-level-of-agency');
     try {
       final response = await http.post(
@@ -102,7 +102,22 @@ class LevelProvider with ChangeNotifier{
       print(response.statusCode);
       print(response.body);
       if(response.statusCode == 200){
-        print("Trả về lịch sử thành công");
+         final extractedData = json.decode(response.body) as Map<String, dynamic>;
+         final List<HistoryRegister> loadHistoryRegister = [];
+         extractedData['data']['levelAgency'].forEach((data) {
+           loadHistoryRegister.add(
+             HistoryRegister(
+               createTime: data['createTime'],
+               expireTime: data['expireTime'],
+               cancelTime: data['cancelTime'],
+               isRegistering: data['isRegistering'],
+               isQualified: data['isQualified'],
+               levelName: data['level']['name'],  
+             ),
+           );
+         });
+         this.lstHistoryRegister = loadHistoryRegister;
+         notifyListeners();
       }
       else{
         throw jsonDecode(response.body.toString());

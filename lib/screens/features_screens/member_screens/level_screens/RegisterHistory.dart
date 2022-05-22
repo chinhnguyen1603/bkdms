@@ -1,6 +1,10 @@
+import 'package:bkdms/models/Level.dart';
+import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:bkdms/services/LevelProvider.dart';
 
 class RegisterHistory extends StatefulWidget {
   const RegisterHistory({ Key? key }) : super(key: key);
@@ -10,16 +14,20 @@ class RegisterHistory extends StatefulWidget {
 }
 
 class _RegisterHistoryState extends State<RegisterHistory> {
+ 
+  List<HistoryRegister> lstHistoryRegister = []; 
 
   //Gọi Provider lịch sử tại đây
   @override
   void initState() {
     super.initState();
+    lstHistoryRegister = Provider.of<LevelProvider>(context, listen: false).lstHistoryRegister;
   }
 
   @override
   Widget build(BuildContext context) {
     double widthInContainer = 90.w*0.9;
+    String cancelTime ="";
     //
     return Scaffold(
       backgroundColor: Color(0xfff3f5f6),
@@ -50,49 +58,76 @@ class _RegisterHistoryState extends State<RegisterHistory> {
           children: [
             SizedBox(width: 100.w,height: 20),
             ListView.builder(
-               reverse: true,
-               itemCount: 3,              
+               itemCount: lstHistoryRegister.length,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
+                 //xử lý lấy cancelTime nếu không null
+                 if(lstHistoryRegister[index].cancelTime != null) {
+                   cancelTime = convertTime(lstHistoryRegister[index].cancelTime as String);
+                 }
+                 //lấy tình trạng của hạn mức (đạt hay chưa đạt)
+                 String status = "chưa đạt điều kiện nhận thưởng";
+                 if(lstHistoryRegister[index].isQualified == true) {
+                   status = "đạt điều kiện nhận thưởng";
+                 }
+                 //
                   return Column(
                     children: [
                       SizedBox(width: 100.w,height: 5),                     
                       //container ô lịch sử         
                       Container(
                         width: 90.w,
-                        height: 80,
                         color: Colors.white,
                         child: Column(
                           children: [
                             SizedBox(width: 90.w, height: 10,),
-                            //đơn hàng + thời gian hoàn thành
+                            //text bạn đã đăng kí + tên hạn mức
                             SizedBox(
                               width: widthInContainer,
                               height: 30,
                               child: Row(
                                 children: [
-                                  //order code
+                                  //Text
                                   SizedBox(
                                     width: widthInContainer*0.65,
                                     child: Text("Bạn đã đăng kí hạn mức", textAlign: TextAlign.left, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
                                   ),
-                                  //ngày hoàn thành
+                                  //tên hạn mức
                                   SizedBox(
                                     width: widthInContainer*0.35,
-                                    child: Text("20/11/2021", maxLines: 1,textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c)),),
+                                    child: Text("• ${lstHistoryRegister[index].levelName}", maxLines: 1,textAlign: TextAlign.right, style: TextStyle( color: Color(0xff544c4c), fontWeight: FontWeight.w700),),
                                   )                                  
                                 ],
                               ),
                             ),
                             SizedBox(height:3,),
-                            //+ giá tiền
+                            //ngày đăng kí
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("• Thân thiết", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
-
-                            )
+                              child: Text("Ngày đăng kí: ${convertTime(lstHistoryRegister[index].createTime)}", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                            ),
+                            SizedBox(height:3,),
+                            //ngày hết hạn
+                            SizedBox(
+                              width: widthInContainer,
+                              height: 20,
+                              child: Text("Ngày hết hạn: ${convertTime(lstHistoryRegister[index].expireTime)}", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                             ),
+                            //ngày hủy đơn
+                            SizedBox(
+                              width: widthInContainer,
+                              height: 20,
+                              child: Text("Ngày hủy: $cancelTime", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                            ),   
+                            //tình trạng đăng kí
+                            SizedBox(
+                              width: widthInContainer,
+                              height: 20,
+                              child: Text("Tình trạng: $status", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                            ),  
+                            SizedBox(height: 12,)                                                                                  
                           ],
                         ),
                       ),

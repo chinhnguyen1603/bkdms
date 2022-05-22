@@ -900,9 +900,7 @@ class _ShowListItemState extends State<ShowListItem> {
                                 ]
                             )
                         );
-                },
-        
-               
+                },             
               )
               )                 
           ]
@@ -927,9 +925,9 @@ class _ShowListItemState extends State<ShowListItem> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<CartProvider>(context, listen: false).addCart(user.token, user.workspace, user.id, unitId, enternAmountController.text)
-     .catchError((onError) async {
+        .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog");
+          print("Bắt lỗi future dialog add cart");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
@@ -942,12 +940,12 @@ class _ShowListItemState extends State<ShowListItem> {
                   ],                                      
               ));    
             throw onError;          
-      })
-      .then((value) async {
+        })
+        .then((value) async {
           //get cart và update CountBadge
           await Provider.of<CartProvider>(context, listen: false).getCart(user.token, user.workspace, user.id);
           Provider.of<CountBadge>(context, listen: false).setCounter(Provider.of<CartProvider>(context, listen: false).lstCart.length);   
-      });    
+        });    
     });
   }   
 }

@@ -22,6 +22,8 @@ class _DetailDeliveringState extends State<DetailDelivering> {
   static const darkBlue = Color(0xff27214d);
   //list thông tin vận chuyển 
   List<dynamic> lstWayBills = [];
+  //tình trạng đơn đang giao hay là giao lỗi
+  String statusOfOrder ="Đang giao hàng";  
   
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,11 @@ class _DetailDeliveringState extends State<DetailDelivering> {
     //lấy thông tin vận chuyển
     if(widget.orderDeliveringInfo.wayBills != null){
       lstWayBills = widget.orderDeliveringInfo.wayBills as List<dynamic>;
-    }        
+    }  
+    //lấy tình trạng đang giao hàng hay giao bị lỗi
+    if (thisOrderDelivering.orderStatus == "DELIVERY_FAILED"){
+      statusOfOrder = "Giao hàng lỗi";
+    }
     //
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -106,7 +112,7 @@ class _DetailDeliveringState extends State<DetailDelivering> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Đang giao hàng", style: TextStyle(fontWeight: FontWeight.w300), )
+                           Text("$statusOfOrder", style: TextStyle(fontWeight: FontWeight.w300), )
                          ],
                        ),
                        SizedBox(height: 7,),

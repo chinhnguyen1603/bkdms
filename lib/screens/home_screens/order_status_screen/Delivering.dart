@@ -46,9 +46,11 @@ class _DeliveringState extends State<Delivering> {
     //update lstOrder show trong widget. Khởi tạo local = [] để up lại từ đầu mỗi khi lstOrder change
     List<OrderInfo> lstDelivering = [];
     for( var order in lstOrder) {
-        if(order.orderStatus == "APPROVED" && order.type == "PURCHASE_ORDER" ){
+      if(order.type == "PURCHASE_ORDER"){
+        if(order.orderStatus == "APPROVED" || order.orderStatus == "DELIVERY_FAILED" ){
           lstDelivering.add(order);
         }
+      }
     }    
     //check if has or not order, phải để trong widget để build lại khi list change
     bool isHasOrder = false;

@@ -7,8 +7,6 @@ class Level {
   late List<dynamic> rewardConditions;
   late List<dynamic>? gifts;
 
-
-
   Level({
     required this.id,
     required this.name,
@@ -17,6 +15,7 @@ class Level {
     required this.rewardConditions,
     required this.gifts,
   });
+
 }
 
 class RewardCondition {
@@ -28,8 +27,6 @@ class RewardCondition {
   late String? discountValue;
   late List<dynamic> unit;
 
-
-
   RewardCondition({
     required this.id,
     required this.name,
@@ -39,4 +36,23 @@ class RewardCondition {
     required this.discountValue,
     required this.unit,
   });    
+
+}
+
+class HistoryRegister {
+  late String createTime;
+  late String expireTime;
+  late String? cancelTime;
+  late bool isRegistering;
+  late bool isQualified;
+  late String levelName;
+
+  HistoryRegister({
+    required this.createTime,
+    required this.expireTime,
+    required this.cancelTime,
+    required this.isRegistering,
+    required this.isQualified,
+    required this.levelName,
+  });
 }

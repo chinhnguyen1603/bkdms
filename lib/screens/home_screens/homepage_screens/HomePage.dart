@@ -349,6 +349,12 @@ class ScreenHomeState extends State<ScreenHome> {
                                 builder: (context) =>
                                   FutureProgressDialog(getOrderFuture()),
                               );
+                              //show dialog chờ get lịch sử dki hạn mức
+                              await showDialog (
+                                context: context,
+                                builder: (context) =>
+                                  FutureProgressDialog(getHistoryRegisterLevelFuture()),
+                              );                               
                               //move to member
                               Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
                            },
@@ -632,6 +638,15 @@ class ScreenHomeState extends State<ScreenHome> {
  
   }
 
+  // hàm get hạn mức hiện tại + lịch sử hạn mức
+  Future getHistoryRegisterLevelFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<LevelProvider>(context, listen: false).getHistoryLevel(user.token, user.workspace, user.id);   
+    });
+  }   
+
+
   // hàm get cart
   Future getCartFuture() {
     return Future(() async {
@@ -645,27 +660,7 @@ class ScreenHomeState extends State<ScreenHome> {
   Future getOrderFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
-      await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id)
-     .catchError((onError) async {
-          String fault = onError.toString().replaceAll("{", ""); // remove {
-          String outputError = fault.replaceAll("}", ""); //remove }         
-          // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog get order");
-          await showDialog(
-              context: context, 
-              builder: (ctx1) => AlertDialog(
-                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$outputError"),
-                  actions: [TextButton(
-                      onPressed: () => Navigator.pop(ctx1),
-                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                  ),                      
-                  ],                                      
-              ));    
-            throw onError;          
-      })
-      .then((value) async {
-      });    
+      await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
     });
   }      
   

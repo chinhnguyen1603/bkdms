@@ -13,7 +13,7 @@ class ScreenLevel extends StatefulWidget {
 
 class _ScreenLevelState extends State<ScreenLevel> {
   double myWidth = 90.w;
-  List <Color> lstColor = [Color(0xffdeaa23), Color(0xff7b2626), Color(0xff254fb0), Color(0xff23bb86), Color(0xfffa620c)  ]; 
+  List <Color> lstColor = [Color(0xffdeaa23), Color(0xff7b2626), Color(0xff254fb0), Color(0xff23bb86), Color(0xfffa620c), Colors.grey, Colors.black  ]; 
   static const darkGrey = Color(0xff544c4c);
 
   @override
