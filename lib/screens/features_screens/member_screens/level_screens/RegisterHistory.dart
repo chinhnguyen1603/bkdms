@@ -1,10 +1,11 @@
-import 'package:bkdms/models/Level.dart';
-import 'package:bkdms/screens/features_screens/return_screens/DeliveredOrder/MainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:bkdms/services/LevelProvider.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/models/Level.dart';
 
 class RegisterHistory extends StatefulWidget {
   const RegisterHistory({ Key? key }) : super(key: key);
@@ -106,28 +107,53 @@ class _RegisterHistoryState extends State<RegisterHistory> {
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("Ngày đăng kí: ${convertTime(lstHistoryRegister[index].createTime)}", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                              child: Text("Ngày đăng kí: ${convertTime(lstHistoryRegister[index].createTime)}", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15),),
                             ),
                             SizedBox(height:3,),
                             //ngày hết hạn
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("Ngày hết hạn: ${convertTime(lstHistoryRegister[index].expireTime)}", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                              child: Text("Ngày hết hạn: ${convertTime(lstHistoryRegister[index].expireTime)}", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15),),
                              ),
+                            SizedBox(height:3,), 
                             //ngày hủy đơn
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("Ngày hủy: $cancelTime", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
-                            ),   
+                              child: Text("Ngày hủy: $cancelTime", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15),),
+                            ),
+                            SizedBox(height:3,),   
                             //tình trạng đăng kí
                             SizedBox(
                               width: widthInContainer,
                               height: 20,
-                              child: Text("Tình trạng: $status", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
-                            ),  
-                            SizedBox(height: 12,)                                                                                  
+                              child: Text("Tình trạng: $status", maxLines: 1,textAlign: TextAlign.left, style: TextStyle(fontSize: 15),),
+                            ),
+                            SizedBox(height:3,), 
+                            //button kiểm tra, nếu chưa đạt thì hiện
+                            lstHistoryRegister[index].isQualified
+                            ?Text("")
+                            :SizedBox(
+                              width: widthInContainer*0.4,
+                              height: 30,
+                              child: ElevatedButton(
+                                onPressed: () async { 
+                                  //show dialog chờ check level
+                                  await showDialog (
+                                    context: context,
+                                    builder: (context) =>
+                                      FutureProgressDialog(checkThisHistory(lstHistoryRegister[index].levelId, lstHistoryRegister[index].id)),
+                                  );                         
+                                }, 
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(0),
+                                backgroundColor:  MaterialStateProperty.all<Color>(Color(0xff4690FF)),
+                              ),
+                              child: Text("Kiểm tra")
+                            ),
+                          ),                                                                        
+                          SizedBox(height: 12,)                                                                                  
                           ],
                         ),
                       ),
@@ -148,5 +174,35 @@ class _RegisterHistoryState extends State<RegisterHistory> {
     var timeConvert = DateFormat('dd/MM/yyyy').format(DateTime.parse(time).toLocal());
     return timeConvert;
   } 
+
+  // hàm kiểm tra level
+  Future checkThisHistory( String levelId, String historyId) {
+    return Future(() async {
+      //gọi provide order delete sau đó get lại
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<LevelProvider>(context, listen: false).checkLevel(user.token, user.workspace, user.id, levelId, historyId)
+        .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String outputError = fault.replaceAll("}", ""); //remove }  
+          // Alert Dialog 
+          await showDialog(
+              context: context, 
+              builder: (ctx) => AlertDialog(
+                  title: Text("Thông báo", style: TextStyle(fontSize: 24),),
+                  content: Text("$outputError"),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx),
+                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
+                    ),                      
+                  ],
+              )
+          );            
+        }).then((value) async{
+        });  
+    });
+  }   
+
 
 }

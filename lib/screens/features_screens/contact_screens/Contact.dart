@@ -57,7 +57,7 @@ class ContactState extends State<Contact> {
           SizedBox(
             width: myWidth,
             height: 25,
-            child: TextGrey("Thông tin liên lạc"),       
+            child: TextGrey("Nhà phát triển"),       
           ),
           // container thông tin liên lạc
           Container(
@@ -198,7 +198,7 @@ class ContactState extends State<Contact> {
           SizedBox(
             width: myWidth,
             height: 25,
-            child: TextGrey("Phản hồi trực tiếp"),       
+            child: TextGrey("Phản hồi đến nhà cung cấp"),       
           ),
           //Container phản hồi trực tiếp
           GestureDetector(

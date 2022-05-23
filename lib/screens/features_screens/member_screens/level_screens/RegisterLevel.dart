@@ -21,11 +21,6 @@ class _RegisterLevelState extends State<RegisterLevel> {
   List <Color> lstColor = [Color(0xffdeaa23), Color(0xff7b2626), Color(0xff254fb0), Color(0xff23bb86), Color(0xfffa620c), Colors.grey, Colors.black  ]; 
   //List level
   List<Level> lstLevel = [];
-  //list điều kiện đăng kí
-  List<dynamic> lstRegistrationConditions =[];
-  String currentDebt ="";
-  String revenue ="";
-  String minDayJoin ="";
 
   @override
   void initState() {
@@ -53,16 +48,21 @@ class _RegisterLevelState extends State<RegisterLevel> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
+                //list điều kiện đăng kí
+                List<dynamic> lstRegistrationConditions =[];
+                String currentDebt ="";
+                String revenue ="";
+                String minDayJoin ="";
                 //lấy list điều kiện đăng kí
                 lstRegistrationConditions = lstLevel[index].registrationConditions;
                 for(var indexArr = 0; indexArr < lstRegistrationConditions.length; indexArr ++){
                   //lấy nợ hiện tại 
                   if(lstRegistrationConditions[indexArr]['name'] == "CURRENT_DEBT"){
-                     currentDebt = lstRegistrationConditions[indexArr]['value'];
+                     currentDebt = lstRegistrationConditions[indexArr]['value'] + "đ";
                   }
                   //lấy doanh thu 
                   if(lstRegistrationConditions[indexArr]['name'] == "REVENUE"){
-                     revenue = lstRegistrationConditions[indexArr]['value'];
+                     revenue = lstRegistrationConditions[indexArr]['value'] + "đ";
                   }  
                   //lấy ngày tham gia
                   if(lstRegistrationConditions[indexArr]['name'] == "MIN_DAY_JOIN"){
@@ -110,7 +110,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
                           //các chỉ số điều kiện
                           SizedBox(
                             width: myWidth*0.9,
-                            child: Text("Nợ hiện tại nhỏ hơn: ${currentDebt.replaceAllMapped(reg, mathFunc)}đ", textAlign: TextAlign.left, style: TextStyle(color: darkGrey),),
+                            child: Text("Nợ hiện tại nhỏ hơn: ${currentDebt.replaceAllMapped(reg, mathFunc)}", textAlign: TextAlign.left, style: TextStyle(color: darkGrey),),
                           ),  
                           SizedBox(height: 5,),                          
                           SizedBox(
@@ -120,7 +120,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
                           SizedBox(height: 5,),
                           SizedBox(
                             width: myWidth*0.9,
-                            child: Text("Doanh số đã đạt lớn hơn: ${revenue.replaceAllMapped(reg, mathFunc)}đ", textAlign: TextAlign.left, style: TextStyle(color: darkGrey,),),
+                            child: Text("Doanh số đã đạt lớn hơn: ${revenue.replaceAllMapped(reg, mathFunc)}", textAlign: TextAlign.left, style: TextStyle(color: darkGrey,),),
                           ),  
                           SizedBox(
                             width: myWidth*0.9,
@@ -191,8 +191,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
           // phụ trợ xử lí String
           String fault = onError.toString().replaceAll("{", ""); // remove {
           String outputError = fault.replaceAll("}", ""); //remove }  
-          // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi register future dialog");
+          // Alert Dialog 
           await showDialog(
               context: context, 
               builder: (ctx) => AlertDialog(

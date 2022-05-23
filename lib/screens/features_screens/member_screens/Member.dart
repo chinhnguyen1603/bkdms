@@ -78,7 +78,7 @@ class _MemberState extends State<Member> {
                           "$levelName",
                           style: TextStyle(
                             color: Color(0xffcf0606),
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -92,7 +92,7 @@ class _MemberState extends State<Member> {
                           "$statusLevel",
                           style: TextStyle(
                             color: Color(0xff544c4c),
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

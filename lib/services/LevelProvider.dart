@@ -107,11 +107,13 @@ class LevelProvider with ChangeNotifier{
          extractedData['data']['levelAgency'].forEach((data) {
            loadHistoryRegister.add(
              HistoryRegister(
+               id: data['id'],
                createTime: data['createTime'],
                expireTime: data['expireTime'],
                cancelTime: data['cancelTime'],
                isRegistering: data['isRegistering'],
                isQualified: data['isQualified'],
+               levelId: data['level']['id'],
                levelName: data['level']['name'],  
              ),
            );
@@ -129,4 +131,41 @@ class LevelProvider with ChangeNotifier{
     }
   }
 
+  //kiểm tra hạn mức
+  Future<void> checkLevel(String token, String workspace, String agencyId, String levelId, String historyId) async {
+    print("bắt đầu kiểm tra level");
+    var url = Uri.parse('https://bkdms.herokuapp.com' +'/mobile/api/v1/level/check-reward-level');
+    try {
+      final response = await http.post(
+        url, 
+        headers: ({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+          'Workspace' : "$workspace",
+        }),
+        body: jsonEncode(<String, dynamic>{
+          'agencyId': agencyId,
+          'levelId': levelId,
+          'id': historyId,
+        }),
+      );
+      print(response.statusCode);
+      if(response.statusCode == 201){
+         throw jsonDecode(response.body.toString());
+      }
+      else{
+        throw jsonDecode(response.body.toString());
+      }
+    }
+    catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+
 }
+
+
+//level/check-reward-level; agencyId, levelId, id

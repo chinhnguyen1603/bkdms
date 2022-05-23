@@ -40,19 +40,23 @@ class RewardCondition {
 }
 
 class HistoryRegister {
+  late String id;
   late String createTime;
   late String expireTime;
   late String? cancelTime;
   late bool isRegistering;
   late bool isQualified;
+  late String levelId;
   late String levelName;
 
   HistoryRegister({
+    required this.id,
     required this.createTime,
     required this.expireTime,
     required this.cancelTime,
     required this.isRegistering,
     required this.isQualified,
+    required this.levelId,
     required this.levelName,
   });
 }

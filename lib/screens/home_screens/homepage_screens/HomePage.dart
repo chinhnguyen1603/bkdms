@@ -185,7 +185,7 @@ class ScreenHomeState extends State<ScreenHome> {
                   
                   //text BKDMS đầu tiên
                   Text(
-                     "BKDMS",
+                     "${user.workspace}",
                      textAlign: TextAlign.center,
                      style: TextStyle(
                        fontSize: 40,
@@ -353,7 +353,7 @@ class ScreenHomeState extends State<ScreenHome> {
                               await showDialog (
                                 context: context,
                                 builder: (context) =>
-                                  FutureProgressDialog(getHistoryRegisterLevelFuture()),
+                                  FutureProgressDialog(getOrderAndHistoryLevelFuture()),
                               );                               
                               //move to member
                               Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
@@ -638,14 +638,6 @@ class ScreenHomeState extends State<ScreenHome> {
  
   }
 
-  // hàm get hạn mức hiện tại + lịch sử hạn mức
-  Future getHistoryRegisterLevelFuture() {
-    return Future(() async {
-      Agency user = Provider.of<Agency>(context, listen: false);
-      await Provider.of<LevelProvider>(context, listen: false).getHistoryLevel(user.token, user.workspace, user.id);   
-    });
-  }   
-
 
   // hàm get cart
   Future getCartFuture() {
@@ -661,6 +653,15 @@ class ScreenHomeState extends State<ScreenHome> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
+    });
+  }     
+
+  // hàm get order & history level
+  Future getOrderAndHistoryLevelFuture() {
+    return Future(() async {
+      Agency user = Provider.of<Agency>(context, listen: false);
+      await Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);
+      await Provider.of<LevelProvider>(context, listen: false).getHistoryLevel(user.token, user.workspace, user.id);  
     });
   }      
   

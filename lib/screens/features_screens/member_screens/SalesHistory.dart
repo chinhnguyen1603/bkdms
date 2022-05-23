@@ -324,12 +324,12 @@ class _SalesHistoryState extends State<SalesHistory> {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(height: 5,),
+                                      SizedBox(height: 10,),
                                       Divider(),
                                       //tên + sdt khách hàng
                                       SizedBox(
                                         width: myWidth*0.8,
-                                        height: 30,
+                                        height: 24,
                                         child: Text(
                                           "Khách hàng: $name",
                                           textAlign: TextAlign.left,
@@ -338,7 +338,7 @@ class _SalesHistoryState extends State<SalesHistory> {
                                       ),
                                       SizedBox(
                                         width: myWidth*0.8,
-                                        height: 30,
+                                        height: 24,
                                         child: Text(
                                           "SDT: $phone",
                                           textAlign: TextAlign.left,
