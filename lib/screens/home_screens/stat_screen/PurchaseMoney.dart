@@ -1,6 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:bkdms/models/Agency.dart';
+import 'package:bkdms/services/OrderProvider.dart';
+import 'package:bkdms/models/OrderInfo.dart';
 
 class PurchaseMoney extends StatefulWidget {
   const PurchaseMoney({Key? key}) : super(key: key);
@@ -9,7 +13,7 @@ class PurchaseMoney extends StatefulWidget {
   State<StatefulWidget> createState() => _PurchaseMoneyState();
 }
 
-class _PurchaseMoneyState extends State<PurchaseMoney> {
+class _PurchaseMoneyState extends State<PurchaseMoney> {  
   final Color leftBarColor = const Color(0xff53fdd7);
   final double width = 12;
   late List<BarChartGroupData> showingBarGroups;
@@ -17,22 +21,89 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
   // xử lý khi chạm vào thanh
   int touchedGroupIndex = -1;
 
+  //lấy tiền từ đơn hàng 
+  List<OrderInfo> lstOrder = []; 
+  late Future _myFuture;  
+
+
+
   @override
   void initState() {
     super.initState();
+    Agency user = Provider.of<Agency>(context, listen: false);
+    _myFuture = Provider.of<OrderProvider>(context, listen: false).getOrder(user.token, user.workspace, user.id);  
+    this.lstOrder = Provider.of<OrderProvider>(context, listen: false).lstOrderInfo;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // lấy list đã giao
+    List<OrderInfo> lstDelivered = [];
+    for( var order in lstOrder) {
+      if(order.type == "PURCHASE_ORDER" ) {
+        if (order.deliveredTime != null || order.completedTime !=null) {
+          lstDelivered.add(order);
+        }        
+      }
+    } 
+    //xử lí lấy tiền theo từng tháng
+    double total1 = 0, total2 = 0, total3 = 0, total4 =0, total5 = 0, total6 = 0, total7=0, total8 =0, total9 = 0, total10 = 0, total11 =0, total12=0;
+    for(var orderDelivered in lstDelivered) {
+      if (getMonth(orderDelivered.createTime) == "01") {
+        total1 += int.parse(orderDelivered.totalPayment)/1000000;
+      }
+      if (getMonth(orderDelivered.createTime) == "02") {
+        total2 += int.parse(orderDelivered.totalPayment)/1000000;
+      }   
+      if (getMonth(orderDelivered.createTime) == "03") {
+        total3 += int.parse(orderDelivered.totalPayment)/1000000;
+      }  
+      if (getMonth(orderDelivered.createTime) == "04") {
+        total4 += int.parse(orderDelivered.totalPayment)/1000000;
+      }    
+      if (getMonth(orderDelivered.createTime) == "05") {
+        total5 += int.parse(orderDelivered.totalPayment)/1000000;
+      }  
+      if (getMonth(orderDelivered.createTime) == "06") {
+        total6 += int.parse(orderDelivered.totalPayment)/1000000;
+      }     
+      if (getMonth(orderDelivered.createTime) == "07") {
+        total7 += int.parse(orderDelivered.totalPayment)/1000000;
+      }
+      if (getMonth(orderDelivered.createTime) == "08") {
+        total8 += int.parse(orderDelivered.totalPayment)/1000000;
+      }   
+      if (getMonth(orderDelivered.createTime) == "09") {
+        total9 += int.parse(orderDelivered.totalPayment)/1000000;
+      }  
+      if (getMonth(orderDelivered.createTime) == "10") {
+        total10 += int.parse(orderDelivered.totalPayment)/1000000;
+      }  
+      if (getMonth(orderDelivered.createTime) == "11") {
+        total11 += int.parse(orderDelivered.totalPayment)/1000000;
+      }    
+      if (getMonth(orderDelivered.createTime) == "12") {
+        total12 += int.parse(orderDelivered.totalPayment)/1000000;
+      }                                                                 
+    }
     //gán giá trị tổng tiền tại đây
-    final barGroup1 = makeGroupData(0, 5,); //giá trị tổng tiền nằm ở cột y, cột x là 0 -> 11 [đại diện cho tháng 1-12]
-    final barGroup2 = makeGroupData(1, 16);
-    final barGroup3 = makeGroupData(2, 18);
-    final barGroup4 = makeGroupData(3, 20);
-    final barGroup5 = makeGroupData(4, 17);
-    final barGroup6 = makeGroupData(5, 19);
-    final barGroup7 = makeGroupData(6, 0);
-    final barGroup8 = makeGroupData(7, 2);
-    final barGroup9 = makeGroupData(8, 3);
-    final barGroup10 = makeGroupData(9, 19);
-    final barGroup11 = makeGroupData(10, 12); 
-    final barGroup12 = makeGroupData(11, 9);             
+    var barGroup1 = makeGroupData(0, total1,); //giá trị tổng tiền nằm ở cột y, cột x là 0 -> 11 [đại diện cho tháng 1-12]
+    var barGroup2 = makeGroupData(1, total2);
+    var barGroup3 = makeGroupData(2, total3);
+    var barGroup4 = makeGroupData(3, total4);
+    var barGroup5 = makeGroupData(4, total5);
+    var barGroup6 = makeGroupData(5, total6);
+    var barGroup7 = makeGroupData(6, total7);
+    var barGroup8 = makeGroupData(7, total8);
+    var barGroup9 = makeGroupData(8, total9);
+    var barGroup10 = makeGroupData(9, total10);
+    var barGroup11 = makeGroupData(10, total11); 
+    var barGroup12 = makeGroupData(11, total12);             
     final items = [
       barGroup1,
       barGroup2,
@@ -47,136 +118,137 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
       barGroup11,
       barGroup12,      
     ];
-
-    showingBarGroups = items;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        color: const Color(0xff2c4260),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              //chứa hiệu ứng + chữ VND
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+    showingBarGroups = items;      
+    //
+    return FutureBuilder<void>(
+      future: _myFuture,
+      builder: (context, snapshot) {
+        return AspectRatio(
+          aspectRatio: 1,
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            color: const Color(0xff2c4260),
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  makeTransactionsIcon(),
+                  //chứa hiệu ứng + chữ VND
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      makeTransactionsIcon(),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      const Text(
+                        'VND',
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                   ],
+                  ),
+                  
+                  //
                   const SizedBox(
-                    width: 12,
+                    height: 38,
                   ),
-                  const Text(
-                    'VND',
-                    style: TextStyle(color: Colors.white, fontSize: 22),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-               ],
-              ),
-              
-              //
-              const SizedBox(
-                height: 38,
-              ),
 
-              //widget biểu đồ tại đây
-              Expanded(
-                child: BarChart(
-                  BarChartData(
-                    maxY: 50,
-                    //xử lý khi người dùng chạm vào thanh biểu đồ
-                    barTouchData: BarTouchData(
-                      enabled: true,
-                      handleBuiltInTouches: true,
-                      touchTooltipData: BarTouchTooltipData(
-                        tooltipBgColor: Colors.transparent,
-                        tooltipMargin: 0,
-                        getTooltipItem: (
-                          BarChartGroupData group,
-                          int groupIndex,
-                          BarChartRodData rod,
-                          int rodIndex,
-                        ) {
-                          return BarTooltipItem(
-                            rod.toY.toString(),
-                            TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: rod.color!,
-                                fontSize: 18,
-                                shadows: const [
-                                  Shadow(
-                                    color: Colors.black26,
-                                    blurRadius: 12,
-                                  )
-                                ]),
-                          );
-                        }),
-                        touchCallback: (event, response) {
-                          if (event.isInterestedForInteractions && response != null && response.spot != null) {
-                            setState(() {
-                              touchedGroupIndex = response.spot!.touchedBarGroupIndex;
-                            });
-                          } else {
-                            setState(() {
-                              touchedGroupIndex = -1;
-                            });
-                          }
-                        },
-                    ),                    
-                    //wiget thanh diễn dãi trái, phải, trên, dưới -> [số tiền + tên tháng]
-                    titlesData: FlTitlesData(
-                      show: true,
-                      rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      topTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: bottomTitles,
-                          interval: 1,
-                          reservedSize: 42,
+                  //widget biểu đồ tại đây
+                  Expanded(
+                    child: BarChart(
+                      BarChartData(
+                        maxY: 50,
+                        //xử lý khi người dùng chạm vào thanh biểu đồ
+                        barTouchData: BarTouchData(
+                          enabled: true,
+                          handleBuiltInTouches: true,
+                          touchTooltipData: BarTouchTooltipData(
+                            tooltipBgColor: Colors.transparent,
+                            tooltipMargin: 0,
+                            getTooltipItem: (
+                              BarChartGroupData group,
+                              int groupIndex,
+                              BarChartRodData rod,
+                              int rodIndex,
+                            ) {
+                              return BarTooltipItem(
+                                rod.toY.toString(),
+                                TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: rod.color!,
+                                    fontSize: 18,
+                                    shadows: const [
+                                      Shadow(
+                                        color: Colors.black26,
+                                        blurRadius: 12,
+                                      )
+                                    ]),
+                              );
+                            }),
+                            touchCallback: (event, response) {
+                              if (event.isInterestedForInteractions && response != null && response.spot != null) {
+                                setState(() {
+                                  touchedGroupIndex = response.spot!.touchedBarGroupIndex;
+                                });
+                              } else {
+                                setState(() {
+                                  touchedGroupIndex = -1;
+                                });
+                              }
+                            },
+                        ),                    
+                        //wiget thanh diễn dãi trái, phải, trên, dưới -> [số tiền + tên tháng]
+                        titlesData: FlTitlesData(
+                          show: true,
+                          rightTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          topTitles: AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              getTitlesWidget: bottomTitles,
+                              interval: 1,
+                              reservedSize: 42,
+                            ),
+                          ),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 26,
+                              interval: 1,
+                              getTitlesWidget: leftTitles,
+                            ),
+                          ),
                         ),
-                      ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 26,
-                          interval: 1,
-                          getTitlesWidget: leftTitles,
+                        borderData: FlBorderData(
+                          show: false,
                         ),
+                        //dữ liệu
+                        barGroups: showingBarGroups,
+                        gridData: FlGridData(show: false),
                       ),
                     ),
-                    borderData: FlBorderData(
-                      show: false,
-                    ),
-                    //dữ liệu
-                    barGroups: showingBarGroups,
-                    gridData: FlGridData(show: false),
                   ),
-                ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 12,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 
@@ -192,9 +264,6 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
     if (value == 1) {
       text = '1M';
     } 
-    else if (value == 5) {
-      text = '5M';
-    }
     else if (value == 10) {
       text = '10M';
     } 
@@ -361,11 +430,11 @@ class _PurchaseMoneyState extends State<PurchaseMoney> {
     );
   }
 
-  // Hàm convert thời gian
-  String convertTime(String time){
-    var timeConvert = DateFormat('dd/MM/yyyy').format(DateTime.parse(time).toLocal());
+  // Hàm lấy tháng của đơn hàng
+  String getMonth(String time){
+    var timeConvert = DateFormat('MM').format(DateTime.parse(time).toLocal());
     return timeConvert;
   }
-
+ 
 
 }
