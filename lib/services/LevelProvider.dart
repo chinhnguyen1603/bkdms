@@ -153,8 +153,13 @@ class LevelProvider with ChangeNotifier{
       print(response.statusCode);
       if(response.statusCode == 200){
         final extractedData = json.decode(response.body) as Map<String, dynamic>;
-        List<dynamic> lstError = extractedData['listError'];
-        throw lstError;
+        if(extractedData['listError'] != null) {
+          List<dynamic> lstError = extractedData['listError'];
+          throw lstError;
+        } else {
+          throw jsonDecode(response.body.toString());
+        }
+
       }
       else{
         throw jsonDecode(response.body.toString());

@@ -25,7 +25,7 @@ class RewardCondition {
   late String? maxAmount;
   late String? typeDiscount;
   late String? discountValue;
-  late List<dynamic> unit;
+  late List<dynamic>? unit;
 
   RewardCondition({
     required this.id,
