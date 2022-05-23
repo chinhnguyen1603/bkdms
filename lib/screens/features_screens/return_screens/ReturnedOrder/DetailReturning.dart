@@ -34,7 +34,7 @@ class _DetailReturningState extends State<DetailReturning> {
     //list trạng thái đơn hàng + logic
     List<Map> lstStatus = []; 
       lstStatus.add({
-        "status": "Đặt đơn hàng và chờ xác nhận.",
+        "status": "Tạo đơn hàng và chờ xác nhận.",
         "time": "${convertTimeState(thisOrderDelivering.createTime)}"
       });     
     if(thisOrderDelivering.approvedTime != null){
@@ -99,7 +99,7 @@ class _DetailReturningState extends State<DetailReturning> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Đang giao hàng", style: TextStyle(fontWeight: FontWeight.w300), )
+                           Text("Đang trả hàng", style: TextStyle(fontWeight: FontWeight.w300), )
                          ],
                        ),
                        SizedBox(height: 7,),

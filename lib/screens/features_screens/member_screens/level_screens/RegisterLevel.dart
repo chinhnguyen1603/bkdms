@@ -184,7 +184,6 @@ class _RegisterLevelState extends State<RegisterLevel> {
   // hàm đăng kí hạn mức
   Future registerThisLevel( String levelId) {
     return Future(() async {
-      //gọi provide order delete sau đó get lại
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<LevelProvider>(context, listen: false).registerLevel(user.token, user.workspace, user.id, levelId)
         .catchError((onError) async {

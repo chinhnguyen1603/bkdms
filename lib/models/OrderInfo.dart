@@ -15,6 +15,7 @@ class OrderInfo {
   String? cancelledTimeBySupplier;
   String? returnReason;
   String? deliveredTime;
+  String? importTime;
   String? note;
   late String orderStatus;
   String? paymentStatus;
@@ -42,6 +43,7 @@ class OrderInfo {
     required this.returnReason,
     required this.deliveredTime,
     required this.paymentType,
+    required this.importTime,
     required this.note,
     required this.orderStatus, 
     required this.paymentStatus,

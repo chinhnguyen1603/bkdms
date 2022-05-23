@@ -34,7 +34,7 @@ class DetailReturnedState extends State<DetailReturned> {
     //list trạng thái đơn hàng + logic
     List<Map> lstStatus = []; 
       lstStatus.add({
-        "status": "Đặt đơn hàng và chờ xác nhận.",
+        "status": "Tạo đơn hàng và chờ xác nhận.",
         "time": "${convertTime(thisOrderDelivered.createTime)}"
       });     
     if(thisOrderDelivered.approvedTime != null){
@@ -43,18 +43,12 @@ class DetailReturnedState extends State<DetailReturned> {
         "time": "${convertTime(thisOrderDelivered.approvedTime as String)}"
       });     
     } 
-    if(thisOrderDelivered.deliveredTime != null){
+    if(thisOrderDelivered.importTime != null){
       lstStatus.add({
-        "status": "Shipper thông báo đã giao đơn hàng.",
-        "time": "${convertTime(thisOrderDelivered.deliveredTime as String)}"
+        "status": "Hàng đã được trả về kho của nhà cung cấp.",
+        "time": "${convertTime(thisOrderDelivered.importTime as String)}"
       });     
-    }
-    if(thisOrderDelivered.completedTime != null){
-      lstStatus.add({
-        "status": "Người dùng xác nhận đã nhận đơn hàng.",
-        "time": "${convertTime(thisOrderDelivered.completedTime as String)}"
-      });     
-    }             
+    }           
     //widget
     return Scaffold(
       appBar: AppBarGrey("Chi tiết đơn"),
@@ -99,7 +93,7 @@ class DetailReturnedState extends State<DetailReturned> {
                            SizedBox(
                              width: myWidth*0.12,
                            ),
-                           Text("Đã giao hàng", style: TextStyle(fontWeight: FontWeight.w300), )
+                           Text("Đã trả hàng", style: TextStyle(fontWeight: FontWeight.w300), )
                          ],
                        ),
                        SizedBox(height: 7,),

@@ -138,6 +138,7 @@ class OrderProvider with ChangeNotifier{
             returnReason: orderData['returnReason'],
             deliveredTime: orderData['deliveredTime'],
             paymentType: orderData['paymentType'],
+            importTime: orderData['importTime'],
             note: orderData['note'],
             orderStatus: orderData['orderStatus'],
             paymentStatus: orderData['paymentStatus'],
