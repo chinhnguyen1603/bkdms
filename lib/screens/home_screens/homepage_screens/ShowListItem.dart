@@ -920,7 +920,7 @@ class _ShowListItemState extends State<ShowListItem> {
         return transformedUrl;
   }   
 
-  // hàm add cart rồi get, update số lượng sản phẩm
+  // hàm add cart rồi get, update số lượng sản phẩm (icon count badge)
   Future getFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
@@ -932,7 +932,6 @@ class _ShowListItemState extends State<ShowListItem> {
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)

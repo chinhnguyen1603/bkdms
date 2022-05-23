@@ -425,7 +425,7 @@ class _InfoPaymentState extends State<InfoPayment> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id, this.paymentType)
-     .catchError((onError) async {
+        .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi future dialog tạo đơn");
           await showDialog(
@@ -438,8 +438,8 @@ class _InfoPaymentState extends State<InfoPayment> {
                   ),                      
                   ],                                      
               ));             
-      });    
-    });
+        });    
+      });
   }
 
 

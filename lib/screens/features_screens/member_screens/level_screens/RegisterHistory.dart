@@ -183,14 +183,16 @@ class _RegisterHistoryState extends State<RegisterHistory> {
       await Provider.of<LevelProvider>(context, listen: false).checkLevel(user.token, user.workspace, user.id, levelId, historyId)
         .catchError((onError) async {
           // phụ trợ xử lí String
-          String fault = onError.toString().replaceAll("{", ""); // remove {
-          String outputError = fault.replaceAll("}", ""); //remove }  
+          String fault = onError.toString().replaceAll("{message: ", ""); // remove {message:
+          String outputError = fault.replaceAll("}", ""); //remove } 
+          String outputError2 = outputError.replaceAll("[", ""); //remove [
+          String outputError3 = outputError2.replaceAll("]", ""); //remove ]   
           // Alert Dialog 
           await showDialog(
               context: context, 
               builder: (ctx) => AlertDialog(
                   title: Text("Thông báo", style: TextStyle(fontSize: 24),),
-                  content: Text("$outputError"),
+                  content: Text("$outputError3"),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(ctx),

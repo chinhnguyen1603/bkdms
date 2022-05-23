@@ -281,7 +281,7 @@ class _LoginState extends State<Login> {
                         _login = postAPI(phoneController.text,passwordController.text,workspaceController.text, fcmToken);
                         _login?.catchError((onError){
                            // phụ trợ xử lí String
-                           String fault = onError.toString().replaceAll("{", ""); // remove {
+                           String fault = onError.toString().replaceAll("{message: ", ""); // remove {message:
                            String outputError = fault.replaceAll("}", ""); //remove }  
                            // Alert Dialog khi lỗi xảy ra
                            Alert(
@@ -312,33 +312,7 @@ class _LoginState extends State<Login> {
                         })
                         .then((_) async => {   
                           // get Item trong HomePage    
-                          await Provider.of<ItemProvider>(context, listen: false).fetchAndSetItem(user?.token, user?.workspace)
-                            .catchError((onError){
-                              // phụ trợ xử lí String
-                              String fault = onError.toString().replaceAll("{", ""); // remove {
-                              String outputError = fault.replaceAll("}", ""); //remove }  
-                              // Alert Dialog khi lỗi xảy ra
-                              Alert(
-                                context: context,
-                                type: AlertType.error,
-                                style: AlertStyle(
-                                  titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                                  descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: darkGrey),
-                                ),
-                                title: "Oops! Có lỗi xảy ra",
-                                desc: outputError,
-                                buttons: [ 
-                                  DialogButton(
-                                    child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
-                                    onPressed: () => Navigator.pop(context),
-                                    width: 100,
-                                  )
-                                ],
-                              ).show();
-                              setState(() {
-                                _isLoading = false;
-                              });
-                            }),
+                          await Provider.of<ItemProvider>(context, listen: false).fetchAndSetItem(user?.token, user?.workspace),
                           print("test kết quả lstItem"),
                           print(Provider.of<ItemProvider>(context, listen: false).lstItem), 
                           setState(() {

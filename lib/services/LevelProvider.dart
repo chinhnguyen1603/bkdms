@@ -151,8 +151,10 @@ class LevelProvider with ChangeNotifier{
         }),
       );
       print(response.statusCode);
-      if(response.statusCode == 201){
-         throw jsonDecode(response.body.toString());
+      if(response.statusCode == 200){
+        final extractedData = json.decode(response.body) as Map<String, dynamic>;
+        List<dynamic> lstError = extractedData['listError'];
+        throw lstError;
       }
       else{
         throw jsonDecode(response.body.toString());

@@ -197,7 +197,7 @@ class _ChangePasswordState extends State<ChangePassword>{
                       postNewPassword(user.token, user.workspace, user.id, oldPassword.text, newPassword.text)
                       .catchError((onError){
                          // phụ trợ xử lí String
-                         String fault = onError.toString().replaceAll("{", ""); // remove {
+                         String fault = onError.toString().replaceAll("{message: ", ""); // remove {message:
                          String outputError = fault.replaceAll("}", ""); //remove }  
                          //show dialog nếu lỗi
                          showDialog(

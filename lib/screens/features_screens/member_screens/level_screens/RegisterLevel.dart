@@ -188,7 +188,7 @@ class _RegisterLevelState extends State<RegisterLevel> {
       await Provider.of<LevelProvider>(context, listen: false).registerLevel(user.token, user.workspace, user.id, levelId)
         .catchError((onError) async {
           // phụ trợ xử lí String
-          String fault = onError.toString().replaceAll("{", ""); // remove {
+          String fault = onError.toString().replaceAll("{message: ", ""); // remove {message:
           String outputError = fault.replaceAll("}", ""); //remove }  
           // Alert Dialog 
           await showDialog(
