@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
   final workspaceController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
-  /*
+  
   @override
   void initState() {
     super.initState();
@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
             });
       }
     }); 
-  } */
+  } 
 
 
 
@@ -112,13 +112,13 @@ class _LoginState extends State<Login> {
     //
     
     String fcmToken ="";
-    /*FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
        fcmToken = newToken;
     });
     FirebaseMessaging.instance.getToken().then((token){
       fcmToken = token as String;
       print(fcmToken);
-    });*/
+    });
     //
     return  WillPopScope(
       onWillPop: () async {

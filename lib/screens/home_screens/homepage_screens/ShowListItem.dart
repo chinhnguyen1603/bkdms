@@ -488,6 +488,7 @@ class _ShowListItemState extends State<ShowListItem> {
                                                                                   );
                                                                                   setState(() {              
                                                                                     btnSelectVal = ""; //set value của dropdowm về ""
+                                                                                    unitPrice =""; //set giá sp về ""
                                                                                   });
                                                                                   Navigator.pop(context);                                                                              
                                                                               }
@@ -865,6 +866,7 @@ class _ShowListItemState extends State<ShowListItem> {
                                                                                   );
                                                                                   setState(() {              
                                                                                     btnSelectVal = ""; //set value của dropdowm về ""
+                                                                                    unitPrice =""; //set value của đơn giá về ""
                                                                                   });
                                                                                   Navigator.pop(context);                                                                              
                                                                               }
