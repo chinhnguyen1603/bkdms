@@ -381,28 +381,14 @@ class _InfoPaymentState extends State<InfoPayment> {
                                       //cập nhật list product
                                       Provider.of<OrderProvider>(context, listen: false).setListProduct(Provider.of<CartProvider>(context, listen: false).lstCart);
                                       //đặt hàng             
-                                      await showDialog (
-                                        context: context,
-                                        builder: (context)  =>
-                                          FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
-                                      ).then((value) {
-                                          //push to success order
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
-                                      });                  
+                                      await createOrderFuture();                 
                                   }
                                 //hình thức thanh toán là COD thì post đơn hàng
                                 } else{
                                     //cập nhật list product
                                     Provider.of<OrderProvider>(context, listen: false).setListProduct(Provider.of<CartProvider>(context, listen: false).lstCart);
                                     //đặt hàng             
-                                    await showDialog (
-                                      context: context,
-                                      builder: (context)  =>
-                                        FutureProgressDialog(getFuture(), message: Text('Đang đặt đơn...', style: TextStyle(color: Color(0xff7d7d7d)))),
-                                    ).then((value) {
-                                        //push to success order
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
-                                    });   
+                                    await createOrderFuture();   
                                 }
                               },
                               style: ButtonStyle(
@@ -421,24 +407,36 @@ class _InfoPaymentState extends State<InfoPayment> {
   }
 
   // hàm create order
-  Future getFuture() {
+  Future createOrderFuture() {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<OrderProvider>(context, listen: false).createOrder(user.token, user.workspace, user.id, this.paymentType)
         .catchError((onError) async {
+          // phụ trợ xử lí String
+          String fault = onError.toString().replaceAll("{message: ", ""); // remove {message:
+          String outputError = fault.replaceAll("}", ""); //remove }            
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog tạo đơn");
-          await showDialog(
-              context: context, 
-              builder: (ctx1) => AlertDialog(
-                  title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  actions: [TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)
-                  ),                      
-                  ],                                      
-              ));             
-        });    
+          Alert(
+            context: context,
+            type: AlertType.error,
+            style: AlertStyle(
+              descTextAlign: TextAlign.start,
+              descStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Color(0xff544c4c)),
+            ),
+            desc: outputError,                
+            buttons: [ 
+              DialogButton(
+                child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                onPressed: () => Navigator.pop(context),
+                width: 100,
+              )
+            ],
+          ).show();  
+          throw onError;         
+        }).then((_) {
+          //push to success order
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessOrder())); 
+        });     
       });
   }
 

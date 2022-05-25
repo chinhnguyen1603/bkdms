@@ -383,7 +383,7 @@ class _InfoReturnState extends State<InfoReturn> {
                                  await Provider.of<ReturnProvider>(context, listen: false).createReturnOrder(user.token, user.workspace, user.id, widget.orderId)
                                     .catchError((onError) async {
                                       // phụ trợ xử lí String
-                                      String fault = onError.toString().replaceAll("{", ""); // remove {
+                                      String fault = onError.toString().replaceAll("{message: ", ""); // remove {message:
                                       String outputError = fault.replaceAll("}", ""); //remove }  
                                       // Alert Dialog khi lỗi xảy ra
                                       print("Bắt lỗi tạo đơn trả");

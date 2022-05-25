@@ -499,7 +499,7 @@ class _InfoOrderState extends State<InfoOrder> {
     return Future(() async {
       Agency user = Provider.of<Agency>(context, listen: false);
       await Provider.of<PaymentProvider>(context, listen: false).getDebt(user.token, user.workspace, user.id)
-     .catchError((onError) async {
+        .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
           print("Bắt lỗi future dialog delete all cart");
           await showDialog(
@@ -514,10 +514,10 @@ class _InfoOrderState extends State<InfoOrder> {
                   ],                                      
               ));    
             throw onError;          
-      }).then((value) {
-        //update agency tại đây
-        Provider.of<Agency>(context, listen: false).updateValue(value);
-      });   
+        }).then((value) {
+          //update agency tại đây
+          Provider.of<Agency>(context, listen: false).updateValue(value);
+        });   
     });
   }      
 
