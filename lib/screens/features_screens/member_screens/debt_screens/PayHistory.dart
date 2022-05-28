@@ -23,7 +23,6 @@ class _PayHistoryState extends State<PayHistory> {
   void initState() {
     super.initState();
     lstPayHistory = Provider.of<PaymentProvider>(context, listen: false).lstPayHistory;
-    print(lstPayHistory.length);
   }
 
   @override
@@ -60,7 +59,6 @@ class _PayHistoryState extends State<PayHistory> {
 
              //ô lịch sử
              ListView.builder(
-               reverse: true,
                itemCount: lstPayHistory.length,              
                shrinkWrap: true,
                physics: NeverScrollableScrollPhysics(),
@@ -70,7 +68,11 @@ class _PayHistoryState extends State<PayHistory> {
                   if( lstPayHistory[index].type == "ONLINE_PAYMENT") {
                     image = lstImage[0];
                     type = "Thanh toán ví Momo";
-                  } else {
+                  } else if (lstPayHistory[index].type == "TRANSFER"){
+                    image = lstImage[2];
+                    type = "Thanh toán chuyển khoản";
+                  }
+                  else {
                     image = lstImage[1];
                     type = "Thanh toán tiền mặt";
                   }                                   
