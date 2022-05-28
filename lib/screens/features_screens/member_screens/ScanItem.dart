@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/components/AppBarTransparent.dart';
 import 'package:bkdms/screens/features_screens/member_screens/ResultBarcode.dart';
+
 
 
 class ScanItem extends StatefulWidget {
@@ -21,7 +23,12 @@ class _ScanItemState  extends State<ScanItem> {
   String _scanBarcode = '';
   bool isShowDialog = false;
   int needShowDialog = 1;
-  
+  String amount = "";
+
+  // form nhập số lượng
+  final amountController = TextEditingController();  
+  final _formAmountKey = GlobalKey<FormState>();
+
  //khởi tạo list item = []
   List<Item> lstItem = [];
 
@@ -63,7 +70,47 @@ class _ScanItemState  extends State<ScanItem> {
                       setState(() {
                         needShowDialog = 0;
                       });
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(item, unit)));
+                      await Alert(
+                        context: context,
+                        type: AlertType.none,
+                        desc: "Nhập số lượng",
+                        content: Form(
+                          key: _formAmountKey,
+                            child: TextFormField(
+                              controller: amountController,
+                              keyboardType: TextInputType.number,
+                              cursorHeight: 20,
+                              cursorColor: Colors.black,
+                              textAlignVertical: TextAlignVertical.center,
+                              style: TextStyle(fontSize: 18),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "trống";
+                                }
+                                return null;
+                              },                
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.exposure_sharp ,size: 26,),
+                              ),
+                            ),
+                        ),
+                        buttons: [ 
+                          DialogButton(
+                            width: 100,
+                            child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                            onPressed: () {
+                              // check form có null không
+                              if (_formAmountKey.currentState!.validate()){
+                                setState(() {
+                                  amount = amountController.text;
+                                });
+                                Navigator.pop(context);
+                              }
+                            },         
+                          )
+                        ],
+                      ).show();                             
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResultBarcode(item, unit, amount)));
                       break;
                     } 
                   }  

@@ -579,12 +579,11 @@ class _DebtScreenState extends State<DebtScreen> {
       await Provider.of<PaymentProvider>(context, listen: false).getPayHistory(user.token, user.workspace, user.id)
       .catchError((onError) async {
           // Alert Dialog khi lỗi xảy ra
-          print("Bắt lỗi future dialog delete cart");
+          print("Bắt lỗi future dialog lấy lịch sử thanh toán");
           await showDialog(
               context: context, 
               builder: (ctx1) => AlertDialog(
                   title: Text("Oops! Có lỗi xảy ra", style: TextStyle(fontSize: 24),),
-                  content: Text("$onError"),
                   actions: [TextButton(
                       onPressed: () => Navigator.pop(ctx1),
                       child: Center (child: const Text('OK', style: TextStyle(decoration: TextDecoration.underline,),),)

@@ -6,6 +6,7 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:sizer/sizer.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:bkdms/models/Item.dart';
 import 'package:bkdms/services/ItemProvider.dart';
 import 'package:bkdms/screens/home_screens/homepage_screens/HomePage.dart';
@@ -17,7 +18,8 @@ import 'package:bkdms/services/ConsumerProvider.dart';
 class ResultBarcode extends StatefulWidget {
   late Item receiveItem;
   late var receiveUnit;
-  ResultBarcode(this.receiveItem, this.receiveUnit);
+  late String receviveAmount;
+  ResultBarcode(this.receiveItem, this.receiveUnit, this.receviveAmount);
 
   @override
   State<ResultBarcode> createState() => _ResultBarcodeState();
@@ -27,24 +29,24 @@ class ResultBarcode extends StatefulWidget {
 
 
 class _ResultBarcodeState extends State<ResultBarcode> {
-  List<Item> resultItems = [];
   List<CartBarcode> resultCart = [];
-  List<dynamic> resultUnits = [];
   String _scanBarcode = '';
   bool isShowDialog = true;
   int needShowDialog = 1;
   // tổng tiền
   int sumOfOrder = 0;
 
+  // form nhập số lượng
+  final amountController = TextEditingController();  
+  final _formAmountKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
     //khởi tạo các list từ item đc scan ở widget trước
-    resultItems.add(widget.receiveItem);
-    resultUnits.add(widget.receiveUnit);
-    resultCart.add(CartBarcode(quantity: 1, unitId: widget.receiveUnit['id'], price: widget.receiveUnit['retailPrice']));
+    resultCart.add(CartBarcode(linkImg: widget.receiveItem.linkImg, name: widget.receiveItem.name, unitName: widget.receiveUnit['name'], quantity: int.parse(widget.receviveAmount), unitId: widget.receiveUnit['id'], price: widget.receiveUnit['retailPrice']));
     // tổng tiền của đơn hàng
-    sumOfOrder = int.parse(widget.receiveUnit['retailPrice']);
+    sumOfOrder = int.parse(widget.receiveUnit['retailPrice'])*int.parse(widget.receviveAmount);
   }
 
   @override
@@ -71,44 +73,88 @@ class _ResultBarcodeState extends State<ResultBarcode> {
         actions: [
           IconButton(
             onPressed: () async {
-                await scanBarcodeNormal();
-                for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
+              //lấy biến số lượng
+              String amount ="";
+              await scanBarcodeNormal();
+              for (var item in Provider.of<ItemProvider>(context, listen: false).lstItem){
                   for(var unit in item.units){
                     //nếu trùng barcode trong unit thì xử lý
                     if(_scanBarcode == unit['barcode']){
+                      //thông báo nhập số lượng cho sản phẩm đó
+                      await Alert(
+                        context: context,
+                        type: AlertType.none,
+                        desc: "Nhập số lượng",
+                        content: Form(
+                          key: _formAmountKey,
+                            child: TextFormField(
+                              controller: amountController,
+                              keyboardType: TextInputType.number,
+                              cursorHeight: 20,
+                              cursorColor: Colors.black,
+                              textAlignVertical: TextAlignVertical.center,
+                              style: TextStyle(fontSize: 18),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "trống";
+                                }
+                                return null;
+                              },                
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.exposure_sharp ,size: 26,),
+                              ),
+                            ),
+                        ),
+                        buttons: [ 
+                          DialogButton(
+                            width: 100,
+                            child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 20),),
+                            onPressed: () {
+                              // check form có null không
+                              if (_formAmountKey.currentState!.validate()){
+                                setState(() {
+                                  amount = amountController.text;
+                                });
+                                Navigator.pop(context);
+                              }
+                            },         
+                          )
+                        ],
+                      ).show();    
+
+                      //set State showdialog và tổng tiền                         
                       setState(() {
                         needShowDialog = 0;
-                        sumOfOrder = sumOfOrder + int.parse(unit['retailPrice']);
+                        sumOfOrder = sumOfOrder + int.parse(unit['retailPrice'])*int.parse(amount);
                         print(sumOfOrder);
                       });
-                      resultItems.add(item);
-                      resultUnits.add(unit);
                       //tạo list cart để post đơn bán ra
+
                       bool needAddCart = false;
                       for(int index =0; index < resultCart.length; index++){
                         if(resultCart[index].unitId == unit['id']){
-                          resultCart[index].quantity++;
+                          resultCart[index].quantity += int.parse(amount);
                           needAddCart = false;
                           break;
                         } 
                         needAddCart = true;
                       }
                       if(needAddCart == true){
-                        resultCart.add(CartBarcode(quantity: 1, unitId: unit['id'], price: unit['retailPrice']));
+                        resultCart.add(CartBarcode(linkImg: item.linkImg, name: item.name, unitName: unit['name'], quantity: int.parse(amount), unitId: unit['id'], price: unit['retailPrice']));
                       }
                       break;
                     } 
                   }     
                 }             
                 if(needShowDialog == 0) {
-                    setState(() {
-                       isShowDialog = false;
-                    }); 
+                  setState(() {
+                    isShowDialog = false;
+                  }); 
                 }
                 else {
-                    setState(() {
-                       isShowDialog = true;
-                    });                   
+                  setState(() {
+                    isShowDialog = true;
+                  });                   
                 }
                 if(_scanBarcode != "-1") {
                  isShowDialog
@@ -157,7 +203,7 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                  height: heightDevice*0.72,
                  child: ListView.builder(
                      padding: const EdgeInsets.all(8),
-                     itemCount: resultItems.length,
+                     itemCount: resultCart.length,
                      itemBuilder: (BuildContext context, int index) {
                        return Column(children: [
                          Container(
@@ -169,11 +215,11 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                                 height: 100,
                                 width: myWidth*0.3,
                                 child: Image.network(
-                                   getUrlFromLinkImg("${resultItems[index].linkImg}")
+                                   getUrlFromLinkImg("${resultCart[index].linkImg}")
                                 ),
                               ),
                               SizedBox(width: 10,),
-                              //Tên sp, tên đơn vị, xuất xứ và giá. SL: x1
+                              //Tên sp, tên đơn vị, đơn giá + số lượng
                               SizedBox(
                                 height: 100,
                                 width: myWidth*0.6,
@@ -184,7 +230,7 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                                       height: 30,
                                       width: myWidth*0.6,
                                       child: Text(
-                                        "${resultItems[index].name}", 
+                                        "${resultCart[index].name}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
@@ -197,36 +243,38 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                                       height: 24,
                                       width: myWidth*0.6,
                                       child: Text(
-                                         "Đơn vị: " + "${resultUnits[index]['name']}", 
+                                         "Đơn vị: " + "${resultCart[index].unitName}", 
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
                                          softWrap: false,
                                          textAlign: TextAlign.left,
-                                         style: TextStyle(fontSize: 12, ),                                        
+                                         style: TextStyle(fontSize: 14, ),                                        
                                       )
                                     ),   
-                                    // Xuất xứ
-                                    SizedBox(
-                                      height: 24,
-                                      width: myWidth*0.6,
-                                      child: Text(
-                                         "Xuất xứ: " + "${resultItems[index].countryProduce}", 
-                                         maxLines: 1,
-                                         overflow: TextOverflow.ellipsis,
-                                         softWrap: false,
-                                         textAlign: TextAlign.left,
-                                         style: TextStyle(fontSize: 12, ),                                        
-                                      )
-                                    ),                                                                     
                                     // giá bán lẻ
                                     SizedBox(
                                       height: 20,
                                       width: myWidth*0.6,
-                                      child: Text(
-                                         "${resultUnits[index]['retailPrice'].replaceAllMapped(reg, mathFunc)}" + "đ" + "         x1", 
-                                         maxLines: 1,
-                                         textAlign: TextAlign.left,
-                                         style: TextStyle(fontSize: 16, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                      child: Row(
+                                        children: [
+                                          //đơn giá
+                                          SizedBox(
+                                            width: myWidth*0.6*0.6,
+                                            child: Text(
+                                               "${resultCart[index].price.replaceAllMapped(reg, mathFunc)}", 
+                                               maxLines: 1,
+                                               textAlign: TextAlign.left,
+                                               style: TextStyle(fontSize: 17, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                            ),
+                                          ),
+                                          //số lượng sp
+                                          Text(
+                                            "x${resultCart[index].quantity}", 
+                                            maxLines: 1,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 17, color: Color(0xffb01313), fontWeight: FontWeight.w500),                                        
+                                          ),                                          
+                                        ],
                                       )
                                     ),                                    
                                   ],
@@ -302,7 +350,7 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                               child: SizedBox(
                                 width: myWidth*0.4,
                                 child: Center(child: Text(
-                                  "${resultItems.length}",
+                                  "${resultCart.length}",
                                   style: TextStyle(
                                      fontSize: 13,
                                      fontWeight: FontWeight.w800,
@@ -370,11 +418,8 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                                 await showDialog(
                                   context: context,
                                   builder: (context) =>
-                                    FutureProgressDialog(createSaleOrder()),
-                                ).then((_) {         
-                                    //move to success
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessSale())); 
-                                });
+                                    FutureProgressDialog(createSaleOrder().then((_) => Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessSale())))),
+                                );
                               },
                               style: ButtonStyle(
                                  elevation: MaterialStateProperty.all(0),
@@ -445,8 +490,8 @@ class _ResultBarcodeState extends State<ResultBarcode> {
                   ),                      
                   ],                                      
               ));  
-          //không được để throw onError ở đây mới chạy lệnh then được          
-        }).then((_) {
+          //throw onerror ở đây để then trên showdialog ko bắt được
+          throw onError;        
         });   
     });
   }      

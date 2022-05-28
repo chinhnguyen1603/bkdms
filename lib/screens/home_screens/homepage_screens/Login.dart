@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    /*
+  
     //foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification notification = message.notification as RemoteNotification;
@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
               );
             });
       }
-    }); */
+    }); 
   } 
 
 
